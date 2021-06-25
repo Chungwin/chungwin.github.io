@@ -178,6 +178,18 @@ header img{
     width: 100%;
 }
 
+.post a img[alt=bitcoin_for_dummies] {
+    width: 100%;
+}
+
+.post a img[alt=sapiens] {
+    width: 100%;
+}
+
+.post a img[alt=kahnemann] {
+    width: 100%;
+}
+
 
 /* FOOTER */
 
@@ -233,7 +245,7 @@ footer a:hover{
 @media only screen and (max-width: 275px) {
     
     main {
-        width: 85%;
+        width: 90%;
     }
 
     .name {
@@ -249,14 +261,14 @@ footer a:hover{
     }
     
     .post_layout{
-        width: 85%;
+        width: 90%;
     }
 }
 
 
 @media only screen and (min-width: 275px) {
     main {
-        width: 85%;
+        width: 90%;
     }
 
     .name {
@@ -272,14 +284,14 @@ footer a:hover{
     }
     
     .post_layout{
-        width: 85%;
+        width: 90%;
     }
 
 }
 
 @media only screen and (min-width: 414px) {
     main {
-        width: 85%;
+        width: 90%;
     }
 
     .name {
@@ -295,7 +307,7 @@ footer a:hover{
     }
     
     .post_layout{
-        width: 85%;
+        width: 90%;
     }
 
 }
