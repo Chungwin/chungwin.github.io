@@ -1,0 +1,76 @@
+---
+layout: post
+author: Chung
+date: 24.03.2020
+title: How to become a better Tech Recruiter
+excerpt: First of all, do you need in depth knowledge about computer science or software development in order to be a great tech recruiter? Absolutely not. But can an enhanced understanding about computer science and software development be a major advantage for you as a tech recruiter? Absolutely!
+---
+
+*"The moment I decided to lay a more solid foundation for my knowledge about computer science and software development, tech recruiting became much more fun!"*
+
+First of all, do you need in depth knowledge about computer science or software development in order to be a great tech recruiter? Absolutely not. But can an enhanced understanding about computer science and software development be a major advantage for you as a tech recruiter? Absolutely!
+
+Recruiting is like Sales. Basically, the same principles apply, just at different ends of the business. And you don’t need to be a tech expert in order to sell a product or a service. However, if your job is to screen and interview software developers for a living plus making sure candidates have a great candidates experience by giving them a detailed picture of the cultural and technical environment they will potentially work in, a slightly more advanced understanding of technical subject matter can be a big advantage when it comes to candidate experience, screening quality and efficiency. 
+
+It is no coincidence that I’m a recruiter in the tech industry. If it wasn’t tech, I would not have the same passion for what I’m doing. I always enjoyed working as a recruiter for a variety of reasons. But the moment I decided to lay a more solid foundation for my knowledge about computer science and software development, tech recruiting became much more fun! It opened up this whole new learning path into a discipline I was very familiar with on the one hand, but not at all on the other. My main motivation was to demystify this black box of software development, gain a better understanding about how things work under the hood and to understand how the reality of software development really looks like.
+
+If you are like me, a professional with a non-technical educational background wanting to demystify this black box of software development, chances are you might feel overwhelmed at the beginning with the infinite possibilities on how or where to start. Finding a learning path which teaches you the most relevant things without digging too deep into rabbit wholes which turn out to be irrelevant, is a challenge. But over the course of time I found many educational resources which are on point when it comes to production value and the level of knowledge required and conveyed.
+
+I consume tons of educational content. But if I had to recommend just three educational resources or approaches on how to build your technical knowledge and boost your impact as a Tech-Recruiter with a non-technical background, it would be the following:
+
+<br>
+
+### Harvard’s CS50 - Introduction to computer science
+
+![CS50](/assets/images/CS50.jpeg)
+
+[EDX](https://www.edx.org/course/introduction-computer-science-harvardx-cs50x) or [YouTube Channel](https://www.youtube.com/user/cs50tv/playlists)
+
+CS50x is Harvard University's introduction to computer science and programming for majors and non-majors alike. Prior programming experience is not required. In this entry-level course, David J. Malan teaches students how to think algorithmically and solve problems efficiently. Topics include abstraction, algorithms, data structures, encapsulation, resource management, security, software engineering, and web development. Languages include C, Python, and JavaScript plus SQL, CSS, and HTML.
+
+The value of this course is off the charts. David J. Malan is one hell of an eloquent and engaging lecturer who breaks down abstract concepts in a very tangible way. The course is a really comprehensive introduction and the best is, you can get it for free. On CS50’s YouTube channel, you can find all CS50 lectures but also courses beyond that. If you also want to go through the weekly assignments and get a certificate in the end, you need to pay around 80 EUR. Depending on your level of knowledge, going through the lectures and weekly assignments will cost you a bit of time. But I guarantee you, you won’t be disappointed. Even if you just decide to listen to the lectures while commuting, you will get something out of it.
+
+#### How it helped me as a Tech Recruiter
+
+This course helped me to lay a very solid ground for my understanding of computer science. Being already familiar with a lot of concepts I picked up during my time as a recruiter, this course taught me how different fields of computer science actually relate to each other so that in the end I was able to form a coherent picture before my inner eye. Not everything in this course will be super relevant for you, especially when you are mainly working in the field of web development like me. But in my opinion, it’s absolutely worth going through all lectures to get a somewhat complete picture. If you have the time, I would definitely recommend you to sign up and also go through the weekly assignments. It’s one thing to have an idea about how things work theoretically. But once you actually wrote some lines of code, your theoretical knowledge is backed by some practical reference experience which will make it stick.
+
+<br>
+
+### HTML, CSS, JavaScript, Python
+
+![Python](/assets/images/Python.jpeg)
+
+When it come to learning, nothing is more valuable than first-hand-experience. And the best way to learn about programming is to write code. Believe me, there is no reason to shy away from it. The internet is full of free “how to …” video tutorials with very high production quality. If you want to learn a programming language, you can google it and literally do exactly the same thing as instructed, so it’s almost impossible to fail. Especially when you are in the beginning of your journey, there won’t be a problem you will face that someone else hasn’t solved and documented in text, picture or video. All answers are out there, the hardest thing is to start doing it.
+
+**So where to start?** A very beginner friendly way is to start with HTML/CSS and maybe a little bit of JavaScript. To get things started, it’s necessary to learn the very basics (Google, YouTube or Udemy are your friends). But the best way to keep yourself motivated is to set yourself a goal in the form of a small project. Start small and learn as you go along. In the beginning, the very first challenge I set for myself was to find out how to build a decent looking website and put it online. A good place to start.
+
+Besides that, **Python** is a very beginner friendly way to get introduced to programming. The syntax is pretty straight forward and because it’s a general purpose language, you can do a bunch of cool stuff with it. Again, the best way to start is learn the basics (Data types, keywords, if else conditions, loops functions etc.), come up with a small project you think it would be cool to work on, and then google your way from start to finish. Some of my first Python projects were building different types of web crawlers to scrape different online newspapers, analyse them, scraping LinkedIn and building an active sourcing chat bot. Still working on it.
+
+You will notice that in order to get to your desired results, you will need to break down your problems into smaller problems, into smaller problems, into smaller … You will find yourself trying to find solutions you haven’t thought about before, reading tons of Stackoverflow posts, asking your colleagues for help, watching even more tutorials, and at that point you will get a feeling for the reality of programming.
+
+#### How it helped me as a Tech Recruiter
+
+First of all, the demystification of programming after you went though different projects is very rewarding in and of itself. You will realize how stupid computers actually are and how simple programming actually is. And that makes it so difficult. My main takeaway is, that **I would NEVER EVER like to be a full-time software developer.** My passion for coding does not overcompensate the emotional rollercoaster you put yourself on when you set yourself the goal to make the project of your choice work. Probably there are some more talented people out there. Actually, as a matter of fact, there are! But the instant gratification you get when you write a beautiful piece of compiling code is super rewarding. At the very least, programming is a very interesting intellectual thought exercise, which, implemented in the right way, gives you unlimited leverage by making a computer do whatever you want to do whenever you want it. And it’s definitely worth it to learn how to build and to use such a tool.
+
+After I have been resilient enough to push through, tech recruiting became much more fun. The kitchen talk of my developer colleagues became much more relatable. I was able to engage in a completely different way with my colleagues but also with other developer candidates. Obviously, you won’t understand everything with a high level of detail after a couple of weeks or months of coding. But you will definitely have an enhanced understanding of their craft, you can ask better questions and simply just get deeper into conversations. 
+
+Being able to get deeper into the details of our own company's projects enabled me to better understand what kinds of candidates we are actually looking for and therefore also to engage much deeper with our candidates. Obviously, the point of this whole journey is not to become a master of programming. Unless you got totally hooked and you now decide to go all-in and become a professional software developer. But that’s not the case for me. But you will lose the fear of engaging in more technical topics and it will be much easier for you to achieve at least a a high level understanding and enhance your general knowledge. Last but not least, enhancing your understanding about the virtual world we spend most of our time in, is not a bad idea in general.
+
+<br>
+
+### Data Visualization with Tableau
+
+![Tableau](/assets/images/tableau.png)
+
+Tableau is a business intelligence software which allows you to connect to a whole variety of different datasets and create visualizations and analysis via drag and drop. I invested a couple of weeks to get the basics down. But once you familiarize yourself with Tableau, you can have a lot of fun with it.
+
+In theory, every recruiter knows what the most important recruiting metrics are and how to measure them. But in practice, measuring these metrics and displaying them in a meaningful way presents a challenge for which most recruiters have to rely either on their ATS provider or on their tech colleagues. After a reasonable amount of time, you should be able to create your own funnel charts of your recruiting pipeline, visualize streams of processed candidates throughout different locations, categories and time periods, automatically calculate different time-metrics, make predictions or identify soft spots in your recruiting process.
+
+#### How it helped me as a Tech Recruiter
+
+Learning how to use Tableau as a recruiter helped me not just in the form of adding another tool to my toolkit, it directly affected the impact and business value I had as a recruiter for my organisation.
+
+I started with the free Tableau demo version and asked our ATS provider to expose our recruiting data as csv. After a couple of internal meetings with our business leaders for which I created and presented interactive recruiting dashboards, the decision to purchase a full license was a very easy sell.
+
+Once you start working with Tableau, you will familiarize yourself with the work of data and business analysts and you will get a better understanding of the challenges of data engineering and data science. You will learn how to properly work with data, the struggles of extracting, transforming and cleaning data. But most importantly, you have added another tool to your toolbox which enhances your skillset as a professional beyond recruiting. In times where data is the new oil, being able to work and make sense of data is almost a necessity, especially when you want to raise the bar for data informed recruiting.
+

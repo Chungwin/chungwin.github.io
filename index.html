@@ -3,18 +3,39 @@ layout: default
 title: Chungwin
 ---
 
-<div class="index-content">
-    <div class="index-picture">
-        <img src="./assets/images/profilepic.png">
-    </div> 
-    <div class="index-text">
-        <div class="name">Chung Huynh</div>
-        <div class="title">Tech Recruiter <span class="second-title">| Programmer</span></div>
+<main>
+    <div class="index-content">
+        <div class="profile">
+            <div class="index-picture">
+                <img src="./assets/images/profilepic.png">
+            </div> 
+            <div class="name">
+                Hi, I'm Chung &#128075;&#127997;
+            </div>
+            <div class="intro">
+                <p>
+                    I'm a Hamburg based <span>Senior Tech Recruiter</span> at <a href="https://www.jimdo.com/" target="_blank">Jimdo</a> and <span>Programmer</span> at heart &#10084;&#65039;. I'm deeply drawn towards Computer Science, Art, and Philosophy.
+                </p>
+            </div>
+            <div class="index-socials">
+                <a href="https://www.linkedin.com/in/chunghuynh/" target="_blank"><img src="./assets/images/linkedin.png"></a>
+                <a href="https://github.com/chungwin" target="_blank"><img src="./assets/images/github.png"></a>
+            </div>
+            <a href="#post-list"><div class="section"></div></a>
+        </div>
     </div>
-    <div class="index-socials">
-        <a href="https://www.linkedin.com/in/chunghuynh/" target="_blank"><img src="./assets/images/linkedin.png"></a>
-        <a href="https://www.xing.com/profile/Chung_Huynh3/cv" target="_blank"><img src="./assets/images/xing.png"></a>
-        <a href="https://github.com/chungwin" target="_blank"><img src="./assets/images/github.png"></a>
+    <div class="posts-list" id="post-list">
+        <br>
+        <br>
+        <div class="thoughts"><h2>THOUGHTS.</h2></div>
+        {% for post in site.posts %}
+            <div class="post-items">
+                <h2><a href="{{ post.url }}">{{ post.title }}</a> <span>&nbsp;&nbsp;{{ post.date | date_to_string }}</span></h2>
+                <p>{{ post.excerpt }}</p>
+            </div>
+        {% endfor %}
     </div>
-</div>
+    
+</main>
+
 
