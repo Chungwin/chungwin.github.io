@@ -5,7 +5,7 @@ date: 22.07.2020
 title: The Recruitment-Confusion-Matrix and your Right to be Wrong
 ---
 
-In this article I want to elaborate on a reality in recruitment, which is often left out of the conversation, but ironically makes up the biggest chunk of our work. I want to talk about wrong decisions, specifically from a recruiter’s perspective. Because as a Recruiter, you are more often wrong than you a right. Numbers don't lie. So don't trust your gut feeling!
+In this article I want to elaborate on a reality in recruitment, which is often left out of the conversation, but actually makes up the biggest chunk of our work. I want to talk about wrong decisions, specifically from a recruiter’s perspective. As a matter of fact, as a recruiter, you are more often wrong than you a right. Numbers don't lie. So don't trust your gut feeling!
 
 Since decision making in recruitment is a form of statistical classification, a confusion-matrix seems to me very suitable to lay out the challenge. Towards the end of this article, I want to share some tips for recruiters, but also for all hiring team member’s what can be done to increase screening quality and efficiency, especially in the early stage of the recruitment process. But first, let’s start with some Numbers and KPI-Benchmarks:
 
