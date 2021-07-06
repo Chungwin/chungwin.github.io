@@ -9,6 +9,10 @@ html {
     scroll-behavior: smooth;
 }
 
+body {
+    padding-bottom: 1em;
+}
+
 header,
 main, 
 footer{
@@ -239,8 +243,13 @@ footer {
     align-content: center;
 }
 
+footer p {
+    color: grey;
+}
+
 footer a{
     font-family: 'Montserrat', sans-serif;
+    color: grey;
 }
 
 footer a:hover{
