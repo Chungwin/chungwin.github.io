@@ -9,7 +9,7 @@ In this article I want to elaborate on a reality in recruitment, which is often 
 
 Since decision making in recruitment is a form of statistical classification, a confusion-matrix seems to me very suitable to lay out the challenge. Towards the end of this article, I want to share some tips for recruiters, but also for all hiring team member’s what can be done to increase screening quality and efficiency, especially in the early stage of the recruitment process. But first, let’s start with some Numbers and KPI-Benchmarks:
 
-[Lever's 20l9 Talent Benchmark Report](https://www.lever.co/resources/2019-talent-benchmarks-report-key-metrics-to-transform-your-hiring/) looked at the recruiting efficiency of around 2500 companies. For software engineering positions, the conversation rates look the following. 
+[Lever's 20l9 Talent Benchmark Report](https://www.lever.co/resources/2019-talent-benchmarks-report-key-metrics-to-transform-your-hiring/){:target="_blank"} looked at the recruiting efficiency of around 2500 companies. For software engineering positions, the conversation rates look the following. 
 
 * The average screen-to-onsite conversion-rate is 23,57%. 
 
@@ -37,7 +37,7 @@ Like any other skill, the craft of recruiting can be trained, sharpened and poli
 
 But since no one can not predict the outcome with full certainty, the recruiter’s decision is more a bet than a certain prediction.
 
-Because making these bets are the recruiter’s profession, one could assume that the recruiter’s judgement must be of high accuracy. And indeed, an experienced recruiter already facilitated hundreds, maybe thousands of candidate journeys in different constellations and contexts and saw how different things played out. Because of the high volume and relatively fast feedback cycles, the recruiters working environment definitely allows the development of a somewhat [reliable intuition](https://fs.blog/2012/03/daniel-kahneman-on-intuition/). But whenever we are operating within the field of human beings and decision making, biases, inaccuracies and wrong decisions are inevitable.
+Because making these bets are the recruiter’s profession, one could assume that the recruiter’s judgement must be of high accuracy. And indeed, an experienced recruiter already facilitated hundreds, maybe thousands of candidate journeys in different constellations and contexts and saw how different things played out. Because of the high volume and relatively fast feedback cycles, the recruiters working environment definitely allows the development of a somewhat [reliable intuition](https://fs.blog/2012/03/daniel-kahneman-on-intuition/){:target="_blank"}. But whenever we are operating within the field of human beings and decision making, biases, inaccuracies and wrong decisions are inevitable.
 
 <br>
 
@@ -111,13 +111,13 @@ But the only way to find the perfect balance is to improve your screening qualit
 
 # Improve your Screening Quality
 
-There is already a countless list of articles on agile recruitment or other organisational recruitment best-practices. I do not want to repeat those but pointing out ways to improve the screening quality and mindset of the individual recruiter. Because at the end of the day, in all [agile](https://agilemanifesto.org/) processes it is about *“Individuals and Interactions Over Processes and Tools”* and the mindset of *“responding to change over following a plan.”*
+There is already a countless list of articles on agile recruitment or other organisational recruitment best-practices. I do not want to repeat those but pointing out ways to improve the screening quality and mindset of the individual recruiter. Because at the end of the day, in all [agile](https://agilemanifesto.org/){:target="_blank"} processes it is about *“Individuals and Interactions Over Processes and Tools”* and the mindset of *“responding to change over following a plan.”*
 
 There are some obvious actions you want to take as a recruiter to improve the screening quality. Like already mentioned, there is no such thing as over-communication with the team when it comes to alignment. But often enough, there is a big hurdle which prevents the recruiter from fully grasping what exactly the hiring team is looking for and how to screen for it. And this hurdle is: Understanding of technical subject matter.
 
-### [Become a better (Tech) Recruiter](https://www.linkedin.com/pulse/how-become-better-tech-recruiter-chung-huynh/)
+### [Become a better (Tech) Recruiter](https://www.linkedin.com/pulse/how-become-better-tech-recruiter-chung-huynh/){:target="_blank"}
 
-In another article, I already elaborated on my journey of [how I became a better (Tech) Recruiter](https://www.linkedin.com/pulse/how-become-better-tech-recruiter-chung-huynh/). Even though I focussed in this article more on software engineering subject matter, the bottom line is: You don’t need to have in depth knowledge or hands-on expertise in the subject matter of the role you are recruiting for. But obviously, it can be a major advantage. Laying a solid foundation for your knowledge of software engineering or computer science in general can open up a completely new learning path into a discipline you are very familiar with on the one hand, but not at all on the other. And I promise, after you start to demystify this blackbox, recruiting will become much more fun!
+In another article, I already elaborated on my journey of [how I became a better (Tech) Recruiter](https://www.linkedin.com/pulse/how-become-better-tech-recruiter-chung-huynh/){:target="_blank"}. Even though I focussed in this article more on software engineering subject matter, the bottom line is: You don’t need to have in depth knowledge or hands-on expertise in the subject matter of the role you are recruiting for. But obviously, it can be a major advantage. Laying a solid foundation for your knowledge of software engineering or computer science in general can open up a completely new learning path into a discipline you are very familiar with on the one hand, but not at all on the other. And I promise, after you start to demystify this blackbox, recruiting will become much more fun!
 
 ### Level up your technical Questions
 
@@ -125,7 +125,7 @@ But even if you don’t want to make a deep dive into computer science or the di
 
 In the case of recruiting for software engineering, get at least a high level understanding of e.g. software architecture, cloud computing, micro-services, software testing and development methodologies, and all the jargon you deal with on a daily basis. For consumer-friendly educational content, **Youtube is my preferred search engine!**
 
-I consume tons of educational content. But if I had to recommend just one educational resources for beginners about the topic of computer science, it would be "Harvard’s CS50 - Introduction to computer science" [EDX YouTube Channel](https://www.youtube.com/user/cs50tv/playlists). I'm sure you will find here content which will give your blurry ideas more sharpness. But in general, it's a great resource to build foundational general knowledge. And maybe it will trigger your interest to go deeper into the rabbit hole.
+I consume tons of educational content. But if I had to recommend just one educational resources for beginners about the topic of computer science, it would be "Harvard’s CS50 - Introduction to computer science" [EDX YouTube Channel](https://www.youtube.com/user/cs50tv/playlists){:target="_blank"}. I'm sure you will find here content which will give your blurry ideas more sharpness. But in general, it's a great resource to build foundational general knowledge. And maybe it will trigger your interest to go deeper into the rabbit hole.
 
 Your goal is to add additional questions with a high signaling value to your repertoire. You want to be able to go beyond “How many years did you work with technology xyz?!” and you want to be able to weed out candidates who are just reciting textbook answers to eyewash you. But also, be aware that at a certain level, there is no one “K.O.-Question” which is able to draw a clear line between a good and a bad candidate. But each answer must be interpreted as a signal. But some questions are able to trigger stronger signals than other questions.
 
@@ -133,7 +133,7 @@ Besides watching tons of YouTube Videos, working on my own side projects, and re
 
 ### Good enough is good enough
 
-In every interview, there is just so much you can screen or accomplish. At a certain point in the interview, the marginal screening-value of each additional question drops. That’s why it makes sense to have different interview sessions and switch gears to add new valuable insights about different skill dimensions of a candidate. But you also want to avoid overdoing it with different interview steps. You can always go deeper, but every screening step finds its saturation at some point. It very much reminds me of a [golden rule in UX Design](https://www.invisionapp.com/inside-design/ux-usability-research-testing/) for usability testing. Same, same, but different.
+In every interview, there is just so much you can screen or accomplish. At a certain point in the interview, the marginal screening-value of each additional question drops. That’s why it makes sense to have different interview sessions and switch gears to add new valuable insights about different skill dimensions of a candidate. But you also want to avoid overdoing it with different interview steps. You can always go deeper, but every screening step finds its saturation at some point. It very much reminds me of a [golden rule in UX Design](https://www.invisionapp.com/inside-design/ux-usability-research-testing/){:target="_blank"} for usability testing. Same, same, but different.
 <br>
 <br>
 <br>
@@ -144,7 +144,7 @@ In every interview, there is just so much you can screen or accomplish. At a cer
 
 Even for very experienced interviewers with extensive programming experience it’s almost impossible to make an accurate call after one single screening session. Therefore, the main goal of a first interview is not to find out how good exactly the candidate is. But to **know where to draw a line for “good enough for a technical evaluation”** and being able to categorize candidates accordingly. As a recruiter, you want to be able to disqualify a "bad candidate" as fast as possible. In order to screen as efficient as possible, you first want to screen for those factors which might lead to an obvious disqualification. Once you eliminate those factors, the actual tricky part of the screening starts. 
 
-As a recruiter with a non-technical background, maybe you are able to switch gears by getting more technical and thereby adding more screening-value to your session. But in the end of the day, written code tells the truth and nothing replaces a coding interview. But also here, you don't want to overshoot the target. [Overeagerly screening your candidate might hurt your team's ability to assess and hire great candidates.](https://news.ncsu.edu/2020/07/tech-job-interviews-anxiety/) Also, there is just so much you can do to sell the company to the candidate and ensure a nice candidate experience. It’s also the team that needs to do its job to sell the company.
+As a recruiter with a non-technical background, maybe you are able to switch gears by getting more technical and thereby adding more screening-value to your session. But in the end of the day, written code tells the truth and nothing replaces a coding interview. But also here, you don't want to overshoot the target. [Overeagerly screening your candidate might hurt your team's ability to assess and hire great candidates.](https://news.ncsu.edu/2020/07/tech-job-interviews-anxiety/){:target="_blank"} Also, there is just so much you can do to sell the company to the candidate and ensure a nice candidate experience. It’s also the team that needs to do its job to sell the company.
 
 ### Do not trust your gut feeling. 
 
@@ -154,7 +154,7 @@ Obviously, it’s not always the case that the candidate is not “good enough�
 
 From the perspective of extreme ownership, one could argue that these things should be factored into the recruiters decision-equation. But here we step into very blurry territory. Fact of the matter is, recruiting is just a messy business. And the way you are able to deal with the inevitable mess and ambiguity will determine how good of a recruiter and team member you will become.
 
-### [No Mud, No Lotus](https://www.goodreads.com/book/show/20949716-no-mud-no-lotus)
+### [No Mud, No Lotus](https://www.goodreads.com/book/show/20949716-no-mud-no-lotus){:target="_blank"}
 
 Without failure, there is no success. Both inevitably belong together, the one can’t exist without the other. Ultimately, true success is tied to the way to success. And when things go well, it’s easy to shine. But real champions show up when things get messy. 
 

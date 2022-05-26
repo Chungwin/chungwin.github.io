@@ -24,7 +24,7 @@ I consume tons of educational content. But if I had to recommend just three educ
 
 ![CS50](/assets/images/CS50.jpeg)
 
-[EDX](https://www.edx.org/course/introduction-computer-science-harvardx-cs50x) or [YouTube Channel](https://www.youtube.com/user/cs50tv/playlists)
+[EDX](https://www.edx.org/course/introduction-computer-science-harvardx-cs50x){:target="_blank"} or [YouTube Channel](https://www.youtube.com/user/cs50tv/playlists){:target="_blank"}
 
 CS50x is Harvard University's introduction to computer science and programming for majors and non-majors alike. Prior programming experience is not required. In this entry-level course, David J. Malan teaches students how to think algorithmically and solve problems efficiently. Topics include abstraction, algorithms, data structures, encapsulation, resource management, security, software engineering, and web development. Languages include C, Python, and JavaScript plus SQL, CSS, and HTML.
 

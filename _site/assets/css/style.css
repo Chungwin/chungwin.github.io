@@ -133,6 +133,12 @@ header img{
 
 /* POSTS */
 
+.post h1, h2, h3, h4{
+    margin-top: 2em;
+    margin-bottom: 0;
+    line-height: 0;
+}
+
 .post_layout{
     max-width: 600px;
     margin: auto;
@@ -151,36 +157,63 @@ header img{
     color: grey;
 }
 
-.post p, a, strong{
+.post p, a, strong, ul, li, em{
     hyphens: auto;
     text-align: justify;
     font-family: 'Lora', serif;
     line-height: 1.5;
 }
 
-.post a:hover {
+.post a {
     color: #1B77F2;
 }
 
-.post img[alt=recruiting-confusion-matrix] {
+.post a:hover {
+    color: #383838;
+    background-color: #d5e7ff;
+}
+
+
+.grey-background {
+    background-color: rgba(211, 211, 211, 0.288);
+    hyphens: auto;
+    text-align: justify;
+    font-family: 'Lora', serif;
+    line-height: 1.5;
+    padding: 0.3em 1em 0.3em 1em;
+    border-radius: 10px;
+}
+
+.pseudocode {
+    font-family: 'Courier New', Courier, monospace;
+    line-height: 1.5;
+    padding: 1em 1em 1em 1em;
+    border: blue;
+    border-width: 1px;
+    border-radius: 10px;
+    border-style: solid;
+}
+
+.pseudocode ul, li, ol{
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.post img[alt=recruiting-funnel] {
+    display: block;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.post img {
     width: 100%;
 }
 
-.post img[alt=screening_value] {
-    width: 100%;
-}
+/* .post img:hover {
+    width: 150%;
+} */
 
-.post img[alt=CS50] {
-    width: 100%;
-}
 
-.post img[alt=Python] {
-    width: 100%;
-}
-
-.post img[alt=Tableau] {
-    width: 100%;
-}
 
 
 /* PUBLIC SPEAKING POST */
