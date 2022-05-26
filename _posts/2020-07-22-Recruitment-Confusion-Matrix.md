@@ -3,6 +3,7 @@ layout: post
 author: Chung
 date: 22.07.2020
 title: The Recruitment-Confusion-Matrix and your Right to be Wrong
+permalink: /recruitment-confusion-matrix/
 ---
 
 In this article I want to elaborate on a reality in recruitment, which is often left out of the conversation, but actually makes up the biggest chunk of our work. I want to talk about wrong decisions, specifically from a recruiter’s perspective. As a matter of fact, as a recruiter, you are more often wrong than you a right. Numbers don't lie. So don't trust your gut feeling!

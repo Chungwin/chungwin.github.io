@@ -3,6 +3,7 @@ layout: post
 author: Chung
 date: 20.07.2021
 title: How to build a Recruiting Dashboard
+permalink: /build-a-recruiting-dashboard/
 ---
 
  This project started as a small personal side project. My main purpose for it was to give myself an excuse to learn NodeJS and improve my programming skills. Fast forward a couple of months later, we use my dashboards in recruitment meetings to gain deeper insights and I’m collaborating with the Data Department to make more advanced recruiting and HR dashboards accessible for the whole organization. 

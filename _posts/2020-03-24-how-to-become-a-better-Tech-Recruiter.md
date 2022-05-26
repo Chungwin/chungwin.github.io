@@ -4,6 +4,7 @@ author: Chung
 date: 24.03.2020
 title: How to become a better Tech Recruiter
 excerpt: First of all, do you need in depth knowledge about computer science or software development in order to be a great tech recruiter? Absolutely not. But can an enhanced understanding about computer science and software development be a major advantage for you as a tech recruiter? Absolutely!
+permalink: /become-a-better-tech-recruiter/
 ---
 
 *"The moment I decided to lay a more solid foundation for my knowledge about computer science and software development, tech recruiting became much more fun!"*
