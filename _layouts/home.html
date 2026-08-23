@@ -1,0 +1,45 @@
+---
+layout: default
+---
+
+<section class="hero">
+  <h1 class="headline">
+    <span class="beat">Lots of ideas.</span>
+    <span class="beat">Some get written.</span>
+    <span class="beat">These days —&nbsp;<span class="machine" id="machine">machines help.</span><span class="taphint" id="taphint" aria-hidden="true">⇥ tab</span><span class="caret" id="caret" aria-hidden="true">▏</span></span>
+  </h1>
+</section>
+
+<section id="writing">
+  <p class="eyebrow">Writing</p>
+  <ul class="writing">
+    {% for post in site.posts %}
+    <li class="entry">
+      <a class="title" href="{{ post.url | relative_url }}">
+        <span class="name">{{ post.title }}</span>
+        <span class="date">{{ post.date | date: "%b %Y" }}</span>
+      </a>
+      {% if post.description %}
+      <p class="blurb">{{ post.description }}</p>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<script>
+(function(){
+  var reduce  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var machine = document.getElementById('machine');
+  var hint    = document.getElementById('taphint');
+  var caret   = document.getElementById('caret');
+  if (reduce || !machine){ if (caret) caret.classList.add('on'); return; }
+  document.body.classList.add('anim');
+  setTimeout(function(){ hint.classList.add('show'); }, 750);
+  setTimeout(function(){
+    machine.classList.add('accepted');
+    hint.classList.remove('show');
+    caret.classList.add('on');
+  }, 1650);
+})();
+</script>

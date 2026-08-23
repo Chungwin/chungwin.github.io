@@ -1,20 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }}</title>
-    <link rel="shortcut icon" type="image/ico" href="/assets/images/seedling.ico">
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    {% include goatcounter.html %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} · Chung Huynh{% else %}Chung Huynh{% endif %}</title>
+  <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}Chung Huynh writes from Hamburg about technology, markets, and the occasional philosophical detour.{% endif %}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
 </head>
 <body>
-    <div class="content">
-        {{ content }}
-        {% include footer.html %}
+
+  <header class="site-head">
+    <div class="wrap head-inner">
+      <a class="mark" href="{{ '/' | relative_url }}">Chung&nbsp;Huynh</a>
+      <nav class="nav" aria-label="Primary">
+        <a href="{{ '/#writing' | relative_url }}">writing</a>
+      </nav>
     </div>
+  </header>
+
+  <main class="wrap">
+    {{ content }}
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <div class="links">
+        <a href="https://www.linkedin.com/in/chunghuynh/">LinkedIn</a><span class="sep">/</span>
+        <a href="https://github.com/chungwin">GitHub</a>
+      </div>
+      <p class="colophon">
+        Chung Huynh writes from Hamburg — about technology, markets, and the occasional philosophical detour.
+      </p>
+    </div>
+  </footer>
+
 </body>
 </html>
