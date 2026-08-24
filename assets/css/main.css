@@ -243,6 +243,15 @@ body{
 .site-foot .links .sep{ color:var(--line); margin:0 .55em; }
 .site-foot .colophon{ margin-top:1rem; max-width:30rem; }
 
+/* ── per-post white canvas ────────────────────────────────
+   Opt in from a post's front matter with:  background: white
+   Flips that page to a white background and removes the image
+   frames, so white-background graphics blend in like before. */
+body.bg-white{ --paper:#ffffff; }
+body.bg-white .prose img{
+  background:none; padding:0; border:0; border-radius:0; box-shadow:none;
+}
+
 /* ── shared ───────────────────────────────────────────── */
 a:focus-visible{ outline:2px solid var(--machine); outline-offset:3px; border-radius:2px; }
 
