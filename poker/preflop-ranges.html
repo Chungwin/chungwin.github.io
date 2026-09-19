@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6-max preflop range reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAFAF8; --surface:#FFFFFF; --surface-2:#F3F2EE;
+    --text:#1A1A17; --muted:#6C6B64; --border:#E4E3DD;
+    --accent:#0F6E56; --accent-soft:#E1F1EC;
+    --raise:#1D9E75; --value:#1D9E75; --bluff:#D85A30; --call:#378ADD;
+    --fold-bg:#F3F2EE; --fold-text:#9A998F;
+    --disp:"Fraunces",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#14161A; --surface:#1D2026; --surface-2:#23272E;
+      --text:#ECEBE6; --muted:#9B9A92; --border:#2E323A;
+      --accent:#5DCAA5; --accent-soft:#17362E;
+      --fold-bg:#23272E; --fold-text:#77766E;
+    }
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:var(--sans); line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:640px; margin:0 auto; padding:2rem 1.1rem 4rem;}
+  .topbar{font-family:var(--mono); font-size:.72rem; color:var(--muted); margin:0 0 .9rem; display:flex; gap:1.2rem; flex-wrap:wrap;}
+  .topbar a{color:var(--muted); text-decoration:none; transition:color .15s ease;}
+  .topbar a:hover{color:var(--accent);}
+
+  header.masthead{border-bottom:1px solid var(--border); padding-bottom:1.4rem; margin-bottom:1.6rem;}
+  .suits{font-family:var(--disp); font-size:1rem; letter-spacing:.5em; color:var(--accent); margin:0 0 .5rem;}
+  h1{font-family:var(--disp); font-weight:600; font-size:1.9rem; line-height:1.1; margin:0 0 .4rem; letter-spacing:-.01em;}
+  .sub{color:var(--muted); font-size:.95rem; margin:0;}
+
+  nav.index{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.1rem 1.2rem; margin-bottom:2rem;}
+  nav.index .eyebrow{font-family:var(--mono); font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin:0 0 .7rem;}
+  nav.index .grp{margin-bottom:.9rem;}
+  nav.index .grp:last-child{margin-bottom:0;}
+  nav.index .grp-label{font-size:.78rem; font-weight:600; color:var(--accent); margin:0 0 .5rem; text-transform:uppercase; letter-spacing:.06em;}
+  .pills{display:flex; flex-wrap:wrap; gap:.45rem;}
+  .pills a{
+    display:inline-flex; align-items:center; gap:.4rem;
+    font-size:.85rem; text-decoration:none; color:var(--text);
+    background:var(--surface-2); border:1px solid var(--border);
+    padding:.36rem .7rem; border-radius:999px; transition:border-color .15s,color .15s;
+  }
+  .pills a:hover{border-color:var(--accent); color:var(--accent);}
+  .pills a .pct{font-family:var(--mono); font-size:.72rem; color:var(--muted);}
+
+  section{scroll-margin-top:1rem; margin-bottom:2.4rem;}
+  .sec-head{display:flex; align-items:baseline; justify-content:space-between; gap:1rem; border-bottom:1px solid var(--border); padding-bottom:.5rem; margin-bottom:.9rem;}
+  h2{font-family:var(--disp); font-weight:600; font-size:1.3rem; margin:0; letter-spacing:-.01em;}
+  h3{font-family:var(--disp); font-weight:600; font-size:1.06rem; margin:1.7rem 0 .3rem; letter-spacing:-.005em; scroll-margin-top:1rem;}
+  .subpct{font-family:var(--mono); font-size:.72rem; color:var(--accent); font-weight:500;}
+  .sec-head .meta{font-family:var(--mono); font-size:.8rem; color:var(--accent); white-space:nowrap;}
+  .note{color:var(--muted); font-size:.92rem; margin:.2rem 0 1rem;}
+  .note strong{color:var(--text); font-weight:600;}
+
+  .grid{display:grid; grid-template-columns:repeat(13,1fr); gap:2px; max-width:390px; margin:0 auto;}
+  .cell{
+    aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:8.5px; font-weight:600; border-radius:3px;
+    color:#fff; user-select:none;
+  }
+  .cell.fold{background:var(--fold-bg); color:var(--fold-text); border:1px solid var(--border);}
+  .cell.dim{opacity:.28;}
+
+  .legend{display:flex; flex-wrap:wrap; gap:.5rem 1rem; justify-content:center; margin-top:.9rem; font-size:.82rem; color:var(--muted);}
+  .legend span{display:inline-flex; align-items:center; gap:.4rem;}
+  .swatch{width:12px; height:12px; border-radius:3px; display:inline-block;}
+
+  .toplink{display:inline-block; margin-top:.8rem; font-size:.78rem; color:var(--muted); text-decoration:none; font-family:var(--mono);}
+  .toplink:hover{color:var(--accent);}
+
+  .key-card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.1rem 1.2rem;}
+  .key-card ul{margin:.4rem 0 0; padding-left:1.1rem;}
+  .key-card li{margin-bottom:.5rem; font-size:.9rem;}
+  .key-card b{color:var(--accent); font-weight:600;}
+
+  .textnote{background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:0 10px 10px 0; padding:.9rem 1.1rem; font-size:.9rem;}
+  .textnote p{margin:0 0 .6rem;}
+  .textnote p:last-child{margin-bottom:0;}
+  .warn{border-left-color:var(--bluff);}
+
+  .part{margin:3.2rem 0 1.6rem; padding-bottom:.4rem; border-bottom:2px solid var(--accent);}
+  .part:first-of-type{margin-top:1rem;}
+  .part .num{font-family:var(--mono); font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:.15rem;}
+  .part h2{font-family:var(--disp); font-weight:600; font-size:1.5rem; margin:0; letter-spacing:-.015em;}
+  .part p{margin:.35rem 0 0; font-size:.88rem; color:var(--muted);}
+
+  table.sizing{width:100%; border-collapse:collapse; font-size:.86rem; margin:.6rem 0 0;}
+  table.sizing th, table.sizing td{text-align:left; padding:.45rem .5rem; border-bottom:1px solid var(--border);}
+  table.sizing th{font-family:var(--mono); font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:500;}
+  table.sizing td.num{font-family:var(--mono); color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="topbar"><a href="/">← chungwin.com</a><a href="./">← back to the trainer</a></p>
+
+  <header class="masthead" id="top">
+    <p class="suits">&spades; &hearts; &diams; &clubs;</p>
+    <h1>6-max preflop range reference</h1>
+    <p class="sub">NL25 cash, 100bb. Opening, isolating, blind defense, and 3-betting — color-coded by action.</p>
+  </header>
+
+  <nav class="index">
+    <p class="eyebrow">Contents</p>
+    <div class="grp">
+      <p class="grp-label">I · How to read</p>
+      <div class="pills">
+        <a href="#key">The key</a>
+        <a href="#design">Deliberate deviations</a>
+      </div>
+    </div>
+    <div class="grp">
+      <p class="grp-label">II · Opening (RFI)</p>
+      <div class="pills">
+        <a href="#open-size">Why 2.5bb</a>
+        <a href="#rfi-lj">Lojack / UTG <span class="pct">~15%</span></a>
+        <a href="#rfi-hj">Hijack <span class="pct">~20%</span></a>
+        <a href="#rfi-co">Cutoff <span class="pct">~27%</span></a>
+        <a href="#rfi-btn">Button <span class="pct">~47%</span></a>
+      </div>
+    </div>
+    <div class="grp">
+      <p class="grp-label">III · Isolating limpers</p>      <div class="pills">
+        <a href="#iso-early">LJ / HJ <span class="pct">~12%</span></a>
+        <a href="#iso-co">Cutoff <span class="pct">~20%</span></a>
+        <a href="#iso-btn">Button <span class="pct">~29%</span></a>
+      </div>
+    </div>
+    <div class="grp">
+      <p class="grp-label">IV · Playing the blinds</p>
+      <div class="pills">
+        <a href="#sb-rfi">SB · first in <span class="pct">~38%</span></a>
+        <a href="#sb-vs-limp">SB · vs limper</a>
+        <a href="#bb-vs-limp">BB · vs limper</a>
+        <a href="#def-bb-early">BB · vs LJ / HJ <span class="pct">~22%</span></a>
+        <a href="#def-bb-co">BB · vs Cutoff <span class="pct">~37%</span></a>
+        <a href="#def-bb-btn">BB · vs Button <span class="pct">~50%</span></a>
+        <a href="#def-bb-sb">BB · vs SB open <span class="pct">~50%</span></a>
+        <a href="#bb-vs-sb-limp">BB · vs SB limp</a>
+        <a href="#def-bb-multi">BB · vs open + caller <span class="pct">~21%</span></a>
+        <a href="#sb-3bet-early">SB 3-bet · vs LJ / HJ <span class="pct">6.5%</span></a>
+        <a href="#sb-3bet-late">SB 3-bet · vs CO / BTN <span class="pct">16%</span></a>
+      </div>
+    </div>
+    <div class="grp">
+      <p class="grp-label">V · 3-betting &amp; facing 3-bets</p>
+      <div class="pills">
+        <a href="#tbet-ip-tight">3-bet IP · vs tight</a>
+        <a href="#tbet-ip-wide">3-bet IP · vs wide</a>
+        <a href="#squeeze">Squeezing</a>
+        <a href="#vs3-early">Vs 3-bet · opened LJ / HJ</a>
+        <a href="#vs3-late">Vs 3-bet · opened CO / BTN</a>
+        <a href="#vs3-behind">Vs 3-bet · from behind</a>
+        <a href="#adjustments">Sizes · stacks · limp-raises</a>
+      </div>
+    </div>
+    <div class="grp">
+      <p class="grp-label">VI · Calling</p>
+      <div class="pills">
+        <a href="#calling">When to call</a>
+        <a href="#call-bb-early">BB vs LJ / HJ <span class="pct">19%</span></a>
+        <a href="#call-bb-co">BB vs Cutoff <span class="pct">31%</span></a>
+        <a href="#call-bb-btn">BB vs Button <span class="pct">42%</span></a>
+        <a href="#call-bb-sb">BB vs SB <span class="pct">38%</span></a>
+        <a href="#call-bb-multi">BB vs open + caller <span class="pct">18%</span></a>
+        <a href="#call-ip-tight">IP vs tight <span class="pct">7%</span></a>
+        <a href="#call-ip-wide">IP vs wide <span class="pct">11%</span></a>
+        <a href="#call-vs3-early">Vs 3-bet · early <span class="pct">3%</span></a>
+        <a href="#call-vs3-late">Vs 3-bet · late <span class="pct">12%</span></a>
+        <a href="#call-vs3-behind">Vs 3-bet · from behind <span class="pct">12%</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="part"><span class="num">Part I</span><h2>How to read this</h2><p>Grid conventions, and the exploits that are here on purpose.</p></div>
+
+  <section id="key">
+    <div class="sec-head"><h2>The key</h2></div>
+    <div class="key-card">
+      <p style="margin:0; font-size:.9rem;">Every grid is the standard 13×13: <b>pairs</b> run down the diagonal, <b>suited</b> hands sit above it, <b>offsuit</b> below.</p>
+      <ul>
+        <li><b>Raise / value</b> (teal) — open, isolate, or 3-bet wanting action.</li>
+        <li><b>Bluff</b> (coral) — 3-bet wanting a fold.</li>
+        <li><b>Call</b> (blue) — flat and see a flop.</li>
+        <li><b>Fold</b> (gray) — muck.</li>
+      </ul>
+      <p style="margin:.6rem 0 0; font-size:.86rem; color:var(--muted);">At NL25 vs loose-passive players: drop the coral bluffs against people who never fold, and add those hands back as value instead.</p>
+    </div>
+  </section>
+
+  <section id="design">
+    <div class="sec-head"><h2>Deliberate deviations</h2><span class="meta">read before "fixing" anything</span></div>
+    <p class="note">These charts are <strong>not</strong> pure solver output. The differences below are intentional exploits for the NL25 GG pool. Written down so future-me doesn't correct them back into theory and lose money.</p>
+    <div class="key-card">
+      <ul>
+        <li><b>Bluffs are chosen for equity, not blockers.</b> Solver 3-bet bluffs (K2s–K5s) work because the opponent folds. This pool doesn't fold enough, so the bluff slot holds hands that <em>flop well when called</em> — suited wheel aces and K9s, not king-rag. Against a genuinely tight, folding regular, swap back toward pure blockers.</li>
+        <li><b>3-bet ranges lean value-heavy.</b> About 2.8 value hands per bluff in position, and closer to 4 from the big blind, where being out of position makes bluffs cost more when called. Correct against a pool that calls 3-bets too wide and 4-bets too rarely. This is not a balance error.</li>
+        <li><b>Ranges are ordered by hand strength, not by suit.</b> Suitedness is worth ~2–3% equity and doesn't rescue a hand with no high card and no straight coverage: T8o beats 83s, K8o beats 72s, in every seat including the BB. The exception is suited <em>aces</em> and connected suited hands, which make nut flushes and disguised straights — those genuinely clear better-looking offsuit hands. If a grid ever shows suited junk defending while a reasonable offsuit hand folds, that's an error, not an exploit.</li>
+        <li><b>No limping anywhere</b>, in any seat, including the SB. Raise or fold.</li>
+      </ul>
+    </div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <div class="part"><span class="num">Part II</span><h2>Opening</h2><p>It folds to you and you're not in a blind. Raise or fold — never limp.</p></div>
+
+  <section id="open-size">
+    <div class="sec-head"><h2>Why 2.5bb</h2><span class="meta">every seat except the small blind</span></div>
+    <div class="textnote">
+      <p><strong>The size and the range are one decision.</strong> A 2.5bb open needs the blinds to fold about 64% of the time to show an automatic profit; a 3bb open needs 68%. Four points sounds like nothing, but the bottom third of the Button range — Q5s, K8o, T8o — only makes money because the price is cheap. Open 3bb and those hands flip from slight winners to slight losers, so a 3bb scheme has to trim the Button to roughly 40% to stay consistent. Every chart in this part is built at 2.5bb; that's what makes them correct.</p>
+      <p><strong>What the extra half blind buys — and doesn't, at NL25.</strong> Against the blinds it buys folds. The NL25 big blind doesn't fold more to 3bb than to 2.5bb, because they weren't computing pot odds in the first place — so you pay 20% more per open and receive nothing for it. Against the fish who calls anyway it buys a bigger pot with your good hands, which is real, but you also play a bigger pot with your marginal ones, and out of position from the early seats those give it back.</p>
+      <p><strong>Rake nudges the same way.</strong> GG takes a percentage of the pot up to a cap. The cap only helps in big pots; the small and medium pots that opens create pay the full rate, and a bigger open makes more of them. It's a nudge rather than an argument, but it points at 2.5.</p>
+      <p><strong>Never size by hand.</strong> "3bb with a strong hand, 2.5bb to steal" tells the regs which one you have. The right form of that instinct is <em>strong range, bigger size</em> — choose the size for the seat, not the cards. That's why the small blind opens 3bb: out of position against one player, you want folds, and the whole range takes the bigger size.</p>
+      <p><strong>Is 3bb a mistake?</strong> Applied consistently with a suitably tighter range, no — the EV gap is fractions of a big blind per hundred hands, and 3bb from LJ/HJ with 2.5bb from CO/BTN is a scheme plenty of winning low-stakes players use. The mistakes are 3bb with the wide Button range, and varying the size by hand strength. This doc uses one number so there's nothing to get wrong.</p>
+    </div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <section id="rfi-lj">
+    <div class="sec-head"><h2>RFI — Lojack / UTG</h2><span class="meta">~15% · raise-or-fold</span></div>
+    <p class="note">Tightest seat — five players behind you. Note the <strong>suited-ace gap</strong>: ATs+ opens, A9s–A6s folds, then A5s–A2s opens again. That's not a typo. The wheel aces have straight coverage and blocker value the middling suited aces lack, and they're the hands you want to hold when someone 3-bets you.</p>
+    <div class="grid" data-range="rfi-lj"></div>
+    <div class="legend" data-legend="rfi"></div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <section id="rfi-hj">
+    <div class="sec-head"><h2>RFI — Hijack</h2><span class="meta">~20% · raise-or-fold</span></div>
+    <p class="note">One seat later. The gap closes — <strong>every suited ace</strong> now opens — and the suited band thickens down to K9s / Q9s.</p>
+    <div class="grid" data-range="rfi-hj"></div>
+    <div class="legend" data-legend="rfi"></div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <section id="rfi-co">
+    <div class="sec-head"><h2>RFI — Cutoff</h2><span class="meta">~27% · raise-or-fold</span></div>
+    <p class="note">Every suited ace, most suited kings, and a real block of offsuit broadways. Position starts paying off weaker hands.</p>
+    <div class="grid" data-range="rfi-co"></div>
+    <div class="legend" data-legend="rfi"></div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <section id="rfi-btn">
+    <div class="sec-head"><h2>RFI — Button</h2><span class="meta">~47% · raise-or-fold</span></div>
+    <p class="note">Every pair. Suited hands taper by <strong>rank as well as suit</strong> — all Ax/Kx/Qx suited, then J4s+, T5s+, 95s+, 85s+, 74s+, 64s+, 53s+, 43s. Suitedness is worth ~2–3% equity; it does not rescue a four-gapper. 83s and 92s fold.</p>
+    <p class="note">Offsuit runs A2o+, K8o+, Q9o+, J9o+, T8o+, 98o. Offsuit connectors and broadways beat bottom-tier suited gappers — <strong>T8o opens, 83s doesn't</strong>.</p>
+    <div class="grid" data-range="rfi-btn"></div>
+    <div class="legend" data-legend="rfi"></div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <div class="part"><span class="num">Part III</span><h2>Isolating limpers</h2><p>Someone limped in front of you. The most common spot at these stakes.</p></div>
+
+  <section id="iso">
+    <div class="sec-head"><h2>Isolating limpers</h2><span class="meta">raise-or-fold · never overlimp</span></div>
+    <p class="note">Someone limps and you want a bigger pot, heads-up, in position, against a player who has already announced a weak passive range. Two rules: <strong>never overlimp behind</strong>, and <strong>raise bigger than a normal open</strong> — limpers call too much, so the size is there to charge them, not to fold them out.</p>
+
+    <div class="key-card" style="margin-bottom:1.2rem;">
+      <p style="margin:0 0 .3rem; font-size:.9rem;"><b>Sizing</b> — start from your normal 2.5bb open, then:</p>
+      <table class="sizing">
+        <tr><th>Situation</th><th>Raise to</th></tr>
+        <tr><td>1 limper, in position</td><td class="num">4bb</td></tr>
+        <tr><td>1 limper, out of position</td><td class="num">5bb</td></tr>
+        <tr><td>2 limpers, in position</td><td class="num">5bb</td></tr>
+        <tr><td>2 limpers, out of position</td><td class="num">6bb</td></tr>
+      </table>
+      <p style="margin:.6rem 0 0; font-size:.86rem; color:var(--muted);">Rule of thumb: <b>+1bb per limper, +1bb if out of position.</b> Against a limp-caller who never folds, size up further with the value hands and drop the thinnest hands from the range rather than trying to blast them off.</p>
+    </div>
+
+    <h3 id="iso-early">Lojack / Hijack &nbsp;<span class="subpct">~12%</span></h3>
+    <p class="note">Four or five players still behind who can wake up. Isolate tight and value-heavy — you get position over the limper, not over the field.</p>
+    <div class="grid" data-range="iso-early"></div>
+    <div class="legend" data-legend="rfi"></div>
+
+    <h3 id="iso-co">Cutoff &nbsp;<span class="subpct">~20%</span></h3>
+    <p class="note">Fewer players behind, so the suited aces fill in and the offsuit broadways start coming along.</p>
+    <div class="grid" data-range="iso-co"></div>
+    <div class="legend" data-legend="rfi"></div>
+
+    <h3 id="iso-btn">Button &nbsp;<span class="subpct">~29%</span></h3>
+    <p class="note">Best case: guaranteed position all hand against a passive player. Wide — but note it's <em>narrower than your BTN opening range</em>. Two blinds still act behind you and the limper isn't folding, so the pure trash that opens profitably does not isolate profitably.</p>
+    <div class="grid" data-range="iso-btn"></div>
+    <div class="legend" data-legend="rfi"></div>
+
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <div class="part"><span class="num">Part IV</span><h2>Playing the blinds</h2><p>Forced money, out of position, and — in the BB — closing the action. Different enough to live together.</p></div>
+
+  <section id="sb-rfi">
+    <div class="sec-head"><h2>SB — first in</h2><span class="meta">~38% · raise to 3bb or fold</span></div>
+    <p class="note">Folded to you with one player left. Raise or fold — <strong>no limping</strong> in the baseline. The range is the Button with two corners trimmed: you're out of position for the whole hand against a big blind who, at NL25, defends wide and rarely folds to a c-bet, so the weakest offsuit (K8o, Q8o, J8o, T8o, 98o) and the suited junk that only opens on the Button (Q6s and below, J7s and below, T6s and below, the low gappers) come out. Every pair, every suited ace and king, every offsuit ace, and the offsuit nines from Q9o down all stay.</p>
+    <p class="note"><strong>Size 3bb, not 2.5.</strong> Out of position you want the BB to fold more and the pot to be smaller when they don't. It's the one open where the bigger size is right by default.</p>
+    <div class="grid" data-range="sb-rfi"></div>
+    <div class="legend" data-legend="rfi"></div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <section id="blinds-iso">
+    <div class="sec-head"><h2>Blinds vs a limper</h2><span class="meta">use the Part III charts</span></div>
+    <div class="textnote" id="sb-vs-limp">
+      <p><strong>Small blind vs a limper:</strong> tighten to roughly the <a href="#iso-co" style="color:var(--accent);">Cutoff iso chart</a> and size to 5bb. You'll be out of position for three streets and the BB is still behind you. Thin isolations here are where money quietly disappears.</p>
+    </div>
+    <div class="textnote" id="bb-vs-limp" style="margin-top:.7rem;">
+      <p><strong>Big blind vs a limper</strong> (someone other than the SB — for the SB, use the <a href="#bb-vs-sb-limp" style="color:var(--accent);">blind-vs-blind chart</a>)<strong>:</strong> you close the action and can check for free, so raise only hands that genuinely want a bigger pot — roughly the <a href="#iso-early" style="color:var(--accent);">LJ/HJ iso chart</a> plus the suited aces — and check everything else. Don't inflate a pot out of position with hands that were happy to see a free flop.</p>
+    </div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <section id="def-bb-early">
+    <div class="sec-head"><h2>BB defense vs LJ / HJ</h2><span class="meta">~22% · 3-bet 3% · call 19%</span></div>
+    <p class="note">Same price as vs the Button, a far stronger range coming at you. Defense is <strong>call-heavy and narrow</strong>: every pair to JJ, suited aces, suited broadways to K9s / Q9s / J9s, connectors to 54s, and the offsuit broadways that aren't dominated to death — AQo down to ATo, KQo, KJo, QJo, JTo. The 3-bet is QQ+ and AK for value with A5s / A4s as the only bluffs.</p>
+    <p class="note"><strong>What folds and why:</strong> everything with a weak kicker and no connectivity. K8s, Q8s, J8s and T7s call vs the Button because a 47% range is full of worse kings and queens; a 15–20% range isn't. Offsuit below ATo and KJo folds for the same reason — you're dominated, out of position, and the pot is small.</p>
+    <div class="grid" data-range="def-bb-early"></div>
+    <div class="legend" data-legend="3bet"></div>
+    <p class="note"><strong>Read:</strong> against a Lojack or Hijack who opens 25%+, defend with the <a href="#def-bb-co" style="color:var(--accent);">vs-Cutoff chart</a> — a loose early opener is a Cutoff in disguise.</p>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <section id="def-bb-co">
+    <div class="sec-head"><h2>BB defense vs Cutoff</h2><span class="meta">~37% · 3-bet 6% · call 31%</span></div>
+    <p class="note">Between the two. Against a ~27% range the <strong>suited hands widen a lot</strong> — K5s+, Q6s+, J7s+, T6s+, and the gappers down to 53s / 43s — because a suited hand's flush and straight equity is real against a range that's mostly high cards. The <strong>offsuit widens only a little</strong>: A7o+, K9o+, Q9o+, J9o+, T9o, 98o. Value 3-bets start at TT and AQ; the four wheel aces are the bluffs.</p>
+    <p class="note">That asymmetry is the whole difference between this chart and the Button one. Vs the Button you add offsuit junk because their range is junk too; vs the Cutoff their range is real, so the offsuit line barely moves while the suited line drops several rows.</p>
+    <div class="grid" data-range="def-bb-co"></div>
+    <div class="legend" data-legend="3bet"></div>
+    <p class="note"><strong>Read:</strong> a Cutoff opening about 15% is an early opener — use the <a href="#def-bb-early" style="color:var(--accent);">vs-LJ/HJ chart</a>. A Cutoff opening 40%+ is a Button — use the <a href="#def-bb-btn" style="color:var(--accent);">vs-Button chart</a>.</p>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <section id="def-bb-btn">
+    <div class="sec-head"><h2>BB defense vs Button</h2><span class="meta">~50% · 3-bet / call / fold</span></div>
+    <p class="note">You're getting a price and closing the action, so you defend wide: every pair, suited hands down to 43s / 53s / 63s, and offsuit down to A2o, K7o, Q9o, J9o, T8o, 98o. The 3-bet is polarized — premiums for value (teal), suited wheel aces and K9s as bluffs (coral).</p>
+    <p class="note"><strong>What folds and why:</strong> the suited junk — 72s, 83s, 92s, the low deuces. Suited doesn't rescue a hand with no straight coverage and a 7-high flush. K8o and A4o are better defends than 72s: they flop top pair against a 47% Button range, they have showdown value in check-down pots, and 72s has neither.</p>
+    <p class="note"><strong>3-bet size:</strong> 4× their open — you're out of position. Vs 2.5bb that's 10bb; vs a 3bb open, 12bb. One size for value and bluffs.</p>
+    <div class="grid" data-range="def-bb-btn"></div>
+    <div class="legend" data-legend="3bet"></div>
+    <div class="textnote warn" style="margin-top:1rem;">
+      <p><strong>Why ~50% and not the 55%+ solvers defend:</strong> a rake adjustment, and a choice rather than an oversight. GG's rake is heaviest in small pots and BB defense creates exactly those. The width came off the bottom of <em>both</em> corners — the suited junk (72s, 83s, 92s, low deuces) and the weakest offsuit (K6o and below, Q8o, J8o, 97o, 87o) — ordered by hand strength, not by suit.</p>
+      <p><strong>Vs. a station:</strong> delete the coral entirely and move those hands into call. Bluff 3-bets need folds to exist.</p>
+      <p><strong>Vs. a tight Button</strong> — one opening about 27% — use the <a href="#def-bb-co" style="color:var(--accent);">vs-Cutoff chart</a>.</p>
+    </div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <section id="sb-3bet">
+    <div class="sec-head"><h2>SB — facing an open</h2><span class="meta">3-bet or fold · 4× their open</span></div>
+    <p class="note"><strong>No cold-calling.</strong> You're out of position against the opener <em>and</em> the BB can squeeze you off a flatted hand — a small pot, no initiative, no position, and a player behind who can raise. So both charts below have no blue at all: teal and coral 3-bet, everything else folds.</p>
+    <p class="note"><strong>Sizing is 4×</strong> their open, since you want fewer callers. Vs 2.5bb that's 10bb ($2.50); vs a 3bb open, 12bb.</p>
+
+    <h3 id="sb-3bet-early">vs LJ / HJ &nbsp;<span class="subpct">they open ~15–20% · you 3-bet ~6.5%</span></h3>
+    <p class="note">Tight, because their range is — but not as tight as a pure 3-bet range would be, because there are no calls here. The hands you'd <em>flat</em> in position against an early open (99, AJs, KQs, AQo) have nowhere to go from the small blind except into the 3-bet or the muck, and mucking all of them gives up too much. So: <strong>99+ and AQs+ / AKo for value</strong>, and <strong>AQo, AJs, KQs as coral</strong> — 3-bets that fold to a 4-bet, win when they fold, and play fine when called. A5s / A4s / A3s are the pure bluffs.</p>
+    <p class="note"><strong>Vs the Lojack specifically</strong> — a genuine 15% range, or an early opener you've seen show up tight — drop 99, AJs, KQs and A3s. That's ~5%, which is the right number against the strongest open you face.</p>
+    <div class="grid" data-range="sb-3bet-early"></div>
+    <div class="legend" data-legend="3bet"></div>
+
+    <h3 id="sb-3bet-late">vs CO / BTN &nbsp;<span class="subpct">built vs the Button's ~47% · you 3-bet ~16%</span></h3>
+    <p class="note">Wide, because the Button is stealing and folds to 3-bets more than any other seat — the one spot where the doc's usual "keep the bluffs thin" default is wrong. <strong>Value</strong> runs down to 77, ATs, KJs, QJs, ATo and KJo — hands that are behind a Cutoff range but comfortably ahead of a Button range. <strong>Bluffs</strong> are the wheel aces plus A9s / A8s, K9s / KTs / QTs / JTs, T9s through 76s, and QJo: blockers and connected hands that play fine when called, which they will be. Roughly 2:1 value to bluffs.</p>
+    <p class="note"><strong>Vs the Cutoff</strong> drop the thinnest value (77, 88, ATo, KJo, QJs) and the weaker bluffs (A9s / A8s, K9s, QJo, KTs / QTs / JTs). That's ~11%, which is where SB vs Cutoff should sit. <strong>Vs a station on the Button</strong> — someone calling 3-bets with half their range — drop the coral entirely and 3-bet only teal: bluffs need folds to exist.</p>
+    <div class="grid" data-range="sb-3bet-late"></div>
+    <div class="legend" data-legend="3bet"></div>
+
+    <div class="textnote" style="margin-top:1rem;">
+      <p><strong>The one exception:</strong> set-mining against a fish who opens wide and calls too much. That's the only time flatting the SB is right, and it needs a real hand — 99 and below, not suited broadways.</p>
+    </div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <section id="bvb">
+    <div class="sec-head"><h2>Blind vs blind</h2><span class="meta">you're the BB · in position</span></div>
+    <p class="note">Folded to the small blind happens about once an orbit, so this is as frequent as BB vs Button — and it plays nothing like it. Their range is wider and weaker than any open you face, you have position for the whole hand, and the price is worse (3bb open, so 2bb to call into 4). The answer to all three is the same: <strong>3-bet far more, and call the rest wide.</strong></p>
+
+    <h3 id="def-bb-sb">vs a 3bb open &nbsp;<span class="subpct">~50% · 3-bet 13% · call 38%</span></h3>
+    <p class="note">The 3-bet is twice the size of any other BB chart and half of it is bluffs — the small blind folds to 3-bets more than any other seat, because they opened light and know it. Value runs down to 99, ATs, KJs, QJs, AJo, KQo. Bluffs are the wheel aces, K9s / K8s, 76s / 65s, and KJo / QJo. The calling band is the Button chart plus 87o and a few more, since you have position this time. Same junk folds: 72s, 83s, 92s, the low deuces, and offsuit below K7o.</p>
+    <p class="note"><strong>3-bet size:</strong> 3× their open — you're in position. Vs 3bb that's 9bb ($2.25). Vs a 2.5bb open, 7.5bb.</p>
+    <div class="grid" data-range="def-bb-sb"></div>
+    <div class="legend" data-legend="3bet"></div>
+
+    <h3 id="bb-vs-sb-limp">vs a limp &nbsp;<span class="subpct">raise 23% · check the rest · never fold</span></h3>
+    <p class="note">At NL25 half the small blinds complete rather than raise. You can see the flop for free, so the question is only <strong>raise or check</strong>: raise the hands that want a bigger pot in position — 44+, every suited ace, K8s+, Q9s+, J9s+, T9s / 98s / 87s, A8o+, KTo+, QTo+, JTo — and check everything else, including the small pairs and suited junk that are happy to flop for nothing. Raise to <strong>4bb</strong> ($1.00). Against a limper who never folds, raise the same hands bigger, don't add thin ones.</p>
+    <div class="grid" data-range="bb-vs-sb-limp"></div>
+    <div class="legend" data-legend="check"></div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <section id="def-bb-multi">
+    <div class="sec-head"><h2>BB vs an open and a caller</h2><span class="meta">~21% · squeeze 3.5% · overcall 18%</span></div>
+    <p class="note">Cutoff opens, Button flats, you're closing the action with 1.5bb to call into 6.5 — a great price into a bad structure: three-way, out of position, against a raiser and a caller. The chart is built for that spot; vs a Lojack open plus a caller, take out the weakest suited gappers.</p>
+    <p class="note"><strong>Overcall</strong> the hands that flop big multiway and are cheap to give up: every pair to JJ, suited aces, suited broadways to K7s / Q8s / J8s / T7s, and the connectors and gappers to 43s. Offsuit almost entirely folds — AQo, AJo, KQo are the only ones, because top pair with a middling kicker into two players is exactly what loses money here. The Button's flat is capped (no premiums), so those three are usually good when they connect.</p>
+    <p class="note"><strong>Squeeze</strong> QQ+, AK and AQs for value — the caller can't have a premium, and the opener's range is a Cutoff range. A5s / A4s are the bluffs; keep it to those two because you're asking two players to fold, not one. <strong>Size 5× the open</strong> (4× out of position, plus one for the caller): vs 2.5bb that's 12bb ($3.00). Hands that would 3-bet heads-up but aren't here — TT, JJ, AJs, AQo — overcall instead.</p>
+    <div class="grid" data-range="def-bb-multi"></div>
+    <div class="legend" data-legend="3bet"></div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <div class="part"><span class="num">Part V</span><h2>3-betting &amp; facing 3-bets</h2><p>Both halves of the raise-war, and what to do when it comes back at you.</p></div>
+
+  <section id="tbet-ip">
+    <div class="sec-head"><h2>In-position 3-betting</h2><span class="meta">CO / BTN · 3-bet / call / fold</span></div>
+    <p class="note">When you're the in-position 3-bettor, your range depends mostly on <strong>how wide the opener is</strong> — not on whether you're in the CO or on the BTN. These two grids are your references; the seat difference is a small tweak (noted below).</p>
+
+    <div class="key-card" style="margin-bottom:1.2rem;">
+      <p style="margin:0 0 .3rem; font-size:.9rem;"><b>Sizing</b> — as a multiple of their open:</p>
+      <table class="sizing">
+        <tr><th>Situation</th><th>3-bet to</th></tr>
+        <tr><td>In position</td><td class="num">3×</td></tr>
+        <tr><td>Out of position</td><td class="num">4×</td></tr>
+        <tr><td>Any caller already in</td><td class="num">+1× per caller</td></tr>
+      </table>
+      <p style="margin:.6rem 0 0; font-size:.86rem; color:var(--muted);">Vs a 2.5bb open that's <b>7.5bb IP, 10bb OOP</b>. Keep one size for the whole range — value and bluffs both — so you aren't giving away your hand with the bet. Against a player who calls 3-bets far too wide, size up with value and simply cut the bluffs rather than trying to find a size that folds them out.</p>
+    </div>
+
+    <h3 id="tbet-ip-tight">vs a tight opener &nbsp;<span class="subpct">LJ / UTG · ~15% · you 3-bet 4.5%</span></h3>
+    <p class="note">Their range is strong, so you tighten and polarize: value is <strong>JJ+/AQs/AK</strong>, bluffs are the suited wheel aces, and you flat a small band of pairs (set-mining) and suited broadways.</p>
+    <div class="grid" data-range="tbet-ip-tight"></div>
+    <div class="legend" data-legend="3bet"></div>
+    <p class="note"><strong>Read:</strong> against an early opener who folds to 3-bets more than half the time, AQo moves from call to 3-bet — it wins now, and folds to a 4-bet.</p>
+
+    <h3 id="tbet-ip-wide">vs a wide opener &nbsp;<span class="subpct">CO / HJ · ~25%+ · you 3-bet 7.1%</span></h3>
+    <p class="note">Their range is weaker, so <strong>value widens a lot</strong> — TT+, AJs, KQs, AQo all become value 3-bets — and you add a couple more bluffs (A9s, K9s). You can also flat more suited connectors in position.</p>
+    <div class="grid" data-range="tbet-ip-wide"></div>
+    <div class="legend" data-legend="3bet"></div>
+    <p class="note"><strong>Read:</strong> against a station, the bluff 3-bets (the wheel aces, A9s, K9s) call instead — no fold equity, and they play fine.</p>
+
+    <p class="note" style="margin-top:1.1rem;"><strong>CO vs BTN — the seat tweak:</strong> on the Button you close the action, so you can flat a hair wider. In the Cutoff you still have players behind who can squeeze, so lean slightly more toward 3-bet-or-fold. Same chart, minor adjustment.</p>
+
+    <div class="textnote" id="squeeze" style="margin:1.1rem 0;">
+      <p><strong>Squeezing — when someone has already called.</strong> Both charts above assume a single opener. Once there's an opener <em>and</em> a caller, tighten toward the vs-tight chart and <b>cut the bluffs</b>. The caller has capped their range by not 3-betting, but at NL25 they've also shown they don't fold — and a bluff needs two folds instead of one.</p>
+      <p>Size up (the table above: +1× per caller) and treat it as a mostly-value spot. The exception: squeeze wider when the caller is a passive fish and the opener is a reg who'll fold — you're isolating the fish, which is a value play, not a bluff.</p>
+    </div>
+    <p class="note"><strong>Vs. a fish:</strong> cut the coral bluffs, keep the value, and flat to set-mine.</p>
+
+    <div class="textnote warn" style="margin-top:1.1rem;">
+      <p><strong>When they 4-bet.</strong> A chart that tells you what to 3-bet but not what to do next is half a plan. Facing a 4-bet at 100bb:</p>
+      <p><b>Stack off:</b> QQ+, AK. <b>Call:</b> JJ and AQs, and only on the Button where you close the action. <b>Fold everything else</b> — including all the coral. The wheel aces were 3-bet to win the pot right there; once they 4-bet, that's gone and they're a 5bb loss, not a call.</p>
+      <p><b>The NL25 read that matters:</b> this pool 4-bets rarely and almost always with a real hand. A 4-bet from an unknown here is worth more than a solver's mixed strategy — fold JJ and AQs too until you've seen someone 4-bet light.</p>
+    </div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+  <section id="vs-3bet">
+    <div class="sec-head"><h2>Facing a 3-bet</h2><span class="meta">4-bet / call / fold</span></div>
+    <p class="note">You opened, someone 3-bet. Which chart applies depends on <strong>how wide you opened</strong> — a Lojack range is already strong and condensed, a Button range is mostly hands that can't continue. The second thing that matters is <strong>where the 3-bettor is</strong>: in position behind you, or in the blinds.</p>
+
+    <div class="key-card" style="margin-bottom:1.2rem;">
+      <p style="margin:0 0 .3rem; font-size:.9rem;"><b>4-bet sizing</b> — as a multiple of their 3-bet:</p>
+      <table class="sizing">
+        <tr><th>Situation</th><th>4-bet to</th></tr>
+        <tr><td>In position</td><td class="num">2.2×</td></tr>
+        <tr><td>Out of position</td><td class="num">2.5×</td></tr>
+      </table>
+      <p style="margin:.6rem 0 0; font-size:.86rem; color:var(--muted);">As a multiple: <b>2.2× their 3-bet in position, 2.5× out of position</b>. Vs a 7.5bb 3-bet that's roughly 17bb IP, 19bb OOP; vs a 10bb 3-bet from a blind, 22bb IP. At 100bb this leaves a stack-to-pot ratio where you're committed with the value hands — which is the point. Don't 4-bet small enough to price them in.</p>
+    </div>
+
+    <h3 id="vs3-early">You opened LJ / HJ &nbsp;<span class="subpct">continue 43% of your open</span></h3>
+    <p class="note">Your range is already tight, so the 3-bettor is representing a lot. <strong>Value is QQ+/AK</strong> — JJ is a call, not a 4-bet, because it's beaten by everything that continues against a 4-bet. Small pairs fold: set-mining needs implied odds you don't have out of position against a 3-bet size.</p>
+    <div class="grid" data-range="vs3-early"></div>
+    <div class="legend" data-legend="4bet"></div>
+    <p class="note" style="margin-top:.9rem;">Shown as the <strong>out-of-position</strong> baseline (a CO or BTN 3-bettor). If it's a <em>blind</em> 3-betting you, you'll have position postflop — add 77, 66, QJs and JTs to the calls.</p>
+
+    <h3 id="vs3-late">You opened CO / BTN &nbsp;<span class="subpct">continue 34% of your open</span></h3>
+    <p class="note">You opened wide, so most of the range simply folds — that's correct, not a leak. But you're usually in position against a blind 3-bettor and getting a price, so the <strong>calling range is broad</strong>: pairs down to 22, suited aces, suited broadways, and the good suited connectors. <strong>AQo is the only offsuit hand that continues.</strong></p>
+    <div class="grid" data-range="vs3-late"></div>
+    <div class="legend" data-legend="4bet"></div>
+    <p class="note"><strong>Read:</strong> against a nit who has shown down a premium after every 3-bet, the coral 4-bets and AQo fold. Against a frequent 3-bettor, JJ and AQs move from call to 4-bet value — this applies to all three vs-3-bet charts.</p>
+
+    <div class="textnote warn" style="margin-top:1.1rem;">
+      <p><strong>The NL25 adjustment that matters most.</strong> This pool 3-bets too <em>little</em>, and when they do it's usually a real hand. So against an unknown: <b>drop the coral 4-bet bluffs entirely</b> and tighten the calls. A player who has 3-bet you once and shown down a premium is telling you to fold AJs, not to find a hero call.</p>
+      <p><strong>The exception is the aggressive reg</strong> who 3-bets your Button opens relentlessly. That's who the coral exists for — and against him, <b>JJ and AQs become value 4-bets</b>, and you widen the calls too rather than only 4-betting, since 4-betting alone lets him fold and keep printing.</p>
+      <p><strong>Dominated offsuit broadways don't call 3-bets.</strong> KQo, AJo and ATo look playable and are the fastest way to lose a big pot to a better ace or king — against a value-heavy 3-betting range they're crushed by exactly the hands that 3-bet. They're folds in both charts by default, and only become calls in position against someone 3-betting far too wide.</p>
+    </div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <section id="vs3-behind">
+    <div class="sec-head"><h2>Facing a 3-bet from behind</h2><span class="meta">opened HJ / CO · 3-bet by CO / BTN</span></div>
+    <p class="note">The chart above assumes you have position on a blind. This one is the other common case: you open the Cutoff, the Button 3-bets. Their range is wider than a blind's — the Button 3-bets ~8–10% of hands against a Cutoff open — but you're <strong>out of position for the whole hand</strong>, and that matters more. Continue with <strong>24% of your open</strong>: 4-bet more, call less.</p>
+    <p class="note"><strong>4-bet</strong> QQ+ and AK for value, A5s / A4s as bluffs — same as the early chart, because a wide 3-bettor is also a 3-bettor who folds to 4-bets. <strong>Call</strong> JJ / TT / 99, AQs / AJs / KQs, and AQo. The calls are narrower than the in-position chart on purpose: ATs, the suited connectors and the small pairs need position or implied odds to be worth it, and out of position against a 7.5bb 3-bet you have neither. AQo is the one offsuit hand, and it stays only because a Button 3-bet range has enough AJ / AT / KQ in it to make top pair good.</p>
+    <p class="note"><strong>4-bet size:</strong> 2.5× their 3-bet, out of position — vs 7.5bb that's 19bb ($4.75). Against a Button you've seen 3-bet three times in an orbit, JJ and AQs move from call to 4-bet value.</p>
+    <div class="grid" data-range="vs3-behind"></div>
+    <div class="legend" data-legend="4bet"></div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <section id="adjustments">
+    <div class="sec-head"><h2>Adjustments the charts assume away</h2><span class="meta">sizes · stacks · limp-raises</span></div>
+    <div class="textnote">
+      <p><strong>Open sizes.</strong> Every chart is built vs a 2.5bb open. A fish who opens 4bb is charging you nearly twice as much for the same pot, so defend the top two-thirds of the chart and 3-bet to the same multiple (4× = 16bb OOP). A min-raise does the opposite: defend wider than the chart, roughly one more row of suited and offsuit hands, and 3-bet the same hands to 3× / 4× of 2bb.</p>
+      <p><strong>Stack depth.</strong> GG tables at NL25 carry plenty of 40–60bb stacks. Facing a 3-bet at 50bb, the hands that live on implied odds — small pairs, suited connectors, ATs — lose their reason to call: there isn't enough behind to win when they hit. Drop them and play 4-bet-or-fold with the top of the chart. The same logic runs in reverse: against a 50bb stack, your own set-mining calls are worse.</p>
+      <p><strong>Limp-raises.</strong> A limp followed by a raise over your iso is a premium at this level almost every time — QQ+ and AK, occasionally a fish with AJ. Fold everything but QQ+ / AK; don't call to see a flop.</p>
+    </div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <div class="part"><span class="num">Part VI</span><h2>Calling</h2><p>Every hand you flat preflop, pulled out of the charts above so you can see the calling band on its own. Same data — these can't drift from the source.</p></div>
+
+  <section id="calling">
+    <div class="sec-head"><h2>When calling is right</h2></div>
+    <div class="key-card">
+      <p style="margin:0; font-size:.9rem;">You call when you're <b>in position or closing the action</b>, with a hand that's too good to fold but would become a bluff if you raised it. Everything else is raise or fold.</p>
+      <p style="margin:.7rem 0 .3rem; font-size:.9rem;"><b>The test for any hand:</b> would a raise here be a bluff?</p>
+      <ul>
+        <li>Yes, and you can't fold → <b>call</b>.</li>
+        <li>Yes, and you can fold → <b>fold</b>.</li>
+        <li>No, the raise is for value → <b>raise</b>.</li>
+      </ul>
+      <p style="margin:.7rem 0 .3rem; font-size:.9rem;"><b>Where you never call:</b></p>
+      <ul>
+        <li><b>Small blind vs an open.</b> 3-bet or fold. The only exception is set-mining a fish with a real pair.</li>
+        <li><b>Behind a limper.</b> Never overlimp.</li>
+        <li><b>Out of position with a dominated offsuit broadway</b> facing a 3-bet.</li>
+        <li><b>Small pairs out of position vs a 3-bet.</b> No implied odds.</li>
+      </ul>
+    </div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+  <section id="call-bb-early">
+    <div class="sec-head"><h2>Call — BB vs LJ / HJ</h2><span class="meta">19% · from Part IV</span></div>
+    <p class="note">Pairs, suited aces, suited broadways to the nine, connectors, and six offsuit broadways. Nothing with a weak kicker — the opener's range is too strong to be flopping worse.</p>
+    <div class="grid" data-range="def-bb-early" data-view="call"></div>
+    <div class="legend" data-legend="call"></div>
+  </section>
+
+  <section id="call-bb-co">
+    <div class="sec-head"><h2>Call — BB vs Cutoff</h2><span class="meta">31% · from Part IV</span></div>
+    <p class="note">The suited hands widen sharply, the offsuit hardly at all. Compare the bottom-left corner here with the Button chart below: that's the rake-and-domination trade-off in one picture.</p>
+    <div class="grid" data-range="def-bb-co" data-view="call"></div>
+    <div class="legend" data-legend="call"></div>
+  </section>
+
+  <section id="call-bb-btn">
+    <div class="sec-head"><h2>Call — BB vs Button</h2><span class="meta">42% · from Part IV</span></div>
+    <p class="note">The widest calling range you have. Closing the action at a price, so pairs, suited hands with straight coverage, and offsuit down to K7o and 98o. Dimmed cells are the 3-bets.</p>
+    <div class="grid" data-range="def-bb-btn" data-view="call"></div>
+    <div class="legend" data-legend="call"></div>
+  </section>
+
+  <section id="call-bb-sb">
+    <div class="sec-head"><h2>Call — BB vs SB open</h2><span class="meta">38% · from Part IV</span></div>
+    <p class="note">In position against the weakest opening range you face. The band looks like the Button chart with the top carved out — those hands 3-bet here.</p>
+    <div class="grid" data-range="def-bb-sb" data-view="call"></div>
+    <div class="legend" data-legend="call"></div>
+  </section>
+
+  <section id="call-bb-multi">
+    <div class="sec-head"><h2>Call — BB vs open + caller</h2><span class="meta">18% · from Part IV</span></div>
+    <p class="note">Overcalls only: pairs, suited aces, suited connectors and gappers, three offsuit broadways. Compare the offsuit corner with any heads-up chart — multiway is where offsuit broadways go to die.</p>
+    <div class="grid" data-range="def-bb-multi" data-view="call"></div>
+    <div class="legend" data-legend="call"></div>
+  </section>
+
+  <section id="call-ip-tight">
+    <div class="sec-head"><h2>Call — IP vs a tight opener</h2><span class="meta">7% · from Part V</span></div>
+    <p class="note">Cutoff or Button facing a Lojack/UTG open. Pairs to set-mine, suited broadways, AQo. Their range is strong, so this stays narrow. Lean toward 3-bet-or-fold in the Cutoff where a squeeze is possible.</p>
+    <div class="grid" data-range="tbet-ip-tight" data-view="call"></div>
+    <div class="legend" data-legend="call"></div>
+  </section>
+
+  <section id="call-ip-wide">
+    <div class="sec-head"><h2>Call — IP vs a wide opener</h2><span class="meta">11% · from Part V</span></div>
+    <p class="note">Cutoff or Button facing a Hijack/Cutoff open. The suited connectors and middling suited aces join, plus KQo, AJo, ATo — offsuit broadways are fine to flat here because you'll have position for the whole hand.</p>
+    <div class="grid" data-range="tbet-ip-wide" data-view="call"></div>
+    <div class="legend" data-legend="call"></div>
+  </section>
+
+  <section id="call-vs3-early">
+    <div class="sec-head"><h2>Call — facing a 3-bet, opened LJ / HJ</h2><span class="meta">3% · from Part V</span></div>
+    <p class="note">Out-of-position baseline. JJ–88 and five suited broadways. If a blind 3-bet you and you'll have position, add 77, 66, QJs and JTs.</p>
+    <div class="grid" data-range="vs3-early" data-view="call"></div>
+    <div class="legend" data-legend="call"></div>
+  </section>
+
+  <section id="call-vs3-late">
+    <div class="sec-head"><h2>Call — facing a 3-bet, opened CO / BTN</h2><span class="meta">12% · from Part V</span></div>
+    <p class="note">Usually in position against a blind. Pairs to 22, suited aces to A6s, suited broadways, connectors to 54s. AQo is the only offsuit hand. Against an unknown who has shown down a premium, tighten toward the early chart.</p>
+    <div class="grid" data-range="vs3-late" data-view="call"></div>
+    <div class="legend" data-legend="call"></div>
+  </section>
+
+  <section id="call-vs3-behind">
+    <div class="sec-head"><h2>Call — facing a 3-bet from behind</h2><span class="meta">12% of open · from Part V</span></div>
+    <p class="note">Out of position vs a Cutoff-or-Button 3-bettor. Three pairs, three suited broadways, AQo. Everything that needs position or implied odds is gone.</p>
+    <div class="grid" data-range="vs3-behind" data-view="call"></div>
+    <div class="legend" data-legend="call"></div>
+    <a class="toplink" href="#top">↑ back to index</a>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  const RANKS=['A','K','Q','J','T','9','8','7','6','5','4','3','2'];
+
+  const ALL_SUITED=(function(){
+    const out=[];
+    for(let i=0;i<13;i++) for(let j=i+1;j<13;j++) out.push(RANKS[i]+RANKS[j]+'s');
+    return out;
+  })();
+  const ALL_PAIRS=RANKS.map(function(r){return r+r;});
+  function suitedExcept(list){ return ALL_SUITED.filter(function(h){return list.indexOf(h)===-1;}); }
+
+  // Edit these sets to update ranges. 's' = suited, 'o' = offsuit, pairs bare.
+  const RANGES={
+    'rfi-lj':{mode:'rfi', raise:[].concat(ALL_PAIRS,
+      ['ATs','AJs','AQs','AKs','A5s','A4s','A3s','A2s',
+       'KTs','KJs','KQs','QTs','QJs','JTs','T9s','98s','87s','76s',
+       'AJo','AQo','AKo','KQo'])},
+
+    'rfi-hj':{mode:'rfi', raise:[].concat(ALL_PAIRS,
+      ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
+       'K9s','KTs','KJs','KQs','Q9s','QTs','QJs','J9s','JTs','T8s','T9s',
+       '98s','87s','76s','65s',
+       'ATo','AJo','AQo','AKo','KJo','KQo','QJo'])},
+
+    'rfi-co':{mode:'rfi', raise:[].concat(ALL_PAIRS,
+      ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
+       'K7s','K8s','K9s','KTs','KJs','KQs','Q8s','Q9s','QTs','QJs',
+       'J8s','J9s','JTs','T7s','T8s','T9s','97s','98s','86s','87s','75s','76s','65s','54s',
+       'A9o','ATo','AJo','AQo','AKo','KTo','KJo','KQo','QTo','QJo','JTo'])},
+
+    // Button: pairs + suited ordered by real strength (not "all suited") + offsuit to 98o.
+    'rfi-btn':{mode:'rfi', raise:[].concat(ALL_PAIRS,
+      ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
+       'K2s','K3s','K4s','K5s','K6s','K7s','K8s','K9s','KTs','KJs','KQs',
+       'Q2s','Q3s','Q4s','Q5s','Q6s','Q7s','Q8s','Q9s','QTs','QJs',
+       'J4s','J5s','J6s','J7s','J8s','J9s','JTs',
+       'T5s','T6s','T7s','T8s','T9s',
+       '95s','96s','97s','98s',
+       '85s','86s','87s',
+       '74s','75s','76s',
+       '64s','65s','53s','54s','43s'],
+      ['A2o','A3o','A4o','A5o','A6o','A7o','A8o','A9o','ATo','AJo','AQo','AKo',
+       'K8o','K9o','KTo','KJo','KQo','Q9o','QTo','QJo','J9o','JTo','T8o','T9o','98o'])},
+
+    'iso-early':{mode:'rfi', raise:
+      ['55','66','77','88','99','TT','JJ','QQ','KK','AA',
+       'A9s','ATs','AJs','AQs','AKs','KTs','KJs','KQs','QTs','QJs','JTs','T9s','98s',
+       'AJo','AQo','AKo','KQo']},
+
+    'iso-co':{mode:'rfi', raise:[].concat(ALL_PAIRS,
+      ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
+       'K9s','KTs','KJs','KQs','Q9s','QTs','QJs','J9s','JTs','T8s','T9s','98s','87s','76s',
+       'ATo','AJo','AQo','AKo','KJo','KQo','QJo'])},
+
+    'iso-btn':{mode:'rfi', raise:[].concat(ALL_PAIRS,
+      ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
+       'K7s','K8s','K9s','KTs','KJs','KQs','Q8s','Q9s','QTs','QJs',
+       'J8s','J9s','JTs','T7s','T8s','T9s','96s','97s','98s','86s','87s','74s','75s','76s','64s','65s','54s',
+       'A8o','A9o','ATo','AJo','AQo','AKo','K9o','KTo','KJo','KQo','QTo','QJo','JTo'])},
+
+
+    // SB first in: raise-or-fold, 3bb. A value-weighted Button minus the weakest offsuit and suited junk.
+    'sb-rfi':{mode:'rfi', raise:[].concat(ALL_PAIRS,
+      ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
+       'K2s','K3s','K4s','K5s','K6s','K7s','K8s','K9s','KTs','KJs','KQs',
+       'Q7s','Q8s','Q9s','QTs','QJs','J8s','J9s','JTs','T7s','T8s','T9s',
+       '97s','98s','86s','87s','75s','76s','65s','54s'],
+      ['A2o','A3o','A4o','A5o','A6o','A7o','A8o','A9o','ATo','AJo','AQo','AKo',
+       'K9o','KTo','KJo','KQo','Q9o','QTo','QJo','J9o','JTo','T9o'])},
+
+    // SB facing an open: 3-bet or fold, no calls by design (call list stays empty).
+    'sb-3bet-early':{mode:'3bet',
+      value:['99','TT','JJ','QQ','KK','AA','AQs','AKs','AKo'],
+      bluff:['A5s','A4s','A3s','AQo','AJs','KQs'],
+      call:[]},
+    'sb-3bet-late':{mode:'3bet',
+      value:['77','88','99','TT','JJ','QQ','KK','AA','ATs','AJs','AQs','AKs','KJs','KQs','QJs','ATo','AJo','AQo','AKo','KJo','KQo'],
+      bluff:['A5s','A4s','A3s','A2s','A9s','A8s','K9s','KTs','QTs','JTs','T9s','98s','87s','76s','QJo'],
+      call:[]},
+
+    // BB vs LJ / HJ open: strong range at the same price — tight, call-heavy, 3-bet only the top.
+    'def-bb-early':{mode:'3bet',
+      value:['QQ','KK','AA','AKs','AKo'],
+      bluff:['A5s','A4s'],
+      call:['22','33','44','55','66','77','88','99','TT','JJ',
+            'A2s','A3s','A6s','A7s','A8s','A9s','ATs','AJs','AQs',
+            'K9s','KTs','KJs','KQs','Q9s','QTs','QJs','J9s','JTs','T8s','T9s',
+            '97s','98s','87s','76s','65s','54s',
+            'AQo','AJo','ATo','KQo','KJo','QJo','JTo']},
+
+    // BB vs CO open: between the two — suited hands widen a lot, offsuit only a little.
+    'def-bb-co':{mode:'3bet',
+      value:['TT','JJ','QQ','KK','AA','AQs','AKs','AQo','AKo'],
+      bluff:['A5s','A4s','A3s','A2s'],
+      call:['22','33','44','55','66','77','88','99',
+            'A6s','A7s','A8s','A9s','ATs','AJs',
+            'K5s','K6s','K7s','K8s','K9s','KTs','KJs','KQs','Q6s','Q7s','Q8s','Q9s','QTs','QJs',
+            'J7s','J8s','J9s','JTs','T6s','T7s','T8s','T9s','96s','97s','98s','85s','86s','87s',
+            '74s','75s','76s','64s','65s','53s','54s','43s',
+            'A7o','A8o','A9o','ATo','AJo','K9o','KTo','KJo','KQo','Q9o','QTo','QJo','J9o','JTo','T9o','98o']},
+
+
+    // Blind vs blind: SB opens 3bb, you're BB — in position, weaker range, worse price. Wide, 3-bet-heavy.
+    'def-bb-sb':{mode:'3bet',
+      value:[
+       '99','TT','JJ','QQ','KK','AA','ATs','AJs','AQs','AKs','KJs','KQs','QJs','AJo',
+       'AQo','AKo','KQo'],
+      bluff:[
+       'A2s','A3s','A4s','A5s','K8s','K9s','76s','65s','KJo','QJo'],
+      call:[
+       '22','33','44','55','66','77','88','A9s','A8s','A7s','A6s','KTs','K7s','K6s',
+       'K5s','K4s','K3s','K2s','QTs','Q9s','Q8s','Q7s','Q6s','Q5s','Q4s','Q3s','Q2s','JTs',
+       'J9s','J8s','J7s','J6s','J5s','J4s','J3s','J2s','T9s','T8s','T7s','T6s','T5s','T4s',
+       'T3s','T2s','98s','97s','96s','95s','87s','86s','85s','84s','75s','74s','64s','63s',
+       '54s','53s','43s','A2o','A3o','A4o','A5o','A6o','A7o','A8o','A9o','ATo','K7o','K8o',
+       'K9o','KTo','Q9o','QTo','J9o','JTo','T8o','T9o','98o','87o']},
+
+    // BB vs SB limp: raise or check — never fold a free flop. Legend 'check'.
+    'bb-vs-sb-limp':{mode:'rfi', raise:[
+       '44','55','66','77','88','99','TT','JJ','QQ','KK','AA','AKs','AQs','AJs',
+       'ATs','A9s','A8s','A7s','A6s','A5s','A4s','A3s','A2s','K8s','K9s','KTs','KJs','KQs',
+       'Q9s','QTs','QJs','J9s','JTs','T9s','98s','87s','A8o','A9o','ATo','AJo','AQo','AKo',
+       'KTo','KJo','KQo','QTo','QJo','JTo']},
+
+    // BB vs an open plus a caller (CO opens, BTN calls): overcall multiway hands, squeeze the top.
+    'def-bb-multi':{mode:'3bet',
+      value:[
+       'QQ','KK','AA','AKs','AQs','AKo'],
+      bluff:[
+       'A5s','A4s'],
+      call:[
+       '22','33','44','55','66','77','88','99','TT','JJ','A2s','A3s','A6s','A7s',
+       'A8s','A9s','ATs','AJs','K7s','K8s','K9s','KTs','KJs','KQs','Q8s','Q9s','QTs','QJs',
+       'J8s','J9s','JTs','T7s','T8s','T9s','97s','98s','86s','87s','75s','76s','64s','65s',
+       '53s','54s','43s','AQo','AJo','KQo']},
+
+    // Facing a 3-bet from a player behind you (opened HJ / CO, 3-bet by CO / BTN): out of position vs a wide 3-bettor.
+    'vs3-behind':{mode:'4bet',
+      value:[
+       'QQ','KK','AA','AKs','AKo'],
+      bluff:[
+       'A5s','A4s'],
+      call:[
+       'JJ','TT','99','AQs','AJs','KQs','AQo']},
+
+    // BB vs BTN: pairs + suited by strength (junk cut) + offsuit down to 98o.
+    'def-bb-btn':{mode:'3bet',
+      value:['AA','KK','QQ','JJ','TT','99','AKs','AQs','AJs','KQs','AKo','AQo'],
+      bluff:['A5s','A4s','A3s','A2s','K9s'],
+      call:[].concat(
+        ['88','77','66','55','44','33','22'],
+        suitedExcept(['AKs','AQs','AJs','KQs','A5s','A4s','A3s','A2s','K9s',
+                      '94s','93s','92s','83s','82s','73s','72s','62s','52s','42s','32s']),
+        ['A2o','A3o','A4o','A5o','A6o','A7o','A8o','A9o','ATo','AJo',
+         'K7o','K8o','K9o','KTo','KJo','KQo',
+         'Q9o','QTo','QJo','J9o','JTo','T8o','T9o','98o'])},
+
+    'tbet-ip-tight':{mode:'3bet',
+      value:['JJ','QQ','KK','AA','AQs','AKs','AKo'],
+      bluff:['A2s','A3s','A4s','A5s'],
+      call:['TT','99','88','77','66','55','44','33','22','ATs','AJs','KTs','KQs','KJs','QTs','QJs','JTs','AQo']},
+
+    'tbet-ip-wide':{mode:'3bet',      value:['TT','JJ','QQ','KK','AA','AJs','AQs','AKs','KQs','AQo','AKo'],
+      bluff:['A2s','A3s','A4s','A5s','A9s','K9s'],
+      call:['99','88','77','66','55','44','33','22','ATs','A8s','A7s','A6s','KTs','KJs','QTs','QJs','Q9s','JTs','J9s','T9s','98s','87s','76s','KQo','AJo','ATo']},
+
+    // Facing a 3-bet after opening early — OOP baseline.
+    'vs3-early':{mode:'4bet',
+      value:['QQ','KK','AA','AKs','AKo'],
+      bluff:['A5s','A4s'],
+      call:['JJ','TT','99','88','AQs','AJs','ATs','KQs','KJs']},
+
+    // Facing a 3-bet after opening late — usually IP vs a blind.
+    'vs3-late':{mode:'4bet',
+      value:['QQ','KK','AA','AKs','AKo'],
+      bluff:['A5s','A4s','A3s'],
+      call:['JJ','TT','99','88','77','66','55','44','33','22',
+            'AQs','AJs','ATs','A9s','A8s','A7s','A6s',
+            'KQs','KJs','KTs','K9s','QJs','QTs','Q9s','JTs','J9s',
+            'T9s','98s','87s','76s','65s','54s','AQo']},
+  };
+
+  const C={raise:'#1D9E75', value:'#1D9E75', bluff:'#D85A30', call:'#378ADD'};
+
+  function handAt(i,j){
+    if(i===j) return RANKS[i]+RANKS[j];
+    if(i<j) return RANKS[i]+RANKS[j]+'s';
+    return RANKS[j]+RANKS[i]+'o';
+  }
+
+  function actionOf(cfg,hand){
+    if(cfg.mode==='rfi') return cfg.raise.indexOf(hand)>-1?'raise':'fold';
+    if(cfg.value.indexOf(hand)>-1) return 'value';
+    if(cfg.bluff.indexOf(hand)>-1) return 'bluff';
+    if(cfg.call.indexOf(hand)>-1) return 'call';
+    return 'fold';
+  }
+
+  document.querySelectorAll('.grid[data-range]').forEach(function(el){
+    const cfg=RANGES[el.getAttribute('data-range')];
+    if(!cfg) return;
+    const callView=el.getAttribute('data-view')==='call';
+    for(let i=0;i<13;i++){
+      for(let j=0;j<13;j++){
+        const hand=handAt(i,j);
+        const act=actionOf(cfg,hand);
+        const cell=document.createElement('div');
+        cell.className='cell'+(act==='fold'?' fold':'');
+        if(act!=='fold') cell.style.background=C[act];
+        if(callView && act!=='call') cell.classList.add('dim');
+        cell.textContent=hand;
+        el.appendChild(cell);
+      }
+    }
+  });
+
+  const LEGENDS={
+    rfi:[['raise','Raise'],['fold','Fold']],
+    '3bet':[['value','3-bet value'],['bluff','3-bet bluff'],['call','Call'],['fold','Fold']],
+    '4bet':[['value','4-bet value'],['bluff','4-bet bluff'],['call','Call'],['fold','Fold']],
+    call:[['call','Call'],['value','Raise instead (dimmed)'],['fold','Fold']],
+    check:[['raise','Raise'],['fold','Check']]
+  };
+  document.querySelectorAll('.legend[data-legend]').forEach(function(el){
+    LEGENDS[el.getAttribute('data-legend')].forEach(function(item){
+      const s=document.createElement('span');
+      const sw=document.createElement('span');
+      sw.className='swatch';
+      if(item[0]==='fold'){sw.style.background='var(--fold-bg)'; sw.style.border='1px solid var(--border)';}
+      else sw.style.background=C[item[0]];
+      s.appendChild(sw);
+      s.appendChild(document.createTextNode(item[1]));
+      el.appendChild(s);
+    });
+  });
+})();
+</script>
+</body>
+</html>
