@@ -182,6 +182,20 @@
   .misses .h{display:inline-flex; flex-wrap:wrap; gap:.3rem; margin-top:.3rem;}
   .misses .h span{font-family:var(--mono); font-size:.74rem; padding:.1rem .45rem; border-radius:6px; background:var(--surface-2); border:1px solid var(--border);}
   .empty{color:var(--muted); font-size:.86rem;}
+
+  /* link to the reference */
+  .refcard{display:flex; gap:1.1rem; align-items:center; margin-top:1rem; padding:1.1rem 1.2rem; background:linear-gradient(135deg,#1A1D22 0%,#171F1C 100%); border:1px solid rgba(93,202,165,.3); border-radius:14px; text-decoration:none; color:inherit; transition:border-color .15s, transform .15s;}
+  .refcard:hover{border-color:var(--accent); transform:translateY(-1px);}
+  .refcard-body{flex:1; min-width:0;}
+  .refcard-kicker{margin:0 0 .15rem; font-family:var(--mono); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--accent);}
+  .refcard h2{font-family:var(--disp); font-weight:600; font-size:1.18rem; margin:0 0 .35rem; color:var(--text); letter-spacing:-.01em;}
+  .refcard-desc{margin:0 0 .6rem; font-size:.87rem; line-height:1.5; color:var(--muted);}
+  .refcard-cta{font-size:.86rem; font-weight:600; color:var(--accent);}
+  .refcard-mini{flex:none; width:104px;}
+  .refcard-mini .grid{display:grid; grid-template-columns:repeat(13,1fr); gap:1px; width:104px;}
+  .refcard-mini .cell{aspect-ratio:1; border-radius:1px; font-size:0;}
+  .refcard-mini .cell.fold{background:#22262C; border:none;}
+  @media (max-width:520px){ .refcard{display:block; padding:.95rem 1rem;} .refcard h2{font-size:1.06rem;} .refcard-desc{font-size:.84rem;} .refcard-mini{width:100%; margin-top:.8rem;} .refcard-mini .grid{width:132px; margin:0 auto;} }
   @media (max-width:520px){
     header.masthead{display:flex; align-items:baseline; margin-bottom:.45rem;} h1{font-size:1rem;} .sub{display:none;}
     .wrap{padding:.5rem .45rem 3rem;}
@@ -222,7 +236,7 @@
     </div>
     <div id="gate-step1">
       <button class="gate-btn" id="btn-continue">Continue — choose your spots</button>
-      <p class="gate-foot"><a href="preflop-ranges.html">Read the range reference</a> · <button class="gate-skip" id="btn-skip">Don't show this again</button></p>
+      <p class="gate-foot"><a href="preflop-ranges.html">Read the range reference — all 21 charts, with the reasoning</a><br><button class="gate-skip" id="btn-skip">Don't show this again</button></p>
     </div>
     <div id="gate-step2" class="hidden">
       <p class="gate-lead">Pick what to drill. Openings are on by default; the rest is one tap away. You can change all of this later under <em>Spots &amp; difficulty</em> below the table.</p>
@@ -237,7 +251,6 @@
 
   <header class="masthead">
     <h1>Preflop range trainer</h1>
-    <p class="sub">Same data as the <a href="preflop-ranges.html">range reference</a></p>
   </header>
 
   <section class="room" aria-live="polite">
@@ -331,6 +344,16 @@
     <table class="per" id="per"></table>
     <div class="misses" id="misses"></div>
   </section>
+
+  <a class="refcard" href="preflop-ranges.html">
+    <div class="refcard-body">
+      <p class="refcard-kicker">The source</p>
+      <h2>Preflop ranges — NL25 6-max</h2>
+      <p class="refcard-desc">Every chart the trainer deals from, with the reasoning behind each one: opening by seat, isolating limpers, playing the blinds, 3-betting and facing 3-bets, and the calling ranges. 21 charts and the deliberate departures from theory, explained.</p>
+      <span class="refcard-cta">Read the reference →</span>
+    </div>
+    <div class="refcard-mini" aria-hidden="true"><div class="grid" id="refgrid"></div></div>
+  </a>
 
 </div>
 <script>
@@ -914,6 +937,9 @@
   if(phone&&phone.matches) document.querySelector('details.panel').removeAttribute('open');
   syncLayout(); if(phone&&phone.addEventListener) phone.addEventListener('change',()=>{ syncLayout(); if(S.cur) renderTable(S.cur.scene,S.cur.hand); });
   function syncCharts(){ document.querySelectorAll('.pick[data-chart]').forEach(b=>b.setAttribute('aria-pressed',S.active[b.dataset.chart]?'true':'false')); }
+  (function miniGrid(){ const g=$('refgrid'), cfg=RANGES['rfi-btn']; if(!g||!cfg) return;
+    for(let i=0;i<13;i++) for(let j=0;j<13;j++){ const h=handAt(i,j), a=actionOf(cfg,h); const c=document.createElement('div');
+      c.className='cell'+(a==='fold'?' fold':''); if(a!=='fold') c.style.background=C[a]; g.appendChild(c); } })();
   load(); syncCharts(); syncDiff(); syncReads(); syncMissesBtn(); renderStats(); showHand();
 })();
 </script>
