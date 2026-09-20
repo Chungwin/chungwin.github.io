@@ -133,7 +133,15 @@
   .room .ghost{border-color:rgba(255,255,255,.18); color:#C9CEC8;}
   .ghost:hover{color:var(--accent); border-color:var(--accent);}
   .ghost.on{background:var(--accent); border-color:var(--accent); color:#0E1012;}
-  .kbd{font-family:var(--mono); font-size:.7rem; color:#8F948E; margin-left:auto;}
+  /* key caps: shown only where a keyboard exists, on the control that key triggers */
+  .kcap{position:absolute; top:5px; right:6px; font-family:var(--mono); font-size:.6rem; font-weight:600; line-height:1; padding:.16rem .32rem; min-width:1.05rem; text-align:center; border-radius:4px; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.18); color:rgba(255,255,255,.7); pointer-events:none;}
+  .kcap.wide{min-width:auto; letter-spacing:.03em;}
+  .act, .next, .room .ghost{position:relative;}
+  .next .kcap{background:rgba(0,0,0,.14); border-color:rgba(0,0,0,.2); color:rgba(14,16,18,.6);}
+  .room .ghost{padding-right:2.1rem;}                 /* room for the cap so it never crowds the label */
+  .room .ghost .kcap{background:rgba(255,255,255,.06); top:50%; right:.6rem; transform:translateY(-50%);}
+  .act[disabled] .kcap{opacity:.5;}
+  @media (hover:none){ .kcap{display:none;} }   /* touch devices have no keyboard */
 
   /* entry gate */
   .gate{position:fixed; inset:0; z-index:50; background:radial-gradient(ellipse at 50% 30%, #1B3A2C 0%, #0E1012 60%); display:flex; align-items:center; justify-content:center; padding:1.2rem; overflow:auto;}
@@ -277,9 +285,8 @@
     <div class="bar">
       <div class="actions waiting" id="answers"></div>
       <div class="after hidden" id="after">
-        <button class="next" id="btn-next">Next hand</button>
-        <button class="ghost" id="btn-chart">Show chart</button>
-        <span class="kbd">1–4 · space · c</span>
+        <button class="next" id="btn-next">Next hand<span class="kcap wide" aria-hidden="true">space</span></button>
+        <button class="ghost" id="btn-chart">Show chart<span class="kcap" aria-hidden="true">C</span></button>
       </div>
     </div>
     <div class="verdict hidden" id="verdict" aria-live="polite"></div>
@@ -800,7 +807,7 @@
 
   function showHand(){
     const p=pick(); S.cur=p; S.answered=false;
-    $('verdict').innerHTML=''; $('verdict').classList.add('hidden'); $('overlay').classList.add('hidden'); $('after').classList.add('hidden'); $('reveal').classList.add('hidden'); $('btn-chart').textContent='Show chart';
+    $('verdict').innerHTML=''; $('verdict').classList.add('hidden'); $('overlay').classList.add('hidden'); $('after').classList.add('hidden'); $('reveal').classList.add('hidden'); $('btn-chart').innerHTML='Show chart'+'<span class="kcap" aria-hidden="true">C</span>';
     if(phone&&phone.matches) window.scrollTo({top:0});
     if(!p){ clearTimers(); $('seats').innerHTML=''; $('spot').textContent='Pick at least one spot below.'; $('spotpill').textContent='No spots selected'; $('handlabel').textContent=''; $('answers').innerHTML=''; return; }
     const sp=SPOTS[p.chart], cfg=RANGES[p.chart], scene=buildScene(p.chart);
@@ -816,7 +823,7 @@
       ['raise',sp.raiseWord,'to '+money(usd(sizes[1]))+' · '+fmt(sizes[1])+'bb',sizes[1]]];
     opts.forEach(([v,t,sub,size])=>{
       const b=document.createElement('button'); b.className='act '+v; b.dataset.v=v; if(size!=null) b.dataset.size=size;
-      b.innerHTML=t+(sub?'<small>'+sub+'</small>':'<small>&nbsp;</small>');
+      b.innerHTML='<span class="kcap" aria-hidden="true">'+(ans.children.length+1)+'</span>'+t+(sub?'<small>'+sub+'</small>':'<small>&nbsp;</small>');
       b.addEventListener('click',()=>answer(v,size)); ans.appendChild(b);
     });
     renderTable(scene,p.hand);
@@ -935,7 +942,7 @@
     if(have){ S.mode='misses'; syncMissesBtn(); showHand(); }
   });
   $('btn-next').addEventListener('click',showHand);
-  $('btn-chart').addEventListener('click',()=>{ const r=$('reveal'); const open=r.classList.toggle('hidden'); $('btn-chart').textContent=open?'Show chart':'Hide chart'; if(!open) renderChart(); });
+  $('btn-chart').addEventListener('click',()=>{ const r=$('reveal'); const open=r.classList.toggle('hidden'); $('btn-chart').innerHTML=(open?'Show chart':'Hide chart')+'<span class="kcap" aria-hidden="true">C</span>'; if(!open) renderChart(); });
   $('btn-reset').addEventListener('click',()=>{ S.n=0;S.hits=0;S.streak=0;S.best=0;S.sizeMiss=0;S.misses={}; Object.keys(S.per).forEach(k=>S.per[k]={n:0,hits:0}); S.mode='normal'; syncMissesBtn(); save(); renderStats(); showHand(); });
   // gate
   const gate=$('gate'), panel=document.querySelector('details.panel'), panelHome=panel.parentNode, panelNext=panel.nextSibling;
