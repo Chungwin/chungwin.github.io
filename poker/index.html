@@ -108,12 +108,21 @@
   .act:focus-visible{outline:2px solid #fff; outline-offset:2px;}
 
   .verdict{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;} /* screen-reader copy of the overlay */
-  .overlay{position:absolute; left:50%; top:47%; transform:translate(-50%,-50%); width:min(78%,300px); background:rgba(14,16,18,.92); border:1px solid rgba(255,255,255,.14); border-radius:14px; padding:.75rem .9rem .8rem; text-align:center; box-shadow:0 12px 30px rgba(0,0,0,.55); z-index:5; backdrop-filter:blur(3px);}
-  .overlay .v-act{display:inline-block; font-weight:700; font-size:1.05rem; padding:.28rem .95rem; border-radius:999px; color:#fff; letter-spacing:.01em;}
-  .overlay .v-act.fold{background:#7A3B34;} .overlay .v-act.call{background:#2E5E9E;} .overlay .v-act.raise{background:#1F7F5F;}
-  .overlay .v-res{margin-top:.45rem; font-family:var(--disp); font-size:1.05rem; line-height:1.2;}
-  .overlay .v-res.ok{color:#5DCAA5;} .overlay .v-res.bad{color:#F1A38B;}
-  .overlay .v-why{margin-top:.35rem; font-size:.8rem; line-height:1.4; color:#B8BDB6;}
+  .overlay{position:absolute; left:50%; top:47%; transform:translate(-50%,-50%); width:min(86%,340px); background:rgba(14,16,18,.92); border:1px solid rgba(255,255,255,.14); border-radius:14px; padding:.75rem .9rem .8rem; text-align:center; box-shadow:0 12px 30px rgba(0,0,0,.55); z-index:5; backdrop-filter:blur(3px);}
+  .overlay .v-head{display:flex; align-items:center; justify-content:center; gap:.45rem; font-family:var(--disp); font-weight:600; font-size:1.3rem; line-height:1.1;}
+  .overlay .v-head.ok{color:#5DCAA5;} .overlay .v-head.bad{color:#F1A38B;}
+  .overlay .v-mark{display:inline-flex; align-items:center; justify-content:center; width:1.55rem; height:1.55rem; border-radius:50%; font-size:.95rem; font-family:var(--sans); font-weight:700;}
+  .overlay .v-head.ok .v-mark{background:#5DCAA5; color:#0E1012;}
+  .overlay .v-head.bad .v-mark{background:#E0694A; color:#fff;}
+  .overlay .v-line{margin-top:.6rem;}
+  .overlay .v-compare{display:flex; align-items:stretch; justify-content:center; gap:.5rem; margin-top:.7rem;}
+  .overlay .v-col{flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; gap:.25rem;}
+  .overlay .v-lab{font-family:var(--mono); font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:#8F948E;}
+  .overlay .v-lab.right{color:#5DCAA5;}
+  .overlay .v-chip{display:block; width:100%; font-weight:600; font-size:.88rem; line-height:1.25; padding:.42rem .5rem; border-radius:9px; color:#fff;}
+  .overlay .v-chip.fold{background:#7A3B34;} .overlay .v-chip.call{background:#2E5E9E;} .overlay .v-chip.raise{background:#1F7F5F;}
+  .overlay .v-chip.ghosted{background:#2A2E34; color:#9096A0; text-decoration:line-through; text-decoration-thickness:1px;}
+  .overlay .v-why{margin-top:.6rem; padding-top:.55rem; border-top:1px solid rgba(255,255,255,.1); font-size:.8rem; line-height:1.45; color:#B8BDB6;}
   @media (prefers-reduced-motion:no-preference){ .overlay{animation:pop .16s ease-out;} @keyframes pop{from{opacity:0; transform:translate(-50%,-46%) scale(.96);} to{opacity:1; transform:translate(-50%,-50%) scale(1);} } }
   .verdict b{font-weight:600;} .verdict .ok{color:#5DCAA5;} .verdict .bad{color:#F1A38B;}
   .verdict .why{display:block; color:#9DA29C; font-size:.83rem; margin-top:.1rem;}
@@ -208,8 +217,8 @@
     .tablebox{aspect-ratio:auto; width:100%; max-width:none; height:min(calc((100vw - .5rem) * 1.3), calc(100dvh - 300px)); min-height:320px;}
     .actions{grid-template-columns:1fr 1fr;} .bar{min-height:118px;}
     .after{flex-wrap:wrap;} .after .next{flex:1 1 100%;} .after .ghost{flex:1;}
-    .overlay{width:min(84%,300px); padding:.6rem .7rem .65rem;}
-    .overlay .v-act{font-size:.98rem;} .overlay .v-res{font-size:.98rem;} .overlay .v-why{font-size:.76rem;}
+    .overlay{width:min(92%,330px); padding:.6rem .7rem .65rem;}
+    .overlay .v-head{font-size:1.15rem;} .overlay .v-chip{font-size:.82rem; padding:.38rem .4rem;} .overlay .v-why{font-size:.76rem;}
     .sit{margin-top:.5rem; padding:.5rem .7rem .55rem;} .sit-top{margin-bottom:.2rem;} .sit-text{font-size:.94rem;}
     .bar{margin-top:.5rem;}
     .rail{inset:6% 1.5%;} .felt{inset:10% 4.5%;}
@@ -841,13 +850,25 @@
     if(!hit && v==='fold' && sp.noFold) why='Not an option here — '+sp.noFold+'. '+(correct==='raise'?'This hand raises.':'This hand checks.');
     if(hit && sp.check && correct==='call') why='A free flop with a hand that doesn\'t want a bigger pot.';
     const key=chart+'|'+hand+(S.cur.prof?'|'+S.cur.prof:'');
-    const res = hit ? 'Correct' : (sizeWrong ? 'Right action, wrong size — you chose '+fmt(size)+'bb; '+sp.label+' is '+fmt(sp.raiseTo)+'bb' : 'You chose '+wordOf(v,size).toLowerCase());
     if(sizeWrong) S.sizeMiss=(S.sizeMiss||0)+1;
     const whyText = why || (hit ? '' : 'Not in the '+sp.label+' range.');
     if(hit) delete S.misses[key]; else S.misses[key]=(S.misses[key]||0)+1;
-    $('overlay').innerHTML='<span class="v-act '+correct+'">'+word+'</span><div class="v-res '+(hit?'ok':'bad')+'">'+res+'</div>'+(whyText?'<div class="v-why">'+whyText+'</div>':'');
+    // Verdict first, then (when wrong) your move struck through beside the right one, then the reason.
+    const yourWord = wordOf(v,size);
+    const headline = hit ? 'Correct' : (sizeWrong ? 'Right move, wrong size' : 'Not quite');
+    let html='<div class="v-head '+(hit?'ok':'bad')+'"><span class="v-mark">'+(hit?'✓':'✗')+'</span>'+headline+'</div>';
+    if(hit){
+      html+='<div class="v-line"><span class="v-chip '+correct+'">'+word+'</span></div>';
+    }else{
+      html+='<div class="v-compare">'
+          + '<div class="v-col"><span class="v-lab">You</span><span class="v-chip ghosted '+v+'">'+yourWord+'</span></div>'
+          + '<div class="v-col"><span class="v-lab right">Correct</span><span class="v-chip '+correct+'">'+word+'</span></div>'
+          + '</div>';
+    }
+    if(whyText) html+='<div class="v-why">'+whyText+'</div>';
+    $('overlay').innerHTML=html;
     $('overlay').classList.remove('hidden');
-    $('verdict').textContent=word+'. '+res+'. '+whyText; $('verdict').classList.remove('hidden');
+    $('verdict').textContent=(hit?'Correct. '+word+'. ':headline+'. You chose '+yourWord+'. The right move is '+word+'. ')+whyText; $('verdict').classList.remove('hidden');
     $('answers').classList.add('hidden'); $('after').classList.remove('hidden');
     S.n++; if(hit){S.hits++;S.streak++;S.best=Math.max(S.best,S.streak);} else S.streak=0;
     S.per[chart].n++; if(hit) S.per[chart].hits++;
