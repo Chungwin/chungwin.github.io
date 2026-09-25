@@ -174,12 +174,56 @@
   .flash{outline:2px solid var(--accent); outline-offset:6px; border-radius:6px; transition:outline-color 1.2s ease 1s;}
   #lessons li{font-size:.9rem; margin-bottom:.45rem;}
   #lessons li a{font-family:var(--mono); font-size:.68rem; color:var(--accent); text-decoration:none; margin-left:.3rem;}
+
+  /* ---------- navigation: fixed sidebar on wide screens, sticky bar + drawer on narrow ones ---------- */
+  .sidenav{display:none;}
+  .mobbar{position:sticky; top:0; z-index:40; display:flex; align-items:center; gap:.55rem; background:rgba(14,16,18,.94); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); border-bottom:1px solid var(--border); padding:.45rem .9rem; margin:-2rem -1.1rem 1.2rem;}
+  .mobbar button{font:inherit; font-size:.8rem; font-weight:600; background:var(--surface-2); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:.3rem .65rem; cursor:pointer; white-space:nowrap;}
+  .mobbar button:hover{border-color:var(--accent);}
+  .mobbar .cur{flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-family:var(--mono); font-size:.7rem; letter-spacing:.02em; color:var(--muted);}
+  .mobbar .cur b{color:var(--text); font-weight:600;}
+  .drawer{position:fixed; inset:0; z-index:60; background:var(--bg); overflow-y:auto; padding:.9rem 1.1rem 3rem; display:none;}
+  .drawer.open{display:block;}
+  .drawer .dr-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:.6rem;}
+  .drawer .dr-head p{margin:0; font-family:var(--disp); font-weight:600; font-size:1.1rem;}
+  .drawer .dr-head button{font:inherit; font-size:.8rem; background:none; border:1px solid var(--border); color:var(--text); border-radius:8px; padding:.3rem .65rem; cursor:pointer;}
+  .drawer details{border-top:1px solid var(--border);}
+  .drawer summary{cursor:pointer; list-style:none; padding:.6rem 0; font-family:var(--mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); display:flex; justify-content:space-between;}
+  .drawer summary::-webkit-details-marker{display:none;}
+  .drawer summary::after{content:"+"; color:var(--muted);} .drawer details[open] summary::after{content:"\2013";}
+  .drawer details[open] summary{color:var(--text);}
+  .drawer .dr-links{padding:0 0 .6rem .2rem;}
+  .drawer .dr-links a{display:block; padding:.42rem .5rem; color:var(--text); text-decoration:none; border-radius:6px; font-size:.92rem;}
+  .drawer .dr-links a.active{color:var(--accent); background:var(--accent-soft);}
+  .drawer .pct, .sidenav .pct{display:none;}
+  @media (max-width:1099px){ [id]{scroll-margin-top:3.4rem;} }
+  @media (min-width:1100px){
+    body{padding-left:270px;}
+    .mobbar, .drawer{display:none !important;}
+    .sidenav{display:block; position:fixed; left:0; top:0; bottom:0; width:270px; overflow-y:auto; padding:1.3rem 1rem 2rem 1.3rem; border-right:1px solid var(--border); background:var(--bg); font-size:.8rem; scrollbar-width:thin;}
+    .sidenav .sn-title{font-family:var(--disp); font-weight:600; font-size:1.05rem; margin:0 0 .1rem; color:var(--text); text-decoration:none; display:block;}
+    .sidenav .sn-sub{font-family:var(--mono); font-size:.66rem; color:var(--muted); margin:0 0 1rem;}
+    .sidenav .sn-grp{margin-bottom:.15rem;}
+    .sidenav .sn-lab{display:block; font-family:var(--mono); font-size:.66rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); padding:.32rem .4rem; border-radius:6px; text-decoration:none; line-height:1.3;}
+    .sidenav .sn-lab:hover{color:var(--text); background:var(--surface);}
+    .sidenav .sn-grp.open .sn-lab{color:var(--text);}
+    .sidenav .sn-links{display:none; margin:.1rem 0 .4rem .6rem; padding-left:.55rem; border-left:1px solid var(--border);}
+    .sidenav .sn-grp.open .sn-links{display:block;}
+    .sidenav .sn-links a{display:block; padding:.2rem .5rem; color:var(--muted); text-decoration:none; border-radius:5px; line-height:1.35;}
+    .sidenav .sn-links a:hover{color:var(--text);}
+    .sidenav .sn-links a.active{color:var(--accent); background:var(--accent-soft);}
+    .sidenav .sn-foot{margin-top:1rem; padding-top:.8rem; border-top:1px solid var(--border);}
+    .sidenav .sn-foot a{display:block; color:var(--accent); text-decoration:none; font-size:.8rem;}
+  }
 </style>
 </head>
 <body>
+<nav class="sidenav" id="sidenav" aria-label="Contents"></nav>
 <div class="wrap">
 
   <p class="topbar"><a href="/">← chungwin.com</a><a href="./">← back to the trainer</a></p>
+  <div class="mobbar" id="mobbar"><button id="mb-open">Contents</button><span class="cur" id="mb-cur"></span><button id="mb-top" title="Back to top">&uarr;</button></div>
+  <div class="drawer" id="drawer" aria-label="Contents"></div>
 
   <header class="masthead" id="top">
     <p class="suits">&spades; &hearts; &diams; &clubs;</p>
@@ -1145,7 +1189,7 @@
         <li>Never call the flop without a plan for the turn.</li>
         <li>The flop is where the pool bluffs; the turn is where it doesn't.</li>
         <li>On his board, call. On your board, raise.</li>
-        <li>In position, draws call. Out of position, draws raise.</li>
+        <li>In position, draws call. Out of position, draws raise a small bet and call a big one.</li>
         <li>The float: call a small bet with overcards in position, and bet the turn when he checks.</li>
       </ul>
     </div>
@@ -1433,7 +1477,7 @@
         <li>Never call the flop without a plan for the turn. <a href="#d0">why</a></li>
         <li>The flop is where the pool bluffs. The turn is where it doesn't. <a href="#d0">why</a></li>
         <li>On his board, call. On your board, raise. <a href="#d0">why</a></li>
-        <li>In position, draws call. Out of position, draws raise. <a href="#d1">why</a></li>
+        <li>In position, draws call. Out of position, draws raise a small bet and call a big one. <a href="#d1">why</a></li>
         <li>The float: call a small bet with overcards in position, and bet the turn when he checks. <a href="#d1">why</a></li>
       </ol>
       <p style="margin:0 0 .4rem; font-size:.78rem; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:.06em;">3-bet pots</p>
@@ -2595,6 +2639,50 @@ POSTFLOP['cbet-multiway']={
     t.classList.add('flash'); setTimeout(function(){ t.classList.remove('flash'); },2200);
   }
   window.addEventListener('hashchange',revealHash); revealHash(); window.addEventListener('load',revealHash);
+
+  // ---------- navigation, generated from the index at the top of the page ----------
+  (function(){
+    const index=document.querySelector('nav.index'); if(!index) return;
+    const parts=[...document.querySelectorAll('.part')]; parts.forEach(function(p,i){ if(!p.id) p.id='part-'+(i+1); });
+    const groups=[...index.querySelectorAll('.grp')].map(function(g,i){
+      return {label:g.querySelector('.grp-label').textContent.trim(), part:parts[i]?'#'+parts[i].id:null,
+              links:[...g.querySelectorAll('.pills a')].map(function(a){ return {href:a.getAttribute('href'), text:a.textContent.replace(/\s*\d+%\s*$/,'').trim()}; })};
+    });
+    // sidebar
+    const side=document.getElementById('sidenav');
+    side.innerHTML='<a class="sn-title" href="#top">The Playbook</a><p class="sn-sub">NL25 6-max &middot; GGPoker</p>'+groups.map(function(g,i){
+      return '<div class="sn-grp" data-g="'+i+'"><a class="sn-lab" href="'+(g.part||g.links[0].href)+'">'+g.label+'</a><div class="sn-links">'+g.links.map(function(l){ return '<a href="'+l.href+'">'+l.text+'</a>'; }).join('')+'</div></div>';
+    }).join('')+'<div class="sn-foot"><a href="./">Open the trainer &rarr;</a></div>';
+    // drawer
+    const drawer=document.getElementById('drawer');
+    drawer.innerHTML='<div class="dr-head"><p>Contents</p><button id="dr-close">Close</button></div>'+groups.map(function(g,i){
+      return '<details data-g="'+i+'"><summary>'+g.label+'</summary><div class="dr-links">'+(g.part?'<a href="'+g.part+'">Part overview</a>':'')+g.links.map(function(l){ return '<a href="'+l.href+'">'+l.text+'</a>'; }).join('')+'</div></details>';
+    }).join('')+'<p style="margin:1rem 0 0;"><a href="./" style="color:var(--accent);">Open the trainer &rarr;</a></p>';
+    const open=function(){ drawer.classList.add('open'); document.body.style.overflow='hidden'; const cur=drawer.querySelector('details[data-g="'+activeG+'"]'); if(cur) cur.open=true; };
+    const close=function(){ drawer.classList.remove('open'); document.body.style.overflow=''; };
+    document.getElementById('mb-open').addEventListener('click',open);
+    document.getElementById('dr-close').addEventListener('click',close);
+    drawer.addEventListener('click',function(e){ if(e.target.tagName==='A') close(); });
+    document.getElementById('mb-top').addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+    // group labels in the sidebar: clicking one opens it (and jumps to the part)
+    side.addEventListener('click',function(e){ const lab=e.target.closest('.sn-lab'); if(!lab) return; const g=lab.parentElement; if(g.classList.contains('open')&&g.dataset.g!==String(activeG)) { e.preventDefault(); g.classList.remove('open'); return; } g.classList.add('open'); });
+    // scroll-spy: the last link target above the reading line is the current one
+    const targets=[]; groups.forEach(function(g,gi){ if(g.part){ const pe=document.querySelector(g.part); if(pe) targets.push({el:pe, href:null, g:gi, text:''}); } g.links.forEach(function(l){ const el=document.querySelector(l.href); if(el) targets.push({el:el, href:l.href, g:gi, text:l.text}); }); });
+    targets.sort(function(a,b){ return (a.el.compareDocumentPosition(b.el)&Node.DOCUMENT_POSITION_FOLLOWING)?-1:1; });
+    let activeG=0, activeHref=null, ticking=false;
+    function spy(){
+      ticking=false; const line=window.scrollY+110; let cur=null;
+      for(const t of targets){ if(t.el.offsetParent===null) continue; const top=t.el.getBoundingClientRect().top+window.scrollY; if(top<=line) cur=t; else break; }
+      const key=cur?(cur.href||('g'+cur.g)):null; if(key===activeHref) return; activeHref=key; activeG=cur?cur.g:0; const href=cur?cur.href:null;
+      side.querySelectorAll('.sn-links a').forEach(function(a){ a.classList.toggle('active',a.getAttribute('href')===href); });
+      side.querySelectorAll('.sn-grp').forEach(function(g){ g.classList.toggle('open',g.dataset.g===String(activeG)); });
+      drawer.querySelectorAll('.dr-links a').forEach(function(a){ a.classList.toggle('active',a.getAttribute('href')===href); });
+      const act=side.querySelector('.sn-links a.active'); if(act){ const r=act.getBoundingClientRect(), sr=side.getBoundingClientRect(); if(r.top<sr.top+40||r.bottom>sr.bottom-40) act.scrollIntoView({block:'center'}); }
+      document.getElementById('mb-cur').innerHTML= cur ? (cur.text ? '<b>'+cur.text+'</b> \u00b7 '+groups[cur.g].label.replace(/^[IVX]+ \u00b7 /,'') : '<b>'+groups[cur.g].label.replace(/^[IVX]+ \u00b7 /,'')+'</b>') : '';
+    }
+    window.addEventListener('scroll',function(){ if(!ticking){ ticking=true; requestAnimationFrame(spy); } },{passive:true});
+    window.addEventListener('resize',spy); spy();
+  })();
 })();
 </script>
 </body>

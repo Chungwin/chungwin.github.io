@@ -107,7 +107,7 @@
   .act{font:inherit; font-weight:600; font-size:clamp(.88rem,2.8vw,1rem); padding:.85rem .4rem; border-radius:10px; min-height:56px; border:1px solid rgba(255,255,255,.12); color:#fff; cursor:pointer; line-height:1.15; text-align:center;}
   .act small{display:block; font-family:var(--mono); font-weight:500; font-size:.68rem; opacity:.85; margin-top:.12rem;}
   .act.fold{background:#5B2E2A;} .act.call{background:#2E5E9E;} .act.raise{background:#1F7F5F;}
-  .act:hover{filter:brightness(1.12);}
+  @media (hover:hover){ .act:hover{filter:brightness(1.12);} }
   .act[disabled]{cursor:default; filter:saturate(.35) brightness(.7);}
   .act.picked{filter:none; outline:2px solid #fff; outline-offset:-2px;}
   .act.hit{filter:none; box-shadow:0 0 0 3px #5DCAA5 inset;}
@@ -147,7 +147,7 @@
   .room .ghost{min-height:56px; padding:.4rem 1rem; font-size:.88rem;}
   .ghost{font:inherit; font-size:.8rem; background:none; border:1px solid var(--border); color:var(--muted); border-radius:8px; padding:.25rem .6rem; cursor:pointer;}
   .room .ghost{border-color:rgba(255,255,255,.18); color:#C9CEC8;}
-  .ghost:hover{color:var(--accent); border-color:var(--accent);}
+  @media (hover:hover){ .ghost:hover{color:var(--accent); border-color:var(--accent);} }
   .ghost.on{background:var(--accent); border-color:var(--accent); color:#0E1012;}
   .kcap{position:absolute; top:5px; right:6px; font-family:var(--mono); font-size:.6rem; font-weight:600; line-height:1; padding:.16rem .32rem; min-width:1.05rem; text-align:center; border-radius:4px; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.18); color:rgba(255,255,255,.7); pointer-events:none;}
   .kcap.wide{min-width:auto; letter-spacing:.03em;}
@@ -221,7 +221,7 @@
   .panel .row{display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.6rem; align-items:center;}
   .panel .lab{font-size:.76rem; color:var(--muted); width:100%; margin-bottom:-.15rem;}
   .pick{font:inherit; font-size:.8rem; padding:.26rem .66rem; border-radius:999px; border:1px solid var(--border); background:var(--surface-2); color:var(--text); cursor:pointer; line-height:1.3;}
-  .pick:hover{border-color:var(--accent);}
+  @media (hover:hover){ .pick:hover{border-color:var(--accent);} }
   .pick[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#0E1012;}
   .pick:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
   .modes{display:grid; grid-template-columns:repeat(3,1fr); gap:.45rem; margin-top:.6rem;}
@@ -243,7 +243,7 @@
   .misses{margin-top:.7rem; font-size:.84rem; color:var(--muted);}
   .misses .h{display:inline-flex; flex-wrap:wrap; gap:.3rem; margin-top:.3rem;}
   .misses .h span{font-family:var(--mono); font-size:.74rem; padding:.1rem .45rem; border-radius:6px; background:var(--surface-2); border:1px solid var(--border); cursor:pointer;}
-  .misses .h span:hover{border-color:var(--accent); color:var(--accent);}
+  @media (hover:hover){ .misses .h span:hover{border-color:var(--accent); color:var(--accent);} }
   .misses .cap{display:block; font-size:.78rem; margin-top:.5rem;}
   .misses .h span em{font-style:normal; color:var(--accent); margin-left:.15rem;}
   .empty{color:var(--muted); font-size:.86rem;}
@@ -1568,6 +1568,90 @@ const ANCHOR_OVERRIDE={
 ANCHOR_OVERRIDE['cbet-oop']=ANCHOR_OVERRIDE['cbet-ip'];
 function anchorFor(sitId, bc){ const o=ANCHOR_OVERRIDE[sitId]; return (o&&o[bc])||('pf-'+sitId+'-'+bc); }
 
+// ---------- where each preflop chart lives in the book ----------
+const PRE_ANCHOR={'rfi-lj':'rfi-lj','rfi-hj':'rfi-hj','rfi-co':'rfi-co','rfi-btn':'rfi-btn','sb-rfi':'sb-rfi',
+  'iso-early':'iso','iso-co':'iso','iso-btn':'iso','def-bb-early':'def-bb-early','def-bb-co':'def-bb-co','def-bb-btn':'def-bb-btn',
+  'def-bb-sb':'bvb','bb-vs-sb-limp':'blinds-iso','def-bb-multi':'def-bb-multi','sb-3bet-early':'sb-3bet','sb-3bet-late':'sb-3bet',
+  'tbet-ip-tight':'tbet-ip','tbet-ip-wide':'tbet-ip','vs3-early':'vs-3bet','vs3-late':'vs-3bet','vs3-behind':'vs3-behind'};
+
+// ---------- preflop reasons: what kind of hand, in what kind of spot ----------
+function handKind(hand){
+  const RV=RANK_VAL, hi=RV[hand[0]], lo=RV[hand[1]], suited=hand[2]==='s', pair=hand.length===2;
+  if(pair) return hi>=10?'bigpair':hi>=7?'midpair':'smallpair';
+  const broad=hi>=10&&lo>=10, gap=hi-lo;
+  if(suited){ if(hi===14) return broad?'sbroadway':'sace'; if(broad) return 'sbroadway'; if(gap<=2&&lo>=4) return 'sconn'; if(hi>=12) return 'skq'; return 'sjunk'; }
+  if(broad) return 'obroadway'; if(hi===14) return 'oace'; return 'ojunk';
+}
+const PRE_WHY={
+  rfi:{
+    raise:{bigpair:'Raise. A big pair opens from any seat: build the pot now with the best hand you will see all day.',
+      midpair:'Raise. Pairs open from every seat: they flop a set one time in eight, and this pool pays sets off.',
+      smallpair:'Raise. Pairs open from every seat: they flop a set one time in eight, and this pool pays sets off.',
+      sace:'Raise. A suited ace opens from here: nut flush draws, wheel draws, and an ace to fall back on.',
+      sbroadway:'Raise. Two big cards, suited: top pair with a good kicker, and flush draws on top.',
+      sconn:'Raise. A suited connector opens from this seat: straights and flushes against a pool that pays them off.',
+      skq:'Raise. From this seat a suited king or queen is worth an open: flush draws, plus a decent top pair.',
+      sjunk:'Raise. From this seat even a weak suited hand opens: few players behind, and position after the flop.',
+      obroadway:'Raise. Two big cards play well enough from here: top pair with a kicker is the hand you want against this pool.',
+      oace:'Raise. From this seat a weak offsuit ace opens: with few players behind, an ace is usually the best hand.',
+      ojunk:'Raise. From this seat this hand opens: few players behind, and position after the flop.'},
+    fold:{sace:'Fold. A weak suited ace from this seat gets called by better aces, and plays out of position against most of the table.',
+      sconn:'Fold. Too many players behind for a small suited connector: from here it wins small pots and loses big ones.',
+      skq:'Fold. A suited king or queen with a weak kicker: the flush is rare, and the top pair is dominated from this seat.',
+      sjunk:'Fold. Suited is not enough: a flush comes one time in fifteen, and the rest of the time this is two weak cards.',
+      obroadway:'Fold. Offsuit big cards from this seat make dominated top pairs: the pair you flop is often second best.',
+      oace:'Fold. A weak offsuit ace: when it flops top pair the kicker loses, and it rarely makes anything else.',
+      ojunk:'Fold. Unconnected, unsuited, and dominated when it hits: nothing here you want to play a pot with.',
+      sbroadway:'Fold. Not from this seat: too many players behind who wake up with better.',
+      smallpair:'Fold. Not from this seat.', midpair:'Fold. Not from this seat.', bigpair:'Fold. Not from this seat.'}
+  },
+  iso:{
+    raise:{_:'Raise to isolate. A limper\'s range is weak and does not fold: this hand beats it, and a raise buys the pot heads-up with position.'},
+    fold:{smallpair:'Fold. A small pair cannot isolate: it plays for a set only, and it is out of position against everyone still to act.',
+      _:'Fold. Isolating needs a hand that beats a limper\'s range and plays well when he calls. This one does neither.'}
+  },
+  bb:{
+    value:{_:'3-bet for value. This hand is ahead of his opening range and wants a bigger pot now, not a cheap flop out of position.'},
+    bluff:{_:'3-bet as a bluff. It blocks his best hands, plays fine when called, and folds his light opens.'},
+    fold:{sjunk:'Fold. Suited junk out of position: a flush one time in fifteen does not pay for the rest, and the rake takes the small pots.',
+      ojunk:'Fold. Even at a discount, an unsuited, unconnected hand out of position loses money: the rake makes small pots unwinnable.',
+      oace:'Fold. A weak offsuit ace out of position makes dominated top pairs and nothing else.',
+      _:'Fold. Against this opener the hand is dominated, and out of position a discount does not fix that.'}
+  },
+  sb:{
+    value:{_:'3-bet for value. The small blind never calls: this hand is strong enough to raise, and the raise takes the big blind out.'},
+    bluff:{_:'3-bet as a bluff. The small blind never calls: this hand blocks his best hands, plays fine if called, and folds his light opens.'},
+    fold:{_:'Fold. The small blind never calls, and this hand is not strong enough to 3-bet.'}
+  },
+  ip:{
+    value:{_:'3-bet for value. Ahead of his opening range, in position: build the pot now.'},
+    bluff:{_:'3-bet as a bluff. Blockers, a playable hand if called, and an opener who folds to 3-bets too often.'},
+    fold:{_:'Fold. Not strong enough to 3-bet, and a call would pay rake to play a dominated hand.'}
+  },
+  vs3:{
+    value:{_:'4-bet for value. This pool 3-bets with real hands, and this one beats them.'},
+    bluff:{_:'4-bet as a bluff. A wheel ace blocks his aces, folds to a 5-bet cheaply, and the pool folds to 4-bets more than it should.'},
+    fold:{_:'Fold. A 3-bet from this pool is value-heavy: this hand is behind it, and does not flop well enough to call.'}
+  },
+  bvb:{
+    value:{_:'3-bet for value. Ahead of the widest opening range you face, and with position: build the pot now.'},
+    bluff:{_:'3-bet as a bluff. A small-blind open is the lightest at the table, and it folds to a 3-bet more than any other.'},
+    fold:{_:'Fold. Even with position, this hand does not beat a small-blind open often enough to pay for the pot.'}
+  },
+  limp:{
+    raise:{_:'Raise. He limped weak and you have the better hand with position: charge him now, rather than take a free flop with a hand that wants a bigger pot.'},
+    fold:{_:'Check. A free flop with a hand that does not want a bigger pot.'}
+  }
+};
+function spotFamily(chart){
+  if(/^rfi-|^sb-rfi/.test(chart)) return 'rfi'; if(/^iso-/.test(chart)) return 'iso'; if(chart==='bb-vs-sb-limp') return 'limp';
+  if(chart==='def-bb-sb') return 'bvb'; if(/^def-bb/.test(chart)) return 'bb'; if(/^sb-3bet/.test(chart)) return 'sb'; if(/^tbet-ip/.test(chart)) return 'ip'; if(/^vs3/.test(chart)) return 'vs3'; return 'rfi';
+}
+function preWhy(chart, hand, act){
+  const fam=PRE_WHY[spotFamily(chart)]||{}; const byAct=fam[act]; if(!byAct) return '';
+  return byAct[handKind(hand)]||byAct._||'';
+}
+
 // ---------- dealing ----------
 function heroCombos(sit){
   const hr=sit.heroRange, cfg=RANGES[typeof hr==='string'?hr:hr.chart], bands=typeof hr==='string'?['call']:hr.bands;
@@ -1832,7 +1916,11 @@ Object.keys(POSTFLOP).forEach(function(k){ POSTFLOP[k].id=k; });
       const limper=before[Math.floor(Math.random()*before.length)];
       pre=before.map(p=>[p,p===limper?'limp':'fold']);
     }
-    return {hero:sp.hero, pre, heroBet:sp.heroBet||0};
+    // your own earlier action (the open you made before being 3-bet) is animated in its turn, not pre-placed
+    let seq=pre;
+    if(sp.heroBet){ const hi=ORDER.indexOf(sp.hero); let idx=pre.findIndex(x=>ORDER.indexOf(x[0])>hi); if(idx<0) idx=pre.length;
+      seq=pre.slice(0,idx).concat([[sp.hero,'raise',sp.heroBet]],pre.slice(idx)); }
+    return {hero:sp.hero, pre, seq, heroBet:sp.heroBet||0};
   }
 
   // Draw the table: seats, hero cards, stacks; then (optionally) the preflop action one seat at a time.
@@ -1874,11 +1962,12 @@ Object.keys(POSTFLOP).forEach(function(k){ POSTFLOP[k].id=k; });
   function setActing(pos){ document.querySelectorAll('.seat.acting').forEach(s=>s.classList.remove('acting')); if(pos) TABLE.seatEls[pos].classList.add('acting'); }
   function animatePre(scene){
     let t=0; const step=reduceMotion?0:330;
-    scene.pre.forEach(([pos,act,amt])=>{
+    (scene.seq||scene.pre).forEach(([pos,act,amt])=>{
       t+=step;
       later(()=>{
         setActing(null);
         if(act==='fold'){ TABLE.seatEls[pos].classList.add('folded'); tagSeat(pos,'fold','Fold'); return; }
+        if(pos===scene.hero){ putMoney(pos,amt); tagSeat(pos,'raise','Raise'); showPot(); return; }
         const to=act==='limp'?1:amt; putMoney(pos,to);
         const isCall = act==='limp'||act==='call';
         tagSeat(pos,isCall?'limp':'raise',isCall?'Call':(amt>3?'3-bet':'Raise'));
@@ -1900,7 +1989,8 @@ Object.keys(POSTFLOP).forEach(function(k){ POSTFLOP[k].id=k; });
   }
   function showHand(){
     S.answered=false; S.hand={}; resetUI();
-    if(S.mode==='flop' || (S.force&&S.force.kind==='flop')) return showFlopOnly();
+    const forced=S.force&&S.force.kind;
+    if(forced==='flop' || (S.mode==='flop' && forced!=='pre')) return showFlopOnly();
     const p=pickPre(); S.cur=p; S.street='pre';
     if(!p){ clearTimers(); $('seats').innerHTML=''; $('board').classList.add('hidden'); $('tablebox').classList.remove('flop'); $('spot').textContent='Pick at least one spot below.'; $('spotpill').textContent='No spots selected'; $('spotpill').classList.remove('flop'); $('handlabel').textContent=''; $('answers').innerHTML=''; return; }
     const sp=SPOTS[p.chart], scene=buildScene(p.chart);
@@ -1919,7 +2009,7 @@ Object.keys(POSTFLOP).forEach(function(k){ POSTFLOP[k].id=k; });
       b.innerHTML='<span class="kcap" aria-hidden="true">'+(ans.children.length+1)+'</span>'+t+(sub?'<small>'+sub+'</small>':'<small>&nbsp;</small>');
       b.addEventListener('click',()=>answerPre(v,size)); ans.appendChild(b);
     });
-    const inPot={SB:STAKES.sb/STAKES.bb,BB:1}; if(scene.heroBet) inPot[scene.hero]=scene.heroBet;
+    const inPot={SB:STAKES.sb/STAKES.bb,BB:1};
     drawTable({hero:scene.hero, hole:S.cur.hole, inPot});
     animatePre(scene);
     if(pr&&vil){ const seat=TABLE.seatEls[vil]; if(seat) seat.querySelector('.plate').insertAdjacentHTML('beforeend','<span class="read" style="background:'+pr.color+'">'+pr.tag+'</span>'); }
@@ -1952,7 +2042,7 @@ Object.keys(POSTFLOP).forEach(function(k){ POSTFLOP[k].id=k; });
     setActing(null);
     const wordOf=(x,sz)=> x==='raise'?sp.raiseWord+' to '+money(usd(sz==null?sp.raiseTo:sz))+' ('+fmt(sz==null?sp.raiseTo:sz)+'bb)':(x==='call'?(sp.check?'Check':sp.callWord+' '+money(callUsd(sp))):'Fold');
     const word=wordOf(correct);
-    let why = WHY[act] || '';
+    let why = preWhy(chart,hand,act) || '';
     if(act==='call') why=callWhy(hand,sp);
     if(readChanged) why='Read applied: '+pr.why;
     else if(pr) why=(why?why+' ':'')+'The read doesn\'t change this hand.';
@@ -1967,6 +2057,7 @@ Object.keys(POSTFLOP).forEach(function(k){ POSTFLOP[k].id=k; });
     if(hit && sp.check && correct==='call') why='A free flop with a hand that doesn\'t want a bigger pot.';
     const key=chart+'|'+hand+(S.cur.prof?'|'+S.cur.prof:'');
     const whyText = why || (hit ? '' : 'Not in the '+sp.label+' range.');
+    const preLink='<a class="v-link" href="reference.html#'+(PRE_ANCHOR[chart]||'top')+'" target="_blank" rel="noopener">Read this chart in the Playbook ↗</a>';
     if(hit) delete S.misses[key]; else S.misses[key]=(S.misses[key]||0)+1;
     const yourWord = wordOf(v,size);
     const headline = hit ? 'Correct' : (sizeWrong ? 'Right move, wrong size' : 'Not quite');
@@ -1976,7 +2067,7 @@ Object.keys(POSTFLOP).forEach(function(k){ POSTFLOP[k].id=k; });
       flow=flowFor(chart, v); S.cur.flow=flow; S.cur.choice=v; S.cur.size=size;
       if(flow.end) extra='<div class="v-note">'+flow.end+' Hand over.</div>';
     }
-    $('overlay').innerHTML=overlayHTML(hit,headline,yourWord,word,correct,v,whyText)+extra;
+    $('overlay').innerHTML=overlayHTML(hit,headline,yourWord,word,correct,v,whyText?'<span class="v-cap">'+(sizeWrong?'Why this size':'Why')+'</span>'+whyText:'')+extra+preLink;
     $('overlay').classList.remove('hidden');
     $('verdict').textContent=(hit?'Correct. '+word+'. ':headline+'. You chose '+yourWord+'. The right move is '+word+'. ')+whyText; $('verdict').classList.remove('hidden');
     $('answers').classList.add('hidden'); $('after').classList.remove('hidden');
