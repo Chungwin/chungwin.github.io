@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Preflop range trainer</title>
+<title>NL25 trainer — the Playbook, dealt</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -19,11 +19,9 @@
     --disp:"Fraunces",Georgia,"Times New Roman",serif;
     --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
-    /* table — always dark, whatever the page theme */
     --felt:#1E5A3C; --felt-edge:#153F2B; --rail:#2A1D14; --rail-hi:#4A3324;
     --plate:#14171B; --plate-text:#E9E7E1; --plate-muted:#8F948E;
     --card:#FBFAF6; --card-back:#2C4E8A; --card-red:#C8352B; --card-black:#141414;
-    --chip-1:#3E7BD6; --chip-05:#C9C9C9; --chip-5:#D9483B; --chip-25:#2AA36B;
   }
   *{box-sizing:border-box;}
   html{-webkit-text-size-adjust:100%;}
@@ -46,6 +44,14 @@
   .felt .inner{position:absolute; inset:11% 12%; border-radius:50%/50%; border:1.5px solid rgba(255,255,255,.09);}
   .felt .brand{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-family:var(--disp); font-size:clamp(.7rem,2.2vw,1rem); letter-spacing:.35em; color:rgba(255,255,255,.12); white-space:nowrap; pointer-events:none;}
   .pot{position:absolute; left:50%; top:37%; transform:translate(-50%,-50%); z-index:1; font-family:var(--mono); font-size:clamp(.62rem,1.9vw,.8rem); color:rgba(255,255,255,.85); background:rgba(0,0,0,.35); padding:.15rem .55rem; border-radius:999px; white-space:nowrap;}
+  /* the flop */
+  .board{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); display:flex; gap:.35rem; z-index:1;}
+  .board .card{width:clamp(34px,8.2vw,52px); height:clamp(48px,11.5vw,73px); border-radius:5px;}
+  .board .card+.card{transform:none;}
+  .board .card .r{font-size:clamp(.78rem,2.1vw,1rem); top:3px; left:4px;} .board .card .s{top:clamp(16px,3.9vw,22px); left:4px; font-size:clamp(.8rem,2.1vw,1rem);} .board .card .big{font-size:clamp(1.15rem,3.5vw,1.8rem); right:4px; bottom:2px;}
+  @media (prefers-reduced-motion:no-preference){ .board .card{animation:flip .28s ease-out both;} .board .card:nth-child(2){animation-delay:.09s;} .board .card:nth-child(3){animation-delay:.18s;} @keyframes flip{from{opacity:0; transform:translateY(-6px) scale(.9);} to{opacity:1; transform:none;}} }
+  .tablebox.flop .brand{display:none;}
+  .tablebox.flop .pot{top:33%;}
 
   .seat{position:absolute; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; width:clamp(60px,15%,104px);}
   .plate{width:100%; background:var(--plate); border:1px solid rgba(255,255,255,.1); border-radius:10px; padding:.22rem .35rem .28rem; text-align:center; line-height:1.15; box-shadow:0 4px 12px rgba(0,0,0,.5); position:relative;}
@@ -57,12 +63,10 @@
   .seat.hero .plate{border-color:rgba(93,202,165,.6); box-shadow:0 0 0 2px rgba(93,202,165,.25), 0 4px 12px rgba(0,0,0,.5);}
   .seat.hero .dealer{top:auto; bottom:-7px;}
   .plate .read{position:absolute; top:-8px; left:-6px; font-size:clamp(.46rem,1.3vw,.56rem); font-weight:700; letter-spacing:.07em; padding:.1rem .38rem; border-radius:4px; color:#fff; box-shadow:0 1px 3px rgba(0,0,0,.6); z-index:3;}
-  .misses .h span em{font-style:normal; color:var(--accent); margin-left:.15rem;}
   .seat.acting .plate::after{content:""; position:absolute; inset:-3px; border-radius:12px; border:2px solid #5DCAA5; opacity:.9; animation:pulse 1.4s ease-in-out infinite;}
   @keyframes pulse{0%,100%{opacity:.35} 50%{opacity:1}}
   @media (prefers-reduced-motion:reduce){ .seat.acting .plate::after{animation:none;} }
 
-  /* hole cards: opponents (backs) and hero (faces) */
   .hole{display:flex; gap:2px; margin-bottom:-.35rem; z-index:1; transition:opacity .15s;}
   .hole .cb{width:clamp(13px,3.2vw,22px); height:clamp(18px,4.5vw,31px); border-radius:3px; background:repeating-linear-gradient(45deg, var(--card-back) 0 3px, #3A62A5 3px 5px); border:1px solid rgba(255,255,255,.35); box-shadow:0 1px 3px rgba(0,0,0,.5);}
   .hole .cb+.cb{margin-left:-4px; transform:rotate(6deg);}
@@ -84,18 +88,21 @@
   .tag.raise{background:#1D9E75; color:#fff; border-color:transparent;}
   .tag.limp{background:#378ADD; color:#fff; border-color:transparent;}
   .tag.fold{color:#9A9E98;}
+  .tag.check{background:rgba(0,0,0,.55); color:#D6D9D3;}
   .dealer{position:absolute; top:-7px; right:-7px; width:clamp(14px,3.4vw,20px); height:clamp(14px,3.4vw,20px); border-radius:50%; background:#F4F1E8; color:#111; font-family:var(--mono); font-weight:600; font-size:clamp(.52rem,1.5vw,.66rem); display:flex; align-items:center; justify-content:center; box-shadow:0 1px 3px rgba(0,0,0,.6); z-index:3;}
 
   /* spot line under the table */
   .sit{margin-top:.7rem; padding:.7rem .85rem .75rem; background:#171A1E; border:1px solid rgba(255,255,255,.07); border-radius:12px;}
   .sit-top{display:flex; justify-content:space-between; align-items:center; gap:.6rem; margin-bottom:.35rem;}
   .pill{font-size:.72rem; font-weight:600; letter-spacing:.02em; color:#9BE3C6; background:rgba(93,202,165,.12); border:1px solid rgba(93,202,165,.28); padding:.16rem .6rem; border-radius:999px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .pill.flop{color:#F0C987; background:rgba(240,201,135,.1); border-color:rgba(240,201,135,.3);}
   .sit .hand{font-family:var(--mono); font-size:.9rem; font-weight:600; color:#E9E7E1; flex:none;}
   .sit-text{margin:0; font-family:var(--disp); font-size:1.02rem; line-height:1.35; color:#EDEBE5; text-wrap:balance;}
 
   /* action bar */
   .bar{margin-top:.6rem; min-height:56px;}
   .actions{display:grid; grid-template-columns:1fr 1fr 1.25fr 1.25fr; gap:.45rem;}
+  .actions.three{grid-template-columns:1fr 1.25fr 1.25fr;}
   .actions.waiting{visibility:hidden;}
   .act{font:inherit; font-weight:600; font-size:clamp(.88rem,2.8vw,1rem); padding:.85rem .4rem; border-radius:10px; min-height:56px; border:1px solid rgba(255,255,255,.12); color:#fff; cursor:pointer; line-height:1.15; text-align:center;}
   .act small{display:block; font-family:var(--mono); font-weight:500; font-size:.68rem; opacity:.85; margin-top:.12rem;}
@@ -107,13 +114,17 @@
   .act.miss{filter:none; box-shadow:0 0 0 3px #E0694A inset;}
   .act:focus-visible{outline:2px solid #fff; outline-offset:2px;}
 
-  .verdict{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;} /* screen-reader copy of the overlay */
-  .overlay{position:absolute; left:50%; top:47%; transform:translate(-50%,-50%); width:min(86%,340px); background:rgba(14,16,18,.92); border:1px solid rgba(255,255,255,.14); border-radius:14px; padding:.75rem .9rem .8rem; text-align:center; box-shadow:0 12px 30px rgba(0,0,0,.55); z-index:5; backdrop-filter:blur(3px);}
+  .verdict{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;}
+  .overlay{position:absolute; left:50%; top:47%; transform:translate(-50%,-50%); width:min(88%,400px); max-height:94%; overflow-y:auto; background:rgba(14,16,18,.93); border:1px solid rgba(255,255,255,.14); border-radius:14px; padding:.75rem .9rem .8rem; text-align:center; box-shadow:0 12px 30px rgba(0,0,0,.55); z-index:5; backdrop-filter:blur(3px);}
   .overlay .v-head{display:flex; align-items:center; justify-content:center; gap:.45rem; font-family:var(--disp); font-weight:600; font-size:1.3rem; line-height:1.1;}
   .overlay .v-head.ok{color:#5DCAA5;} .overlay .v-head.bad{color:#F1A38B;}
   .overlay .v-mark{display:inline-flex; align-items:center; justify-content:center; width:1.55rem; height:1.55rem; border-radius:50%; font-size:.95rem; font-family:var(--sans); font-weight:700;}
   .overlay .v-head.ok .v-mark{background:#5DCAA5; color:#0E1012;}
   .overlay .v-head.bad .v-mark{background:#E0694A; color:#fff;}
+  .overlay .v-board{display:flex; justify-content:center; align-items:center; gap:.3rem; margin-top:.45rem; font-family:var(--mono); font-size:.8rem; color:#C9CEC8;}
+  .overlay .v-board .pc{display:inline-block; min-width:1.55rem; padding:.08rem .25rem; border-radius:4px; background:#FBFAF6; color:#141414; font-weight:600; text-align:center;}
+  .overlay .v-board .pc.r{color:#C8352B;}
+  .overlay .v-board .cls{margin-left:.35rem; color:#F0C987;}
   .overlay .v-line{margin-top:.6rem;}
   .overlay .v-compare{display:flex; align-items:stretch; justify-content:center; gap:.5rem; margin-top:.7rem;}
   .overlay .v-col{flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; gap:.25rem;}
@@ -122,26 +133,41 @@
   .overlay .v-chip{display:block; width:100%; font-weight:600; font-size:.88rem; line-height:1.25; padding:.42rem .5rem; border-radius:9px; color:#fff;}
   .overlay .v-chip.fold{background:#7A3B34;} .overlay .v-chip.call{background:#2E5E9E;} .overlay .v-chip.raise{background:#1F7F5F;}
   .overlay .v-chip.ghosted{background:#2A2E34; color:#9096A0; text-decoration:line-through; text-decoration-thickness:1px;}
-  .overlay .v-why{margin-top:.6rem; padding-top:.55rem; border-top:1px solid rgba(255,255,255,.1); font-size:.8rem; line-height:1.45; color:#B8BDB6;}
+  .overlay .v-why{margin-top:.6rem; padding-top:.55rem; border-top:1px solid rgba(255,255,255,.1); font-size:.82rem; line-height:1.5; color:#D6D9D3; text-align:left;}
+  .overlay .v-why b{color:#ECEBE6;}
+  .overlay .v-cap{display:block; font-family:var(--mono); font-size:.6rem; letter-spacing:.12em; text-transform:uppercase; color:#8F948E; margin-bottom:.15rem;}
+  .overlay .v-lesson .v-cap{color:#B99A5A;}
+  .overlay .v-note{margin-top:.5rem; font-size:.76rem; color:#8F948E; font-style:italic;}
+  .overlay .v-lesson{margin-top:.55rem; font-size:.76rem; line-height:1.45; color:#A9AEA7; text-align:left;}
+  .overlay .v-link{display:inline-block; margin-top:.55rem; font-size:.78rem; color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(93,202,165,.4);}
   @media (prefers-reduced-motion:no-preference){ .overlay{animation:pop .16s ease-out;} @keyframes pop{from{opacity:0; transform:translate(-50%,-46%) scale(.96);} to{opacity:1; transform:translate(-50%,-50%) scale(1);} } }
-  .verdict b{font-weight:600;} .verdict .ok{color:#5DCAA5;} .verdict .bad{color:#F1A38B;}
-  .verdict .why{display:block; color:#9DA29C; font-size:.83rem; margin-top:.1rem;}
   .after{display:flex; gap:.45rem; align-items:stretch;}
   .next{font:inherit; font-size:1rem; font-weight:600; padding:.7rem 1.2rem; border-radius:10px; border:none; background:#5DCAA5; color:#0E1012; cursor:pointer; flex:1; min-height:56px;}
+  .next.flopnext{background:#F0C987;}
   .room .ghost{min-height:56px; padding:.4rem 1rem; font-size:.88rem;}
   .ghost{font:inherit; font-size:.8rem; background:none; border:1px solid var(--border); color:var(--muted); border-radius:8px; padding:.25rem .6rem; cursor:pointer;}
   .room .ghost{border-color:rgba(255,255,255,.18); color:#C9CEC8;}
   .ghost:hover{color:var(--accent); border-color:var(--accent);}
   .ghost.on{background:var(--accent); border-color:var(--accent); color:#0E1012;}
-  /* key caps: shown only where a keyboard exists, on the control that key triggers */
   .kcap{position:absolute; top:5px; right:6px; font-family:var(--mono); font-size:.6rem; font-weight:600; line-height:1; padding:.16rem .32rem; min-width:1.05rem; text-align:center; border-radius:4px; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.18); color:rgba(255,255,255,.7); pointer-events:none;}
   .kcap.wide{min-width:auto; letter-spacing:.03em;}
   .act, .next, .room .ghost{position:relative;}
   .next .kcap{background:rgba(0,0,0,.14); border-color:rgba(0,0,0,.2); color:rgba(14,16,18,.6);}
-  .room .ghost{padding-right:2.1rem;}                 /* room for the cap so it never crowds the label */
+  .room .ghost{padding-right:2.1rem;}
   .room .ghost .kcap{background:rgba(255,255,255,.06); top:50%; right:.6rem; transform:translateY(-50%);}
   .act[disabled] .kcap{opacity:.5;}
-  @media (hover:none){ .kcap{display:none;} }   /* touch devices have no keyboard */
+  @media (hover:none){ .kcap{display:none;} }
+
+  /* two-street summary (mode 2) */
+  .summary{margin-top:.6rem; background:#171A1E; border:1px solid rgba(255,255,255,.07); border-radius:12px; padding:.55rem .8rem .6rem;}
+  .summary .row{display:grid; grid-template-columns:1.4rem 4.4rem 1fr; gap:.5rem; align-items:baseline; padding:.35rem 0; border-top:1px solid rgba(255,255,255,.06); font-size:.84rem; line-height:1.4;}
+  .summary .row:first-child{border-top:none;}
+  .summary .mk{font-weight:700;} .summary .mk.ok{color:#5DCAA5;} .summary .mk.bad{color:#F1A38B;}
+  .summary .st{font-family:var(--mono); font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; color:#8F948E;}
+  .summary .yours{color:#9096A0; text-decoration:line-through; margin-right:.3rem;}
+  .summary .right{color:#ECEBE6; font-weight:600;}
+  .summary .why{display:block; color:#B8BDB6; font-size:.8rem;}
+  .summary a{color:var(--accent); text-decoration:none; font-size:.78rem;}
 
   /* entry gate */
   .gate{position:fixed; inset:0; z-index:50; background:radial-gradient(ellipse at 50% 30%, #1B3A2C 0%, #0E1012 60%); display:flex; align-items:center; justify-content:center; padding:1.2rem; overflow:auto;}
@@ -163,6 +189,7 @@
   @media (max-width:520px){ .gate{padding:.8rem; align-items:flex-start; padding-top:1.5rem;} .gate-card{padding:1.3rem 1.1rem 1.2rem;} .gate-card h2{font-size:1.35rem;} .gate-card p{font-size:.9rem;} }
   .hidden{display:none !important;}
 
+  /* the revealed chart / lists */
   .reveal{margin-top:.9rem; padding-top:.8rem; border-top:1px solid rgba(255,255,255,.1);}
   .gridpct{display:flex; flex-wrap:wrap; justify-content:center; gap:.35rem .5rem; margin:0 0 .7rem; font-family:var(--mono); font-size:.78rem; color:#C9CEC8;}
   .gridpct span{display:inline-flex; align-items:center; gap:.35rem; background:#171A1E; border:1px solid rgba(255,255,255,.1); border-radius:999px; padding:.15rem .6rem;}
@@ -174,8 +201,19 @@
   .cell.here{outline:2.5px solid #fff; outline-offset:-1px; z-index:1; transform:scale(1.35); box-shadow:0 2px 8px rgba(0,0,0,.5);}
   .legend{display:flex; flex-wrap:wrap; gap:.4rem .9rem; justify-content:center; margin-top:.7rem; font-size:.76rem; color:#9DA29C;}
   .legend span{display:inline-flex; align-items:center; gap:.35rem;} .legend i{width:11px; height:11px; border-radius:2px; display:inline-block;}
+  .lists{font-size:.84rem; color:#C9CEC8;}
+  .lists .lhead{font-family:var(--mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:#8F948E; margin:0 0 .5rem;}
+  .lists .lhead b{color:#ECEBE6; letter-spacing:0; text-transform:none; font-size:.86rem; font-family:var(--sans);}
+  .lists .opt{border-left:3px solid var(--border); padding:.25rem .7rem .3rem; margin-bottom:.6rem; border-radius:0 8px 8px 0; background:#171A1E;}
+  .lists .opt.raise{border-color:#1D9E75;} .lists .opt.call{border-color:#378ADD;} .lists .opt.no{border-color:#7A3B34;}
+  .lists .when{margin:.1rem 0 .2rem; font-weight:600; color:#ECEBE6; font-size:.86rem;}
+  .lists ul{margin:0; padding-left:1rem;} .lists li{margin:.18rem 0; line-height:1.4;}
+  .lists li b{color:#ECEBE6; font-weight:600;}
+  .lists li.here{background:rgba(240,201,135,.12); outline:1px solid rgba(240,201,135,.45); border-radius:5px; padding:.15rem .4rem; margin-left:-.4rem;}
+  .lists li.here b{color:#F0C987;}
+  .lists .ref{display:inline-block; margin-top:.2rem; color:var(--accent); font-size:.8rem; text-decoration:none;}
 
-  /* settings + stats (page chrome) */
+  /* settings + stats */
   .panel{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:.9rem 1.1rem; margin-bottom:1rem;}
   .panel summary{cursor:pointer; font-weight:600; font-size:.9rem; list-style:none; display:flex; justify-content:space-between; align-items:center;}
   .panel summary::-webkit-details-marker{display:none;}
@@ -186,6 +224,12 @@
   .pick:hover{border-color:var(--accent);}
   .pick[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#0E1012;}
   .pick:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .modes{display:grid; grid-template-columns:repeat(3,1fr); gap:.45rem; margin-top:.6rem;}
+  .mode{font:inherit; text-align:left; padding:.6rem .7rem; border-radius:10px; border:1px solid var(--border); background:var(--surface-2); color:var(--text); cursor:pointer; line-height:1.3;}
+  .mode b{display:block; font-size:.9rem;} .mode small{display:block; color:var(--muted); font-size:.74rem; margin-top:.1rem;}
+  .mode[aria-pressed="true"]{border-color:var(--accent); background:var(--accent-soft); box-shadow:0 0 0 1px var(--accent) inset;}
+  .mode[aria-pressed="true"] small{color:#9BE3C6;}
+  @media (max-width:520px){ .modes{grid-template-columns:1fr;} }
   .tools{display:flex; justify-content:space-between; align-items:center; gap:.6rem; margin-top:.8rem; padding-top:.7rem; border-top:1px solid var(--border); font-size:.78rem; color:var(--muted); flex-wrap:wrap;}
 
   .stats .top{display:flex; gap:1.5rem; flex-wrap:wrap; align-items:baseline; margin-bottom:.6rem;}
@@ -195,12 +239,15 @@
   table.per td{padding:.3rem .3rem; border-bottom:1px solid var(--border);}
   table.per td.num{font-family:var(--mono); color:var(--muted); text-align:right; white-space:nowrap;}
   table.per td.num.low{color:var(--bluff);}
+  table.per td.grp{font-family:var(--mono); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); padding-top:.7rem;}
   .misses{margin-top:.7rem; font-size:.84rem; color:var(--muted);}
   .misses .h{display:inline-flex; flex-wrap:wrap; gap:.3rem; margin-top:.3rem;}
-  .misses .h span{font-family:var(--mono); font-size:.74rem; padding:.1rem .45rem; border-radius:6px; background:var(--surface-2); border:1px solid var(--border);}
+  .misses .h span{font-family:var(--mono); font-size:.74rem; padding:.1rem .45rem; border-radius:6px; background:var(--surface-2); border:1px solid var(--border); cursor:pointer;}
+  .misses .h span:hover{border-color:var(--accent); color:var(--accent);}
+  .misses .cap{display:block; font-size:.78rem; margin-top:.5rem;}
+  .misses .h span em{font-style:normal; color:var(--accent); margin-left:.15rem;}
   .empty{color:var(--muted); font-size:.86rem;}
 
-  /* link to the reference */
   .refcard{display:flex; gap:1.1rem; align-items:center; margin-top:1rem; padding:1.1rem 1.2rem; background:linear-gradient(135deg,#1A1D22 0%,#171F1C 100%); border:1px solid rgba(93,202,165,.3); border-radius:14px; text-decoration:none; color:inherit; transition:border-color .15s, transform .15s;}
   .refcard:hover{border-color:var(--accent); transform:translateY(-1px);}
   .refcard-body{flex:1; min-width:0;}
@@ -216,16 +263,13 @@
   @media (max-width:520px){
     header.masthead{display:flex; align-items:baseline; margin-bottom:.45rem;} h1{font-size:1rem;} .sub{display:none;}
     .wrap{padding:.5rem .45rem 3rem;}
-    .room{padding:.45rem .25rem .6rem; border-radius:0; margin:0 -.45rem;}   /* bleed to the screen edges */
+    .room{padding:.45rem .25rem .6rem; border-radius:0; margin:0 -.45rem;}
     header.masthead{margin-bottom:.35rem;}
-    .rail{inset:5% .5%;} .felt{inset:8.5% 3.5%;}
-    .sit,.bar{margin-left:.2rem; margin-right:.2rem;}
-    /* fit table + situation + bar in one screen: height is the binding constraint on phones */
-    /* full width always; height flexes to what the screen allows, so a short viewport makes the oval squatter, not narrower */
+    .sit,.bar,.summary{margin-left:.2rem; margin-right:.2rem;}
     .tablebox{aspect-ratio:auto; width:100%; max-width:none; height:min(calc((100vw - .5rem) * 1.3), calc(100dvh - 300px)); min-height:320px;}
-    .actions{grid-template-columns:1fr 1fr;} .bar{min-height:118px;}
+    .actions{grid-template-columns:1fr 1fr;} .actions.three{grid-template-columns:1fr 1fr;} .bar{min-height:118px;}
     .after{flex-wrap:wrap;} .after .next{flex:1 1 100%;} .after .ghost{flex:1;}
-    .overlay{width:min(92%,330px); padding:.6rem .7rem .65rem;}
+    .overlay{width:min(94%,360px); padding:.6rem .7rem .65rem;}
     .overlay .v-head{font-size:1.15rem;} .overlay .v-chip{font-size:.82rem; padding:.38rem .4rem;} .overlay .v-why{font-size:.76rem;}
     .sit{margin-top:.5rem; padding:.5rem .7rem .55rem;} .sit-top{margin-bottom:.2rem;} .sit-text{font-size:.94rem;}
     .bar{margin-top:.5rem;}
@@ -233,7 +277,11 @@
     .seat{width:clamp(72px,26%,100px);}
     .plate .nm{font-size:.7rem;} .plate .st{font-size:.62rem;} .plate .pos{font-size:.52rem;}
     .card{width:50px; height:70px; border-radius:6px;} .card .r{font-size:1rem; top:3px; left:5px;} .card .s{top:20px; left:5px; font-size:1rem;} .card .big{font-size:1.8rem; right:4px; bottom:2px;}
+    .board .card{width:36px; height:50px;} .board .card .r{font-size:.8rem;} .board .card .s{top:16px; font-size:.8rem;} .board .card .big{font-size:1.2rem;}
+    .tablebox.flop .pot{top:34%;}
     .hole .cb{width:18px; height:25px;}
+    .dealer{width:18px; height:18px; font-size:.64rem; top:-8px; right:-8px; box-shadow:0 0 0 1.5px rgba(0,0,0,.55), 0 1px 4px rgba(0,0,0,.7);}
+    .seat.hero .dealer{top:auto; bottom:-9px;}
     .bet{font-size:.68rem;} .tag{font-size:.62rem;} .pot{font-size:.74rem; top:40%;}
     .kbd{display:none;}
     .sit-text{font-size:1rem;}
@@ -244,19 +292,21 @@
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
   <div class="gate-card">
     <p class="gate-suits">♠ ♥ ♦ ♣</p>
+    <p style="margin:0 0 .5rem; font-family:var(--mono); font-size:.72rem; color:#8F948E;">Updated 25 September 2026</p>
     <h2 id="gate-title">Before you sit down</h2>
     <div id="gate-intro">
-    <p>These ranges, sizes and the trainer itself were worked out with <strong>Claude (Fable&nbsp;5.1)</strong> for one game: <strong>NL25 6-max cash on GGPoker, 100bb deep.</strong> They're a baseline for beating that pool, not a solver output.</p>
-    <p>Some choices are deliberate departures from theory because of how NL25 actually plays: <strong>few bluff 3-bets</strong> (the pool doesn't fold enough for blockers to earn), <strong>no limping and no flatting from the small blind</strong>, <strong>2.5bb opens</strong> everywhere but the small blind, <strong>bigger isolation raises</strong> against limpers, and <strong>tighter big-blind defence</strong> than a solver would show because rake hits small pots hardest. Where the doc deviates, the reference says why.</p>
-    <p>Treat every chart as the default, and the notes on opponents as the edge. Wrong size counts as a miss on purpose.</p>
-    <p><strong>This first version covers preflop only.</strong> Postflop — c-betting, defending as the caller, turn and river — will follow.</p>
+    <p>The <a href="reference.html" style="color:var(--accent);">Playbook</a> was written for one job: beating NL25 6-max on GGPoker, one of the busiest games online. Don't let the stakes fool you. A regular winner at NL25 is better than most people who play poker &mdash; online, and almost certainly at the pub.</p>
+    <p>The Playbook and this trainer were built with <strong>Claude</strong> (mostly Fable&nbsp;5.1), and they're built from the same data: the charts, the flop lists and the reasons are one file, so what the trainer marks wrong is exactly what the Playbook says &mdash; with a link to the page.</p>
+    <p>It's a plan for the players who actually sit at those online tables &mdash; the ones who limp, call too much, and never bluff the river &mdash; rather than a solver's idea of poker. Where the Playbook departs from theory, it tells you why.</p>
+    <p><strong>Preflop</strong> covers every seat and every chart. <strong>The flop</strong> covers the spots you'll meet most: c-betting, defending against a c-bet, iso pots, multiway, and 3-bet pots from both sides.</p>
+    <p>Two house rules. The wrong bet size is a miss &mdash; size is half the decision. And the turn and river stay in the Playbook: they're principles, and principles don't deal cards.</p>
     </div>
     <div id="gate-step1">
-      <button class="gate-btn" id="btn-continue">Continue — choose your spots</button>
-      <p class="gate-foot"><a href="preflop-ranges.html">Read the range reference — all 21 charts, with the reasoning</a><br><button class="gate-skip" id="btn-skip">Don't show this again</button></p>
+      <button class="gate-btn" id="btn-continue">Continue — choose what to drill</button>
+      <p class="gate-foot"><a href="reference.html">Read the Playbook first &mdash; it's what this trainer is built from</a><br><button class="gate-skip" id="btn-skip">Don't show this again</button></p>
     </div>
     <div id="gate-step2" class="hidden">
-      <p class="gate-lead">Pick what to drill. Openings are on by default; the rest is one tap away. You can change all of this later under <em>Spots &amp; difficulty</em> below the table.</p>
+      <p class="gate-lead">Pick a mode and the spots. You can change all of this later under <em>What to drill</em> below the table.</p>
       <div id="gate-settings"></div>
       <button class="gate-btn" id="btn-start">Shuffle up and deal</button>
     </div>
@@ -267,7 +317,8 @@
   <p class="topbar"><a href="/">← chungwin.com</a></p>
 
   <header class="masthead">
-    <h1>Preflop range trainer</h1>
+    <h1>NL25 trainer</h1>
+    <p class="sub"><a href="reference.html">The Playbook</a> · built from the same data</p>
   </header>
 
   <section class="room" aria-live="polite">
@@ -275,6 +326,7 @@
       <div class="rail"></div>
       <div class="felt"><div class="inner"></div><div class="brand">$0.10 / $0.25 · 6-MAX</div></div>
       <div class="pot" id="pot">Pot $0.35</div>
+      <div class="board hidden" id="board"></div>
       <div id="seats"></div>
       <div class="overlay hidden" id="overlay"></div>
     </div>
@@ -289,16 +341,26 @@
         <button class="ghost" id="btn-chart">Show chart<span class="kcap" aria-hidden="true">C</span></button>
       </div>
     </div>
+    <div class="summary hidden" id="summary"></div>
     <div class="verdict hidden" id="verdict" aria-live="polite"></div>
     <div class="reveal hidden" id="reveal">
-      <div class="gridpct" id="gridpct"></div>
-      <div class="grid" id="grid"></div>
-      <div class="legend" id="legend"></div>
+      <div id="reveal-pre">
+        <div class="gridpct" id="gridpct"></div>
+        <div class="grid" id="grid"></div>
+        <div class="legend" id="legend"></div>
+      </div>
+      <div class="lists hidden" id="reveal-flop"></div>
     </div>
   </section>
 
-  <details class="panel" open>
-    <summary>Spots &amp; difficulty <span class="sum" id="pool-note"></span></summary>
+  <details class="panel" open id="panel">
+    <summary>What to drill <span class="sum" id="pool-note"></span></summary>
+    <div class="modes" id="modes">
+      <button class="mode" data-mode="pre" aria-pressed="true"><b>Preflop</b><small>Every chart. The trainer as it was.</small></button>
+      <button class="mode" data-mode="both" aria-pressed="false"><b>Preflop + flop</b><small>Play the flop your line leads to.</small></button>
+      <button class="mode" data-mode="flop" aria-pressed="false"><b>Flop only</b><small>Straight to the board, from the Playbook's ranges.</small></button>
+    </div>
+    <div class="pre-only">
     <div class="row"><span class="lab">Opening</span>
       <button class="pick" data-chart="rfi-lj" aria-pressed="true">Lojack</button>
       <button class="pick" data-chart="rfi-hj" aria-pressed="true">Hijack</button>
@@ -332,14 +394,31 @@
       <button class="pick" data-reads="on" aria-pressed="true">On — a third of hands come with a read</button>
       <button class="pick" data-reads="off" aria-pressed="false">Off</button>
     </div>
-    <div class="row"><span class="lab">Difficulty</span>
+    <div class="row"><span class="lab">Difficulty (preflop)</span>
       <button class="pick" data-diff="all" aria-pressed="true">All hands</button>
       <button class="pick" data-diff="lean" aria-pressed="false">Lean to the edges</button>
       <button class="pick" data-diff="edge" aria-pressed="false">Edges only</button>
       <span class="kbd" id="diff-note" style="margin-left:.2rem; color:var(--muted);"></span>
     </div>
+    </div>
+    <div class="flop-only hidden">
+    <div class="row"><span class="lab">As the bettor</span>
+      <button class="pick" data-sit="cbet-ip" aria-pressed="true">C-bet in position</button>
+      <button class="pick" data-sit="cbet-oop" aria-pressed="true">C-bet out of position</button>
+      <button class="pick" data-sit="iso-ip" aria-pressed="false">Iso pot</button>
+      <button class="pick" data-sit="cbet-multiway" aria-pressed="false">Multiway</button>
+      <button class="pick" data-sit="3bet-aggressor" aria-pressed="false">3-bet pot, you 3-bet (IP)</button>
+      <button class="pick" data-sit="3bet-aggressor-oop" aria-pressed="false">3-bet pot, you 3-bet (OOP)</button>
+    </div>
+    <div class="row"><span class="lab">As the caller</span>
+      <button class="pick" data-sit="bb-vs-cbet" aria-pressed="true">BB vs c-bet</button>
+      <button class="pick" data-sit="ip-vs-cbet" aria-pressed="false">Vs c-bet in position</button>
+      <button class="pick" data-sit="3bet-caller" aria-pressed="false">3-bet pot, you called (IP)</button>
+      <button class="pick" data-sit="3bet-caller-oop" aria-pressed="false">3-bet pot, you called (OOP)</button>
+    </div>
+    </div>
     <div class="tools">
-      <span>Opponents act before you. Two raise sizes are offered — only one is right for the spot.</span>
+      <span id="tools-note">Opponents act before you. Two raise sizes are offered — only one is right for the spot.</span>
       <span style="display:flex; gap:.4rem;">
         <button class="ghost" id="btn-all">All spots</button>
         <button class="ghost" id="btn-none">None</button>
@@ -351,7 +430,7 @@
   <section class="panel stats" aria-label="Session stats">
     <div class="top">
       <div class="stat"><div class="n" id="s-acc">—</div><div class="l">accuracy</div></div>
-      <div class="stat"><div class="n plain" id="s-n">0</div><div class="l">hands</div></div>
+      <div class="stat"><div class="n plain" id="s-n">0</div><div class="l">decisions</div></div>
       <div class="stat"><div class="n plain" id="s-streak">0</div><div class="l">streak</div></div>
       <div class="stat"><div class="n plain" id="s-best">0</div><div class="l">best streak</div></div>
       <div class="stat"><div class="n plain" id="s-size">0</div><div class="l">wrong size</div></div>
@@ -361,219 +440,1204 @@
     <div class="misses" id="misses"></div>
   </section>
 
-  <a class="refcard" href="preflop-ranges.html">
+  <a class="refcard" href="reference.html">
     <div class="refcard-body">
       <p class="refcard-kicker">The source</p>
-      <h2>Preflop ranges — NL25 6-max</h2>
-      <p class="refcard-desc">Every chart the trainer deals from, with the reasoning behind each one: opening by seat, isolating limpers, playing the blinds, 3-betting and facing 3-bets, and the calling ranges. 21 charts and the deliberate departures from theory, explained.</p>
-      <span class="refcard-cta">Read the reference →</span>
+      <h2>The Playbook &mdash; NL25 6-max</h2>
+      <p class="refcard-desc">Every chart and every flop list the trainer deals from, with the reasoning: opening by seat, the blinds, 3-betting, the flop as the bettor and as the caller, 3-bet pots, turn and river, and thirty-seven lessons at the end.</p>
+      <span class="refcard-cta">Read the Playbook →</span>
     </div>
     <div class="refcard-mini" aria-hidden="true"><div class="grid" id="refgrid"></div></div>
   </a>
 
 </div>
 <script>
+/* inlined from src/poker-data.js — edit that file, not this block */
+/* poker-data.js — the single source of truth for the NL25 6-max library.
+   reference.html renders it, trainer.html deals from it. Edit here, nowhere else.
+   Hand notation: 's' = suited, 'o' = offsuit, pairs bare. Ranks A K Q J T 9 8 7 6 5 4 3 2. */
+
+const RANKS=['A','K','Q','J','T','9','8','7','6','5','4','3','2'];
+
+const ALL_SUITED=(function(){
+  const out=[];
+  for(let i=0;i<13;i++) for(let j=i+1;j<13;j++) out.push(RANKS[i]+RANKS[j]+'s');
+  return out;
+})();
+const ALL_PAIRS=RANKS.map(function(r){return r+r;});
+function suitedExcept(list){ return ALL_SUITED.filter(function(h){return list.indexOf(h)===-1;}); }
+
+// Edit these sets to update ranges. 's' = suited, 'o' = offsuit, pairs bare.
+const RANGES={
+  'rfi-lj':{mode:'rfi', raise:[].concat(ALL_PAIRS,
+    ['ATs','AJs','AQs','AKs','A5s','A4s','A3s','A2s',
+     'KTs','KJs','KQs','QTs','QJs','JTs','T9s','98s','87s','76s',
+     'AJo','AQo','AKo','KQo'])},
+
+  'rfi-hj':{mode:'rfi', raise:[].concat(ALL_PAIRS,
+    ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
+     'K9s','KTs','KJs','KQs','Q9s','QTs','QJs','J9s','JTs','T8s','T9s',
+     '98s','87s','76s','65s',
+     'ATo','AJo','AQo','AKo','KJo','KQo','QJo'])},
+
+  'rfi-co':{mode:'rfi', raise:[].concat(ALL_PAIRS,
+    ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
+     'K7s','K8s','K9s','KTs','KJs','KQs','Q8s','Q9s','QTs','QJs',
+     'J8s','J9s','JTs','T8s','T9s','97s','98s','86s','87s','75s','76s','65s','54s',
+     'A9o','ATo','AJo','AQo','AKo','KTo','KJo','KQo','QTo','QJo','JTo'])},
+
+  // Button: pairs + suited ordered by real strength (not "all suited") + offsuit to 98o.
+  'rfi-btn':{mode:'rfi', raise:[].concat(ALL_PAIRS,
+    ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
+     'K2s','K3s','K4s','K5s','K6s','K7s','K8s','K9s','KTs','KJs','KQs',
+     'Q2s','Q3s','Q4s','Q5s','Q6s','Q7s','Q8s','Q9s','QTs','QJs',
+     'J4s','J5s','J6s','J7s','J8s','J9s','JTs',
+     'T5s','T6s','T7s','T8s','T9s',
+     '95s','96s','97s','98s',
+     '85s','86s','87s',
+     '74s','75s','76s',
+     '64s','65s','53s','54s','43s'],
+    ['A2o','A3o','A4o','A5o','A6o','A7o','A8o','A9o','ATo','AJo','AQo','AKo',
+     'K8o','K9o','KTo','KJo','KQo','Q9o','QTo','QJo','J9o','JTo','T9o','98o'])},
+
+  'iso-early':{mode:'rfi', raise:
+    ['55','66','77','88','99','TT','JJ','QQ','KK','AA',
+     'A9s','ATs','AJs','AQs','AKs','KTs','KJs','KQs','QTs','QJs','JTs','T9s','98s',
+     'AJo','AQo','AKo','KQo']},
+
+  'iso-co':{mode:'rfi', raise:[].concat(ALL_PAIRS,
+    ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
+     'K9s','KTs','KJs','KQs','Q9s','QTs','QJs','J9s','JTs','T8s','T9s','98s','87s','76s',
+     'ATo','AJo','AQo','AKo','KJo','KQo','QJo'])},
+
+  'iso-btn':{mode:'rfi', raise:[].concat(ALL_PAIRS,
+    ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
+     'K7s','K8s','K9s','KTs','KJs','KQs','Q8s','Q9s','QTs','QJs',
+     'J8s','J9s','JTs','T8s','T9s','96s','97s','98s','86s','87s','74s','75s','76s','64s','65s','54s',
+     'A8o','A9o','ATo','AJo','AQo','AKo','K9o','KTo','KJo','KQo','QTo','QJo','JTo'])},
+
+
+  // SB first in: raise-or-fold, 3bb. A value-weighted Button minus the weakest offsuit and suited junk.
+  'sb-rfi':{mode:'rfi', raise:[].concat(ALL_PAIRS,
+    ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
+     'K2s','K3s','K4s','K5s','K6s','K7s','K8s','K9s','KTs','KJs','KQs',
+     'Q7s','Q8s','Q9s','QTs','QJs','J7s','J8s','J9s','JTs','T7s','T8s','T9s',
+     '97s','98s','86s','87s','75s','76s','65s','54s'],
+    ['A2o','A3o','A4o','A5o','A6o','A7o','A8o','A9o','ATo','AJo','AQo','AKo',
+     'K9o','KTo','KJo','KQo','Q9o','QTo','QJo','J9o','JTo','T9o'])},
+
+  // SB facing an open: 3-bet or fold, no calls by design (call list stays empty).
+  'sb-3bet-early':{mode:'3bet',
+    value:['99','TT','JJ','QQ','KK','AA','AQs','AKs','AKo'],
+    bluff:['A5s','A4s','A3s','AQo','AJs','KQs'],
+    call:[]},
+  'sb-3bet-late':{mode:'3bet',
+    value:['77','88','99','TT','JJ','QQ','KK','AA','ATs','AJs','AQs','AKs','KJs','KQs','QJs','ATo','AJo','AQo','AKo','KJo','KQo'],
+    bluff:['A5s','A4s','A3s','A2s','A9s','A8s','K9s','KTs','QTs','JTs','T9s','98s','87s','76s','QJo'],
+    call:[]},
+
+  // BB vs LJ / HJ open: strong range at the same price — tight, call-heavy, 3-bet only the top.
+  'def-bb-early':{mode:'3bet',
+    value:['QQ','KK','AA','AKs','AKo'],
+    bluff:['A5s','A4s'],
+    call:['22','33','44','55','66','77','88','99','TT','JJ',
+          'A2s','A3s','A6s','A7s','A8s','A9s','ATs','AJs','AQs',
+          'K9s','KTs','KJs','KQs','Q9s','QTs','QJs','J9s','JTs','T8s','T9s',
+          '97s','98s','87s','76s','65s','54s',
+          'AQo','AJo','ATo','KQo','KJo','QJo','JTo']},
+
+  // BB vs CO open: between the two — suited hands widen a lot, offsuit only a little.
+  'def-bb-co':{mode:'3bet',
+    value:['TT','JJ','QQ','KK','AA','AQs','AKs','AQo','AKo'],
+    bluff:['A5s','A4s','A3s','A2s'],
+    call:['22','33','44','55','66','77','88','99',
+          'A6s','A7s','A8s','A9s','ATs','AJs',
+          'K5s','K6s','K7s','K8s','K9s','KTs','KJs','KQs','Q6s','Q7s','Q8s','Q9s','QTs','QJs',
+          'J7s','J8s','J9s','JTs','T6s','T7s','T8s','T9s','96s','97s','98s','85s','86s','87s',
+          '74s','75s','76s','64s','65s','53s','54s','43s',
+          'A7o','A8o','A9o','ATo','AJo','K9o','KTo','KJo','KQo','Q9o','QTo','QJo','J9o','JTo','T9o','98o']},
+
+
+  // Blind vs blind: SB opens 3bb, you're BB — in position, weaker range, worse price. Wide, 3-bet-heavy.
+  'def-bb-sb':{mode:'3bet',
+    value:[
+     '99','TT','JJ','QQ','KK','AA','ATs','AJs','AQs','AKs','KJs','KQs','QJs','AJo',
+     'AQo','AKo','KQo'],
+    bluff:[
+     'A2s','A3s','A4s','A5s','K8s','K9s','76s','65s','KJo','QJo'],
+    call:[
+     '22','33','44','55','66','77','88','A9s','A8s','A7s','A6s','KTs','K7s','K6s',
+     'K5s','K4s','K3s','K2s','QTs','Q9s','Q8s','Q7s','Q6s','Q5s','Q4s','Q3s','Q2s','JTs',
+     'J9s','J8s','J7s','J6s','J5s','J4s','J3s','J2s','T9s','T8s','T7s','T6s','T5s','T4s',
+     'T3s','T2s','98s','97s','96s','95s','87s','86s','85s','84s','75s','74s','64s','63s',
+     '54s','53s','43s','A2o','A3o','A4o','A5o','A6o','A7o','A8o','A9o','ATo','K7o','K8o',
+     'K9o','KTo','Q9o','QTo','J9o','JTo','T9o','98o','87o']},
+
+  // BB vs SB limp: raise or check — never fold a free flop. Legend 'check'.
+  'bb-vs-sb-limp':{mode:'rfi', raise:[
+     '44','55','66','77','88','99','TT','JJ','QQ','KK','AA','AKs','AQs','AJs',
+     'ATs','A9s','A8s','A7s','A6s','A5s','A4s','A3s','A2s','K8s','K9s','KTs','KJs','KQs',
+     'Q9s','QTs','QJs','J9s','JTs','T9s','98s','87s','A8o','A9o','ATo','AJo','AQo','AKo',
+     'KTo','KJo','KQo','QTo','QJo','JTo']},
+
+  // BB vs an open plus a caller (CO opens, BTN calls): overcall multiway hands, squeeze the top.
+  'def-bb-multi':{mode:'3bet',
+    value:[
+     'QQ','KK','AA','AKs','AQs','AKo'],
+    bluff:[
+     'A5s','A4s'],
+    call:[
+     '22','33','44','55','66','77','88','99','TT','JJ','A2s','A3s','A6s','A7s',
+     'A8s','A9s','ATs','AJs','K7s','K8s','K9s','KTs','KJs','KQs','Q8s','Q9s','QTs','QJs',
+     'J8s','J9s','JTs','T8s','T9s','97s','98s','86s','87s','75s','76s','64s','65s',
+     '53s','54s','43s','AQo','AJo','KQo']},
+
+  // Facing a 3-bet from a player behind you (opened HJ / CO, 3-bet by CO / BTN): out of position vs a wide 3-bettor.
+  'vs3-behind':{mode:'4bet',
+    value:[
+     'QQ','KK','AA','AKs','AKo'],
+    bluff:[
+     'A5s','A4s'],
+    call:[
+     'JJ','TT','99','AQs','AJs','KQs','AQo']},
+
+  // BB vs BTN: pairs + suited by strength (junk cut) + offsuit down to 98o.
+  'def-bb-btn':{mode:'3bet',
+    value:['AA','KK','QQ','JJ','TT','99','AKs','AQs','AJs','KQs','AKo','AQo'],
+    bluff:['A5s','A4s','A3s','A2s','K9s'],
+    call:[].concat(
+      ['88','77','66','55','44','33','22'],
+      suitedExcept(['AKs','AQs','AJs','KQs','A5s','A4s','A3s','A2s','K9s',
+                    '94s','93s','92s','83s','82s','73s','72s','62s','52s','42s','32s']),
+      ['A2o','A3o','A4o','A5o','A6o','A7o','A8o','A9o','ATo','AJo',
+       'K7o','K8o','K9o','KTo','KJo','KQo',
+       'Q9o','QTo','QJo','J9o','JTo','T9o','98o'])},
+
+  'tbet-ip-tight':{mode:'3bet',
+    value:['JJ','QQ','KK','AA','AQs','AKs','AKo'],
+    bluff:['A2s','A3s','A4s','A5s'],
+    call:['TT','99','88','77','66','55','44','33','22','ATs','AJs','KTs','KQs','KJs','QTs','QJs','JTs','AQo']},
+
+  'tbet-ip-wide':{mode:'3bet',      value:['TT','JJ','QQ','KK','AA','AJs','AQs','AKs','KQs','AQo','AKo'],
+    bluff:['A2s','A3s','A4s','A5s','A9s','K9s'],
+    call:['99','88','77','66','55','44','33','22','ATs','A8s','A7s','A6s','KTs','KJs','QTs','QJs','Q9s','JTs','J9s','T9s','98s','87s','76s','KQo','AJo','ATo']},
+
+  // Facing a 3-bet after opening early — OOP baseline.
+  'vs3-early':{mode:'4bet',
+    value:['QQ','KK','AA','AKs','AKo'],
+    bluff:['A5s','A4s'],
+    call:['JJ','TT','99','88','AQs','AJs','ATs','KQs','KJs']},
+
+  // Facing a 3-bet after opening late — usually IP vs a blind.
+  'vs3-late':{mode:'4bet',
+    value:['QQ','KK','AA','AKs','AKo'],
+    bluff:['A5s','A4s','A3s'],
+    call:['JJ','TT','99','88','77','66','55','44','33','22',
+          'AQs','AJs','ATs','A9s','A8s','A7s','A6s',
+          'KQs','KJs','KTs','K9s','QJs','QTs','Q9s','JTs','J9s',
+          'T9s','98s','87s','76s','65s','54s','AQo']},
+};
+
+
+// ---------- shared helpers ----------
+function handAt(i,j){
+  if(i===j) return RANKS[i]+RANKS[j];
+  if(i<j) return RANKS[i]+RANKS[j]+'s';
+  return RANKS[j]+RANKS[i]+'o';
+}
+function actionOf(cfg,hand){
+  if(cfg.mode==='rfi') return cfg.raise.indexOf(hand)>-1?'raise':'fold';
+  if(cfg.value.indexOf(hand)>-1) return 'value';
+  if(cfg.bluff.indexOf(hand)>-1) return 'bluff';
+  if(cfg.call.indexOf(hand)>-1) return 'call';
+  return 'fold';
+}
+function combos(hs){ return hs.reduce(function(a,x){ return a+(x.length===2?6:x[2]==='s'?4:12); },0); }
+const ACTION_COLOR={raise:'#1D9E75', value:'#1D9E75', bluff:'#D85A30', call:'#378ADD'};
+
+// =====================================================================
+// POSTFLOP
+// Everything below is data. reference.html renders the prose around it and
+// trainer.html deals hands from it. Same source, so the two cannot disagree.
+// =====================================================================
+
+// ---------- cards ----------
+const RANK_VAL={A:14,K:13,Q:12,J:11,T:10,'9':9,'8':8,'7':7,'6':6,'5':5,'4':4,'3':3,'2':2};
+const SUITS=['s','h','d','c'];
+const DECK=(function(){ const d=[]; RANKS.forEach(r=>SUITS.forEach(s=>d.push(r+s))); return d; })();
+
+// ---------- hand classes ----------
+// The vocabulary every postflop rule is written in. Order = strength / priority.
+const HAND_CLASSES={
+  strong:    {label:'Two pair or better',        short:'2P+'},
+  'pair+draw':{label:'A pair plus a draw',        short:'P+D'},
+  combo:     {label:'Flush draw plus straight draw', short:'FD+SD'},
+  overpair:  {label:'Overpair',                   short:'OP'},
+  tp:        {label:'Top pair',                   short:'TP'},
+  mp:        {label:'Middle pair',                short:'MP'},
+  wp:        {label:'Bottom pair or underpair',   short:'WP'},
+  nfd:       {label:'Nut flush draw',             short:'NFD'},
+  fd:        {label:'Flush draw',                 short:'FD'},
+  oesd:      {label:'Open-ended straight draw',   short:'OESD'},
+  gut:       {label:'Gutshot',                    short:'GS'},
+  oc:        {label:'Two overcards',              short:'OC'},
+  ahigh:     {label:'Ace-high, no draw',          short:'A-hi'},
+  air:       {label:'Nothing',                    short:'air'}
+};
+
+function isStraightSet(vals){ // vals: array of rank values; A counts high and low
+  const s=new Set(vals); if(s.has(14)) s.add(1);
+  for(let hi=14;hi>=5;hi--){ let ok=true; for(let k=0;k<5;k++) if(!s.has(hi-k)){ok=false;break;} if(ok) return true; }
+  return false;
+}
+
+// classifyHand(['Kh','Qc'], ['Ks','9h','4d']) -> 'tp'
+function classifyHand(hole,board){
+  const all=hole.concat(board);
+  const rv=c=>RANK_VAL[c[0]], su=c=>c[1];
+  const bv=board.map(rv).slice().sort((a,b)=>b-a), hv=hole.map(rv);
+  const top=bv[0], mid=bv[1], low=bv[2];
+  const boardPaired = new Set(bv).size<3;
+  const boardMono = board.every(c=>su(c)===su(board[0]));
+  const pocket = hv[0]===hv[1];
+  let madeStrong=false;   // a set or two pair — on a monotone board without the flush it plays as a pair plus a draw
+
+  // --- made hands ---
+  const suitCount={}; all.forEach(c=>{suitCount[su(c)]=(suitCount[su(c)]||0)+1;});
+  const flushSuit=Object.keys(suitCount).find(s=>suitCount[s]>=5);
+  const straight=isStraightSet(all.map(rv));
+  let pairClass=null;
+  if(boardPaired){
+    const pr=bv.find(v=>bv.filter(x=>x===v).length>=2), single=bv.find(v=>v!==pr);
+    if(pocket && hv[0]===pr) return 'strong';                       // quads
+    if(hv.indexOf(pr)>-1) return 'strong';                          // trips (or full house)
+    if(pocket && hv[0]===single) return 'strong';                   // full house
+    if(pocket) pairClass = hv[0]>single?'overpair':(hv[0]>pr?'mp':'wp');
+    else if(hv.indexOf(single)>-1) pairClass='tp';
+    else if(single===undefined) pairClass=null;
+  }else{
+    if(pocket){
+      if(bv.indexOf(hv[0])>-1) madeStrong=true;                     // set
+      else pairClass = hv[0]>top?'overpair':(hv[0]>mid?'mp':'wp');
+    }else{
+      const hits=hv.filter(v=>bv.indexOf(v)>-1);
+      if(hits.length===2) madeStrong=true;                          // two pair
+      if(hits.length===1) pairClass = hits[0]===top?'tp':(hits[0]===mid?'mp':'wp');
+    }
+  }
+  if(flushSuit||straight) return 'strong';
+  if(madeStrong) return boardMono ? 'pair+draw' : 'strong';         // ten outs to a full house against the flush he represents
+
+  // --- draws ---
+  let fd=false, nfd=false;
+  Object.keys(suitCount).forEach(s=>{
+    if(suitCount[s]===4 && hole.some(c=>su(c)===s)){
+      fd=true;
+      const onBoard=board.filter(c=>su(c)===s).map(rv), mine=hole.filter(c=>su(c)===s).map(rv);
+      const best=Math.max.apply(null,mine);
+      // nut draw: no higher card of that suit is still out there
+      let higherOut=false; for(let v=best+1;v<=14;v++) if(onBoard.indexOf(v)===-1) higherOut=true;
+      if(!higherOut) nfd=true;
+    }
+  });
+  let outs=0;
+  DECK.forEach(c=>{ if(all.indexOf(c)>-1) return; if(isStraightSet(all.concat([c]).map(rv))) outs++; });
+  const oesd=outs>=8, gut=outs>=4&&outs<8;
+
+  if(pairClass && (fd||oesd)) return 'pair+draw';
+  if(fd && (oesd||gut)) return 'combo';
+  if(pairClass) return pairClass;
+  if(nfd) return 'nfd';
+  if(fd) return 'fd';
+  if(oesd) return 'oesd';
+  if(gut) return 'gut';
+  if(hv[0]>top && hv[1]>top) return 'oc';
+  if(hv.indexOf(14)>-1) return 'ahigh';
+  return 'air';
+}
+
+// ---------- board classes ----------
+// `example` is the flop every list is written for; `also` shows two more in the book.
+// `patterns` are the rank patterns the trainer deals from (suits drawn to match `suits`):
+//   rainbow = three suits · twotone = the first two cards share a suit · mono = one suit.
+// Every pattern is vetted by the build harness against every situation: each hand class it can
+// produce must have a listed action, or the build fails and the pattern comes out.
+const BOARD_CLASSES={
+  'dry-high':     {label:'Dry high board',      example:['Ks','9h','4d'], also:[['Ac','7s','2h'],['Qd','8c','3h']], owner:'his', suits:'rainbow',
+                   patterns:[['K','9','4'],['A','7','2'],['Q','8','3'],['K','8','3'],['A','9','4'],['K','7','2'],['Q','7','2'],['A','8','3'],['K','9','3'],['A','9','2']]},
+  'paired':       {label:'Paired board',        example:['Ks','8h','8d'], also:[['Qc','5s','5d'],['Ah','6d','6c']], owner:'his', suits:'rainbow',
+                   patterns:[['K','8','8'],['Q','5','5'],['A','6','6'],['K','7','7'],['J','4','4'],['A','3','3'],['Q','9','9'],['K','5','5'],['A','8','8'],['Q','6','6']]},
+  'wet-high':     {label:'Wet high board',      example:['Ks','Qs','5h'], also:[['As','Js','8d'],['Qh','Th','7c']], owner:'his', suits:'twotone',
+                   patterns:[['K','Q','5'],['A','J','8'],['Q','T','7'],['K','J','6'],['A','Q','9'],['K','T','7'],['Q','J','5'],['A','T','7'],['K','J','8'],['A','K','8']]},
+  'middling':     {label:'Middling, connected', example:['Jc','9h','5d'], also:[['Ts','8d','6h'],['Qd','9s','6c']], owner:'even', suits:'rainbow',
+                   patterns:[['J','9','5'],['T','8','6'],['Q','9','6'],['J','8','4'],['T','9','5'],['J','T','4'],['Q','8','5'],['9','8','5'],['T','7','5'],['J','9','6']]},
+  'low-connected':{label:'Low, connected',      example:['7h','6h','5d'], also:[['8c','7d','4h'],['6s','5d','3c']], owner:'yours', suits:'twotone',
+                   patterns:[['7','6','5'],['8','7','4'],['6','5','3'],['8','6','5'],['7','5','4'],['9','7','6'],['6','4','3'],['8','7','5'],['7','6','4'],['5','4','3']]},
+  'monotone':     {label:'Monotone',            example:['As','7s','3s'], also:[['Kh','9h','5h'],['8d','6d','2d']], owner:'nobody', suits:'mono',
+                   patterns:[['A','7','3'],['K','9','5'],['8','6','2'],['Q','8','4'],['J','6','3'],['T','5','2'],['A','9','4'],['K','7','2'],['Q','9','3'],['J','7','2']]},
+  'ace-high':     {label:'Ace-high, dry',       example:['Ah','8c','3d'], also:[['As','Kd','6c'],['Ad','Ts','4h']], owner:'3-bettor', suits:'rainbow',
+                   patterns:[['A','8','3'],['A','K','6'],['A','T','4'],['A','9','2'],['A','7','2'],['A','J','5'],['A','Q','7'],['A','8','2'],['A','K','4'],['A','T','3']]}
+};
+// Deal a concrete flop for a board class: a random pattern with suits that fit the class.
+function dealBoard(bc, rnd){
+  rnd=rnd||Math.random; const B=BOARD_CLASSES[bc]; const pat=B.patterns[Math.floor(rnd()*B.patterns.length)];
+  const s=SUITS.slice().sort(function(){return rnd()-0.5;});
+  let su;
+  if(B.suits==='mono') su=[s[0],s[0],s[0]];
+  else if(B.suits==='twotone'){ su=[s[0],s[0],s[1]]; }
+  else su=[s[0],s[1],s[2]];
+  if(pat[1]===pat[2] && su[1]===su[2]) su[2]=s[2];          // a pair cannot share a suit
+  if(pat[0]===pat[1] && su[0]===su[1]) su[1]=s[2];
+  return pat.map(function(r,i){return r+su[i];});
+}
+
+// ---------- situations ----------
+// POSTFLOP[id].boards[boardClass][betSize] = { raise:[[handClass, why]], call:[...], fold:[...] }
+// Any hand class not listed for a board+size folds. `ex` gives the concrete hands the
+// reference prints next to each class, for that board.
+const POSTFLOP={};
+
+// ---------- reasons for the bare verbs ----------
+// A list entry may say just "fold." or "check." — clear in a list, empty as a lesson. Those are filled from
+// here: one sentence per hand class and context, written so it is true on every board it appears on. The
+// board-level `lesson` on each board carries the part that is specific to the flop.
+const REASONS={
+  'agg:bet':{
+    combo:'Bet. Flush draw plus straight draw is up to fifteen outs — you are often the favourite even when called.',
+    gut:'Bet small, once. Four outs, and a cheap bet folds his nothing; give up on the turn unless it helps.',
+    nfd:'Bet. Nine clean outs to the best hand, and no worse flush to fear.',
+    oesd:'Bet. Eight outs to a straight: a bet wins the pot when he folds and builds it for when you hit.',
+    overpair:'Bet for value. An overpair beats every top pair he can have, and every draw is behind.',
+    'pair+draw':'Bet. A pair plus a draw wins three ways: he folds, the draw comes in, or the pair holds.',
+    strong:'Bet, and keep betting. Two pair or better wants the pot big.',
+    tp:'Bet for value. Top pair is ahead of most of what continues, and the draws pay to see a turn.'
+  },
+  'agg:check':{
+    ahigh:'Check. Ace-high beats nothing that calls and folds nothing that beats it — its value is at showdown.',
+    air:'Check and give up. A bet only wins if he folds, and on this board he does not fold often enough.',
+    gut:'Check. Four outs and almost no fold equity: a bet turns a free turn card into money in his pot.',
+    mp:'Check. Second pair is a showdown hand: a bet folds what you beat and gets called by what beats you.',
+    oesd:'Check. A bet here neither folds him nor builds a pot you want — take the free card and bet if it comes in.',
+    oc:'Check. Six outs to top pair, nothing to show down, and no fold equity to make a bet work.',
+    wp:'Check. A small pair beats his air and loses to everything else — a bet only isolates you against the hands that beat you.'
+  },
+  'agg:check-call':{
+    combo:'Check, then call one bet. Too much equity to fold, but out of position a bet does not fold him.',
+    fd:'Check, then call one bet. Nine outs at a price — bet the turn when the flush comes in.',
+    nfd:'Check, then call one bet. Nine clean outs, and no need to bloat the pot from the worse seat.'
+  },
+  'agg:check-fold':{
+    ahigh:'Check, then fold. Out of position you cannot check ace-high to showdown, and it beats nothing that bets.',
+    air:'Check, then fold. A bet only wins if he folds, and a call only loses.',
+    gut:'Check, then fold. Four outs is not enough to bet into him, and rarely the right price to call.',
+    mp:'Check, then fold. On a board that hits his range you are behind most of what he bets, and you cannot see a free turn.',
+    oc:'Check, then fold. Six outs at best, no showdown value, and no cheap way to keep the hand out of position.',
+    oesd:'Check, then fold. On this board his bet means a made hand or a better draw.',
+    wp:'Check, then fold. A small pair has showdown value against a check, not against a bet.'
+  },
+  'vs-small:call':{
+    ahigh:'Call once. Three outs to top pair and you beat his air; fold the turn if nothing changes.',
+    fd:'Call. Nine outs give you about 35% equity, and a small bet needs only 20%.',
+    gut:'Call once. Four outs is enough at this price.',
+    mp:'Call. You beat every bluff and most of the worse pairs he bets small.',
+    nfd:'Call. Nine clean outs at a cheap price.',
+    oesd:'Call. Eight outs give you the equity, and calling keeps his bluffs in.',
+    tp:'Call, and plan to call again. Top pair is ahead of most of his range.',
+    wp:'Call. A small pair beats every bluff, and against a third-pot bet that is all you need.'
+  },
+  'vs-small:fold':{
+    ahigh:'Fold. On this board even a small bet is rarely a bluff, and three outs is not enough.',
+    air:'Fold. No pair, no draw, no ace — nothing to call with at any price.',
+    gut:'Fold. Four outs on a board where his small bet is not a bluff.',
+    mp:'Fold. On a board that hits his range, calling now means guessing on the turn without a free card.',
+    wp:'Fold. A small pair on this board is beaten by everything he bets with.'
+  },
+  'vs-small:raise':{
+    combo:'Raise. Fifteen outs makes you the favourite against his one pair — he folds, or you have plenty when he calls.',
+    nfd:'Raise. Nine clean outs and the best card of the suit — he folds, or you have plenty when he doesn\'t.',
+    'pair+draw':'Raise. A pair plus a draw wins when he folds, when you hit, and often when the pair holds.',
+    strong:'Raise. His bet says he has something, and this is when you build the pot.'
+  },
+  'vs-big:call':{
+    combo:'Call. Up to fifteen outs is more than enough equity, and raising would only fold his bluffs.',
+    fd:'Call once. Nine outs give you about 35%; a big bet needs 30%.',
+    nfd:'Call. Enough equity to continue, and raising commits too much with a draw.',
+    oesd:'Call once. Eight outs is just enough equity; fold the turn if you miss.',
+    overpair:'Call once. You beat his top pairs and lose to his sets — let the turn decide.',
+    'pair+draw':'Call. You may be ahead now, and you have outs when you are not.',
+    tp:'Call once. Whether it calls again is a turn question.'
+  },
+  'vs-big:fold':{
+    ahigh:'Fold. Three outs and no showdown value against a bet this size.',
+    air:'Fold. A big bet needs about 30% equity to call, and this hand has none.',
+    gut:'Fold. Four outs is about 17% equity, and a big bet needs 30%.',
+    mp:'Fold. He is not betting big with worse, and you cannot see a free turn.',
+    oc:'Fold. Six outs at best, and a bet this size is rarely a bluff.',
+    oesd:'Fold. The outs are there, but on this board the price is not.',
+    wp:'Fold. A small pair beats only bluffs, and a big bet from the pool is rarely one.'
+  },
+  'vs-big:raise':{
+    combo:'Raise. Fifteen outs, and a raise puts his one pair under pressure.',
+    'pair+draw':'Raise. You win when he folds, when you hit, and often when the pair holds.',
+    strong:'Raise. This is the pot you want to play for stacks.'
+  }
+};
+const BARE=/^(value|fold|check|call|calls|raise|bet( \d+%| small| big)?|call once|calls? (a small|one big|a) bet|check and give up|check-fold|check-call( one bet)?|all-in|give up|folds? to a big bet|calls one big bet|bet small once|second pair calls a small bet|(eight|nine|fifteen|four) outs\. (call|raise|bet( small)?|semi-bluff)|a flush|trips or better|two pair or a set|sets and two pair(: all-in)?|sets, two pair, straights|two ways to win\. bet|no pair, no ace\. fold|no fold equity\. check|calls, and keeps calling)\.$/i;
+function reasonFor(sit, sz, action, cls){
+  const ctx=sit.actions ? 'agg:'+action : 'vs-'+sz+':'+action;
+  return REASONS[ctx] && REASONS[ctx][cls];
+}
+function fillReasons(sit){
+  Object.keys(sit.boards).forEach(function(bc){ const rules=sit.boards[bc];
+    Object.keys(sit.sizes).forEach(function(sz){ const r=rules[sz]; if(!r) return;
+      Object.keys(r).forEach(function(action){ if(!Array.isArray(r[action])) return;
+        r[action].forEach(function(it){ if(BARE.test(it[1])){ const t=reasonFor(sit,sz,action,it[0]); if(t) it[1]=t; } }); }); }); });
+  return sit;
+}
+
+POSTFLOP['bb-vs-cbet']={
+  label:'BB facing a c-bet',
+  setup:'You defended the big blind against a Cutoff or Button open. Heads-up, you checked, he bet.',
+  hero:'BB', villain:'BTN', heroRange:'def-bb-btn', pot:5.5,
+  sizes:{
+    small:{label:'vs a small bet', range:'25–33% pot', need:'~20%', raiseTo:'3× his bet'},
+    big:  {label:'vs a big bet',   range:'66–75% pot', need:'~30%', raiseTo:'2.5× his bet'}
+  },
+  boards:{
+    'dry-high':{ lesson:'He bets this board with almost anything, so his bet means little: call with any pair, draw or ace, raise only two pair or better.',
+      ex:{strong:'K9, K4, 94, 44', tp:'any King', mp:'any 9, QQ–TT', wp:'any 4, 88–55, 33, 22', gut:'QJ, QT, JT', ahigh:'AQ, AJ, A7', air:'Q8, J7, T6'},
+      small:{
+        raise:[['strong','Raise. His top pair pays you, and there is nothing to slow-play against on a dry board.'],
+               ['overpair','Raise for value — his top pair pays. (This hand should have 3-bet preflop; here it plays like two pair.)']],
+        call: [['tp','Call, and keep calling.'],
+               ['oc','two overcards: six outs and a cheap price. Call once.'],
+               ['mp','you beat every bluff and every worse pair he bets. Call.'],
+               ['wp','bottom pair beats his air, and against a third-pot bet that is all you need. Call.'],
+               ['gut','four outs plus two big cards. Cheap enough at this price.'],
+               ['ahigh','three outs to top pair and you are ahead of his air. Call once; fold the turn if nothing changes.']],
+        fold: [['air','no pair, no ace, no draw. Let it go — even at this price.']]
+      },
+      big:{
+        raise:[['strong','a big bet on his board means he has top pair, and top pair pays. Raise.']],
+        call: [['overpair','call, don\'t raise. A big bet on his board is often top pair, which you beat — and calling keeps his bluffs in.'],
+               ['tp','top pair calls one big bet. Whether it calls a second is a turn question.'],
+               ['mp','you beat his bluffs and his weaker pairs. Call once — and fold to a turn barrel unimproved.']],
+        fold: [['wp','bottom pair beats only bluffs, and a big bet on his board is rarely one.'],
+               ['gut','four outs need a cheap price. This is not one.'],
+               ['oc','fold.'],
+               ['ahigh','fold.'],
+               ['air','fold.']]
+      }
+    },
+    'paired':{ lesson:'A paired board misses him more often than any other: any pair is good, ace-high calls a small bet, and trips play slow.',
+      ex:{strong:'any 8, KK', tp:'any King', mp:'QQ–99', wp:'77–22', ahigh:'any ace', air:'QJ, T9, 65'},
+      small:{
+        raise:[['strong','raise — and not too big, so his top pair keeps calling.'],
+               ['overpair','raise for value; his top pair pays.']],
+        call: [['tp','calls.'],
+               ['mp','a pocket pair above the board pair beats every hand that missed, which is most of his range. Call.'],
+               ['wp','still beats every hand that missed, which is most of his range.'],
+               ['ahigh','his range missed this board as often as yours did. Ace-high calls a small bet here.'],
+               ['oc','two overcards on a board that missed him too. Call a small bet.'],
+               ['gut','four outs at a cheap price. Call.'],['oesd','eight outs. Call.']],
+        fold: [['air','no pair, no ace. Fold.']]
+      },
+      big:{
+        raise:[['strong','trips or better.']],
+        call: [['overpair','call once. You beat his top pair; you lose to trips. Let the turn decide.'],
+               ['tp','top pair is a call, not a raise: raising folds his air and gets called by what beats you.'],
+               ['mp','call once. You beat his bluffs; you lose to his top pairs. Let the turn decide.'],
+               ['oesd','eight outs. Call.']],
+        fold: [['wp','fold to a big bet.'],['ahigh','fold.'],['oc','fold.'],['gut','fold.'],['air','fold.']]
+      }
+    },
+    'wet-high':{ lesson:'His board, full of draws: draws call at the right price, pair-plus-draw hands raise, second pair folds to a big bet.',
+      ex:{strong:'K5, Q5, 55', 'pair+draw':'K♠7♠, Q♠J♠, 5♠4♠', combo:'J♠T♠', nfd:'A♠x♠', tp:'any King', mp:'any Queen', wp:'any 5, JJ–22', fd:'any two spades', oesd:'JT', gut:'AJ, AT, J9, T9', ahigh:'A8, A6', air:'T7, 96'},
+      small:{
+        raise:[['strong','raise — the board changes on half the turn cards.'],
+               ['overpair','raise for value: his top pair pays, and the board changes on half the turn cards.'],
+               ['pair+draw','Raise. A pair plus a flush draw wins three ways: he folds, you hit, or the pair holds.'],
+               ['combo','fifteen outs. Raise.'],
+               ['nfd','Raise. Nine clean outs to the best flush, often with the best overcard too.']],
+        call: [['tp','top pair against a small bet on a wet board: call, and expect to call the turn — his small bet here is often a draw.'],['mp','second pair calls a small bet.'],
+               ['wp','a small pair beats every bluff he bets small here, and a small bet on a wet board is often a draw. Call.'],
+               ['fd','nine outs at this price is easy. Call.'],
+               ['oesd','eight outs. Call.'],
+               ['gut','four outs and a big card. Call a small bet.'],
+               ['ahigh','call once.']],
+        fold: [['air','fold.']]
+      },
+      big:{
+        raise:[['strong','two pair or a set.'],['pair+draw','a pair plus a flush draw. Raise.'],['combo','fifteen outs. Raise.']],
+        call: [['overpair','call once. A big bet on a wet board is top pair or a big draw — you beat the first and are ahead of the second.'],
+               ['tp','calls one big bet.'],
+               ['nfd','the nut flush draw calls. Raising a big bet with a draw commits too much.'],
+               ['fd','nine outs and a flush beats his top pair. Call.'],
+               ['oesd','calls.']],
+        fold: [['mp','second pair folds to a big bet on a high board. He is not betting big with worse.'],
+               ['wp','fold.'],['gut','fold.'],['ahigh','fold.'],['air','fold.']]
+      }
+    },
+    'middling':{ lesson:'An even board: raise your strong hands, semi-bluff an open-ender against a small bet, call the draws against a big one.',
+      ex:{strong:'J9, J5, 95, JJ, 99, 55', overpair:'AA, KK, QQ', tp:'any Jack', mp:'any 9, TT', wp:'any 5, 88–22', oesd:'QT, T8, 87', gut:'KQ, KT, Q8, 76, 86, T7', oc:'AK, AQ', ahigh:'A7, A4', air:'K6, Q4'},
+      small:{
+        raise:[['strong','raise.'],
+               ['overpair','raise for value. At NL25 he calls with any top pair, and you would rather he did that now than give a free card.'],
+               ['oesd','eight outs on a board that is as much yours as his. Raise.']],
+        call: [['tp','calls.'],['mp','calls.'],
+               ['wp','a pair beats his air. Call a small bet.'],
+               ['gut','four outs and a cheap price. Call.'],
+               ['oc','six outs to top pair. Call once.'],
+               ['ahigh','three outs and you beat his air. Call once.']],
+        fold: [['air','fold.']]
+      },
+      big:{
+        raise:[['strong','sets and two pair.']],
+        call: [['overpair','call, don\'t raise. A big bet here is often top pair, which you beat — and calling keeps his bluffs in.'],
+               ['tp','calls one big bet.'],
+               ['mp','call once, fold to a turn barrel unimproved.'],
+               ['oesd','Call. Eight outs give you the price, but a big bet from the pool is a hand — a semi-bluff raise would rarely fold it.']],
+        fold: [['wp','fold.'],['gut','fold.'],['oc','fold.'],['ahigh','fold.'],['air','fold.']]
+      }
+    },
+    'low-connected':{ lesson:'Your board — it hits small pairs and connectors: raise more (sets, two pair, open-enders, pair plus draw) and fold bare overcards.',
+      ex:{strong:'98, 84, 43, 77, 66, 55, 76, 75, 65', 'pair+draw':'87, 86, 74, 54, 7♥x♥', combo:'8♥x♥, 4♥x♥', overpair:'AA–88', nfd:'A♥x♥', tp:'any 7', mp:'any 6, 96', wp:'any 5, 44–22', fd:'two hearts', oesd:'any 8, any 4', gut:'any 9, any 3', oc:'AK, KQ, QJ', ahigh:'A2', air:'K2'},
+      small:{
+        raise:[['strong','raise — this is your board and you have the hands to prove it.'],
+               ['pair+draw','a pair plus an open-ender: raise. You win when he folds, when you hit, and often when you don\'t.'],
+               ['combo','flush draw plus straight draw. Raise.'],
+               ['overpair','raise for value and protection. Almost every turn card is bad for an overpair here.'],
+               ['oesd','eight outs on your board. Raise.'],
+               ['nfd','raise.']],
+        call: [['tp','calls.'],['mp','calls a small bet.'],['wp','call a small bet.'],
+               ['fd','call.'],['gut','call a small bet.']],
+        fold: [['oc','his bet on a board like this is narrower than usual, and you have six outs at best. Fold.'],
+               ['ahigh','fold.'],['air','fold.']]
+      },
+      big:{
+        raise:[['strong','sets, two pair, straights.'],['pair+draw','raise.'],['combo','raise.']],
+        call: [['overpair','Call, don\'t raise. A big bet on a low connected board is sets, two pair, straights and big draws. See the turn.'],
+               ['tp','calls one big bet.'],
+               ['oesd','eight outs. Call.'],['nfd','call.'],['fd','call.']],
+        fold: [['mp','folds to a big bet.'],['wp','fold.'],['gut','fold.'],['oc','fold.'],['ahigh','fold.'],['air','fold.']]
+      }
+    },
+    'monotone':{ lesson:'A small bet here is cheap to continue against; a big bet means a flush, so without a card of the suit believe it.',
+      ex:{strong:'any two spades', 'pair+draw':'A♠x, 7♠x, K♠K, Q♠Q — and a set or two pair without the flush', nfd:'K♠x', tp:'an Ace without a spade', mp:'a 7 without a spade', wp:'a 3, or KK–22 without a spade', fd:'one spade, no pair', oesd:'54 without a spade', gut:'65, 42 without a spade', air:'no spade, no pair'},
+      small:{
+        raise:[['strong','raise — small, so his one-card flush draws keep calling.']],
+        call: [['pair+draw','Call. You are often ahead now and have outs when you are not. A set without the flush plays the same way.'],
+               ['nfd','calls. Raising folds out the hands you want to keep in.'],
+               ['tp','Call. A small bet here is often a one-card draw. If the bet gets big, or a fourth card of the suit lands, let it go.'],['mp','calls a small bet.'],
+               ['wp','call a small bet.'],
+               ['fd','calls a small bet. A third of the time it gets there.'],
+               ['oesd','a straight draw with none of the suit: call a small bet, but a fourth suited card on the turn kills it.'],
+               ['gut','call a small bet.'],
+               ['overpair','a pocket pair above the board without a card of the suit: call a small bet, like any pair.'],
+               ['combo','a one-card flush draw plus a straight draw: call.']],
+        fold: [['air','no card of the suit, no pair. Fold.'],['oc','no pair, no card of the suit. Fold.'],['ahigh','no pair, no card of the suit. Fold.']]
+      },
+      big:{
+        raise:[['strong','A flush: raise. His big bet is a flush or a strong draw, and both pay. With a low flush, slow down if a fourth suited card lands.']],
+        call: [['pair+draw','Call. A big bet here is usually a flush, and you are drawing to beat it — a raise only gets called by better.'],['nfd','call.'],['combo','call.']],
+        fold: [['tp','a big bet on a monotone board says flush. Without a card of the suit, believe it — even with top pair.'],
+               ['overpair','Fold. A big bet on a monotone board says flush, and a pair does not beat a flush.'],['oc','fold.'],['ahigh','fold.'],
+               ['mp','fold.'],['wp','fold.'],
+               ['fd','a single low card of the suit with no pair: fold. A weak draw to a weak flush.'],
+               ['oesd','fold.'],['gut','fold.'],
+               ['air','fold.']]
+      }
+    }
+  }
+};
+fillReasons(POSTFLOP['bb-vs-cbet']);
+
+// ---------- facing a c-bet IN POSITION ----------
+// You called on the Button or Cutoff against an earlier open (Part V calling band), or you are the BB
+// against a small-blind open. He c-bets out of position; you act last. Same boards, same classes.
+// The lists are the BB lists with the changes below applied — the change-list is the source, so the
+// two situations can never drift apart in ways nobody wrote down.
+const IP_CHANGES=[
+  // [board or '*', size, handClass, from, to, why]
+  ['*',            'small','oesd','raise','call','in position a draw does not need to raise. If he checks the turn you see the river for free; if he bets, you still have a price.'],
+  ['*',            'small','nfd', 'raise','call','the nut flush draw calls in position: you see the turn either way, so there is no need to build a pot with a draw.'],
+  ['low-connected','small','oc',  'fold', 'call','the float: two overcards and position. Call, and bet the turn when he checks it — which he will, often.'],
+  ['wet-high',     'big',  'mp',  'fold', 'call','second pair calls one big bet in position — you see what he does on the turn before committing more.'],
+  ['monotone',     'big',  'tp',  'fold', 'call','top pair calls one big bet in position. If he fires the turn, believe the flush.']
+];
+// drop: action keys removed after the changes (they must be empty by then — e.g. 'check' once every
+// checking hand has been moved into 'check-call' or 'check-fold' for an out-of-position version).
+let SIT_HINT=null; // the situation being derived (for filling bare reasons in its change-list)
+function deriveBoards(base, changes, sizes, drop, hint){
+  SIT_HINT=hint||{actions:true};
+  const out=JSON.parse(JSON.stringify(base));
+  Object.keys(out).forEach(function(bc){
+    if(sizes&&sizes[bc]){ out[bc].size=sizes[bc];
+      // the inherited reasons name the base size ("bet small", "half pot"); this situation bets one size up
+      Object.keys(out[bc]).forEach(function(sz){ const r=out[bc][sz]; if(!r||typeof r!=='object'||Array.isArray(r)) return;
+        Object.keys(r).forEach(function(k){ if(Array.isArray(r[k])) r[k].forEach(function(it){ it[1]=it[1].replace(/\b([Bb])et small\b/g,'$1et').replace(/\b([Bb])et big\b/g,'$1et').replace(/\bHalf pot\b/g,'The bet').replace(/\ba small bet\b/g,'a bet').replace(/\bthe full size\b/g,'this size'); }); }); }); }
+    changes.forEach(function(ch){
+      const [b,sz,cls,from,to,why]=ch; if(b!=='*'&&b!==bc) return;
+      const r=out[bc][sz]; if(!r[to]) r[to]=[]; const i=r[from].findIndex(function(x){return x[0]===cls;}); if(i<0) return;
+      r[from].splice(i,1); r[to].push([cls,why]);
+      if(BARE.test(why)){ const t=reasonFor(SIT_HINT,sz,to,cls); if(t) r[to][r[to].length-1][1]=t; }
+    });
+    (drop||[]).forEach(function(k){ Object.keys(out[bc]).forEach(function(sz){ const r=out[bc][sz]; if(!r||!r[k]) return;
+      if(r[k].length) throw new Error('deriveBoards: cannot drop non-empty list '+k+' on '+bc+' ('+r[k].map(function(x){return x[0];}).join(',')+')');
+      delete r[k]; }); });
+    // keep each list in class-strength order (whatever sizes and actions the situation uses)
+    const order=Object.keys(HAND_CLASSES);
+    Object.keys(out[bc]).forEach(function(sz){ const r=out[bc][sz]; if(!r||typeof r!=='object'||Array.isArray(r)) return;
+      Object.keys(r).forEach(function(k){ if(Array.isArray(r[k])) r[k].sort(function(a,b){return order.indexOf(a[0])-order.indexOf(b[0]);}); }); });
+  });
+  return out;
+}
+POSTFLOP['ip-vs-cbet']={
+  label:'Facing a c-bet in position',
+  setup:'You called a Cutoff or Hijack open on the Button. He c-bets from out of position.',
+  hero:'BTN', villain:'CO', heroRange:'tbet-ip-wide', pot:6.0,
+  sizes:POSTFLOP['bb-vs-cbet'].sizes,
+  changes:IP_CHANGES,
+  lessonAdd:'In position the call is the plan: draws call instead of raising, and overcards can float a small bet.',
+  boards:deriveBoards(POSTFLOP['bb-vs-cbet'].boards, IP_CHANGES, null, null, {actions:null})
+};
+
+// ---------- 3-bet pots ----------
+// 100bb. IP 3-bet 7.5bb called: pot 16.5bb, 92.5 behind, SPR 5.6. OOP 3-bet 10bb called: pot 20.5, 90 behind, SPR 4.4.
+// Call it SPR 4–5: a flop bet and a turn bet put the stacks in. Two streets, not three.
+// Board classes here: ace-high (the 3-bettor's board), middling (even), low-connected (the caller's board).
+
+// You 3-bet in position (Button vs a Cutoff open), he called and checked to you.
+POSTFLOP['3bet-aggressor']={
+  label:'3-bet pot, you 3-bet',
+  setup:'You 3-bet on the Button, the Cutoff called and checked the flop to you.',
+  hero:'BTN', villain:'CO', heroRange:{chart:'tbet-ip-wide', bands:['value','bluff']}, pot:16.5,
+  actions:[['bet','Bet {size}','small'],['check','Check','no']],
+  sizes:{ one:{label:'He checks to you', range:'pot 16.5bb · stacks five pots deep', need:'', raiseTo:''} },
+  boards:{
+    'ace-high':{ size:'33%', lesson:'Your board — aces and big pairs are your range, not his: bet everything small.',
+      ex:{strong:'AA, A3s', tp:'AK, AQ, AJ, A9s, A5s–A2s', mp:'KK, QQ, JJ, TT', air:'KQs, K9s'},
+      one:{ bet:[['strong','bet 33%. Your range is all aces and big pairs; his is pairs and broadways that missed. Bet everything, small.'],
+                 ['tp','Bet 33%, and keep betting. Top pair here is a stack-off against a range that called a 3-bet.'],
+                 ['mp','A big pocket pair under the ace is not an overpair. Bet 33% anyway: it folds his smaller pairs without building a pot for his aces. Slow down if he keeps calling.'],
+                 ['wp','a big pocket pair under two board cards: bet 33% once, then slow down.'],
+                 ['gut','four outs on the 3-bettor\'s board: bet 33% with everything else.'],
+                 ['air','Bet 33%. His range is pairs now under an ace and suited hands that missed; one small bet folds most of it. Then give up.']],
+            check:[] }
+    },
+    'middling':{ size:'66%', lesson:'An even board with the stacks five pots deep: bet big with hands that can stack off and with eight-out draws, check the showdown hands.',
+      ex:{strong:'JJ', overpair:'AA, KK, QQ', tp:'AJs', mp:'TT, A9s, K9s', wp:'A5s', gut:'KQs', oc:'AK, AQ', ahigh:'A4s–A2s'},
+      one:{ bet:[['strong','Bet 66%. This board hits his range too, so build the pot now with the hand that wants it.'],
+                 ['overpair','Bet 66%, and plan to bet the turn. With the stacks five pots deep an overpair is a stack-off — the only question is whether he pays.'],
+                 ['tp','bet 66%.'],
+                 ['gut','bet 66% once. Four outs and two big cards; his checked range has plenty that folds.'],
+                 ['oesd','bet 66%: eight outs, semi-bluff.'],
+                 ['oc','bet 66% once. Six outs to top pair, and he checked. If he calls, check the turn.']],
+            check:[['mp','a pair between the top and the middle card. Check, and call one bet.'],
+                   ['wp','a small pair that hit the bottom card. Check; it has showdown value and no future as a bet.'],
+                   ['ahigh','check and give up.'],
+                   ['air','check and give up.']] }
+    },
+    'low-connected':{ size:'66%', lesson:'His board — his pairs are sets and his connectors are straights: bet only the hands that are committed anyway, check the rest.',
+      ex:{overpair:'AA–TT', oesd:'A4s', combo:'A♥3♥, A♥9♥, K♥9♥', nfd:'A♥K♥, A♥Q♥, A♥J♥', fd:'K♥Q♥', 'pair+draw':'A5s', gut:'A3s, A9s, K9s', wp:'A5s', oc:'AK, AQ, AJs, KQs', ahigh:'A2s'},
+      one:{ bet:[['overpair','Bet 66% and go with it. This is his board, but with the stacks five pots deep an overpair is committed once it bets. Fold only to a raise from a passive player.'],
+                 ['strong','bet 66%.'],['pair+draw','bet 66%.'],['combo','bet 66%: flush draw plus straight draw, fifteen outs.'],
+                 ['oesd','bet 66%. Eight outs, often with an overcard on top; semi-bluff.'],['nfd','bet 66%: nine clean outs and the best overcard.']],
+            check:[['fd','check. A weak flush draw with no straight draw and no pair: take the free card.'],
+                   ['gut','check. Four outs and nothing to represent.'],
+                   ['wp','check.'],['tp','top pair on his low board is a weak hand. Check.'],['mp','check.'],
+                   ['oc','check. His range hit this board; yours did not.'],
+                   ['ahigh','check and give up.'],
+                   ['air','check and give up.']] }
+    }
+  }
+};
+fillReasons(POSTFLOP['3bet-aggressor']);
+
+POSTFLOP['3bet-caller']={
+  label:'3-bet pot, you called',
+  setup:'You opened the Button, the big blind 3-bet to 10bb, you called. He bets the flop.',
+  hero:'BTN', villain:'BB', heroRange:'vs3-late', pot:20.5,
+  sizes:{
+    small:{label:'vs a small bet', range:'33% pot · stacks four pots deep', need:'~20%', raiseTo:'3× his bet'},
+    big:  {label:'vs a big bet',   range:'66–75% pot · stacks four pots deep', need:'~30%', raiseTo:'all-in'}
+  },
+  boards:{
+    'ace-high':{ lesson:'His board — the 3-bettor has the aces: only top pair and sets continue, a small pair beats nothing that bets.',
+      ex:{strong:'88, 33, A8s', tp:'AQ, AJ, AT, A9s–A6s', mp:'JJ, TT, 99, 98s, 87s', wp:'77–44, 22', gut:'54s', air:'KQ, KJ, QJ, JT, T9s, 76s'},
+      small:{ raise:[['strong','a set on his board. Raise — his aces pay.']],
+              call: [['tp','Call, and plan to call the turn. Against a blind 3-bettor top pair with a big kicker is usually good; with a weak kicker, call once.'],
+                     ['mp','a pocket pair under the ace beats his bluffs and his missed broadways. Call once, fold to a turn bet.']],
+              fold: [['wp','a small pair on an ace-high board in a 3-bet pot beats nothing that bets. Fold.'],['gut','fold.'],['air','fold.']] },
+      big:  { raise:[['strong','a set: raise — and with the stacks only four pots deep, that means all-in.']],
+              call: [['tp','with a big kicker, call. With a weak one, call once and see the turn.']],
+              fold: [['mp','fold.'],['wp','fold.'],['gut','fold.'],['air','fold.']] }
+    },
+    'middling':{ lesson:'His range is overpairs and big aces: top pair calls down, sets and two pair raise, and a big bet is a stack-off question.',
+      ex:{strong:'JJ, 99, 55, J9s', tp:'AJs, KJs, QJs, JTs', mp:'TT, A9s, K9s, Q9s, T9s, 98s', wp:'88–66, 44–22, 65s, 54s', oesd:'QTs, 87s', gut:'KQs, KTs, 76s', oc:'AQ', ahigh:'ATs–A6s'},
+      small:{ raise:[['strong','sets and two pair: raise. This is your board and he keeps betting into it.'],['oesd','raise as a semi-bluff. Eight outs, and a raise here represents the sets his range cannot have.']],
+              call: [['overpair','call. Ahead of his bluffs and his big aces; behind his bigger pairs. Call once and see the turn.'],
+                     ['tp','call, and usually call down: his 3-bet range is overpairs and big aces, and top pair is ahead of half of it.'],
+                     ['mp','call once.'],['gut','call a small bet.'],['oc','call once — six outs to a top pair he will pay off.'],['ahigh','call once. Three outs, and you beat the suited wheel aces he 3-bet with.']],
+              fold: [['wp','fold.'],['air','fold.']] },
+      big:  { raise:[['strong','sets and two pair: all-in.']],
+              call: [['overpair','an overpair against his big bet: call once. You are ahead of his big aces and behind his bigger pairs — the turn tells you which.'],['tp','call. If he bets the turn big, you are deciding for stacks — and against an unknown, top pair folds there.'],['oesd','call.']],
+              fold: [['mp','fold.'],['wp','fold.'],['gut','fold.'],['oc','fold.'],['ahigh','fold.'],['air','fold.']] }
+    },
+    'low-connected':{ lesson:'Your board — his 3-bet range missed it and yours made sets and draws: raise what beats an overpair, call the draws, fold the rest.',
+      ex:{strong:'77, 66, 55, 98s, 76s, 65s', 'pair+draw':'87s, 54s, 88, 44', overpair:'JJ, TT, 99', tp:'A7s', mp:'A6s', wp:'33, 22', nfd:'A♥Q♥, A♥J♥, A♥T♥', combo:'A♥8♥, A♥9♥, K♥9♥, T♥9♥', fd:'K♥Q♥, Q♥J♥, J♥T♥', oesd:'A8s', gut:'A9s, K9s, T9s', oc:'AK, AQ, KQ, QJ, JT'},
+      small:{ raise:[['strong','raise — and against a big bet, all-in. Sets and straights on the board his range missed.'],['pair+draw','raise.'],['combo','raise: fifteen outs, and his range is mostly one big pair.']],
+              call: [['overpair','Call, don\'t raise. His 3-bet range holds the bigger pairs that beat you and the suited aces that have straight draws. See the turn.'],
+                     ['tp','calls.'],['nfd','call.'],['fd','call.'],['oesd','call.'],['gut','call a small bet.']],
+              fold: [['mp','fold.'],['wp','fold.'],['oc','fold. Two overcards on his worst board and your best one is still two overcards.'],['ahigh','fold.'],['air','fold.']] },
+      big:  { raise:[['strong','all-in.'],['pair+draw','all-in. A pair and eight outs against a range that is often one big pair.'],['combo','all-in.']],
+              call: [['overpair','Call once. You beat his big aces and his draws; his bigger pairs beat you. See the turn before committing.'],['tp','call once.'],['nfd','call.'],['fd','call.'],['oesd','call.']],
+              fold: [['mp','fold.'],['wp','fold.'],['gut','fold.'],['oc','fold.'],['ahigh','fold.'],['air','fold.']] }
+    }
+  }
+};
+fillReasons(POSTFLOP['3bet-caller']);
+
+// ---------- 3-bet pots, out of position ----------
+// Both derived from the in-position lists above through change-lists, each mirroring one paragraph in Part VIII.
+// As the 3-bettor out of position (you 3-bet from the blinds, the opener called, you act first): the one change the
+// book names — overpairs on the middling and low boards check-call instead of betting — plus the split every
+// out-of-position situation needs: each hand that checked in position is either a check-call or a check-fold.
+const TBET_OOP_CHANGES=[
+  ['middling',     'one','overpair','bet','check-call','Check, then call one bet. An overpair cannot stand a raise, and with the stacks four pots deep a bet into position builds a pot you do not control.'],
+  ['low-connected','one','overpair','bet','check-call','Check, then call one bet. On his low board an overpair cannot stand a raise, and a bet into position commits you.'],
+  ['middling',     'one','gut',  'bet','check-fold','in position this bet after his check; out of position there is no cheap bluff with four outs. Check-fold.'],
+  ['middling',     'one','oc',   'bet','check-fold','two overcards bet in position after he checks; out of position, with no showdown value and six outs at best, they check-fold.'],
+  ['middling',     'one','mp',   'check','check-call','a pair between the top and the middle card: check and call one bet.'],
+  ['middling',     'one','wp',   'check','check-fold','a small pair has showdown value against a check, not against a bet — and out of position you cannot check it down. Check-fold.'],
+  ['middling',     'one','ahigh','check','check-fold','check and give up.'],
+  ['middling',     'one','air',  'check','check-fold','check and give up.'],
+  ['low-connected','one','tp',   'check','check-call','top pair on his low board calls one bet, no more.'],
+  ['low-connected','one','fd',   'check','check-call','nine outs and a price: check, call one bet.'],
+  ['low-connected','one','mp',   'check','check-fold','check-fold.'],
+  ['low-connected','one','wp',   'check','check-fold','check-fold.'],
+  ['low-connected','one','gut',  'check','check-fold','four outs into position on his board: check-fold.'],
+  ['low-connected','one','oc',   'check','check-fold','his range hit this board; yours did not. Check-fold.'],
+  ['low-connected','one','ahigh','check','check-fold','check and give up.'],
+  ['low-connected','one','air',  'check','check-fold','check and give up.']
+];
+POSTFLOP['3bet-aggressor-oop']={
+  label:'3-bet pot, you 3-bet out of position',
+  setup:'You 3-bet from the big blind against a Button open, he called. You act first.',
+  hero:'BB', villain:'BTN', heroRange:{chart:'def-bb-btn', bands:['value','bluff']}, pot:20.5,
+  actions:[['bet','Bet {size}','small'],['check-call','Check, then call one bet','call'],['check-fold','Check, then fold','no']],
+  sizes:{ one:{label:'Out of position', range:'pot 20.5bb · stacks four pots deep · you act first'} },
+  changes:TBET_OOP_CHANGES,
+  lessonAdd:'Out of position the overpair check-calls on the boards with draws, and the thin bluffs check-fold.',
+  boards:deriveBoards(POSTFLOP['3bet-aggressor'].boards, TBET_OOP_CHANGES, null, ['check'])
+};
+// As the caller out of position (you opened the Cutoff, the Button 3-bet, you called; he bets): every call
+// tightens one notch — middle pair and the bare draws fold to a small bet, only the stack-off hands continue
+// against a big one. The nut flush draw is the one draw that keeps calling: nine outs plus the best overcard.
+const TBET_CALLER_OOP_CHANGES=[
+  ['*',            'small','mp',   'call','fold','middle pair folds to a small bet out of position: "call once and see the turn" needs a free turn card, and you will not get one.'],
+  ['*',            'small','fd',   'call','fold','a bare flush draw folds: out of position it cannot realise its outs cheaply.'],
+  ['*',            'small','oesd', 'call','fold','a bare open-ender folds out of position, for the same reason.'],
+  ['*',            'small','gut',  'call','fold','four outs, no free turn: fold.'],
+  ['*',            'small','oc',   'call','fold','two overcards fold out of position — there is no float without position.'],
+  ['*',            'small','ahigh','call','fold','fold.'],
+  ['middling',     'big',  'tp',   'call','fold','top pair on a middling board is not a stack-off hand, and out of position a big bet is a stack-off question. Fold.'],
+  ['low-connected','big',  'tp',   'call','fold','top pair on his low board is not a stack-off hand. Fold.'],
+  ['*',            'big',  'oesd', 'call','fold','a bare eight-out draw is not a stack-off hand. Fold.'],
+  ['*',            'big',  'fd',   'call','fold','a bare flush draw is not a stack-off hand. Fold.']
+];
+POSTFLOP['3bet-caller-oop']={
+  label:'3-bet pot, you called out of position',
+  setup:'You opened the Cutoff, the Button 3-bet to 7.5bb, you called. He bets the flop; you act first.',
+  hero:'CO', villain:'BTN', heroRange:'vs3-behind', pot:16.5,
+  sizes:{
+    small:{label:'vs a small bet', range:'33% pot · stacks four pots deep', need:'~20%', raiseTo:'3× his bet'},
+    big:  {label:'vs a big bet',   range:'66–75% pot · stacks four pots deep', need:'~30%', raiseTo:'all-in'}
+  },
+  changes:TBET_CALLER_OOP_CHANGES,
+  lessonAdd:'Out of position every call tightens one notch: bare draws and middle pair fold to a small bet.',
+  boards:deriveBoards(POSTFLOP['3bet-caller'].boards, TBET_CALLER_OOP_CHANGES, null, null, {actions:null})
+};
+
+// ---------- c-betting a single-raised pot ----------
+// In position: you opened the Button, the big blind called and checked. Out of position: you opened the
+// Hijack, the Button called; you act first. Sizes come from the board (Rule 1) and sit on each board.
+// Two families always check: hands that win at showdown without betting, and hands that cannot bet twice.
+POSTFLOP['cbet-ip']={
+  label:'C-betting in position',
+  setup:'You opened the Button, the big blind called and checked to you.',
+  hero:'BTN', villain:'BB', heroRange:{chart:'rfi-btn', bands:['raise']}, pot:5.5,
+  actions:[['bet','Bet {size}','small'],['check','Check','no']],
+  sizes:{ one:{label:'In position', range:'he checks to you'} },
+  boards:{
+    'dry-high':{ size:'25–33%', lesson:'Your board with no draws on it: bet small with nearly everything — only the small pairs check.',
+      ex:{strong:'K9, K4, 94, KK, 99, 44', overpair:'AA', tp:'any King', mp:'any 9, QQ–TT', wp:'any 4, 88–55, 33, 22', gut:'QJ, QT, JT', ahigh:'AQ, AJ, A7', air:'Q8, J7, T6'},
+      one:{ bet:[['strong','value. His top pair pays, and there is nothing to slow-play against on a dry board.'],
+                 ['overpair','value. A true overpair on a dry high board bets every street.'],
+                 ['tp','value, and protection: his second pairs and his gutshots pay to see a turn.'],
+                 ['mp','Bet. Second pair, or a pocket pair just under the top card, is ahead of every draw and every worse pair he calls with.'],
+                 ['gut','four outs, two big cards, and a second barrel on any turn that helps. Bet small.'],
+                 ['ahigh','Bet small. Three outs to top pair, and the bet folds the hands that would outdraw you — on a dry board, bet everything but the small pairs.'],
+                 ['oc','two overcards: six outs and a cheap bet that folds his air. Bet small.'],
+                 ['air','Bet small, once. It cannot win a showdown, but one cheap bet folds his air. Give up on the turn unless you pick up a draw.']],
+            check:[['wp','Check. A small pair already wins at showdown; a bet folds what you beat and gets called by every top pair.']] }
+    },
+    'paired':{ size:'25–33%', lesson:'A paired board misses his range more than any other: bet small with almost everything; the small pair already wins at showdown, so it checks.',
+      ex:{strong:'any 8, KK', overpair:'AA', tp:'any King', mp:'QQ–99', wp:'77–22', ahigh:'AQ, AJ, A7', air:'QJ, T9, 65'},
+      one:{ bet:[['strong','trips or better. Bet small on purpose — he has nothing, don\'t scare it off.'],
+                 ['overpair','bet.'],['tp','value against the pairs and floats that call.'],
+                 ['mp','a pocket pair above the board pair beats almost everything he checked. Bet.'],
+                 ['ahigh','his range missed this board as often as yours did; a small bet folds it, and you keep the ace outs if he calls.'],
+                 ['oc','two overcards on a board that missed him: bet small.'],
+                 ['gut','four outs and a cheap bet on a board that missed him. Bet small once.'],
+                 ['oesd','eight outs. Bet small.'],
+                 ['air','paired boards miss his range more than any other. A cheap bet folds it.']],
+            check:[['wp','ahead of his air already, behind everything else. Check it down.']] }
+    },
+    'wet-high':{ size:'66–75%', lesson:'Your board, with draws to charge: bet big, but only with pairs and real draws — weak draws and air check.',
+      ex:{strong:'K5, Q5, 55, KQ, KK, QQ', overpair:'AA', tp:'any King', mp:'any Queen', 'pair+draw':'K♠x♠, Q♠x♠, 5♠x♠', combo:'J♠T♠, A♠J♠, A♠T♠', nfd:'A♠x♠', fd:'any two spades', oesd:'JT', gut:'AJ, AT, J9, T9', wp:'any 5, JJ–22', ahigh:'A8, A6', air:'T7, 96'},
+      one:{ bet:[['strong','value, and the board changes on half the turn cards. Bet big.'],['overpair','bet big.'],
+                 ['tp','value — his draws need a real price.'],['mp','second pair bets for value and protection.'],
+                 ['pair+draw','a pair plus a flush draw: bet, and keep betting.'],['combo','fifteen outs. Bet.'],['nfd','bet.'],
+                 ['fd','nine outs. Semi-bluff at the full size.'],['oesd','eight outs. Semi-bluff.']],
+            check:[['gut','four outs is not enough for a big bet. Take the free card.'],
+                   ['wp','a pocket pair below both board cards builds a pot it cannot continue in. Check.'],
+                   ['ahigh','check.'],['air','he calls with every draw. Give up.']] }
+    },
+    'middling':{ size:'50%', lesson:'An even board: half pot, and only with hands that can bet twice; second pair and small pairs check for showdown.',
+      ex:{strong:'JJ, 99, 55, J9, J5, 95', overpair:'AA, KK, QQ', tp:'AJ, KJ, QJ, JT', mp:'any 9, TT', wp:'any 5, 88–66, 44–22', oesd:'QT, T8, 87', gut:'KQ, KT, Q8, 76, 86, T7', oc:'AK, AQ', ahigh:'A7, A4', air:'K6, Q4'},
+      one:{ bet:[['strong','value.'],['overpair','value. Half pot keeps his second pairs and his gutshots calling.'],
+                 ['tp','value.'],['oesd','eight outs. Semi-bluff.'],
+                 ['oc','two overcards: six outs, and a second barrel on any overcard turn. Bet once.'],
+                 ['gut','Bet once. Four outs, often with an overcard or two on top, and on an even board a half-pot bet is credible.']],
+            check:[['mp','second pair: showdown value. A bet folds worse and gets called by every top pair.'],
+                   ['wp','a small pair has showdown value and nothing to gain from a bet: worse folds, better calls. Check.'],
+                   ['ahigh','check.'],['air','give up.']] }
+    },
+    'low-connected':{ size:'66–75%', lesson:'His board: bet big only with hands that need protection or have real equity, and check everything else, top pair included.',
+      ex:{strong:'sets, 98, 84, 43, 76, 75, 65', overpair:'AA–99', 'pair+draw':'88, 87, 86, 74, 54, 44', combo:'8♥x♥, 4♥x♥, T♥9♥', nfd:'A♥x♥', fd:'K♥Q♥, Q♥J♥', oesd:'any other 8, any other 4', tp:'any 7', mp:'any 6', wp:'any 5, 33, 22', gut:'any 9, any 3', oc:'AK, AQ, KQ, JT', ahigh:'A2', air:'K2'},
+      one:{ bet:[['strong','value. This is his board, so when you do have it, charge him.'],
+                 ['overpair','all of them. Almost every turn card is bad for an overpair here — bet big now.'],
+                 ['pair+draw','a pair plus an open-ender: bet.'],['combo','two ways to win. Bet.'],['nfd','bet.'],
+                 ['oesd','eight outs. Semi-bluff.'],['fd','nine outs, usually with two overcards. Semi-bluff at the full size.']],
+            check:[['tp','top pair on a low connected board is a weak hand that hates a raise. Showdown value: check.'],
+                   ['mp','check.'],['wp','check.'],
+                   ['gut','four outs on his board. Check.'],
+                   ['oc','two overcards on a board he loves. Give up.'],['ahigh','check.'],['air','check.']] }
+    },
+    'monotone':{ size:'25–33%', lesson:'Bluffs never work here — any card of the suit calls — but made hands must bet small, because his one-card draws get there a third of the time.',
+      ex:{strong:'any two spades', tp:'an Ace without a spade', 'pair+draw':'Ax♠, 7x♠, KK–22 with a spade — and a set or two pair without the flush', nfd:'K♠x', mp:'a 7 without a spade', wp:'a 3, or a pocket pair without a spade', fd:'one spade, no pair', air:'no spade, no pair'},
+      one:{ bet:[['strong','a flush: bet small, so his one-card flush draws keep calling.'],
+                 ['tp','a third of his one-card flush draws complete by the river. Charge them — small.'],
+                 ['overpair','Bet small. A third of his one-card flush draws get there for free if you check.'],
+                 ['pair+draw','Bet small. Ahead of his one-card draws now, with outs when he already has the flush. A set without the flush plays the same way.'],['nfd','the best draw on the board bets small.']],
+            check:[['mp','check.'],['wp','check.'],
+                   ['combo','a one-card flush draw plus a straight draw: real equity, no fold equity. Take the free card.'],
+                   ['oc','no pair, no card of the suit. Check.'],['ahigh','no pair, no card of the suit. Check.'],
+                   ['fd','a single low card of the suit with nothing else: take the free card.'],
+                   ['oesd','check.'],['gut','check.'],
+                   ['air','he calls with any card of the suit, so fold equity is near zero. Never bluff here.']] }
+    }
+  }
+};
+fillReasons(POSTFLOP['cbet-ip']);
+
+POSTFLOP['cbet-oop']={
+  label:'C-betting out of position',
+  setup:'You opened the Hijack, the Button called. You act first.',
+  hero:'HJ', villain:'BTN', heroRange:{chart:'rfi-hj', bands:['raise']}, pot:6.0,
+  actions:[['bet','Bet {size}','small'],['check-call','Check, then call one bet','call'],['check-fold','Check, then fold','no']],
+  sizes:{ one:{label:'Out of position', range:'you act first'} },
+  boards:{
+    'dry-high':{ size:'25–33%', lesson:'Your board, but you act first: bet small with everything that bets in position; the small pair check-calls, air check-folds.',
+      ex:{strong:'K9, KK, 99, 44', overpair:'AA', tp:'any King', mp:'any 9, QQ–TT', wp:'88–55, 33, 22, A4', gut:'QJ, QT, JT', ahigh:'AQ, AJ, AT, A7', air:'87, 76, 65'},
+      one:{ bet:[['strong','Bet small for value, as in position. The pool calls with any pair and any ace; a check only wins his stab.'],
+                 ['tp','top pair bets for value and protection, just as in position: his second pairs and gutshots pay to see a turn.'],['overpair','bet.'],['mp','second pair on a dry board is ahead of everything that continues — his draws and worse pairs. Bet small.'],['gut','four outs and two big cards: a small bet folds his air, and a second barrel comes on any turn that helps.'],
+                 ['ahigh','Bet small. It folds the hands that would outdraw you, and keeps three outs to top pair if he calls.'],['oc','two overcards: six outs, and a cheap bet that folds his air. Bet small.']],
+            'check-call':[['wp','showdown value. Call one bet, re-evaluate the turn.']],
+            'check-fold':[
+                          ['air','out of position you cannot take a free card, so there is no cheap way to keep this hand.']] }
+    },
+    'paired':{ size:'25–33%', lesson:'Out of position you cannot bet every missed hand cheaply: pairs and overcards bet small, air check-folds, trips check-call to induce.',
+      ex:{strong:'any 8, KK', overpair:'AA', tp:'any King', mp:'QQ–99', wp:'77–22', ahigh:'AQ, AJ, A7', air:'QJ, T9, 65'},
+      one:{ bet:[['tp','value.'],['overpair','bet.'],['mp','a pocket pair above the board pair beats almost everything that continues. Bet small.'],['ahigh','bet small: his range missed, and the ace outs are yours if he calls.'],['oc','two overcards on a board that missed him: six outs, and a small bet that folds his air. Bet small.'],['gut','bet small once.'],['oesd','bet small.']],
+            'check-call':[['strong','trips check here: he has nothing to call a bet with, and a check invites him to bluff at it.']],
+            'check-fold':[['wp','showdown value, but not enough to call a bet.'],
+                          ['air','Check, then fold. Out of position you cannot bet every missed hand cheaply and get away with it.']] }
+    },
+    'wet-high':{ size:'66–75%', lesson:'Bet big with value and real draws; second pair check-calls rather than opening the door to a raise; weak hands check-fold.',
+      ex:{strong:'K5, Q5, 55, KQ, KK, QQ', overpair:'AA', tp:'any King', mp:'any Queen', 'pair+draw':'K♠x♠, Q♠x♠', combo:'J♠T♠, A♠J♠', nfd:'A♠x♠', fd:'two spades', oesd:'JT', gut:'AJ, AT, J9, T9', wp:'any 5, JJ–22', ahigh:'A8, A6', air:'T8, 98'},
+      one:{ bet:[['strong','value.'],['overpair','bet.'],['tp','value.'],['pair+draw','bet.'],['combo','bet.'],['nfd','bet.'],['fd','nine outs, usually with overcards: bet big. His pairs and weaker draws call, and the flush pays when it lands.'],['oesd','bet.']],
+            'check-call':[['mp','Check, then call one bet. A raise against one pair on this board is the spot to avoid, so don\'t open the door.'],
+                          ['gut','a decent draw, but not enough to bet big into position. Check-call one bet.']],
+            'check-fold':[['wp','not enough to call a bet on this board.'],['ahigh','check-fold.'],['air','check-fold.']] }
+    },
+    'middling':{ size:'50%', lesson:'Half pot with value and open-enders only; second pair check-calls, gutshots and overcards check-fold.',
+      ex:{strong:'JJ, 99, 55, J9', overpair:'AA, KK, QQ', tp:'AJ, KJ, QJ, JT', mp:'any 9, TT', wp:'any 5, 88–66, 44–22', oesd:'QT, T8, 87', gut:'KQ, KT, 76', oc:'AK, AQ', ahigh:'AT, A7', air:'—'},
+      one:{ bet:[['strong','value.'],['tp','value.'],['overpair','bet — at NL25 he calls with any top pair. Against a player who raises a lot, lean to check-call instead.'],['oesd','an open-ender is the one bluff worth betting into position: eight outs, and a pot worth building when it hits.']],
+            'check-call':[['mp','second pair is a firm check-call, never a bet.']],
+            'check-fold':[['gut','a gutshot is not enough to bet into position: four outs, and no cheap way to see the turn. Check-fold.'],['oc','check-fold.'],['wp','check-fold.'],['ahigh','check-fold.'],['air','check-fold.']] }
+    },
+    'low-connected':{ size:'66–75%', lesson:'His board and you act first: bet the big overpairs and the strongest draws, check-call top pair and open-enders, let the rest go.',
+      ex:{strong:'sets, 98, 76, 65', overpair:'AA–99', 'pair+draw':'88, 87, 44', combo:'A♥3♥, A♥4♥, A♥9♥', nfd:'A♥x♥', fd:'K♥Q♥, Q♥J♥', oesd:'A8, A4', tp:'A7, 97', mp:'A6, 96', wp:'A5, 33, 22', gut:'A9, A3, K9, T9', oc:'AK, AQ, KQ, JT', ahigh:'A2'},
+      one:{ bet:[['strong','value.'],
+                 ['overpair','A big overpair bets: the board is too dynamic for a free card. With a medium overpair lean to check-call — a raise here, out of position on his board, is the spot to avoid.'],
+                 ['pair+draw','bet.'],['combo','Bet. Fifteen outs makes this the one draw strong enough to bet into position — a favourite against most of what calls.']],
+            'check-call':[['tp','Check, then call one bet. Top pair on his low board is not strong enough to bet into position, but too good to fold.'],['oesd','a plain open-ender checks and calls one bet. Eight outs, and you have a price.'],['nfd','check-call.'],['fd','check-call.']],
+            'check-fold':[['mp','check-fold.'],['wp','check-fold.'],['gut','check-fold.'],
+                          ['oc','out of position on his board there is nothing to do but let them go.'],['ahigh','check-fold.'],['air','check-fold.']] }
+    },
+    'monotone':{ size:'25–33%', lesson:'Bet small with made hands, check-call one bet with a card of the suit, check-fold the rest — there is nothing to bluff with.',
+      ex:{strong:'any two spades', tp:'an Ace without a spade', 'pair+draw':'Ax♠, 7x♠, KK–22 with a spade — and a set or two pair without the flush', nfd:'K♠x', mp:'a 7 without a spade', wp:'a 3, or a pocket pair without a spade', fd:'one spade, no pair', air:'no spade, no pair'},
+      one:{ bet:[['strong','a flush: bet small, so his one-card draws keep calling.'],['tp','Bet small. A third of his one-card flush draws get there by the river whether you act first or last — charge them.'],['overpair','bet small.'],['pair+draw','bet small.'],['nfd','bet small.']],
+            'check-call':[['mp','second pair calls one small bet.'],['fd','one card of the suit calls one bet.'],['combo','check-call one bet.']],
+            'check-fold':[['wp','check-fold.'],['gut','check-fold.'],['oesd','check-fold.'],['oc','check-fold.'],['ahigh','check-fold.'],['air','nothing to bluff with, nothing to call with.']] }
+    }
+  }
+};
+fillReasons(POSTFLOP['cbet-oop']);
+
+// ---------- iso pots: c-betting against a limper ----------
+// You isolated a limper from the Button (Part III chart), he called, and checked to you. His range is capped
+// and passive — no premiums, and he does not fold. The in-position c-bet lists with one variable changed.
+const ISO_CHANGES=[
+  ['*',            'one','air',  'bet','check','no fold equity. A bet with nothing into a limp-caller is a donation; check and give up.'],
+  ['dry-high',     'one','ahigh','bet','check','the small bet that folds air in a normal pot does not fold a limper. Check, and win at showdown when you do.'],
+  ['dry-high',     'one','gut',  'bet','check','four outs and no fold equity: a bet into a limper is a donation. Take the free card.'],
+  ['middling',     'one','oesd', 'bet','check','an open-ender bets to fold him or to build a pot for when it hits; he does not fold, and he pays a made straight anyway. Take the free card.'],
+  ['wet-high',     'one','nfd',  'bet','check','even the nut flush draw checks into a limper: without fold equity a bet builds the pot as an underdog. Check, and bet when it comes in — he pays.'],
+  ['low-connected','one','nfd',  'bet','check','no fold equity on his board, so no semi-bluff. Check, and bet when the flush comes in.'],
+  ['dry-high',     'one','oc',   'bet','check','six outs and no fold equity. Check.'],
+  ['paired',       'one','oc',   'bet','check','no fold equity. Check.'],
+  ['paired',       'one','gut',  'bet','check','no fold equity. Check.'],
+  ['paired',       'one','oesd', 'bet','check','take the free card; bet if it comes in.'],
+  ['paired',       'one','ahigh','bet','check','a limper calls with any pair and any ace, so an ace-high bet folds nothing. Check it back and win at showdown.'],
+  ['middling',     'one','gut',  'bet','check','a semi-bluff needs folds, and he does not fold. Take the free card.'],
+  ['middling',     'one','oc',   'bet','check','six outs and no fold equity. Check.'],
+  ['wet-high',     'one','fd',   'bet','check','Check. A bare flush draw bets to fold him or to build a pot for when it hits — he does not fold, and he pays a made flush anyway. Bet the turn if it comes in.'],
+  ['wet-high',     'one','oesd', 'bet','check','an open-ender into a limper: no fold equity, so take the free card and get paid when it hits.'],
+  ['low-connected','one','oesd', 'bet','check','no fold equity on his board. Check.'],
+  ['low-connected','one','fd',   'bet','check','check, and bet if it comes in.']
+];
+const ISO_SIZES={'dry-high':'40–50%','paired':'40–50%','wet-high':'75%','middling':'66%','low-connected':'75%','monotone':'40–50%'};
+POSTFLOP['iso-ip']={
+  label:'C-betting an iso pot',
+  setup:'A player limped, you raised to 4bb from the Button, he called and checked to you.',
+  hero:'BTN', villain:'LIMPER', heroRange:{chart:'iso-btn', bands:['raise']}, pot:9.5,
+  actions:[['bet','Bet {size}','small'],['check','Check','no']],
+  sizes:{ one:{label:'In position', range:'he limp-called and checks to you'} },
+  changes:ISO_CHANGES,
+  lessonAdd:'The limper does not fold, so bluffs and bare draws check, and what still bets bets bigger.',
+  boards:deriveBoards(POSTFLOP['cbet-ip'].boards, ISO_CHANGES, ISO_SIZES)
+};
+
+// ---------- multiway: c-betting into two callers ----------
+// You opened the Button, two players called (say Cutoff and big blind), both checked to you. Fold equity roughly
+// halves per extra player and someone always has a piece — so the bluffs go, the thin value goes, and what is
+// left bets bigger. Derived from the in-position c-bet lists.
+const MW_CHANGES=[
+  ['*',            'one','air',  'bet','check','two players have to fold, and one of them almost always has a piece. Give up.'],
+  ['*',            'one','ahigh','bet','check','ace-high is a bluff against two players. Check.'],
+  ['*',            'one','gut',  'bet','check','four outs and no fold equity. Check.'],
+  ['*',            'one','oc',   'bet','check','two overcards into two players: six outs, and nobody folds. Check.'],
+  ['*',            'one','oesd', 'bet','check','Check. A draw is worth more multiway when it hits, and less as a bluff. Take the free card and bet when it comes in.'],
+  ['*',            'one','fd',   'bet','check','a flush draw into two players: no fold equity as a bluff, a bigger pot when it hits. Check, hit, then bet.'],
+  ['*',            'one','nfd',  'bet','check','the nut flush draw into two players: same as any draw — no fold equity, a bigger pot when it hits. Check, hit, then bet.'],
+  ['dry-high',     'one','mp',   'bet','check','Check. Second pair into two players is a bluff-catcher, not a value bet — one of them usually has top pair. (A pocket pair just under the top card can still bet once.)'],
+  ['wet-high',     'one','mp',   'bet','check','second pair is a bluff-catcher heads-up and a losing hand against two. Check.'],
+  ['middling',     'one','mp',   'bet','check','second pair into two players: check.'],
+  ['*',            'one','tp',   'bet','bet','top pair still bets, once — and against two players "top pair" means top pair with a good kicker. With a weak kicker, check and see what they do.']
+];
+const MW_SIZES={'dry-high':'40–50%','paired':'40–50%','wet-high':'75%','middling':'66%','low-connected':'75%','monotone':'40–50%'};
+POSTFLOP['cbet-multiway']={
+  label:'C-betting multiway',
+  setup:'You opened the Button, two players called and both checked to you.',
+  hero:'BTN', villain:'CO + BB', heroRange:{chart:'rfi-btn', bands:['raise']}, pot:8.0,
+  actions:[['bet','Bet {size}','small'],['check','Check','no']],
+  sizes:{ one:{label:'In position, three-way', range:'both check to you'} },
+  changes:MW_CHANGES,
+  lessonAdd:'Into two players the bluffs and the bare draws check, and what still bets bets bigger.',
+  boards:deriveBoards(POSTFLOP['cbet-ip'].boards, MW_CHANGES, MW_SIZES)
+};
+
+</script>
+<script>
+/* inlined from src/trainer-engine.js — edit that file, not this block */
+/* trainer-engine.js — the trainer's rules, kept apart from the page so build.py can run them in node.
+   Everything here reads poker-data.js (RANGES, POSTFLOP, BOARD_CLASSES, classifyHand, dealBoard …).
+   Nothing here touches the DOM. trainer.html inlines this file after the data. */
+
+// ---------- sizes ----------
+// Canonical bet percentages for the size strings used in the data (spec §6).
+const SIZE_PCT={'25–33%':33,'33%':33,'40–50%':50,'50%':50,'66%':66,'66–75%':66,'75%':75};
+function sizePct(str){ if(!(str in SIZE_PCT)) throw new Error('unknown size string: '+str); return SIZE_PCT[str]; }
+// The wrong size offered beside the right one: the nearest band on the other side.
+function wrongSize(pct){ return pct===33?66:33; }
+// Villain's bet in caller situations, as a share of the pot.
+const VILLAIN_BET={small:33, big:70};
+// His raise, when the data says how big: '3× his bet' / '2.5× his bet' / 'all-in'.
+function raiseMult(str){ if(str==='all-in') return 'all-in'; const m=/^([\d.]+)×/.exec(str||''); if(!m) throw new Error('unknown raise string: '+str); return parseFloat(m[1]); }
+
+// Why the board's size is what it is — Rule 1 in one line per board, plus the pot-type twist.
+const SIZE_WHY={
+  'dry-high':     'No draw to charge and the range is yours, so a small bet folds his air just as well and costs less when it does not.',
+  'paired':       'A paired board has no draws and misses his range more than any other — small, so his nothing keeps calling.',
+  'wet-high':     'Flush and straight draws call anything cheap. A big bet makes their draw a losing call — and this board is yours to charge.',
+  'middling':     'An even board: Half pot keeps his second pairs and gutshots calling without building a pot you may not want.',
+  'low-connected':'When you do bet his board, bet big — almost every turn card is bad for you, so charge the draws now.',
+  'monotone':     'Made hands only, and small — any single card of the suit calls, so you charge the one-card draws without folding them.',
+  'ace-high':     'In a 3-bet pot the ace-high board is yours: bet everything small, fold his small pairs, keep his weaker aces in.'
+};
+const POT_SIZE_WHY={
+  'iso-ip':        ' In an iso pot go one size up: he calls anyway, so bet for value, bigger.',
+  'cbet-multiway': ' Multiway, what still bets bets bigger — someone always has a piece.',
+  '3bet-aggressor':' In a 3-bet pot the middling and low boards take 66%: with the stacks only four pots deep, two bets put the money in.',
+  '3bet-aggressor-oop':' In a 3-bet pot the middling and low boards take 66%: with the stacks only four pots deep, two bets put the money in.'
+};
+const RAISE_SIZE_WHY='Raise to 3× a small bet and 2.5× a big one. A min-raise gives every draw a price to call.';
+const ALLIN_WHY='With the stacks only four pots deep, a raise is all-in: there is nothing left to bet on the turn.';
+
+// ---------- what kind of flop situation ----------
+function sitType(sit){
+  if(!sit.actions) return 'caller';                                   // raise / call / fold vs his bet
+  return sit.actions.some(function(a){return a[0]==='check-call';}) ? 'aggressor-oop' : 'aggressor-ip';
+}
+function actionKeys(sit){ return (sit.actions||[['raise'],['call'],['fold']]).map(function(a){return a[0];}); }
+
+// ---------- preflop → flop (mode 2) ----------
+// FLOW[chart][choice]: the flop situation the line leads to, or an `end` note when the book has no lists for it.
+// villain: the seat you play the flop against; 'ACTOR' = the last player who did not fold before you (opener,
+// limper or 3-bettor). story: what happens after your action, shown before the flop.
+const FLOW={
+  'rfi-lj':   {raise:{sit:'cbet-oop', villain:'BTN', story:'Folds to the Button, who calls. The blinds fold.'}},
+  'rfi-hj':   {raise:{sit:'cbet-oop', villain:'BTN', story:'Folds to the Button, who calls. The blinds fold.'}},
+  'rfi-co':   {raise:{sit:'cbet-ip',  villain:'BB',  story:'Button and small blind fold, the big blind calls.'}},
+  'rfi-btn':  {raise:{sit:'cbet-ip',  villain:'BB',  story:'Small blind folds, the big blind calls.'}},
+  'sb-rfi':   {raise:{sit:'cbet-oop', villain:'BB',  story:'The big blind calls.'}},
+  'iso-early':{raise:{sit:'iso-ip', villain:'ACTOR', story:'Everyone behind folds; the limper calls.'}},
+  'iso-co':   {raise:{sit:'iso-ip', villain:'ACTOR', story:'Everyone behind folds; the limper calls.'}},
+  'iso-btn':  {raise:{sit:'iso-ip', villain:'ACTOR', story:'The blinds fold; the limper calls.'}},
+  'def-bb-early':{call:{sit:'bb-vs-cbet', villain:'ACTOR'}, raise:{sit:'3bet-aggressor-oop', villain:'ACTOR', story:'He calls.'}},
+  'def-bb-co':   {call:{sit:'bb-vs-cbet', villain:'ACTOR'}, raise:{sit:'3bet-aggressor-oop', villain:'ACTOR', story:'He calls.'}},
+  'def-bb-btn':  {call:{sit:'bb-vs-cbet', villain:'ACTOR'}, raise:{sit:'3bet-aggressor-oop', villain:'ACTOR', story:'He calls.'}},
+  'def-bb-sb':   {call:{sit:'ip-vs-cbet', villain:'SB'},    raise:{sit:'3bet-aggressor',     villain:'SB',    story:'He calls.'}},
+  'bb-vs-sb-limp':{raise:{sit:'iso-ip', villain:'SB', story:'He calls.'}, call:{end:'You checked, so this is a limped pot — those are not covered.'}},
+  'def-bb-multi':{call:{end:'Three-way as the caller — not covered.'}, raise:{end:'Squeeze pots are not covered.'}},
+  'tbet-ip-tight':{raise:{sit:'3bet-aggressor', villain:'ACTOR', story:'He calls.'}, call:{sit:'ip-vs-cbet', villain:'ACTOR'}},
+  'tbet-ip-wide': {raise:{sit:'3bet-aggressor', villain:'ACTOR', story:'He calls.'}, call:{sit:'ip-vs-cbet', villain:'ACTOR'}},
+  'sb-3bet-early':{raise:{sit:'3bet-aggressor-oop', villain:'ACTOR', story:'The big blind folds; he calls.'}, call:{end:'Cold-calling from the small blind is never part of the plan, so there is no flop to play.'}},
+  'sb-3bet-late': {raise:{sit:'3bet-aggressor-oop', villain:'ACTOR', story:'The big blind folds; he calls.'}, call:{end:'Cold-calling from the small blind is never part of the plan, so there is no flop to play.'}},
+  'vs3-early': {call:{sit:'3bet-caller-oop', villain:'ACTOR'}, raise:{end:'4-bet pots are not covered.'}},
+  'vs3-behind':{call:{sit:'3bet-caller-oop', villain:'ACTOR'}, raise:{end:'4-bet pots are not covered.'}},
+  'vs3-late':  {call:{sit:'3bet-caller',     villain:'ACTOR'}, raise:{end:'4-bet pots are not covered.'}}
+};
+const LIMP_END='You limped — limped pots are not covered.';
+// The flop step for a preflop chart and the choice you made ('raise' | 'call' | 'fold').
+function flowFor(chart, choice){
+  if(choice==='fold') return {end:'You folded.'};
+  const f=FLOW[chart]; if(!f) return {end:'No flop lists for this spot.'};
+  const step=f[choice];
+  if(step) return step;
+  if(choice==='call') return {end:LIMP_END};
+  return {end:'No flop lists for this line.'};
+}
+
+// ---------- flop-only mode: the table before the flop ----------
+// hero seat, the seat(s) still in, what each of them put in preflop, and the dead money from folded blinds.
+const FLOP_SCENE={
+  'bb-vs-cbet':        {hero:'BB',  villains:['BTN'],      each:2.5, dead:{SB:0.5}},
+  'ip-vs-cbet':        {hero:'BTN', villains:['CO'],       each:2.5, dead:{SB:0.5,BB:1}},
+  '3bet-aggressor':    {hero:'BTN', villains:['CO'],       each:7.5, dead:{SB:0.5,BB:1}},
+  '3bet-aggressor-oop':{hero:'BB',  villains:['BTN'],      each:10,  dead:{SB:0.5}},
+  '3bet-caller':       {hero:'BTN', villains:['BB'],       each:10,  dead:{SB:0.5}},
+  '3bet-caller-oop':   {hero:'CO',  villains:['BTN'],      each:7.5, dead:{SB:0.5,BB:1}},
+  'cbet-ip':           {hero:'BTN', villains:['BB'],       each:2.5, dead:{SB:0.5}},
+  'cbet-oop':          {hero:'HJ',  villains:['BTN'],      each:2.5, dead:{SB:0.5,BB:1}},
+  'iso-ip':            {hero:'BTN', villains:['LJ'],       each:4,   dead:{SB:0.5,BB:1}},
+  'cbet-multiway':     {hero:'BTN', villains:['CO','BB'],  each:2.5, dead:{SB:0.5}}
+};
+
+// ---------- where each board lives in the book ----------
+const ANCHOR_OVERRIDE={
+  'cbet-ip':{'dry-high':'b-k94','paired':'b-k88','wet-high':'b-kq5','middling':'b-j95','low-connected':'b-765','monotone':'b-a73'},
+  'bb-vs-cbet':{'dry-high':'d-dry-high','paired':'d-paired','wet-high':'d-wet-high','middling':'d-middling','low-connected':'d-low-connected','monotone':'d-monotone'},
+  '3bet-aggressor':{'ace-high':'t-ace-high'}, '3bet-caller':{'ace-high':'t-call-ace-high'},
+  '3bet-aggressor-oop':{'ace-high':'t-oop-ace-high','middling':'t-oop-middling','low-connected':'t-oop-low-connected'},
+  '3bet-caller-oop':{'ace-high':'t-call-oop-ace-high','middling':'t-call-oop-middling','low-connected':'t-call-oop-low-connected'}
+};
+ANCHOR_OVERRIDE['cbet-oop']=ANCHOR_OVERRIDE['cbet-ip'];
+function anchorFor(sitId, bc){ const o=ANCHOR_OVERRIDE[sitId]; return (o&&o[bc])||('pf-'+sitId+'-'+bc); }
+
+// ---------- dealing ----------
+function heroCombos(sit){
+  const hr=sit.heroRange, cfg=RANGES[typeof hr==='string'?hr:hr.chart], bands=typeof hr==='string'?['call']:hr.bands;
+  const out=[]; for(let i=0;i<DECK.length;i++) for(let j=i+1;j<DECK.length;j++){ const a=DECK[i],b=DECK[j]; if(bands.indexOf(actionOf(cfg,handLabel(a,b)))>-1) out.push([a,b]); }
+  return out;
+}
+function handLabel(a,b){ const ra=a[0],rb=b[0]; if(ra===rb) return ra+rb; const hi=RANK_VAL[ra]>=RANK_VAL[rb]?[a,b]:[b,a]; return hi[0][0]+hi[1][0]+(a[1]===b[1]?'s':'o'); }
+// A flop for a situation. opts.hole = the cards you already hold (mode 2); opts.bc = a board class to use;
+// opts.cls = deal until the hand has this class (retraining a miss). Returns {bc, board, hole, cls, vsize}.
+function dealFlop(sit, opts, rnd){
+  rnd=rnd||Math.random; opts=opts||{};
+  const bcs=Object.keys(sit.boards); const bc=opts.bc&&sit.boards[opts.bc]?opts.bc:bcs[Math.floor(rnd()*bcs.length)];
+  let board, hole=opts.hole||null, cls, tries=0;
+  const pool=hole?null:heroCombos(sit);
+  do{
+    board=dealBoard(bc,rnd);
+    if(hole){ if(board.some(function(c){return hole.indexOf(c)>-1;})) { tries++; continue; } }
+    else { let h; do{ h=pool[Math.floor(rnd()*pool.length)]; }while(board.indexOf(h[0])>-1||board.indexOf(h[1])>-1); hole=h; }
+    cls=classifyHand(hole,board);
+    if(opts.cls && cls!==opts.cls && tries<400 && !opts.hole){ hole=null; tries++; continue; }
+    break;
+  }while(tries<500);
+  if(!hole) throw new Error('dealFlop: could not deal');
+  const sizes=Object.keys(sit.sizes); const vsize=sizes.length>1?sizes[Math.floor(rnd()*sizes.length)]:sizes[0];
+  return {bc:bc, board:board, hole:hole, cls:cls, vsize:vsize};
+}
+
+// ---------- the offer and the grade ----------
+// What the buttons are for this deal. Each option: {key, size?} where key is an action key of the situation and
+// size is a bet % (aggressor) or a raise multiplier / 'all-in' (caller). One of the sized options is right.
+function offer(sit, deal, rnd){
+  rnd=rnd||Math.random; const type=sitType(sit), rules=sit.boards[deal.bc];
+  if(type==='caller'){
+    const rt=raiseMult(sit.sizes[deal.vsize].raiseTo); const pair=rnd()<0.5?[rt,2]:[2,rt];
+    return {type:type, correctSize:rt, options:[{key:'fold'},{key:'call'},{key:'raise',size:pair[0]},{key:'raise',size:pair[1]}]};
+  }
+  const right=sizePct(rules.size), wrong=wrongSize(right); const pair=rnd()<0.5?[right,wrong]:[wrong,right];
+  const opts=type==='aggressor-ip' ? [{key:'check'}] : [{key:'check-call'},{key:'check-fold'}];
+  opts.push({key:'bet',size:pair[0]},{key:'bet',size:pair[1]});
+  return {type:type, correctSize:right, options:opts};
+}
+// The listed action for the hand's class on this board and size; null if none (the harness forbids that).
+function correctFor(sit, deal){
+  const rules=sit.boards[deal.bc][deal.vsize], keys=actionKeys(sit);
+  for(const k of keys){ const it=(rules[k]||[]).find(function(x){return x[0]===deal.cls;}); if(it) return {key:k, why:it[1]}; }
+  return null;
+}
+function grade(sit, deal, off, picked){
+  const c=correctFor(sit,deal); if(!c) throw new Error('no listed action for '+deal.cls+' on '+deal.bc+' in '+sit.label);
+  const sized = c.key==='bet' || c.key==='raise';
+  const rightAction = picked.key===c.key;
+  const sizeWrong = rightAction && sized && picked.size!==off.correctSize;
+  let why = c.why.charAt(0).toUpperCase()+c.why.slice(1);
+  if(sizeWrong){
+    if(c.key==='bet') why=(SIZE_WHY[deal.bc]||'')+(POT_SIZE_WHY[sit.id]||'');
+    else why= off.correctSize==='all-in' ? ALLIN_WHY : RAISE_SIZE_WHY;
+  }
+  const lesson=(sit.boards[deal.bc].lesson||'')+(sit.lessonAdd?' '+sit.lessonAdd:'');
+  return {hit:rightAction&&!sizeWrong, sizeWrong:sizeWrong, correct:c.key, correctSize:sized?off.correctSize:null, why:why, lesson:lesson, cls:deal.cls, sizeStr:sit.boards[deal.bc].size||'', anchor:anchorFor(sit.id,deal.bc)};
+}
+Object.keys(POSTFLOP).forEach(function(k){ POSTFLOP[k].id=k; });
+
+</script>
+<script>
 (function(){
-  const RANKS=['A','K','Q','J','T','9','8','7','6','5','4','3','2'];
-
-  const ALL_SUITED=(function(){
-    const out=[];
-    for(let i=0;i<13;i++) for(let j=i+1;j<13;j++) out.push(RANKS[i]+RANKS[j]+'s');
-    return out;
-  })();
-  const ALL_PAIRS=RANKS.map(function(r){return r+r;});
-  function suitedExcept(list){ return ALL_SUITED.filter(function(h){return list.indexOf(h)===-1;}); }
-
-  // Edit these sets to update ranges. 's' = suited, 'o' = offsuit, pairs bare.
-  const RANGES={
-    'rfi-lj':{mode:'rfi', raise:[].concat(ALL_PAIRS,
-      ['ATs','AJs','AQs','AKs','A5s','A4s','A3s','A2s',
-       'KTs','KJs','KQs','QTs','QJs','JTs','T9s','98s','87s','76s',
-       'AJo','AQo','AKo','KQo'])},
-
-    'rfi-hj':{mode:'rfi', raise:[].concat(ALL_PAIRS,
-      ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
-       'K9s','KTs','KJs','KQs','Q9s','QTs','QJs','J9s','JTs','T8s','T9s',
-       '98s','87s','76s','65s',
-       'ATo','AJo','AQo','AKo','KJo','KQo','QJo'])},
-
-    'rfi-co':{mode:'rfi', raise:[].concat(ALL_PAIRS,
-      ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
-       'K7s','K8s','K9s','KTs','KJs','KQs','Q8s','Q9s','QTs','QJs',
-       'J8s','J9s','JTs','T7s','T8s','T9s','97s','98s','86s','87s','75s','76s','65s','54s',
-       'A9o','ATo','AJo','AQo','AKo','KTo','KJo','KQo','QTo','QJo','JTo'])},
-
-    // Button: pairs + suited ordered by real strength (not "all suited") + offsuit to 98o.
-    'rfi-btn':{mode:'rfi', raise:[].concat(ALL_PAIRS,
-      ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
-       'K2s','K3s','K4s','K5s','K6s','K7s','K8s','K9s','KTs','KJs','KQs',
-       'Q2s','Q3s','Q4s','Q5s','Q6s','Q7s','Q8s','Q9s','QTs','QJs',
-       'J4s','J5s','J6s','J7s','J8s','J9s','JTs',
-       'T5s','T6s','T7s','T8s','T9s',
-       '95s','96s','97s','98s',
-       '85s','86s','87s',
-       '74s','75s','76s',
-       '64s','65s','53s','54s','43s'],
-      ['A2o','A3o','A4o','A5o','A6o','A7o','A8o','A9o','ATo','AJo','AQo','AKo',
-       'K8o','K9o','KTo','KJo','KQo','Q9o','QTo','QJo','J9o','JTo','T8o','T9o','98o'])},
-
-    'iso-early':{mode:'rfi', raise:
-      ['55','66','77','88','99','TT','JJ','QQ','KK','AA',
-       'A9s','ATs','AJs','AQs','AKs','KTs','KJs','KQs','QTs','QJs','JTs','T9s','98s',
-       'AJo','AQo','AKo','KQo']},
-
-    'iso-co':{mode:'rfi', raise:[].concat(ALL_PAIRS,
-      ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
-       'K9s','KTs','KJs','KQs','Q9s','QTs','QJs','J9s','JTs','T8s','T9s','98s','87s','76s',
-       'ATo','AJo','AQo','AKo','KJo','KQo','QJo'])},
-
-    'iso-btn':{mode:'rfi', raise:[].concat(ALL_PAIRS,
-      ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
-       'K7s','K8s','K9s','KTs','KJs','KQs','Q8s','Q9s','QTs','QJs',
-       'J8s','J9s','JTs','T7s','T8s','T9s','96s','97s','98s','86s','87s','74s','75s','76s','64s','65s','54s',
-       'A8o','A9o','ATo','AJo','AQo','AKo','K9o','KTo','KJo','KQo','QTo','QJo','JTo'])},
-
-
-    // SB first in: raise-or-fold, 3bb. A value-weighted Button minus the weakest offsuit and suited junk.
-    'sb-rfi':{mode:'rfi', raise:[].concat(ALL_PAIRS,
-      ['A2s','A3s','A4s','A5s','A6s','A7s','A8s','A9s','ATs','AJs','AQs','AKs',
-       'K2s','K3s','K4s','K5s','K6s','K7s','K8s','K9s','KTs','KJs','KQs',
-       'Q7s','Q8s','Q9s','QTs','QJs','J8s','J9s','JTs','T7s','T8s','T9s',
-       '97s','98s','86s','87s','75s','76s','65s','54s'],
-      ['A2o','A3o','A4o','A5o','A6o','A7o','A8o','A9o','ATo','AJo','AQo','AKo',
-       'K9o','KTo','KJo','KQo','Q9o','QTo','QJo','J9o','JTo','T9o'])},
-
-    // SB facing an open: 3-bet or fold, no calls by design (call list stays empty).
-    'sb-3bet-early':{mode:'3bet',
-      value:['99','TT','JJ','QQ','KK','AA','AQs','AKs','AKo'],
-      bluff:['A5s','A4s','A3s','AQo','AJs','KQs'],
-      call:[]},
-    'sb-3bet-late':{mode:'3bet',
-      value:['77','88','99','TT','JJ','QQ','KK','AA','ATs','AJs','AQs','AKs','KJs','KQs','QJs','ATo','AJo','AQo','AKo','KJo','KQo'],
-      bluff:['A5s','A4s','A3s','A2s','A9s','A8s','K9s','KTs','QTs','JTs','T9s','98s','87s','76s','QJo'],
-      call:[]},
-
-    // BB vs LJ / HJ open: strong range at the same price — tight, call-heavy, 3-bet only the top.
-    'def-bb-early':{mode:'3bet',
-      value:['QQ','KK','AA','AKs','AKo'],
-      bluff:['A5s','A4s'],
-      call:['22','33','44','55','66','77','88','99','TT','JJ',
-            'A2s','A3s','A6s','A7s','A8s','A9s','ATs','AJs','AQs',
-            'K9s','KTs','KJs','KQs','Q9s','QTs','QJs','J9s','JTs','T8s','T9s',
-            '97s','98s','87s','76s','65s','54s',
-            'AQo','AJo','ATo','KQo','KJo','QJo','JTo']},
-
-    // BB vs CO open: between the two — suited hands widen a lot, offsuit only a little.
-    'def-bb-co':{mode:'3bet',
-      value:['TT','JJ','QQ','KK','AA','AQs','AKs','AQo','AKo'],
-      bluff:['A5s','A4s','A3s','A2s'],
-      call:['22','33','44','55','66','77','88','99',
-            'A6s','A7s','A8s','A9s','ATs','AJs',
-            'K5s','K6s','K7s','K8s','K9s','KTs','KJs','KQs','Q6s','Q7s','Q8s','Q9s','QTs','QJs',
-            'J7s','J8s','J9s','JTs','T6s','T7s','T8s','T9s','96s','97s','98s','85s','86s','87s',
-            '74s','75s','76s','64s','65s','53s','54s','43s',
-            'A7o','A8o','A9o','ATo','AJo','K9o','KTo','KJo','KQo','Q9o','QTo','QJo','J9o','JTo','T9o','98o']},
-
-
-    // Blind vs blind: SB opens 3bb, you're BB — in position, weaker range, worse price. Wide, 3-bet-heavy.
-    'def-bb-sb':{mode:'3bet',
-      value:[
-       '99','TT','JJ','QQ','KK','AA','ATs','AJs','AQs','AKs','KJs','KQs','QJs','AJo',
-       'AQo','AKo','KQo'],
-      bluff:[
-       'A2s','A3s','A4s','A5s','K8s','K9s','76s','65s','KJo','QJo'],
-      call:[
-       '22','33','44','55','66','77','88','A9s','A8s','A7s','A6s','KTs','K7s','K6s',
-       'K5s','K4s','K3s','K2s','QTs','Q9s','Q8s','Q7s','Q6s','Q5s','Q4s','Q3s','Q2s','JTs',
-       'J9s','J8s','J7s','J6s','J5s','J4s','J3s','J2s','T9s','T8s','T7s','T6s','T5s','T4s',
-       'T3s','T2s','98s','97s','96s','95s','87s','86s','85s','84s','75s','74s','64s','63s',
-       '54s','53s','43s','A2o','A3o','A4o','A5o','A6o','A7o','A8o','A9o','ATo','K7o','K8o',
-       'K9o','KTo','Q9o','QTo','J9o','JTo','T8o','T9o','98o','87o']},
-
-    // BB vs SB limp: raise or check — never fold a free flop. Legend 'check'.
-    'bb-vs-sb-limp':{mode:'rfi', raise:[
-       '44','55','66','77','88','99','TT','JJ','QQ','KK','AA','AKs','AQs','AJs',
-       'ATs','A9s','A8s','A7s','A6s','A5s','A4s','A3s','A2s','K8s','K9s','KTs','KJs','KQs',
-       'Q9s','QTs','QJs','J9s','JTs','T9s','98s','87s','A8o','A9o','ATo','AJo','AQo','AKo',
-       'KTo','KJo','KQo','QTo','QJo','JTo']},
-
-    // BB vs an open plus a caller (CO opens, BTN calls): overcall multiway hands, squeeze the top.
-    'def-bb-multi':{mode:'3bet',
-      value:[
-       'QQ','KK','AA','AKs','AQs','AKo'],
-      bluff:[
-       'A5s','A4s'],
-      call:[
-       '22','33','44','55','66','77','88','99','TT','JJ','A2s','A3s','A6s','A7s',
-       'A8s','A9s','ATs','AJs','K7s','K8s','K9s','KTs','KJs','KQs','Q8s','Q9s','QTs','QJs',
-       'J8s','J9s','JTs','T7s','T8s','T9s','97s','98s','86s','87s','75s','76s','64s','65s',
-       '53s','54s','43s','AQo','AJo','KQo']},
-
-    // Facing a 3-bet from a player behind you (opened HJ / CO, 3-bet by CO / BTN): out of position vs a wide 3-bettor.
-    'vs3-behind':{mode:'4bet',
-      value:[
-       'QQ','KK','AA','AKs','AKo'],
-      bluff:[
-       'A5s','A4s'],
-      call:[
-       'JJ','TT','99','AQs','AJs','KQs','AQo']},
-
-    // BB vs BTN: pairs + suited by strength (junk cut) + offsuit down to 98o.
-    'def-bb-btn':{mode:'3bet',
-      value:['AA','KK','QQ','JJ','TT','99','AKs','AQs','AJs','KQs','AKo','AQo'],
-      bluff:['A5s','A4s','A3s','A2s','K9s'],
-      call:[].concat(
-        ['88','77','66','55','44','33','22'],
-        suitedExcept(['AKs','AQs','AJs','KQs','A5s','A4s','A3s','A2s','K9s',
-                      '94s','93s','92s','83s','82s','73s','72s','62s','52s','42s','32s']),
-        ['A2o','A3o','A4o','A5o','A6o','A7o','A8o','A9o','ATo','AJo',
-         'K7o','K8o','K9o','KTo','KJo','KQo',
-         'Q9o','QTo','QJo','J9o','JTo','T8o','T9o','98o'])},
-
-    'tbet-ip-tight':{mode:'3bet',
-      value:['JJ','QQ','KK','AA','AQs','AKs','AKo'],
-      bluff:['A2s','A3s','A4s','A5s'],
-      call:['TT','99','88','77','66','55','44','33','22','ATs','AJs','KTs','KQs','KJs','QTs','QJs','JTs','AQo']},
-
-    'tbet-ip-wide':{mode:'3bet',      value:['TT','JJ','QQ','KK','AA','AJs','AQs','AKs','KQs','AQo','AKo'],
-      bluff:['A2s','A3s','A4s','A5s','A9s','K9s'],
-      call:['99','88','77','66','55','44','33','22','ATs','A8s','A7s','A6s','KTs','KJs','QTs','QJs','Q9s','JTs','J9s','T9s','98s','87s','76s','KQo','AJo','ATo']},
-
-    // Facing a 3-bet after opening early — OOP baseline.
-    'vs3-early':{mode:'4bet',
-      value:['QQ','KK','AA','AKs','AKo'],
-      bluff:['A5s','A4s'],
-      call:['JJ','TT','99','88','AQs','AJs','ATs','KQs','KJs']},
-
-    // Facing a 3-bet after opening late — usually IP vs a blind.
-    'vs3-late':{mode:'4bet',
-      value:['QQ','KK','AA','AKs','AKo'],
-      bluff:['A5s','A4s','A3s'],
-      call:['JJ','TT','99','88','77','66','55','44','33','22',
-            'AQs','AJs','ATs','A9s','A8s','A7s','A6s',
-            'KQs','KJs','KTs','K9s','QJs','QTs','Q9s','JTs','J9s',
-            'T9s','98s','87s','76s','65s','54s','AQo']},
-  };
-
-  const C={raise:'#1D9E75', value:'#1D9E75', bluff:'#D85A30', call:'#378ADD'};
+  const C=ACTION_COLOR;
   const ALL_HANDS=(function(){ const o=[]; for(let i=0;i<13;i++) for(let j=0;j<13;j++) o.push(handAt(i,j)); return o; })();
-
-  function handAt(i,j){
-    if(i===j) return RANKS[i]+RANKS[j];
-    if(i<j) return RANKS[i]+RANKS[j]+'s';
-    return RANKS[j]+RANKS[i]+'o';
-  }
-  function actionOf(cfg,hand){
-    if(cfg.mode==='rfi') return cfg.raise.indexOf(hand)>-1?'raise':'fold';
-    if(cfg.value.indexOf(hand)>-1) return 'value';
-    if(cfg.bluff.indexOf(hand)>-1) return 'bluff';
-    if(cfg.call.indexOf(hand)>-1) return 'call';
-    return 'fold';
-  }
   function choiceOf(act){ return (act==='value'||act==='bluff')?'raise':act; }
 
-  // ---------- spots: who you are, what happened before the action reached you ----------
-  // pre: actions by other seats in order. Amounts in bb. hero.bet = what you already have in.
+  // ---------- preflop spots: who you are, what happened before the action reached you ----------
   const SPOTS={
     'rfi-lj':   {hero:'LJ', label:'Open · Lojack',  spot:'Folded to you in the Lojack.', pre:[], raiseTo:2.5, alt:3, sizeWhy:"2.5bb from every seat except the small blind, which opens 3bb.", facing:1, callWord:'Limp', raiseWord:'Raise', noCall:'never open-limp'},
     'rfi-hj':   {hero:'HJ', label:'Open · Hijack',  spot:'Folded to you in the Hijack.', pre:[['LJ','fold']], raiseTo:2.5, alt:3, sizeWhy:"2.5bb from every seat except the small blind, which opens 3bb.", facing:1, callWord:'Limp', raiseWord:'Raise', noCall:'never open-limp'},
@@ -597,7 +1661,6 @@
     'def-bb-multi':{hero:'BB', label:'BB vs open + caller', spot:'Cutoff opens to $0.63, Button calls, small blind folds. Three-way if you call.', pre:[['LJ','fold'],['HJ','fold'],['CO','raise',2.5],['BTN','call',2.5],['SB','fold']], raiseTo:12, alt:10, sizeWhy:"4× out of position, plus 1× for the caller: 5 × 2.5 = 12bb.", facing:2.5, callWord:'Call', raiseWord:'Squeeze'},
     'vs3-behind':  {hero:'CO', label:'Vs 3-bet · from behind', spot:'You opened to $0.63 from the Cutoff. Button 3-bets to $1.88, blinds fold.', heroBet:2.5, pre:[['LJ','fold'],['HJ','fold'],['BTN','raise',7.5],['SB','fold'],['BB','fold']], raiseTo:19, alt:17, sizeWhy:"4-bet to 2.5× their 3-bet out of position (2.2× in position). 2.5 × 7.5 ≈ 19bb.", facing:7.5, callWord:'Call', raiseWord:'4-bet'}
   };
-  // Why a hand calls rather than raises — depends on what kind of hand it is, not just the action.
   function callWhy(hand,sp){
     const pair=hand.length===2, suited=hand[2]==='s', hi=hand[0], lo=hand[1];
     const rank=r=>RANKS.indexOf(r), gap=Math.abs(rank(hi)-rank(lo));
@@ -610,10 +1673,7 @@
     if(suited && (hi==='A' || gap<=2)) return 'Plays well in position — flushes, straights, cheap folds. A raise would turn it into a bluff.';
     return 'Too good to fold, but a raise here would be a bluff.';
   }
-  // ---------- opponent reads ----------
-  // Each read either swaps in another chart from the reference (the doc's "defend like vs the Cutoff") or
-  // overrides specific hands (the doc's "vs a station, drop the coral"). Nothing here is invented: every
-  // rule is a sentence from the reference turned into data.
+  // ---------- opponent reads (preflop) ----------
   const BLUFF_TO=(chart,to)=>Object.fromEntries(RANGES[chart].bluff.map(h=>[h,to]));
   const FOLD=hs=>Object.fromEntries(hs.map(h=>[h,'fold']));
   const AGGRO={tag:'AGGRO',color:'#C0392B',sentence:'The {pos} has 3-bet three times this orbit.',deltas:{JJ:'value',AQs:'value'},why:'Against a frequent 3-bettor, JJ and AQs move from call to 4-bet value.'};
@@ -624,7 +1684,7 @@
                  loose:{tag:'LOOSE',color:'#B7950B',sentence:'The {pos} opens 40%+ from here.',chart:'def-bb-btn',why:'A Cutoff opening 40%+ is a Button — defend with the vs-Button chart.'}},
     'def-bb-btn':{tight:{tag:'NIT',color:'#2E5E9E',sentence:'The {pos} opens about 27% — tight for the seat.',chart:'def-bb-co',why:'A tight Button is a Cutoff — defend with the vs-Cutoff chart.'},
                   station:{tag:'STATION',color:'#D85A30',sentence:'The {pos} is a station — calls 3-bets with half his range.',deltas:BLUFF_TO('def-bb-btn','call'),why:'Bluffs need folds to exist. Against a station the wheel aces and K9s call instead — they play fine.'}},
-                    'tbet-ip-tight':{folder:{tag:'FOLDS',color:'#1F7F5F',sentence:'The {pos} folds to 3-bets about 60% of the time.',deltas:{AQo:'bluff'},why:'When the opener folds that often, AQo 3-bets: it wins now, and folds to a 4-bet.'}},
+    'tbet-ip-tight':{folder:{tag:'FOLDS',color:'#1F7F5F',sentence:'The {pos} folds to 3-bets about 60% of the time.',deltas:{AQo:'bluff'},why:'When the opener folds that often, AQo 3-bets: it wins now, and folds to a 4-bet.'}},
     'tbet-ip-wide':{station:{tag:'STATION',color:'#D85A30',sentence:'The {pos} is a station — calls 3-bets with most of his range.',deltas:BLUFF_TO('tbet-ip-wide','call'),why:'No fold equity against a station — the bluff 3-bets call instead.'}},
     'sb-3bet-early':{tight:{tag:'NIT',color:'#2E5E9E',sentence:'The {pos} opens a genuine 15% range.',deltas:FOLD(['99','AJs','KQs','A3s']),why:'Against a true 15% range the thin 3-bets — 99, AJs, KQs, A3s — fold.'}},
     'sb-3bet-late':{station:{tag:'STATION',color:'#D85A30',sentence:'The {pos} is a station — calls 3-bets with half his range.',deltas:BLUFF_TO('sb-3bet-late','fold'),why:'Bluffs need folds to exist. Against a station, 3-bet only for value.'},
@@ -643,24 +1703,32 @@
   const WHY={ value:'A value hand.', bluff:'A bluff: it blocks their strongest hands and has equity if called.', call:'Too good to fold, but a raise here would be a bluff.' };
 
   // ---------- state ----------
-  const S={ active:{}, diff:'all', reads:true, n:0, hits:0, streak:0, best:0, per:{}, misses:{}, cur:null, answered:false, mode:'normal', timers:[] };
+  const S={ mode:'pre', active:{}, activeFlop:{}, diff:'all', reads:true,
+            n:0, hits:0, streak:0, best:0, sizeMiss:0, per:{}, misses:{}, fper:{}, fmisses:{},
+            cur:null, answered:false, street:'pre', retrain:false, timers:[], hand:null, force:null };
   Object.keys(SPOTS).forEach(k=>{ S.per[k]={n:0,hits:0}; });
+  Object.keys(POSTFLOP).forEach(k=>{ S.fper[k]={n:0,hits:0}; });
   document.querySelectorAll('.pick[data-chart]').forEach(b=>{ S.active[b.dataset.chart]=b.getAttribute('aria-pressed')==='true'; });
+  document.querySelectorAll('.pick[data-sit]').forEach(b=>{ S.activeFlop[b.dataset.sit]=b.getAttribute('aria-pressed')==='true'; });
+  const KEY='nl25-trainer-v2';
   function load(){
     try{
-      const raw=localStorage.getItem('range-trainer-v1'); if(!raw) return;
+      let raw=localStorage.getItem(KEY); if(!raw) raw=localStorage.getItem('range-trainer-v1'); if(!raw) return;
       const d=JSON.parse(raw);
       ['n','hits','streak','best','sizeMiss'].forEach(k=>{ if(typeof d[k]==='number') S[k]=d[k]; });
       if(d.per) Object.keys(S.per).forEach(k=>{ if(d.per[k]) S.per[k]=d.per[k]; });
-      if(d.misses) S.misses=d.misses;
+      if(d.fper) Object.keys(S.fper).forEach(k=>{ if(d.fper[k]) S.fper[k]=d.fper[k]; });
+      if(d.misses) S.misses=d.misses; if(d.fmisses) S.fmisses=d.fmisses;
       if(d.active) Object.keys(S.active).forEach(k=>{ if(k in d.active) S.active[k]=!!d.active[k]; });
+      if(d.activeFlop) Object.keys(S.activeFlop).forEach(k=>{ if(k in d.activeFlop) S.activeFlop[k]=!!d.activeFlop[k]; });
       if(['all','lean','edge'].indexOf(d.diff)>-1) S.diff=d.diff;
       if(typeof d.reads==='boolean') S.reads=d.reads;
+      if(['pre','both','flop'].indexOf(d.mode)>-1) S.mode=d.mode;
     }catch(e){}
   }
-  function save(){ try{ localStorage.setItem('range-trainer-v1', JSON.stringify({n:S.n,hits:S.hits,streak:S.streak,best:S.best,sizeMiss:S.sizeMiss||0,per:S.per,misses:S.misses,active:S.active,diff:S.diff,reads:S.reads})); }catch(e){} }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify({n:S.n,hits:S.hits,streak:S.streak,best:S.best,sizeMiss:S.sizeMiss,per:S.per,fper:S.fper,misses:S.misses,fmisses:S.fmisses,active:S.active,activeFlop:S.activeFlop,diff:S.diff,reads:S.reads,mode:S.mode})); }catch(e){} }
 
-  // ---------- sampling ----------
+  // ---------- sampling (preflop) ----------
   const EDGE={};
   function classOf(i,j){ return i===j?'p':(i<j?'s':'o'); }
   function edgeHands(chart){
@@ -681,6 +1749,7 @@
     EDGE[chart]=out; return out;
   }
   function activeCharts(){ return Object.keys(S.active).filter(k=>S.active[k]); }
+  function activeSits(){ return Object.keys(S.activeFlop).filter(k=>S.activeFlop[k]); }
   function drawFrom(chart){
     const cfg=RANGES[chart];
     if(S.diff==='edge' || (S.diff==='lean' && Math.random()<0.67)){ const e=edgeHands(chart); return e[Math.floor(Math.random()*e.length)]; }
@@ -688,11 +1757,12 @@
     const pool=(Math.random()<0.5 && inR.length)?inR:out;
     return pool[Math.floor(Math.random()*pool.length)];
   }
-  function pick(){
-    if(S.mode==='misses'){
+  function pickPre(){
+    if(S.force&&S.force.kind==='pre'){ const f=S.force; S.force=null; return {chart:f.chart, hand:f.hand, prof:f.prof||null, replay:true}; }
+    if(S.retrain){
       const act=activeCharts();
-      const keys=Object.keys(S.misses).filter(k=>act.includes(k.split('|')[0]));   // only misses from the selected spots
-      if(!keys.length){ S.mode='normal'; syncMissesBtn(); }
+      const keys=Object.keys(S.misses).filter(k=>act.includes(k.split('|')[0]));
+      if(!keys.length){ S.retrain=false; syncMissesBtn(); }
       else{ const k=keys[Math.floor(Math.random()*keys.length)]; const [chart,hand,prof]=k.split('|'); return {chart,hand,prof:prof||null}; }
     }
     const charts=activeCharts(); if(!charts.length) return null;
@@ -701,47 +1771,55 @@
     if(S.reads && PROFILES[chart] && Math.random()<READ_RATE){ const ids=Object.keys(PROFILES[chart]); prof=ids[Math.floor(Math.random()*ids.length)]; }
     return {chart, hand:drawFrom(chart), prof};
   }
+  function pickFlop(){
+    if(S.force&&S.force.kind==='flop'){ const f=S.force; S.force=null; return {sit:f.sit, bc:f.bc, cls:f.cls, replay:true}; }
+    if(S.retrain){
+      const act=activeSits();
+      const keys=Object.keys(S.fmisses).filter(k=>act.includes(k.split('|')[0]));
+      if(!keys.length){ S.retrain=false; syncMissesBtn(); }
+      else{ const k=keys[Math.floor(Math.random()*keys.length)]; const [sit,bc,cls]=k.split('|'); return {sit, bc, cls}; }
+    }
+    const sits=activeSits(); if(!sits.length) return null;
+    return {sit:sits[Math.floor(Math.random()*sits.length)]};
+  }
 
   // ---------- table geometry ----------
-  // Seating order clockwise around the table; the action moves the same way.
-  // Stakes. Ranges are in bb; everything on the table is shown in money.
   const STAKES={sb:0.10, bb:0.25, stack:25};
   function usd(bb){ return Math.round(bb*STAKES.bb*100)/100; }
   function money(x){ return '$'+(Math.round(x*100)/100).toFixed(2); }
   const ORDER=['LJ','HJ','CO','BTN','SB','BB'];
-  // Screen seats clockwise from the hero at the bottom.
-  // Two layouts. Bets sit on a ring between the seats and the centre; the pot sits at the centre
-  // and the hero's bet is pushed higher so it clears the cards.
-  // bets[k] is where seat k's chips go — placed by hand so nothing lands on a plate, a card back, or the pot.
+  const POSTFLOP_ORDER=['SB','BB','LJ','HJ','CO','BTN'];
   const LANDSCAPE={seats:[[50,83],[11,66],[14,24],[50,9],[86,24],[89,66]], bets:[[50,60],[27,57],[28,31],[50,22],[72,31],[73,57]], pot:37, brand:52};
   const PORTRAIT ={seats:[[50,85],[13.5,66],[15,26],[50,9],[85,26],[86.5,66]], bets:[[50,67],[35,60],[34,37],[50,25],[66,37],[65,60]], pot:49, brand:58};
   const phone=window.matchMedia?window.matchMedia('(max-width:520px)'):null;
   let L=LANDSCAPE, SEAT_XY=L.seats;
-  function syncLayout(){ L=(phone&&phone.matches)?PORTRAIT:LANDSCAPE; SEAT_XY=L.seats; document.getElementById('pot').style.top=L.pot+'%'; document.querySelector('.felt .brand').style.top=L.brand+'%'; }
+  function syncLayout(){ L=(phone&&phone.matches)?PORTRAIT:LANDSCAPE; SEAT_XY=L.seats; document.querySelector('.felt .brand').style.top=L.brand+'%'; syncPot(); }
+  function syncPot(){ const flop=$('tablebox').classList.contains('flop'); $('pot').style.top=flop?((phone&&phone.matches)?34:33)+'%':L.pot+'%'; }
   function betXY(k){ return L.bets[k]; }
   const NAMES=['nordlicht_88','Elbe_Ruffian','coldcall_kai','TiltProof','ptolemy_q','Rakeback_Ron','flatline_jo','Sakura7','BlockerBob','drei_bet','kiezking','SnapFold'];
-  const SUITS=[['♠','black'],['♥','red'],['♦','red'],['♣','black']];
+  const SUIT_IDX={s:0,h:1,d:2,c:3}, SUIT_SYM=[['♠','black'],['♥','red'],['♦','red'],['♣','black']];
   const $=id=>document.getElementById(id);
   const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function fmt(n){ return (Math.round(n*10)/10).toString(); }
   function chipsFor(amt){
-    const parts=[]; let r=amt;
-    r=Math.round(r*100);
+    const parts=[]; let r=Math.round(amt*100);
     while(r>=500){parts.push('c5');r-=500;} while(r>=100){parts.push('c1');r-=100;} while(r>=25){parts.push('c25');r-=25;} while(r>=10){parts.push('c10');r-=10;} while(r>=5){parts.push('c05');r-=5;}
     return parts.slice(0,6);
   }
-  function dealSuits(hand){
-    const a=Math.floor(Math.random()*4);
-    if(hand.length===3&&hand[2]==='s') return [a,a];
-    let b=Math.floor(Math.random()*3); if(b>=a) b++; return [a,b];
+  // concrete cards for a hand label ('AKs' -> ['Ah','Kh'])
+  function dealHole(hand){
+    const a=Math.floor(Math.random()*4); let b;
+    if(hand.length===3&&hand[2]==='s') b=a; else { b=Math.floor(Math.random()*3); if(b>=a) b++; }
+    return [hand[0]+SUITS[a], hand[1]+SUITS[b]];
   }
-  function cardEl(rank,si){
-    const [sym,col]=SUITS[si]; const d=document.createElement('div'); d.className='card '+col;
-    d.setAttribute('aria-label',rank+' of '+['spades','hearts','diamonds','clubs'][si]);
-    d.innerHTML='<span class="r">'+rank+'</span><span class="s">'+sym+'</span><span class="big">'+sym+'</span>'; return d;
+  function cardEl(card){
+    const [sym,col]=SUIT_SYM[SUIT_IDX[card[1]]]; const d=document.createElement('div'); d.className='card '+col;
+    d.setAttribute('aria-label',card[0]+' of '+['spades','hearts','diamonds','clubs'][SUIT_IDX[card[1]]]);
+    d.innerHTML='<span class="r">'+card[0]+'</span><span class="s">'+sym+'</span><span class="big">'+sym+'</span>'; return d;
   }
   function el(cls,xy,html){ const d=document.createElement('div'); d.className=cls; d.style.left=xy[0]+'%'; d.style.top=xy[1]+'%'; if(html!=null) d.innerHTML=html; return d; }
+  function miniCards(cards){ return cards.map(c=>'<span class="pc'+((c[1]==='h'||c[1]==='d')?' r':'')+'">'+c[0]+SUIT_SYM[SUIT_IDX[c[1]]][0]+'</span>').join(''); }
 
   function clearTimers(){ S.timers.forEach(t=>clearTimeout(t)); S.timers=[]; }
   function later(fn,ms){ if(reduceMotion) fn(); else S.timers.push(setTimeout(fn,ms)); }
@@ -749,7 +1827,7 @@
   function buildScene(chart){
     const sp=SPOTS[chart];
     let pre=sp.pre;
-    if(pre==='limp1'){ // one random limper among the seats before the hero, the rest fold
+    if(pre==='limp1'){
       const before=ORDER.slice(0,ORDER.indexOf(sp.hero));
       const limper=before[Math.floor(Math.random()*before.length)];
       pre=before.map(p=>[p,p===limper?'limp':'fold']);
@@ -757,66 +1835,81 @@
     return {hero:sp.hero, pre, heroBet:sp.heroBet||0};
   }
 
-  function renderTable(scene, hand){
+  // Draw the table: seats, hero cards, stacks; then (optionally) the preflop action one seat at a time.
+  // T: {hero, hole, inPot (bb by seat), folded:[seats], pre:[[pos,act,amt]] to animate, board?}
+  let TABLE=null;
+  function drawTable(T){
     clearTimers();
     const seats=$('seats'); seats.innerHTML='';
-    const heroIdx=ORDER.indexOf(scene.hero);
+    const heroIdx=ORDER.indexOf(T.hero);
     const names=NAMES.slice().sort(()=>Math.random()-.5);
-    const seatEls={}, bets={}, tags={};
-    // base state: blinds posted, everyone dealt
-    const inPot={SB:STAKES.sb,BB:STAKES.bb};
-    if(scene.heroBet) inPot[scene.hero]=usd(scene.heroBet);
+    TABLE={seatEls:{}, bets:{}, inPot:Object.assign({},T.inPot), heroIdx, names};
     for(let k=0;k<6;k++){
       const pos=ORDER[(heroIdx+k)%6], xy=SEAT_XY[k], isHero=k===0;
-      const seat=el('seat'+(isHero?' hero':''),xy);
+      const seat=el('seat'+(isHero?' hero':'')+((T.folded||[]).includes(pos)?' folded':''),xy);
       seat.dataset.pos=pos;
       const hole=document.createElement('div'); hole.className='hole';
-      if(isHero){ const [s1,s2]=dealSuits(hand); hole.appendChild(cardEl(hand[0],s1)); hole.appendChild(cardEl(hand[1],s2)); }
+      if(isHero){ hole.appendChild(cardEl(T.hole[0])); hole.appendChild(cardEl(T.hole[1])); }
       else{ hole.innerHTML='<div class="cb"></div><div class="cb"></div>'; }
       seat.appendChild(hole);
-      const stack=STAKES.stack-(inPot[pos]||0);
+      const stack=STAKES.stack-usd(T.inPot[pos]||0);
       seat.insertAdjacentHTML('beforeend','<div class="plate"><span class="pos">'+pos+'</span><div class="nm">'+(isHero?'You':names[k])+'</div><div class="st">'+money(stack)+'</div></div>');
-      seats.appendChild(seat); seatEls[pos]=seat;
+      seats.appendChild(seat); TABLE.seatEls[pos]=seat;
       if(pos==='BTN') seat.querySelector('.plate').insertAdjacentHTML('beforeend','<span class="dealer" title="Dealer">D</span>');
-      if(inPot[pos]){ const b=el('bet',betXY(k)); setBet(b,inPot[pos]); seats.appendChild(b); bets[pos]=b; }
+      if(T.inPot[pos] && !T.potOnly){ const b=el('bet',betXY(k)); setBet(b,usd(T.inPot[pos])); seats.appendChild(b); TABLE.bets[pos]=b; }
     }
-    function setBet(b,amt){ b.innerHTML='<span class="stack">'+chipsFor(amt).map((c,i)=>'<span class="chip '+c+'" style="top:'+(-i*2)+'px"></span>').join('')+'</span>'+money(amt); }
-    let pot=Object.values(inPot).reduce((a,b)=>a+b,0);
-    $('pot').textContent='Pot '+money(pot);
-    // the action, one seat at a time, then it's on you
+    $('board').classList.toggle('hidden',!T.board); $('board').innerHTML='';
+    if(T.board) T.board.forEach(c=>$('board').appendChild(cardEl(c)));
+    $('tablebox').classList.toggle('flop',!!T.board); syncPot();
+    showPot();
+  }
+  function setBet(b,amt){ b.innerHTML='<span class="stack">'+chipsFor(amt).map((c,i)=>'<span class="chip '+c+'" style="top:'+(-i*2)+'px"></span>').join('')+'</span>'+money(amt); }
+  function showPot(extra){ const pot=Object.values(TABLE.inPot).reduce((a,b)=>a+b,0)+(extra||0); $('pot').textContent='Pot '+money(usd(pot)); }
+  function seatK(pos){ return (ORDER.indexOf(pos)-TABLE.heroIdx+6)%6; }
+  function tagSeat(pos,cls,text){ const seat=TABLE.seatEls[pos]; seat.querySelectorAll('.tag').forEach(t=>t.remove()); seat.insertAdjacentHTML('beforeend','<span class="tag '+cls+'">'+text+'</span>'); }
+  function putMoney(pos,toBb){ // seat pos now has toBb in front of them
+    TABLE.inPot[pos]=toBb; const seat=TABLE.seatEls[pos]; seat.querySelector('.st').textContent=money(STAKES.stack-usd(toBb));
+    let b=TABLE.bets[pos]; if(!b){ b=el('bet',betXY(seatK(pos))); $('seats').appendChild(b); TABLE.bets[pos]=b; } setBet(b,usd(toBb));
+  }
+  function setActing(pos){ document.querySelectorAll('.seat.acting').forEach(s=>s.classList.remove('acting')); if(pos) TABLE.seatEls[pos].classList.add('acting'); }
+  function animatePre(scene){
     let t=0; const step=reduceMotion?0:330;
     scene.pre.forEach(([pos,act,amt])=>{
       t+=step;
       later(()=>{
-        const seat=seatEls[pos], k=[...seats.querySelectorAll('.seat')].indexOf(seat), xy=SEAT_XY[k];
-        seats.querySelectorAll('.seat.acting').forEach(s=>s.classList.remove('acting'));
-        if(act==='fold'){ seat.classList.add('folded'); seat.insertAdjacentHTML('beforeend','<span class="tag fold">Fold</span>'); return; }
-        const to = usd(act==='limp'?1:amt), add=to-(inPot[pos]||0); inPot[pos]=to; pot+=add;
+        setActing(null);
+        if(act==='fold'){ TABLE.seatEls[pos].classList.add('folded'); tagSeat(pos,'fold','Fold'); return; }
+        const to=act==='limp'?1:amt; putMoney(pos,to);
         const isCall = act==='limp'||act==='call';
-        seat.querySelector('.st').textContent=money(STAKES.stack-to);
-        let b=bets[pos]; if(!b){ b=el('bet',betXY(k)); seats.appendChild(b); bets[pos]=b; } setBet(b,to);
-        seat.insertAdjacentHTML('beforeend','<span class="tag '+(isCall?'limp':'raise')+'">'+(isCall?'Call':(amt>3?'3-bet':'Raise'))+'</span>');
-        $('pot').textContent='Pot '+money(pot);
+        tagSeat(pos,isCall?'limp':'raise',isCall?'Call':(amt>3?'3-bet':'Raise'));
+        showPot();
       },t);
     });
-    later(()=>{ seatEls[scene.hero].classList.add('acting'); $('answers').classList.remove('waiting'); },t+ (reduceMotion?0:120));
+    later(()=>{ setActing(scene.hero); $('answers').classList.remove('waiting'); },t+(reduceMotion?0:120));
   }
 
   function heroIn(sp){ return (sp.hero==='BB'?1:sp.hero==='SB'?STAKES.sb/STAKES.bb:0)+(sp.heroBet||0); }
   function callUsd(sp){ return Math.round((usd(sp.facing)-usd(heroIn(sp)))*100)/100; }
 
-  function showHand(){
-    const p=pick(); S.cur=p; S.answered=false;
-    $('verdict').innerHTML=''; $('verdict').classList.add('hidden'); $('overlay').classList.add('hidden'); $('after').classList.add('hidden'); $('reveal').classList.add('hidden'); $('btn-chart').innerHTML='Show chart'+'<span class="kcap" aria-hidden="true">C</span>';
+  // ---------- a new hand ----------
+  function resetUI(){
+    $('verdict').innerHTML=''; $('verdict').classList.add('hidden'); $('overlay').classList.add('hidden'); $('after').classList.add('hidden'); $('reveal').classList.add('hidden'); $('summary').classList.add('hidden'); $('summary').innerHTML='';
+    $('btn-chart').innerHTML='Show chart<span class="kcap" aria-hidden="true">C</span>';
+    $('btn-next').innerHTML='Next hand<span class="kcap wide" aria-hidden="true">space</span>'; $('btn-next').classList.remove('flopnext');
     if(phone&&phone.matches) window.scrollTo({top:0});
-    if(!p){ clearTimers(); $('seats').innerHTML=''; $('spot').textContent='Pick at least one spot below.'; $('spotpill').textContent='No spots selected'; $('handlabel').textContent=''; $('answers').innerHTML=''; return; }
-    const sp=SPOTS[p.chart], cfg=RANGES[p.chart], scene=buildScene(p.chart);
-    S.cur.scene=scene;
+  }
+  function showHand(){
+    S.answered=false; S.hand={}; resetUI();
+    if(S.mode==='flop' || (S.force&&S.force.kind==='flop')) return showFlopOnly();
+    const p=pickPre(); S.cur=p; S.street='pre';
+    if(!p){ clearTimers(); $('seats').innerHTML=''; $('board').classList.add('hidden'); $('tablebox').classList.remove('flop'); $('spot').textContent='Pick at least one spot below.'; $('spotpill').textContent='No spots selected'; $('spotpill').classList.remove('flop'); $('handlabel').textContent=''; $('answers').innerHTML=''; return; }
+    const sp=SPOTS[p.chart], scene=buildScene(p.chart);
+    S.cur.scene=scene; S.cur.hole=dealHole(p.hand);
     const pr=p.prof&&PROFILES[p.chart]&&PROFILES[p.chart][p.prof]; const vil=villainOf(scene);
     $('spot').textContent=sp.spot+(pr?' '+pr.sentence.replace('{pos}',posName(vil)):'');
-    $('spotpill').textContent=(S.mode==='misses'?'Retraining · ':'')+sp.label+(pr?' · read':'');
+    $('spotpill').textContent=(p.replay?'Replay · ':S.retrain?'Retraining · ':'')+sp.label+(pr?' · read':''); $('spotpill').classList.remove('flop');
     $('handlabel').textContent=p.hand;
-    const ans=$('answers'); ans.innerHTML=''; ans.classList.remove('hidden'); ans.classList.add('waiting');
+    const ans=$('answers'); ans.innerHTML=''; ans.classList.remove('hidden','three'); ans.classList.add('waiting');
     const sizes=Math.random()<0.5?[sp.raiseTo,sp.alt]:[sp.alt,sp.raiseTo];
     const opts=[['fold','Fold','',null],['call',sp.callWord,sp.check?'':money(callUsd(sp)),null],
       ['raise',sp.raiseWord,'to '+money(usd(sizes[0]))+' · '+fmt(sizes[0])+'bb',sizes[0]],
@@ -824,13 +1917,29 @@
     opts.forEach(([v,t,sub,size])=>{
       const b=document.createElement('button'); b.className='act '+v; b.dataset.v=v; if(size!=null) b.dataset.size=size;
       b.innerHTML='<span class="kcap" aria-hidden="true">'+(ans.children.length+1)+'</span>'+t+(sub?'<small>'+sub+'</small>':'<small>&nbsp;</small>');
-      b.addEventListener('click',()=>answer(v,size)); ans.appendChild(b);
+      b.addEventListener('click',()=>answerPre(v,size)); ans.appendChild(b);
     });
-    renderTable(scene,p.hand);
-    if(pr&&vil){ const seat=[...$('seats').querySelectorAll('.seat')].find(s=>s.dataset.pos===vil); if(seat) seat.querySelector('.plate').insertAdjacentHTML('beforeend','<span class="read" style="background:'+pr.color+'">'+pr.tag+'</span>'); }
+    const inPot={SB:STAKES.sb/STAKES.bb,BB:1}; if(scene.heroBet) inPot[scene.hero]=scene.heroBet;
+    drawTable({hero:scene.hero, hole:S.cur.hole, inPot});
+    animatePre(scene);
+    if(pr&&vil){ const seat=TABLE.seatEls[vil]; if(seat) seat.querySelector('.plate').insertAdjacentHTML('beforeend','<span class="read" style="background:'+pr.color+'">'+pr.tag+'</span>'); }
   }
 
-  function answer(v,size){
+  function chipClass(k){ return (k==='fold'||k==='check-fold')?'fold':(k==='bet'||k==='raise')?'raise':'call'; }
+  function overlayHTML(hit, headline, yourWord, word, correctKey, yourKey, whyHTML, extra){
+    let html='<div class="v-head '+(hit?'ok':'bad')+'"><span class="v-mark">'+(hit?'✓':'✗')+'</span>'+headline+'</div>';
+    if(extra) html+=extra;
+    if(hit) html+='<div class="v-line"><span class="v-chip '+chipClass(correctKey)+'">'+word+'</span></div>';
+    else html+='<div class="v-compare"><div class="v-col"><span class="v-lab">You</span><span class="v-chip ghosted '+chipClass(yourKey)+'">'+yourWord+'</span></div><div class="v-col"><span class="v-lab right">Correct</span><span class="v-chip '+chipClass(correctKey)+'">'+word+'</span></div></div>';
+    if(whyHTML) html+='<div class="v-why">'+whyHTML+'</div>';
+    return html;
+  }
+  function record(hit, sizeWrong){
+    S.n++; if(hit){S.hits++;S.streak++;S.best=Math.max(S.best,S.streak);} else S.streak=0;
+    if(sizeWrong) S.sizeMiss++;
+  }
+
+  function answerPre(v,size){
     if(!S.cur||S.answered||$('answers').classList.contains('waiting')) return;
     S.answered=true; clearTimers();
     const {chart,hand}=S.cur, cfg=RANGES[chart], sp=SPOTS[chart];
@@ -840,7 +1949,7 @@
     const isCorrectBtn=b=> b.dataset.v===correct && (correct!=='raise' || Number(b.dataset.size)===sp.raiseTo);
     const isPicked=b=> b.dataset.v===v && (v!=='raise' || Number(b.dataset.size)===size);
     document.querySelectorAll('.act').forEach(b=>{ b.disabled=true; if(isPicked(b)) b.classList.add('picked',hit?'hit':'miss'); if(!hit&&isCorrectBtn(b)) b.classList.add('hit'); });
-    document.querySelectorAll('.seat.acting').forEach(s=>s.classList.remove('acting'));
+    setActing(null);
     const wordOf=(x,sz)=> x==='raise'?sp.raiseWord+' to '+money(usd(sz==null?sp.raiseTo:sz))+' ('+fmt(sz==null?sp.raiseTo:sz)+'bb)':(x==='call'?(sp.check?'Check':sp.callWord+' '+money(callUsd(sp))):'Fold');
     const word=wordOf(correct);
     let why = WHY[act] || '';
@@ -857,34 +1966,146 @@
     if(!hit && v==='fold' && sp.noFold) why='Not an option here — '+sp.noFold+'. '+(correct==='raise'?'This hand raises.':'This hand checks.');
     if(hit && sp.check && correct==='call') why='A free flop with a hand that doesn\'t want a bigger pot.';
     const key=chart+'|'+hand+(S.cur.prof?'|'+S.cur.prof:'');
-    if(sizeWrong) S.sizeMiss=(S.sizeMiss||0)+1;
     const whyText = why || (hit ? '' : 'Not in the '+sp.label+' range.');
     if(hit) delete S.misses[key]; else S.misses[key]=(S.misses[key]||0)+1;
-    // Verdict first, then (when wrong) your move struck through beside the right one, then the reason.
     const yourWord = wordOf(v,size);
     const headline = hit ? 'Correct' : (sizeWrong ? 'Right move, wrong size' : 'Not quite');
-    let html='<div class="v-head '+(hit?'ok':'bad')+'"><span class="v-mark">'+(hit?'✓':'✗')+'</span>'+headline+'</div>';
-    if(hit){
-      html+='<div class="v-line"><span class="v-chip '+correct+'">'+word+'</span></div>';
-    }else{
-      html+='<div class="v-compare">'
-          + '<div class="v-col"><span class="v-lab">You</span><span class="v-chip ghosted '+v+'">'+yourWord+'</span></div>'
-          + '<div class="v-col"><span class="v-lab right">Correct</span><span class="v-chip '+correct+'">'+word+'</span></div>'
-          + '</div>';
+    // where the line goes next (mode 2)
+    let extra='', flow=null;
+    if(S.mode==='both'){
+      flow=flowFor(chart, v); S.cur.flow=flow; S.cur.choice=v; S.cur.size=size;
+      if(flow.end) extra='<div class="v-note">'+flow.end+' Hand over.</div>';
     }
-    if(whyText) html+='<div class="v-why">'+whyText+'</div>';
-    $('overlay').innerHTML=html;
+    $('overlay').innerHTML=overlayHTML(hit,headline,yourWord,word,correct,v,whyText)+extra;
     $('overlay').classList.remove('hidden');
     $('verdict').textContent=(hit?'Correct. '+word+'. ':headline+'. You chose '+yourWord+'. The right move is '+word+'. ')+whyText; $('verdict').classList.remove('hidden');
     $('answers').classList.add('hidden'); $('after').classList.remove('hidden');
-    S.n++; if(hit){S.hits++;S.streak++;S.best=Math.max(S.best,S.streak);} else S.streak=0;
+    if(flow && !flow.end){ $('btn-next').innerHTML='See the flop →<span class="kcap wide" aria-hidden="true">space</span>'; $('btn-next').classList.add('flopnext'); }
+    S.hand.pre={hit, yours:yourWord, right:word, why:whyText, label:sp.label};
+    record(hit,sizeWrong);
     S.per[chart].n++; if(hit) S.per[chart].hits++;
     save(); renderStats();
   }
 
-  // Percentages for the revealed chart. Facing a 3-bet, the meaningful denominator is your own opening range.
+  // ---------- the flop ----------
+  // Money after the preflop street, given what you did: bb in front of each seat still in.
+  function preflopMoney(scene, sp, choice, size, villain){
+    const inPot={SB:STAKES.sb/STAKES.bb, BB:1}; if(scene.heroBet) inPot[scene.hero]=scene.heroBet;
+    scene.pre.forEach(([pos,act,amt])=>{ if(act==='fold') return; inPot[pos]=act==='limp'?1:amt; });
+    if(choice==='raise') inPot[scene.hero]=size; else if(choice==='call') inPot[scene.hero]=sp.check?(inPot[scene.hero]||1):sp.facing;
+    if(choice==='raise') inPot[villain]=size;                                   // he calls your raise
+    return inPot;
+  }
+  function toFlop(){
+    const p=S.cur, sp=SPOTS[p.chart], flow=p.flow, sit=POSTFLOP[flow.sit];
+    const villain = flow.villain==='ACTOR' ? villainOf(p.scene) : flow.villain;
+    const inPot=preflopMoney(p.scene, sp, p.choice, p.size, villain);
+    const folded=ORDER.filter(x=>x!==sp.hero && x!==villain);
+    startFlop({sit, hero:sp.hero, villains:[villain], inPot, folded, hole:p.hole, story:flow.story||'', preTag:(p.choice==='raise'?'Call':null)});
+  }
+  function showFlopOnly(){
+    const p=pickFlop(); S.cur=p;
+    if(!p){ clearTimers(); $('seats').innerHTML=''; $('board').classList.add('hidden'); $('tablebox').classList.remove('flop'); $('spot').textContent='Pick at least one flop situation below.'; $('spotpill').textContent='No situations selected'; $('handlabel').textContent=''; $('answers').innerHTML=''; return; }
+    const sit=POSTFLOP[p.sit], sc=FLOP_SCENE[p.sit];
+    const inPot=Object.assign({},sc.dead); inPot[sc.hero]=sc.each; sc.villains.forEach(v=>{inPot[v]=sc.each;});
+    const folded=ORDER.filter(x=>x!==sc.hero && !sc.villains.includes(x));
+    startFlop({sit, hero:sc.hero, villains:sc.villains, inPot, folded, hole:null, story:sit.setup, dealOpts:{bc:p.bc, cls:p.cls}, retrain:!!p.cls&&!p.replay, replay:!!p.replay});
+  }
+  // F: {sit, hero, villains, inPot, folded, hole|null, story, preTag?, dealOpts?, retrain?}
+  function startFlop(F){
+    const sit=F.sit; S.street='flop'; S.answered=false;
+    const deal=dealFlop(sit, Object.assign({hole:F.hole},F.dealOpts||{}));
+    const off=offer(sit, deal);
+    const potBb=Object.values(F.inPot).reduce((a,b)=>a+b,0);
+    const type=sitType(sit), villain=F.villains[0];
+    const heroOOP = POSTFLOP_ORDER.indexOf(F.hero) < POSTFLOP_ORDER.indexOf(villain);
+    const vbetBb = type==='caller' ? Math.round(potBb*VILLAIN_BET[deal.vsize]/100*10)/10 : 0;
+    S.cur.flop={sit, deal, off, potBb, vbetBb, villain, hero:F.hero, heroOOP, type, heroIn:F.inPot[F.hero]||0};
+    // table: everyone's preflop money goes to the middle, then the board, then his action
+    drawTable({hero:F.hero, hole:deal.hole, inPot:F.inPot, folded:F.folded, potOnly:true});
+    F.villains.forEach(v=>{ if(F.preTag) tagSeat(v,'limp',F.preTag); });
+    $('spotpill').textContent=(F.replay?'Replay · ':F.retrain?'Retraining · ':'')+sit.label; $('spotpill').classList.add('flop');
+    $('handlabel').textContent=handLabel(deal.hole[0],deal.hole[1])+' · '+HAND_CLASSES[deal.cls].short;
+    const ans=$('answers'); ans.innerHTML=''; ans.classList.remove('hidden'); ans.classList.add('waiting'); ans.classList.toggle('three',off.options.length===3);
+    let text=F.story?F.story+' ':'';
+    const t0=reduceMotion?0:(F.preTag?520:120);
+    later(()=>{
+      F.villains.forEach(v=>{ const s=TABLE.seatEls[v]; s.querySelectorAll('.tag').forEach(t=>t.remove()); });
+      $('board').classList.remove('hidden'); $('board').innerHTML=''; deal.board.forEach(c=>$('board').appendChild(cardEl(c)));
+      $('tablebox').classList.add('flop'); syncPot(); $('pot').textContent='Pot '+money(usd(potBb));
+      Object.keys(TABLE.inPot).forEach(k=>{ TABLE.inPot[k]=0; }); TABLE.potBb=potBb;
+    },t0);
+    const t1=t0+(reduceMotion?0:420);
+    if(type==='caller'){
+      if(heroOOP){ later(()=>{ tagSeat(F.hero,'check','Check'); },t1); }
+      later(()=>{
+        const vb=vbetBb; const b=el('bet',betXY(seatK(villain))); setBet(b,usd(vb)); $('seats').appendChild(b); TABLE.bets[villain]=b;
+        TABLE.seatEls[villain].querySelector('.st').textContent=money(STAKES.stack-usd(F.inPot[villain]+vb));
+        tagSeat(villain,'raise','Bet '+money(usd(vb)));
+        $('spot').textContent=text+(heroOOP?'You check, he bets ':'He bets ')+money(usd(vb))+' into '+money(usd(potBb))+' ('+VILLAIN_BET[deal.vsize]+'% pot).';
+        setActing(F.hero); ans.classList.remove('waiting');
+      },t1+(heroOOP&&!reduceMotion?380:0));
+    }else if(type==='aggressor-ip'){
+      later(()=>{ F.villains.forEach(v=>tagSeat(v,'check','Check')); $('spot').textContent=text+(F.villains.length>1?'They check to you.':'He checks to you.')+' Pot '+money(usd(potBb))+'.'; setActing(F.hero); ans.classList.remove('waiting'); },t1);
+    }else{
+      later(()=>{ $('spot').textContent=text+(/act first/.test(text)?'':'You act first. ')+'Pot '+money(usd(potBb))+'.'; setActing(F.hero); ans.classList.remove('waiting'); },t1);
+    }
+    // buttons
+    off.options.forEach((o,i)=>{
+      const b=document.createElement('button'); b.className='act '+chipClass(o.key); b.dataset.i=i;
+      const [t,sub]=flopWord(o, S.cur.flop, true);
+      b.innerHTML='<span class="kcap" aria-hidden="true">'+(i+1)+'</span>'+t+'<small>'+(sub||'&nbsp;')+'</small>';
+      b.addEventListener('click',()=>answerFlop(i)); ans.appendChild(b);
+    });
+  }
+  // words for a flop option: [main, sub] for buttons, or a single string for the verdict
+  function flopWord(o, fl, split){
+    const pot=usd(fl.potBb), vb=usd(fl.vbetBb);
+    let main='', sub='';
+    if(o.key==='check') main='Check';
+    else if(o.key==='check-call'){ main='Check, then call'; sub='one bet'; }
+    else if(o.key==='check-fold'){ main='Check, then fold'; sub='to a bet'; }
+    else if(o.key==='fold') main='Fold';
+    else if(o.key==='call'){ main='Call'; sub=money(vb); }
+    else if(o.key==='bet'){ main='Bet '+money(Math.round(pot*o.size)/100); sub=o.size+'% pot'; }
+    else if(o.key==='raise'){ if(o.size==='all-in'){ main='All-in'; sub=money(STAKES.stack-usd(fl.heroIn||0)); } else { main='Raise to '+money(Math.round(vb*o.size*100)/100); sub=o.size+'× his bet'+(o.size===2?' · min-raise':''); } }
+    return split?[main,sub]:(main+(sub?' ('+sub+')':''));
+  }
+  function answerFlop(i){
+    if(!S.cur||!S.cur.flop||S.answered||$('answers').classList.contains('waiting')) return;
+    S.answered=true; clearTimers(); setActing(null);
+    const fl=S.cur.flop, {sit,deal,off}=fl, picked=off.options[i];
+    const r=grade(sit, deal, off, picked);
+    const correctOpt=off.options.find(o=>o.key===r.correct && (r.correctSize==null || o.size===r.correctSize));
+    document.querySelectorAll('.act').forEach(b=>{ b.disabled=true; const idx=Number(b.dataset.i); if(idx===i) b.classList.add('picked',r.hit?'hit':'miss'); if(!r.hit && off.options[idx]===correctOpt) b.classList.add('hit'); });
+    const yourWord=flopWord(picked,fl,false); let word=flopWord(correctOpt,fl,false);
+    if(r.correct==='bet' && /–/.test(r.sizeStr)) word=word.replace(/\(\d+% pot\)/,'('+r.sizeStr+' pot)');
+    const headline = r.hit ? 'Correct' : (r.sizeWrong ? 'Right move, wrong size' : 'Not quite');
+    const whyHTML = '<span class="v-cap">'+(r.sizeWrong?'Why this size':'Why')+'</span>'+r.why;
+    const boardLine='<div class="v-board">'+miniCards(deal.board)+'<span class="cls">'+HAND_CLASSES[deal.cls].label+'</span></div>';
+    const link='<a class="v-link" href="reference.html#'+r.anchor+'" target="_blank" rel="noopener">Read this board in the Playbook ↗</a>';
+    const lesson=r.lesson?'<div class="v-lesson"><span class="v-cap">This board</span>'+r.lesson+'</div>':'';
+    $('overlay').innerHTML=overlayHTML(r.hit,headline,yourWord,word,r.correct,picked.key,whyHTML,boardLine)+lesson+link;
+    $('overlay').classList.remove('hidden');
+    $('verdict').textContent=(r.hit?'Correct. '+word+'. ':headline+'. You chose '+yourWord+'. The right move is '+word+'. ')+r.why; $('verdict').classList.remove('hidden');
+    $('answers').classList.add('hidden'); $('after').classList.remove('hidden');
+    $('btn-chart').innerHTML='Show lists<span class="kcap" aria-hidden="true">C</span>';
+    const key=sit.id+'|'+deal.bc+'|'+deal.cls;
+    if(r.hit) delete S.fmisses[key]; else S.fmisses[key]=(S.fmisses[key]||0)+1;
+    record(r.hit,r.sizeWrong);
+    S.fper[sit.id].n++; if(r.hit) S.fper[sit.id].hits++;
+    S.hand.flop={hit:r.hit, yours:yourWord, right:word, why:HAND_CLASSES[deal.cls].label+': '+r.why, anchor:r.anchor, board:deal.board};
+    if(S.mode==='both' && S.hand.pre) renderSummary();
+    save(); renderStats();
+  }
+  function renderSummary(){
+    const h=S.hand; const row=(st,x,extra)=>'<div class="row"><span class="mk '+(x.hit?'ok':'bad')+'">'+(x.hit?'✓':'✗')+'</span><span class="st">'+st+'</span><span>'+(x.hit?'':'<span class="yours">'+x.yours+'</span>')+'<span class="right">'+x.right+'</span><span class="why">'+x.why+(extra||'')+'</span></span></div>';
+    $('summary').innerHTML=row('Preflop',h.pre)+row('Flop',h.flop,' <a href="reference.html#'+h.flop.anchor+'" target="_blank" rel="noopener">Playbook ↗</a>');
+    $('summary').classList.remove('hidden');
+  }
+
+  // ---------- reveal: the chart (preflop) or the lists (flop) ----------
   const OPENER={'vs3-early':'rfi-lj','vs3-late':'rfi-btn','vs3-behind':'rfi-co'};
-  function combos(hs){ return hs.reduce((a,x)=>a+(x.length===2?6:x[2]==='s'?4:12),0); }
   function chartPct(chart){
     const cfg=RANGES[chart], sp=SPOTS[chart];
     const base = OPENER[chart] ? combos(RANGES[OPENER[chart]].raise) : 1326;
@@ -907,46 +2128,92 @@
       const h=handAt(i,j), a=actionOf(cfg,h); const c=document.createElement('div');
       c.className='cell'+(a==='fold'?' fold':'')+(h===hand?' here':''); if(a!=='fold') c.style.background=C[a]; c.textContent=h; g.appendChild(c);
     }
-    const L = cfg.mode==='rfi'?[['raise','Raise'],['fold',sp.check?'Check':'Fold']] : cfg.mode==='3bet'?[['value','3-bet value'],['bluff','3-bet bluff'],['call','Call'],['fold','Fold']] : [['value','4-bet value'],['bluff','4-bet bluff'],['call','Call'],['fold','Fold']];
-    $('legend').innerHTML=L.map(([k,t])=>'<span><i style="background:'+(k==='fold'?'#1A1E23;border:1px solid #2A2F36':C[k])+'"></i>'+t+'</span>').join('');
+    const Lg = cfg.mode==='rfi'?[['raise','Raise'],['fold',sp.check?'Check':'Fold']] : cfg.mode==='3bet'?[['value','3-bet value'],['bluff','3-bet bluff'],['call','Call'],['fold','Fold']] : [['value','4-bet value'],['bluff','4-bet bluff'],['call','Call'],['fold','Fold']];
+    $('legend').innerHTML=Lg.map(([k,t])=>'<span><i style="background:'+(k==='fold'?'#1A1E23;border:1px solid #2A2F36':C[k])+'"></i>'+t+'</span>').join('');
+  }
+  function renderLists(){
+    const fl=S.cur.flop, {sit,deal}=fl, rules=sit.boards[deal.bc], r=rules[deal.vsize], B=BOARD_CLASSES[deal.bc];
+    const actions=sit.actions||[['raise','Raise to {raiseTo}','small'],['call','Call','call'],['fold','Fold','no']];
+    const sz=sit.sizes[deal.vsize];
+    let h='<p class="lhead"><b>'+sit.label+'</b> · '+B.label.toLowerCase()+' · '+(sz.label||'')+(sz.range?' · '+sz.range:'')+'</p>';
+    actions.forEach(g=>{ const items=r[g[0]]||[]; if(!items.length) return;
+      h+='<div class="opt '+g[2]+'"><p class="when">'+g[1].replace('{raiseTo}',sz.raiseTo||'').replace('{size}',rules.size||'')+'</p><ul>';
+      items.forEach(it=>{ h+='<li'+(it[0]===deal.cls?' class="here"':'')+'><b>'+HAND_CLASSES[it[0]].label+'</b> — '+it[1].charAt(0).toUpperCase()+it[1].slice(1)+'</li>'; });
+      h+='</ul></div>';
+    });
+    h+='<a class="ref" href="reference.html#'+anchorFor(sit.id,deal.bc)+'" target="_blank" rel="noopener">This board in the Playbook, with all three example flops ↗</a>';
+    $('reveal-flop').innerHTML=h;
   }
 
+  // ---------- stats ----------
   function renderStats(){
     $('s-acc').textContent=S.n?Math.round(100*S.hits/S.n)+'%':'—';
     $('s-n').textContent=S.n; $('s-streak').textContent=S.streak; $('s-best').textContent=S.best; $('s-size').textContent=S.sizeMiss||0;
-    $('per').innerHTML=Object.keys(SPOTS).filter(k=>S.per[k].n>0).map(k=>{ const p=S.per[k], acc=Math.round(100*p.hits/p.n);
-      return '<tr><td>'+SPOTS[k].label+'</td><td class="num'+(acc<80?' low':'')+'">'+acc+'% <span style="opacity:.6">('+p.n+')</span></td></tr>'; }).join('');
-    const mk=Object.keys(S.misses).filter(k=>activeCharts().includes(k.split('|')[0]));
-    $('misses').innerHTML = mk.length ? 'Missed hands, ready to retrain: <span class="h">'+mk.map(k=>{const [c,h,pf]=k.split('|'); return '<span title="'+SPOTS[c].label+(pf?' · '+pf:'')+'">'+h+(pf?'<em>·'+pf+'</em>':'')+'</span>';}).join('')+'</span>'
-      : (Object.keys(S.misses).length?'<span class="empty">No open misses in the selected spots.</span>':(S.n?'<span class="empty">No open misses.</span>':'<span class="empty">Misses collect here for a second pass.</span>'));
-    const ac=activeCharts(); $('pool-note').textContent=ac.length+' of '+Object.keys(SPOTS).length+' spots · '+({all:'all hands',lean:'leaning to edges',edge:'edges only'})[S.diff];
+    const rows=[];
+    const pre=Object.keys(SPOTS).filter(k=>S.per[k].n>0), fl=Object.keys(POSTFLOP).filter(k=>S.fper[k].n>0);
+    if(pre.length&&fl.length) rows.push('<tr><td class="grp" colspan="2">Preflop</td></tr>');
+    pre.forEach(k=>{ const p=S.per[k], acc=Math.round(100*p.hits/p.n); rows.push('<tr><td>'+SPOTS[k].label+'</td><td class="num'+(acc<80?' low':'')+'">'+acc+'% <span style="opacity:.6">('+p.n+')</span></td></tr>'); });
+    if(pre.length&&fl.length) rows.push('<tr><td class="grp" colspan="2">Flop</td></tr>');
+    fl.forEach(k=>{ const p=S.fper[k], acc=Math.round(100*p.hits/p.n); rows.push('<tr><td>'+POSTFLOP[k].label+'</td><td class="num'+(acc<80?' low':'')+'">'+acc+'% <span style="opacity:.6">('+p.n+')</span></td></tr>'); });
+    $('per').innerHTML=rows.join('');
+    const preKeys=Object.keys(S.misses), flopKeys=Object.keys(S.fmisses);
+    const preChips=preKeys.map(k=>{const [c,h,pf]=k.split('|'); return '<span data-miss="pre" data-key="'+k+'" title="'+SPOTS[c].label+(pf?' · '+pf:'')+' — click to replay">'+h+(pf?'<em>·'+pf+'</em>':'')+'</span>';}).join('');
+    const flopChips=flopKeys.map(k=>{const [si,bc,c]=k.split('|'); return '<span data-miss="flop" data-key="'+k+'" title="'+POSTFLOP[si].label+' · '+BOARD_CLASSES[bc].label+' — click to replay">'+BOARD_CLASSES[bc].example.map(x=>x[0]).join('')+'<em>·'+HAND_CLASSES[c].short+'</em></span>';}).join('');
+    let html='';
+    if(!preKeys.length && !flopKeys.length) html='<span class="empty">'+(S.n?'No open misses.':'Misses collect here for a second pass. Click one to replay it.')+'</span>';
+    else{
+      if(preKeys.length) html+='<span class="cap">Missed preflop hands — click one to replay it:</span><span class="h">'+preChips+'</span>';
+      if(flopKeys.length) html+='<span class="cap">Missed flop spots — click one to replay it:</span><span class="h">'+flopChips+'</span>';
+    }
+    $('misses').innerHTML=html;
+    $('misses').querySelectorAll('[data-miss]').forEach(el=>{ el.addEventListener('click',()=>{ const k=el.dataset.key.split('|');
+      S.force = el.dataset.miss==='pre' ? {kind:'pre', chart:k[0], hand:k[1], prof:k[2]||null} : {kind:'flop', sit:k[0], bc:k[1], cls:k[2]};
+      S.retrain=false; syncMissesBtn(); showHand(); window.scrollTo({top:0, behavior:'smooth'}); }); });
+    const ac=activeCharts(), as=activeSits();
+    $('pool-note').textContent = S.mode==='flop' ? 'Flop only · '+as.length+' of '+Object.keys(POSTFLOP).length+' situations'
+      : (S.mode==='both'?'Preflop + flop · ':'Preflop · ')+ac.length+' of '+Object.keys(SPOTS).length+' spots · '+({all:'all hands',lean:'leaning to edges',edge:'edges only'})[S.diff];
     const ne=ac.reduce((a,c)=>a+edgeHands(c).length,0); $('diff-note').textContent = S.diff==='all'?'':(ne+' edge hands in play');
+    $('tools-note').textContent = S.mode==='flop' ? 'A hand from the Playbook\'s range for the spot, on one of its vetted flops. Two sizes are offered — only one is right for the board.'
+      : S.mode==='both' ? 'The flop follows the line you take, right or wrong. Folds end the hand; so do lines the Playbook has no lists for.'
+      : 'Opponents act before you. Two raise sizes are offered — only one is right for the spot.';
   }
 
   // ---------- wiring ----------
+  function restart(){ S.retrain=false; syncMissesBtn(); save(); renderStats(); showHand(); }
   document.querySelectorAll('.pick[data-chart]').forEach(b=>{
-    b.setAttribute('aria-pressed',S.active[b.dataset.chart]?'true':'false');
-    b.addEventListener('click',()=>{ S.active[b.dataset.chart]=!S.active[b.dataset.chart]; b.setAttribute('aria-pressed',S.active[b.dataset.chart]?'true':'false'); S.mode='normal'; syncMissesBtn(); save(); renderStats(); showHand(); });
+    b.addEventListener('click',()=>{ S.active[b.dataset.chart]=!S.active[b.dataset.chart]; b.setAttribute('aria-pressed',S.active[b.dataset.chart]?'true':'false'); restart(); });
   });
-  document.querySelectorAll('.pick[data-diff]').forEach(b=>{ b.addEventListener('click',()=>{ S.diff=b.dataset.diff; syncDiff(); S.mode='normal'; syncMissesBtn(); save(); renderStats(); showHand(); }); });
-  document.querySelectorAll('.pick[data-reads]').forEach(b=>{ b.addEventListener('click',()=>{ S.reads=b.dataset.reads==='on'; syncReads(); S.mode='normal'; syncMissesBtn(); save(); showHand(); }); });
+  document.querySelectorAll('.pick[data-sit]').forEach(b=>{
+    b.addEventListener('click',()=>{ S.activeFlop[b.dataset.sit]=!S.activeFlop[b.dataset.sit]; b.setAttribute('aria-pressed',S.activeFlop[b.dataset.sit]?'true':'false'); restart(); });
+  });
+  document.querySelectorAll('.mode').forEach(b=>{ b.addEventListener('click',()=>{ S.mode=b.dataset.mode; syncMode(); restart(); }); });
+  document.querySelectorAll('.pick[data-diff]').forEach(b=>{ b.addEventListener('click',()=>{ S.diff=b.dataset.diff; syncDiff(); restart(); }); });
+  document.querySelectorAll('.pick[data-reads]').forEach(b=>{ b.addEventListener('click',()=>{ S.reads=b.dataset.reads==='on'; syncReads(); restart(); }); });
+  function syncMode(){ document.querySelectorAll('.mode').forEach(x=>x.setAttribute('aria-pressed',x.dataset.mode===S.mode?'true':'false')); document.querySelectorAll('.pre-only').forEach(x=>x.classList.toggle('hidden',S.mode==='flop')); document.querySelectorAll('.flop-only').forEach(x=>x.classList.toggle('hidden',S.mode!=='flop')); }
   function syncReads(){ document.querySelectorAll('.pick[data-reads]').forEach(x=>x.setAttribute('aria-pressed',(x.dataset.reads==='on')===S.reads?'true':'false')); }
   function syncDiff(){ document.querySelectorAll('.pick[data-diff]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.diff===S.diff?'true':'false')); }
-  function setAll(v){ Object.keys(S.active).forEach(k=>S.active[k]=v); document.querySelectorAll('.pick[data-chart]').forEach(b=>b.setAttribute('aria-pressed',v?'true':'false')); S.mode='normal'; syncMissesBtn(); save(); renderStats(); showHand(); }
+  function syncCharts(){ document.querySelectorAll('.pick[data-chart]').forEach(b=>b.setAttribute('aria-pressed',S.active[b.dataset.chart]?'true':'false')); document.querySelectorAll('.pick[data-sit]').forEach(b=>b.setAttribute('aria-pressed',S.activeFlop[b.dataset.sit]?'true':'false')); }
+  function setAll(v){ if(S.mode==='flop') Object.keys(S.activeFlop).forEach(k=>S.activeFlop[k]=v); else Object.keys(S.active).forEach(k=>S.active[k]=v); syncCharts(); restart(); }
   $('btn-all').addEventListener('click',()=>setAll(true));
   $('btn-none').addEventListener('click',()=>setAll(false));
-  function syncMissesBtn(){ $('btn-misses').textContent = S.mode==='misses' ? 'Stop retraining' : 'Retrain misses'; $('btn-misses').classList.toggle('on', S.mode==='misses'); }
+  function syncMissesBtn(){ $('btn-misses').textContent = S.retrain ? 'Stop retraining' : 'Retrain misses'; $('btn-misses').classList.toggle('on', S.retrain); }
   $('btn-misses').addEventListener('click',()=>{
-    if(S.mode==='misses'){ S.mode='normal'; syncMissesBtn(); showHand(); return; }
-    const act=activeCharts(); const have=Object.keys(S.misses).some(k=>act.includes(k.split('|')[0]));
-    if(have){ S.mode='misses'; syncMissesBtn(); showHand(); }
+    if(S.retrain){ S.retrain=false; syncMissesBtn(); showHand(); return; }
+    const have = S.mode==='flop' ? Object.keys(S.fmisses).some(k=>activeSits().includes(k.split('|')[0])) : Object.keys(S.misses).some(k=>activeCharts().includes(k.split('|')[0]));
+    if(have){ S.retrain=true; syncMissesBtn(); showHand(); }
   });
-  $('btn-next').addEventListener('click',showHand);
-  $('btn-chart').addEventListener('click',()=>{ const r=$('reveal'); const open=r.classList.toggle('hidden'); $('btn-chart').innerHTML=(open?'Show chart':'Hide chart')+'<span class="kcap" aria-hidden="true">C</span>'; if(!open) renderChart(); });
-  $('btn-reset').addEventListener('click',()=>{ S.n=0;S.hits=0;S.streak=0;S.best=0;S.sizeMiss=0;S.misses={}; Object.keys(S.per).forEach(k=>S.per[k]={n:0,hits:0}); S.mode='normal'; syncMissesBtn(); save(); renderStats(); showHand(); });
+  function nextStep(){ if(!S.answered) return; if(S.street==='pre' && S.mode==='both' && S.cur.flow && !S.cur.flow.end){ resetUI(); toFlop(); } else showHand(); }
+  $('btn-next').addEventListener('click',nextStep);
+  $('btn-chart').addEventListener('click',()=>{
+    const r=$('reveal'); const open=r.classList.toggle('hidden'); const flop=S.street==='flop';
+    $('btn-chart').innerHTML=(open?(flop?'Show lists':'Show chart'):(flop?'Hide lists':'Hide chart'))+'<span class="kcap" aria-hidden="true">C</span>';
+    $('reveal-pre').classList.toggle('hidden',flop); $('reveal-flop').classList.toggle('hidden',!flop);
+    if(!open){ if(flop) renderLists(); else renderChart(); }
+  });
+  $('btn-reset').addEventListener('click',()=>{ S.n=0;S.hits=0;S.streak=0;S.best=0;S.sizeMiss=0;S.misses={};S.fmisses={}; Object.keys(S.per).forEach(k=>S.per[k]={n:0,hits:0}); Object.keys(S.fper).forEach(k=>S.fper[k]={n:0,hits:0}); restart(); });
   // gate
-  const gate=$('gate'), panel=document.querySelector('details.panel'), panelHome=panel.parentNode, panelNext=panel.nextSibling;
-  function toStep2(){ $('gate-step1').classList.add('hidden'); $('gate-intro').classList.add('hidden'); $('gate-title').textContent='Choose your spots'; $('gate-step2').classList.remove('hidden'); panel.setAttribute('open',''); $('gate-settings').appendChild(panel); gate.scrollTop=0; }
+  const gate=$('gate'), panel=$('panel'), panelHome=panel.parentNode, panelNext=panel.nextSibling;
+  function toStep2(){ $('gate-step1').classList.add('hidden'); $('gate-intro').classList.add('hidden'); $('gate-title').textContent='What do you want to drill?'; $('gate-step2').classList.remove('hidden'); panel.setAttribute('open',''); $('gate-settings').appendChild(panel); gate.scrollTop=0; }
   function openTable(){ panelHome.insertBefore(panel,panelNext); if(phone&&phone.matches) panel.removeAttribute('open'); gate.classList.add('hidden'); showHand(); }
   $('btn-continue').addEventListener('click',toStep2);
   $('btn-start').addEventListener('click',openTable);
@@ -956,19 +2223,19 @@
   document.addEventListener('keydown',e=>{
     if(!gate.classList.contains('hidden')){ if(e.key==='Enter'){ e.preventDefault(); $('gate-step2').classList.contains('hidden')?toStep2():openTable(); } return; }
     if(e.target.tagName==='INPUT'||e.target.tagName==='SUMMARY') return;
-    if(e.key===' '||e.key==='Enter'){ if(S.answered){ e.preventDefault(); showHand(); } return; }
+    if(e.target.tagName==='A'&&e.key==='Enter') return;
+    if(e.key===' '||e.key==='Enter'){ if(S.answered){ e.preventDefault(); nextStep(); } return; }
     const i=parseInt(e.key,10);
     if(i>=1&&i<=4){ const b=document.querySelectorAll('.act')[i-1]; if(b&&!b.disabled) b.click(); }
     if(e.key==='c'&&S.answered) $('btn-chart').click();
   });
 
-  if(phone&&phone.matches) document.querySelector('details.panel').removeAttribute('open');
-  syncLayout(); if(phone&&phone.addEventListener) phone.addEventListener('change',()=>{ syncLayout(); if(S.cur) renderTable(S.cur.scene,S.cur.hand); });
-  function syncCharts(){ document.querySelectorAll('.pick[data-chart]').forEach(b=>b.setAttribute('aria-pressed',S.active[b.dataset.chart]?'true':'false')); }
+  if(phone&&phone.matches) panel.removeAttribute('open');
+  syncLayout(); if(phone&&phone.addEventListener) phone.addEventListener('change',()=>{ syncLayout(); });
   (function miniGrid(){ const g=$('refgrid'), cfg=RANGES['rfi-btn']; if(!g||!cfg) return;
     for(let i=0;i<13;i++) for(let j=0;j<13;j++){ const h=handAt(i,j), a=actionOf(cfg,h); const c=document.createElement('div');
       c.className='cell'+(a==='fold'?' fold':''); if(a!=='fold') c.style.background=C[a]; g.appendChild(c); } })();
-  load(); syncCharts(); syncDiff(); syncReads(); syncMissesBtn(); renderStats(); showHand();
+  load(); syncCharts(); syncDiff(); syncReads(); syncMode(); syncMissesBtn(); renderStats(); showHand();
 })();
 </script>
 </body>
