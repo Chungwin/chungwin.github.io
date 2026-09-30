@@ -170,6 +170,9 @@
   .room .ghost{min-height:56px; padding:.4rem 1rem; font-size:.88rem;}
   .ghost{font:inherit; font-size:.8rem; background:none; border:1px solid var(--border); color:var(--muted); border-radius:8px; padding:.25rem .6rem; cursor:pointer;}
   .room .ghost{border-color:rgba(255,255,255,.18); color:#C9CEC8;}
+  /* the chart / lists button is where the learning happens: outlined in the accent, a touch heavier */
+  .room #btn-chart{border:1.5px solid rgba(93,202,165,.55); color:var(--accent); font-weight:600; background:rgba(93,202,165,.06); min-width:9.5rem;}
+  @media (hover:hover){ .room #btn-chart:hover{background:rgba(93,202,165,.14); border-color:var(--accent);} }
   @media (hover:hover){ .ghost:hover{color:var(--accent); border-color:var(--accent);} }
   .ghost.on{background:var(--accent); border-color:var(--accent); color:#0E1012;}
   .kcap{position:absolute; top:5px; right:6px; font-family:var(--mono); font-size:.6rem; font-weight:600; line-height:1; padding:.16rem .32rem; min-width:1.05rem; text-align:center; border-radius:4px; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.18); color:rgba(255,255,255,.7); pointer-events:none;}
