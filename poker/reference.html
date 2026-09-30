@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Playbook — NL25 6-max</title>
+<title>The Playbook — Sharkline Poker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -34,6 +34,8 @@
 
   header.masthead{border-bottom:1px solid var(--border); padding-bottom:1.4rem; margin-bottom:1.6rem;}
   .suits{font-family:var(--disp); font-size:1rem; letter-spacing:.5em; color:var(--accent); margin:0 0 .5rem;}
+  .brand{font-family:var(--disp); font-weight:600; font-size:1rem; margin:0 0 .2rem; color:var(--text);}
+  .brand span{font-family:var(--mono); font-weight:400; font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-left:.5rem;}
   h1{font-family:var(--disp); font-weight:600; font-size:1.9rem; line-height:1.1; margin:0 0 .4rem; letter-spacing:-.01em;}
   .sub{color:var(--muted); font-size:.95rem; margin:0;}
 
@@ -201,6 +203,7 @@
     body{padding-left:270px;}
     .mobbar, .drawer{display:none !important;}
     .sidenav{display:block; position:fixed; left:0; top:0; bottom:0; width:270px; overflow-y:auto; padding:1.3rem 1rem 2rem 1.3rem; border-right:1px solid var(--border); background:var(--bg); font-size:.8rem; scrollbar-width:thin;}
+    .sidenav .sn-brand{font-family:var(--mono); font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin:0 0 .3rem;}
     .sidenav .sn-title{font-family:var(--disp); font-weight:600; font-size:1.05rem; margin:0 0 .1rem; color:var(--text); text-decoration:none; display:block;}
     .sidenav .sn-sub{font-family:var(--mono); font-size:.66rem; color:var(--muted); margin:0 0 1rem;}
     .sidenav .sn-grp{margin-bottom:.15rem;}
@@ -227,9 +230,10 @@
 
   <header class="masthead" id="top">
     <p class="suits">&spades; &hearts; &diams; &clubs;</p>
+    <p class="brand">Sharkline Poker <span>Drill your A-Game</span></p>
     <h1>The Playbook</h1>
-    <p class="sub">Beating NL25 6-max on GGPoker, 100bb deep. Preflop ranges by seat, the flop as bettor and caller, the turn and the river &mdash; and 37 lessons to carry to the table.</p>
-    <p class="sub" style="margin-top:.35rem; font-family:var(--mono); font-size:.78rem;">Updated 25 September 2026</p>
+    <p class="sub">Beating NL25 6-max online, 100bb deep. Preflop ranges by seat, the flop as bettor and caller, the turn and the river &mdash; and 37 lessons to carry to the table.</p>
+    <p class="sub" style="margin-top:.35rem; font-family:var(--mono); font-size:.78rem;">Updated 30 September 2026 &middot; written with Claude Fable&nbsp;5.1</p>
   </header>
 
   <nav class="index">
@@ -322,6 +326,7 @@
         <a href="#d0">BB facing a c-bet</a>
         <a href="#d-dry-high">Board by board</a>
         <a href="#d1">In position</a>
+        <a href="#d1b">Three-way</a>
         <a href="#d2">3-bet pots</a>
       </div>
     </div>
@@ -352,7 +357,7 @@
   <section id="start">
     <div class="sec-head"><h2>Start here</h2><span class="meta">how to read this book</span></div>
     <div class="key-card">
-      <p style="margin:0 0 .6rem; font-size:.9rem;">This is a complete baseline for beating NL25 6-max on GGPoker: what to play from every seat, and what to do with it after the flop. It is built for one pool of opponents, and it says so wherever it departs from theory. Three ways in:</p>
+      <p style="margin:0 0 .6rem; font-size:.9rem;">This is a complete baseline for beating NL25 6-max online: what to play from every seat, and what to do with it after the flop. It is built for one pool of opponents, and it says so wherever it departs from theory. Three ways in:</p>
       <ul>
         <li><b>Twenty minutes:</b> read <a href="#lessons">Part XI</a>. Thirty-seven lines. Each one links back to its reasoning when you want it.</li>
         <li><b>One evening:</b> Parts <a href="#rfi-lj">II</a>, <a href="#sb-rfi">IV</a>, <a href="#r0">VII</a> and <a href="#d0">VIII</a> in that order &mdash; opening, the blinds, the flop as the bettor, the flop as the caller. That is most of the hands you will ever play.</li>
@@ -364,7 +369,7 @@
 
   <section id="pool">
     <div class="sec-head"><h2>The opponent this book assumes</h2><span class="meta">the NL25 pool, in one card</span></div>
-    <p class="note">Every "the pool does X" in this book means the typical NL25 GGPoker player &mdash; not a solver, not a professional, and not the one aggressive regular at the table. The card is a <strong>model</strong>: the well-documented tendencies of micro-stakes online pools, consistent with the hands this book was built from. It is not a GG database. Treat each line as a direction to expect, not a number to trust, and check it against what you see (below).</p>
+    <p class="note">Every "the pool does X" in this book means the typical NL25 player online &mdash; written at the GGPoker tables, but he sits at every site &mdash; not a solver, not a professional, and not the one aggressive regular at the table. The card is a <strong>model</strong>: the well-documented tendencies of micro-stakes online pools, consistent with the hands this book was built from. It is not a GG database. Treat each line as a direction to expect, not a number to trust, and check it against what you see (below).</p>
     <div class="key-card">
       <ul>
         <li><b>Limps a lot</b>, and limp-calls a raise with a wide, weak range. Never limp-raises without a premium.</li>
@@ -1086,7 +1091,7 @@
     <div class="rule"><p class="head">1 · Bet the top of your range, bigger, and bluff almost never</p><p>Fold equity roughly halves per extra player, so a bluff that needed one fold now needs two. Meanwhile your value hands get paid by two ranges instead of one. The answer is the same shape as the iso pot: bluffs out, thin value out, and what is left bets a size up. On a dry board that is about a third of your range; on a middling board, a fifth.</p></div>
     <div class="rule"><p class="head">2 · "Top pair" means top pair, good kicker</p><p>Heads-up, top pair with any kicker is a value hand. Against two players it is a hand that is often already behind and rarely improves. Bet it once with a good kicker; check it with a weak one and let the others show you what they have.</p></div>
     <div class="rule"><p class="head">3 · Draws call, they don't bet</p><p>A draw multiway is worth <em>more</em> than heads-up &mdash; the pot is bigger when it comes in and there are more players to pay you &mdash; but as a semi-bluff it is worth less, because it will not fold anyone. So: check or call with your draws, and bet when they arrive.</p></div>
-    <div class="rule"><p class="head">4 · A player still behind you changes everything</p><p>Facing a bet with someone yet to act, you need a hand, not a price. The "any pair, any draw, any ace" rule for small bets is heads-up only: with a player behind you, call a small bet with top pair or a real draw, and a big bet with two pair or better. Closing the action &mdash; the last to speak &mdash; you can go back to the heads-up lists.</p></div>
+    <div class="rule"><p class="head">4 · Facing a bet three-way, you need a hand, not a price</p><p>The "any pair, any draw, any ace" rule for small bets is heads-up only. A bet into two players is top pair or better, whoever is still to act: with a player behind you, or closing the action after a caller, call with top pair or a real draw, raise two pair or better, and fold the rest. The <a href="#d1b" style="color:var(--accent);">three-way caller lists</a> in Part VIII have it board by board.</p></div>
     <div class="rule"><p class="head">5 · A raise multiway is the nuts</p><p>Even more than heads-up. Someone who raises into two players is not bluffing at NL25. Two pair or better continues; everything else folds, top pair included.</p></div>
 
     <p style="margin-top:1.2rem;">What changes from the heads-up c-bet lists, and nothing else does:</p>
@@ -1106,13 +1111,15 @@
       <div class="pf-board" id="pf-cbet-multiway-monotone" data-sit="cbet-multiway" data-board="monotone"></div>
     </details>
 
+    <div class="rule"><p class="head">Iso pots that go multiway</p><p>You raised over a limper and the big blind came along too, or the limper and a second one called. Nothing new: it is the multiway list above, and the limper is still the player who does not fold. Bet the top of your range, a size up, and check everything else.</p></div>
+    <div class="rule"><p class="head">Limped pots</p><p>You checked your big blind behind two limpers and see the flop for free, three- or four-handed, with nobody having claimed anything. The pot is tiny and everyone has junk, so play it in one line: bet two pair or better and the real draws (a flush draw, an open-ender), fold to any real bet without one, and never bluff &mdash; limpers call. A small bet from a limper means less than a raise would, but a raise means exactly what it always means multiway.</p></div>
     <div class="why"><p><b>Four or more players:</b> the same rules, harder. Bet two pair or better and nothing else; treat any bet into you as a big bet; treat any raise as the nuts. At that point the flop plays itself, which is one reason the preflop charts keep these pots rare.</p></div>
 
     <div class="rule" style="margin-top:1.8rem; border-left:3px solid var(--accent);">
       <p class="head">Lessons from this part</p>
       <ul style="margin:.4rem 0 0; padding-left:1.1rem;">
         <li>Multiway, someone always has something. Bet the top of your range, bigger, and bluff almost never.</li>
-        <li>With a player still behind you, you need a hand, not a price.</li>
+        <li>Facing a bet three-way, you need a hand, not a price.</li>
       </ul>
     </div>
     <a class="toplink" href="#top">↑ back to index</a>
@@ -1181,6 +1188,48 @@
       <div class="pf-board" id="pf-ip-vs-cbet-monotone" data-sit="ip-vs-cbet" data-board="monotone"></div>
     </details>
 
+    <p class="head" style="margin-top:2.2rem;" id="d1b">Facing a c-bet three-way</p>
+    <p>The Cutoff opened, the Button called, and you overcalled in the big blind with the <a href="#call-bb-multi" style="color:var(--accent);">BB vs open + caller</a> chart. You check, the opener bets, and the Button calls. You close the action &mdash; and everything you know about defending against a c-bet heads-up is now wrong, for one reason: <b>he bet into two players, and one of them called.</b> Nobody does that with nothing at NL25.</p>
+    <div class="why"><p><b>Why the heads-up lists fail here.</b> The heads-up small-bet rule &mdash; any pair, any draw, any ace &mdash; works because a lone c-bettor bets almost his whole range, so your bottom pair beats his bluffs and your ace-high has showdown value. Into two players he bets top pair or better (that is the <a href="#multiway" style="color:var(--accent);">multiway c-bet list</a>, and the pool plays it by instinct), and the caller in between has a pair or a draw. There are no bluffs to beat, so the hands that only beat bluffs fold. The size of his bet matters less than usual: a small bet and a call is still two players with something.</p></div>
+    <div class="rule"><p class="head">Two pair or better raises. Top pair and the real draws call. Everything else folds.</p><p>That is the whole spot. A raise into two players says two pair or better, so the overpair and the pair-plus-draw hands call instead &mdash; they keep both players in with worse. The draws call at either price because the pot is bigger when they arrive and two players can pay them: a flush draw, the nut flush draw and an open-ender. A gutshot, two overcards and ace-high fold; they needed a fold or a free card and get neither. Second pair and bottom pair fold: they are bluff-catchers, and nobody is bluffing.</p></div>
+    <div class="rule"><p class="head">Top pair calls once, then reassesses</p><p>Against a bet and a call, top pair is a good hand that is often not the best one. Call the flop, and on the turn treat a second bet from the opener the way you treat any second barrel: the <a href="#turn-caller" style="color:var(--accent);">turn rules</a> apply, and a weak kicker gives up sooner.</p></div>
+
+    <p style="margin-top:1.2rem;">What changes from the heads-up big-blind lists, and nothing else does:</p>
+    <table>
+      <tr><th>Board</th><th>Vs</th><th>Hand</th><th>Heads-up</th><th>Three-way</th></tr>
+      <tbody id="mwc-changes"></tbody>
+    </table>
+    <p style="font-size:.86rem; color:var(--muted); margin-top:.5rem;">The multiway c-bettor bets a size up, so "small" here is 40&ndash;50% and "big" is 66&ndash;75%. The lists barely differ between the two: three-way, the bet and the call are the information, not the size. Monotone is the exception &mdash; a big bet there says flush.</p>
+    <div class="rule"><p class="head">If the Button folds</p><p>Same lists. The opener still bet into two players, so his range is the same tight one; you just have one fewer player to beat. The one hand that improves is top pair, which can now call a second barrel more freely.</p></div>
+
+    <details class="fold-lists" style="margin-top:1.2rem;">
+      <summary>Show the full three-way lists, board by board</summary>
+      <div class="pf-board" id="pf-bb-vs-cbet-mw-dry-high" data-sit="bb-vs-cbet-mw" data-board="dry-high"></div>
+      <div class="pf-board" id="pf-bb-vs-cbet-mw-paired" data-sit="bb-vs-cbet-mw" data-board="paired"></div>
+      <div class="pf-board" id="pf-bb-vs-cbet-mw-wet-high" data-sit="bb-vs-cbet-mw" data-board="wet-high"></div>
+      <div class="pf-board" id="pf-bb-vs-cbet-mw-middling" data-sit="bb-vs-cbet-mw" data-board="middling"></div>
+      <div class="pf-board" id="pf-bb-vs-cbet-mw-low-connected" data-sit="bb-vs-cbet-mw" data-board="low-connected"></div>
+      <div class="pf-board" id="pf-bb-vs-cbet-mw-monotone" data-sit="bb-vs-cbet-mw" data-board="monotone"></div>
+    </details>
+
+    <p class="head" style="margin-top:2rem;" id="d1c">The same spot from the Button, with the big blind still behind you</p>
+    <p>You flatted a Cutoff open on the Button with the <a href="#call-ip-wide" style="color:var(--accent);">IP vs wide opener</a> chart and the big blind came along &mdash; which he does often, because his overcall chart is wide at that price. He checks, the Cutoff bets, and you act <b>with the big blind still to speak</b>. This is the more common of the two three-way spots, and it is the one the in-position lists above quietly assume never happens.</p>
+    <div class="rule"><p class="head">Same lists, one thing position cannot fix</p><p>Against a small bet, nothing changes: two pair or better raises, top pair and the draws call, the rest folds. Against a big bet you are calling without closing the action &mdash; the big blind can still raise, and if he calls you face two players on the turn. So a big bet also folds top pair and the bare draws (flush draw, open-ender). What still calls a big bet: an overpair, the nut flush draw, and a pair plus a draw.</p></div>
+    <p style="margin-top:1.2rem;">What changes from the big-blind three-way lists, and nothing else does:</p>
+    <table>
+      <tr><th>Board</th><th>Vs</th><th>Hand</th><th>Closing the action</th><th>Player behind</th></tr>
+      <tbody id="ipmw-changes"></tbody>
+    </table>
+    <details class="fold-lists" style="margin-top:1.2rem;">
+      <summary>Show the full Button lists, board by board</summary>
+      <div class="pf-board" id="pf-ip-vs-cbet-mw-dry-high" data-sit="ip-vs-cbet-mw" data-board="dry-high"></div>
+      <div class="pf-board" id="pf-ip-vs-cbet-mw-paired" data-sit="ip-vs-cbet-mw" data-board="paired"></div>
+      <div class="pf-board" id="pf-ip-vs-cbet-mw-wet-high" data-sit="ip-vs-cbet-mw" data-board="wet-high"></div>
+      <div class="pf-board" id="pf-ip-vs-cbet-mw-middling" data-sit="ip-vs-cbet-mw" data-board="middling"></div>
+      <div class="pf-board" id="pf-ip-vs-cbet-mw-low-connected" data-sit="ip-vs-cbet-mw" data-board="low-connected"></div>
+      <div class="pf-board" id="pf-ip-vs-cbet-mw-monotone" data-sit="ip-vs-cbet-mw" data-board="monotone"></div>
+    </details>
+
     <div class="rule" style="margin-top:1.8rem; border-left:3px solid var(--accent);">
       <p class="head">Lessons from this part</p>
       <ul style="margin:.4rem 0 0; padding-left:1.1rem;">
@@ -1191,6 +1240,7 @@
         <li>On his board, call. On your board, raise.</li>
         <li>In position, draws call. Out of position, draws raise a small bet and call a big one.</li>
         <li>The float: call a small bet with overcards in position, and bet the turn when he checks.</li>
+        <li>Three-way, nobody is bluffing: two pair or better raises, top pair and the real draws call, everything else folds. With a player still behind you, a big bet folds top pair too.</li>
       </ul>
     </div>
     <a class="toplink" href="#top">↑ back to index</a>
@@ -1468,7 +1518,7 @@
         <li>A limper doesn't fold. Bet for value, not for folds — bigger, and with fewer hands. <a href="#iso-flop">why</a></li>
         <li>When a passive player raises, he has it. Fold everything but the nuts and the big draws. <a href="#iso-flop">why</a></li>
         <li>Multiway, someone always has something. Bet the top of your range, bigger, and bluff almost never. <a href="#multiway">why</a></li>
-        <li>With a player still behind you, you need a hand, not a price. <a href="#multiway">why</a></li>
+        <li>Facing a bet three-way, you need a hand, not a price. <a href="#d1b">why</a></li>
       </ol>
       <p style="margin:0 0 .4rem; font-size:.78rem; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:.06em;">The flop, as the caller</p>
       <ol start="18" style="margin:0 0 1rem; padding-left:1.2rem;">
@@ -1815,25 +1865,25 @@ function classifyHand(hole,board){
 
 // ---------- board classes ----------
 // `example` is the flop every list is written for; `also` shows two more in the book.
-// `patterns` are the rank patterns the trainer deals from (suits drawn to match `suits`):
+// `patterns` are the twenty rank patterns per class the trainer deals from (suits drawn to match `suits`):
 //   rainbow = three suits · twotone = the first two cards share a suit · mono = one suit.
 // Every pattern is vetted by the build harness against every situation: each hand class it can
 // produce must have a listed action, or the build fails and the pattern comes out.
 const BOARD_CLASSES={
   'dry-high':     {label:'Dry high board',      example:['Ks','9h','4d'], also:[['Ac','7s','2h'],['Qd','8c','3h']], owner:'his', suits:'rainbow',
-                   patterns:[['K','9','4'],['A','7','2'],['Q','8','3'],['K','8','3'],['A','9','4'],['K','7','2'],['Q','7','2'],['A','8','3'],['K','9','3'],['A','9','2']]},
+                   patterns:[['K','9','4'],['A','7','2'],['Q','8','3'],['K','8','3'],['A','9','4'],['K','7','2'],['Q','7','2'],['A','8','3'],['K','9','3'],['A','9','2'],['K','6','2'],['Q','6','2'],['A','8','4'],['K','8','4'],['Q','8','4'],['A','6','2'],['K','7','3'],['Q','7','3'],['A','8','2'],['Q','8','2']]},
   'paired':       {label:'Paired board',        example:['Ks','8h','8d'], also:[['Qc','5s','5d'],['Ah','6d','6c']], owner:'his', suits:'rainbow',
-                   patterns:[['K','8','8'],['Q','5','5'],['A','6','6'],['K','7','7'],['J','4','4'],['A','3','3'],['Q','9','9'],['K','5','5'],['A','8','8'],['Q','6','6']]},
+                   patterns:[['K','8','8'],['Q','5','5'],['A','6','6'],['K','7','7'],['J','4','4'],['A','3','3'],['Q','9','9'],['K','5','5'],['A','8','8'],['Q','6','6'],['A','7','7'],['K','6','6'],['J','5','5'],['Q','4','4'],['A','4','4'],['K','3','3'],['J','6','6'],['Q','7','7'],['A','5','5'],['K','4','4']]},
   'wet-high':     {label:'Wet high board',      example:['Ks','Qs','5h'], also:[['As','Js','8d'],['Qh','Th','7c']], owner:'his', suits:'twotone',
-                   patterns:[['K','Q','5'],['A','J','8'],['Q','T','7'],['K','J','6'],['A','Q','9'],['K','T','7'],['Q','J','5'],['A','T','7'],['K','J','8'],['A','K','8']]},
+                   patterns:[['K','Q','5'],['A','J','8'],['Q','T','7'],['K','J','6'],['A','Q','9'],['K','T','7'],['Q','J','5'],['A','T','7'],['K','J','8'],['A','K','8'],['K','Q','6'],['A','J','7'],['Q','T','6'],['K','J','7'],['A','Q','8'],['K','T','8'],['Q','J','6'],['A','T','8'],['K','Q','8'],['A','K','9']]},
   'middling':     {label:'Middling, connected', example:['Jc','9h','5d'], also:[['Ts','8d','6h'],['Qd','9s','6c']], owner:'even', suits:'rainbow',
-                   patterns:[['J','9','5'],['T','8','6'],['Q','9','6'],['J','8','4'],['T','9','5'],['J','T','4'],['Q','8','5'],['9','8','5'],['T','7','5'],['J','9','6']]},
+                   patterns:[['J','9','5'],['T','8','6'],['Q','9','6'],['J','8','4'],['T','9','5'],['J','T','4'],['Q','8','5'],['9','8','5'],['T','7','5'],['J','9','6'],['J','8','5'],['T','8','4'],['Q','9','5'],['J','9','4'],['T','9','6'],['J','T','5'],['Q','8','6'],['Q','9','7'],['T','7','4'],['J','8','6']]},
   'low-connected':{label:'Low, connected',      example:['7h','6h','5d'], also:[['8c','7d','4h'],['6s','5d','3c']], owner:'yours', suits:'twotone',
-                   patterns:[['7','6','5'],['8','7','4'],['6','5','3'],['8','6','5'],['7','5','4'],['9','7','6'],['6','4','3'],['8','7','5'],['7','6','4'],['5','4','3']]},
+                   patterns:[['7','6','5'],['8','7','4'],['6','5','3'],['8','6','5'],['7','5','4'],['9','7','6'],['6','4','3'],['8','7','5'],['7','6','4'],['5','4','3'],['8','6','4'],['7','5','3'],['6','5','4'],['9','7','5'],['8','6','3'],['7','4','2'],['6','5','2'],['7','4','3'],['9','6','5'],['8','5','4']]},
   'monotone':     {label:'Monotone',            example:['As','7s','3s'], also:[['Kh','9h','5h'],['8d','6d','2d']], owner:'nobody', suits:'mono',
-                   patterns:[['A','7','3'],['K','9','5'],['8','6','2'],['Q','8','4'],['J','6','3'],['T','5','2'],['A','9','4'],['K','7','2'],['Q','9','3'],['J','7','2']]},
+                   patterns:[['A','7','3'],['K','9','5'],['8','6','2'],['Q','8','4'],['J','6','3'],['T','5','2'],['A','9','4'],['K','7','2'],['Q','9','3'],['J','7','2'],['A','8','2'],['K','6','3'],['9','7','2'],['Q','7','4'],['J','8','2'],['T','6','3'],['A','6','3'],['K','8','4'],['Q','5','2'],['J','9','4']]},
   'ace-high':     {label:'Ace-high, dry',       example:['Ah','8c','3d'], also:[['As','Kd','6c'],['Ad','Ts','4h']], owner:'3-bettor', suits:'rainbow',
-                   patterns:[['A','8','3'],['A','K','6'],['A','T','4'],['A','9','2'],['A','7','2'],['A','J','5'],['A','Q','7'],['A','8','2'],['A','K','4'],['A','T','3']]}
+                   patterns:[['A','8','3'],['A','K','6'],['A','T','4'],['A','9','2'],['A','7','2'],['A','J','5'],['A','Q','7'],['A','8','2'],['A','K','4'],['A','T','3'],['A','9','3'],['A','K','7'],['A','T','6'],['A','6','2'],['A','J','4'],['A','Q','6'],['A','8','4'],['A','K','3'],['A','T','2'],['A','J','6']]}
 };
 // Deal a concrete flop for a board class: a random pattern with suits that fit the class.
 function dealBoard(bc, rnd){
@@ -1967,7 +2017,7 @@ POSTFLOP['bb-vs-cbet']={
         raise:[['strong','Raise. His top pair pays you, and there is nothing to slow-play against on a dry board.'],
                ['overpair','Raise for value — his top pair pays. (This hand should have 3-bet preflop; here it plays like two pair.)']],
         call: [['tp','Call, and keep calling.'],
-               ['oc','two overcards: six outs and a cheap price. Call once.'],
+               ['oc','six outs and a cheap price. Call once.'],
                ['mp','you beat every bluff and every worse pair he bets. Call.'],
                ['wp','bottom pair beats his air, and against a third-pot bet that is all you need. Call.'],
                ['gut','four outs plus two big cards. Cheap enough at this price.'],
@@ -2175,7 +2225,7 @@ POSTFLOP['3bet-aggressor']={
     'ace-high':{ size:'33%', lesson:'Your board — aces and big pairs are your range, not his: bet everything small.',
       ex:{strong:'AA, A3s', tp:'AK, AQ, AJ, A9s, A5s–A2s', mp:'KK, QQ, JJ, TT', air:'KQs, K9s'},
       one:{ bet:[['strong','bet 33%. Your range is all aces and big pairs; his is pairs and broadways that missed. Bet everything, small.'],
-                 ['tp','Bet 33%, and keep betting. Top pair here is a stack-off against a range that called a 3-bet.'],
+                 ['tp','Bet 33%. With a good kicker keep betting — top pair is a stack-off against a range that called a 3-bet. With a small kicker (A5s–A2s) bet the flop once and slow down if he raises or keeps calling.'],
                  ['mp','A big pocket pair under the ace is not an overpair. Bet 33% anyway: it folds his smaller pairs without building a pot for his aces. Slow down if he keeps calling.'],
                  ['wp','a big pocket pair under two board cards: bet 33% once, then slow down.'],
                  ['gut','four outs on the 3-bettor\'s board: bet 33% with everything else.'],
@@ -2335,7 +2385,7 @@ POSTFLOP['cbet-ip']={
                  ['mp','Bet. Second pair, or a pocket pair just under the top card, is ahead of every draw and every worse pair he calls with.'],
                  ['gut','four outs, two big cards, and a second barrel on any turn that helps. Bet small.'],
                  ['ahigh','Bet small. Three outs to top pair, and the bet folds the hands that would outdraw you — on a dry board, bet everything but the small pairs.'],
-                 ['oc','two overcards: six outs and a cheap bet that folds his air. Bet small.'],
+                 ['oc','six outs, and a cheap bet that folds his air. Bet small.'],
                  ['air','Bet small, once. It cannot win a showdown, but one cheap bet folds his air. Give up on the turn unless you pick up a draw.']],
             check:[['wp','Check. A small pair already wins at showdown; a bet folds what you beat and gets called by every top pair.']] }
     },
@@ -2365,7 +2415,7 @@ POSTFLOP['cbet-ip']={
       ex:{strong:'JJ, 99, 55, J9, J5, 95', overpair:'AA, KK, QQ', tp:'AJ, KJ, QJ, JT', mp:'any 9, TT', wp:'any 5, 88–66, 44–22', oesd:'QT, T8, 87', gut:'KQ, KT, Q8, 76, 86, T7', oc:'AK, AQ', ahigh:'A7, A4', air:'K6, Q4'},
       one:{ bet:[['strong','value.'],['overpair','value. Half pot keeps his second pairs and his gutshots calling.'],
                  ['tp','value.'],['oesd','eight outs. Semi-bluff.'],
-                 ['oc','two overcards: six outs, and a second barrel on any overcard turn. Bet once.'],
+                 ['oc','six outs, and a second barrel on any overcard turn. Bet once.'],
                  ['gut','Bet once. Four outs, often with an overcard or two on top, and on an even board a half-pot bet is credible.']],
             check:[['mp','second pair: showdown value. A bet folds worse and gets called by every top pair.'],
                    ['wp','a small pair has showdown value and nothing to gain from a bet: worse folds, better calls. Check.'],
@@ -2410,7 +2460,7 @@ POSTFLOP['cbet-oop']={
       ex:{strong:'K9, KK, 99, 44', overpair:'AA', tp:'any King', mp:'any 9, QQ–TT', wp:'88–55, 33, 22, A4', gut:'QJ, QT, JT', ahigh:'AQ, AJ, AT, A7', air:'87, 76, 65'},
       one:{ bet:[['strong','Bet small for value, as in position. The pool calls with any pair and any ace; a check only wins his stab.'],
                  ['tp','top pair bets for value and protection, just as in position: his second pairs and gutshots pay to see a turn.'],['overpair','bet.'],['mp','second pair on a dry board is ahead of everything that continues — his draws and worse pairs. Bet small.'],['gut','four outs and two big cards: a small bet folds his air, and a second barrel comes on any turn that helps.'],
-                 ['ahigh','Bet small. It folds the hands that would outdraw you, and keeps three outs to top pair if he calls.'],['oc','two overcards: six outs, and a cheap bet that folds his air. Bet small.']],
+                 ['ahigh','Bet small. It folds the hands that would outdraw you, and keeps three outs to top pair if he calls.'],['oc','six outs, and a cheap bet that folds his air. Bet small.']],
             'check-call':[['wp','showdown value. Call one bet, re-evaluate the turn.']],
             'check-fold':[
                           ['air','out of position you cannot take a free card, so there is no cheap way to keep this hand.']] }
@@ -2517,6 +2567,114 @@ POSTFLOP['cbet-multiway']={
   boards:deriveBoards(POSTFLOP['cbet-ip'].boards, MW_CHANGES, MW_SIZES)
 };
 
+// ---------- facing the c-bet three-way ----------
+// Cutoff opens, the Button flats, you overcall in the big blind (Part V, "BB vs open + caller"). You check,
+// the opener c-bets and the Button calls; you close the action. The heads-up BB lists with the changes
+// below: he bet into two players and one of them called, so someone has something — two pair or better
+// raises, top pair and the real draws call, and everything that was a cheap call heads-up folds.
+const MWC_CHANGES=[
+  // [board or '*', size, handClass, from, to, why]
+  ['*','small','overpair', 'raise','call','an overpair calls, it does not raise: a raise into two players says two pair or better, and calling keeps both of them in with worse.'],
+  ['*','small','pair+draw','raise','call','a pair plus a draw calls: the pot is big enough already, and a draw is worth more against two players when it comes in than as a raise that folds nobody.'],
+  ['*','small','combo',    'raise','call','fifteen outs and two players to pay you. Call, and bet when it comes in.'],
+  ['*','small','nfd',      'raise','call','the nut flush draw calls: a raise folds nobody, and when the flush arrives two players can pay it.'],
+  ['*','small','oesd',     'raise','call','an open-ender is a call, not a semi-bluff: a raise into two players folds nobody. Take the price and bet when it comes in.'],
+  ['*','small','mp',       'call', 'fold','second pair — or a pocket pair under the top card — is a bluff-catcher, and nobody bluffs into two players. Fold.'],
+  ['*','small','wp',       'call', 'fold','bottom pair beat his bluffs heads-up. Against a bet and a call there are no bluffs to beat. Fold.'],
+  ['*','small','gut',      'call', 'fold','four outs against two players who both have something. Fold.'],
+  ['*','small','oc',       'call', 'fold','two overcards need a fold or a free card, and against two players you get neither. Fold.'],
+  ['*','small','ahigh',    'call', 'fold','ace-high was ahead of his bluffs heads-up; into two players he is not bluffing. Fold.'],
+  ['*','big',  'pair+draw','raise','call','a pair plus a draw calls a big bet: you are not folding, and a raise only folds the hands you beat.'],
+  ['*','big',  'combo',    'raise','call','fifteen outs. Call the big bet — the pot is already big, and two players pay when it comes in.'],
+  ['*','big',  'mp',       'call', 'fold','second pair calls one big bet heads-up. Against a big bet and a call it is beaten by one of them almost every time. Fold.']
+];
+const MWC_LESSONS={
+  'dry-high':     'Into two players he bets top pair or better, not "almost anything": top pair and an overpair call, and an ace-high or a gutshot no longer does.',
+  'paired':       'A paired board misses everyone, but a bet and a call means someone has the pair: trips raise, top pair calls, and the small pairs fold.',
+  'wet-high':     'His board and a big pot: the draws call at either price, pair-plus-draw hands call instead of raising, and second pair folds.',
+  'middling':     'An even board with three players in: the open-ender calls instead of semi-bluffing, and only two pair or better raises.',
+  'low-connected':'Your board, but two players to beat: raise two pair or better, call the draws and top pair, and fold bare overcards and small pairs.',
+  'monotone':     'A small bet is cheap to call with a flush draw or top pair; a big bet and a call means a flush is out, so without one, fold.'
+};
+POSTFLOP['bb-vs-cbet-mw']={
+  label:'BB facing a c-bet three-way',
+  setup:'The Cutoff opened, the Button called and you called in the big blind. You close the action on the flop.',
+  hero:'BB', villain:'CO + BTN', heroRange:{chart:'def-bb-multi', bands:['call']}, pot:8.0,
+  vbet:{small:50, big:75},
+  sizes:{
+    small:{label:'vs a small bet and a call', range:'40–50% pot', need:'~20%', raiseTo:'3× his bet'},
+    big:  {label:'vs a big bet and a call',   range:'66–75% pot', need:'~25%', raiseTo:'2.5× his bet'}
+  },
+  changes:MWC_CHANGES,
+  lessonAdd:'Three-way, closing the action: two pair or better raises, top pair and the real draws call, and everything else folds.',
+  boards:deriveBoards(POSTFLOP['bb-vs-cbet'].boards, MWC_CHANGES, null, null, {actions:null})
+};
+Object.keys(MWC_LESSONS).forEach(function(bc){ POSTFLOP['bb-vs-cbet-mw'].boards[bc].lesson=MWC_LESSONS[bc]; });
+// The hands that keep their heads-up action still need three-way reasons (the heads-up ones talk about
+// his bluffs and heads-up prices). Monotone keeps its suit-specific wording except where it says "like any pair".
+const MWC_REASONS={
+  small:{
+    strong:  'Raise. Two players have something, and this is the hand that gets paid by both.',
+    overpair:'An overpair calls once: it beats their top pairs, and a raise only gets action from what beats it.',
+    tp:      'Top pair calls, once: he bet into two players and one of them called, so see the turn and reassess.',
+    fd:      'Nine outs, a cheap price and two players to pay you. Call.',
+    oesd:    'Eight outs at a cheap price, and two players to pay when it comes in. Call.',
+    air:     'Fold. Nothing to call with at any price, and nobody is folding to you.'
+  },
+  big:{
+    strong:  'Raise. A big bet and a call means the pot is going in against hands that pay.',
+    overpair:'Call once. An overpair beats their top pairs and loses to their sets; a raise only gets action from the second group.',
+    tp:      'Top pair calls one big bet, then needs to improve or see a check.',
+    nfd:     'The nut flush draw calls a big bet: enough equity, and two players to pay when it comes in.',
+    fd:      'Nine outs in a pot two players have built. Call once; both pay when it comes in.',
+    oesd:    'Call once. Eight outs, a big pot and two players to pay you; fold the turn if you miss.',
+    wp:      'Fold. Bottom pair beats only bluffs, and nobody bluffs into two players.',
+    gut:     'Fold. Four outs against two players who have something.',
+    oc:      'Fold. Six outs at best against two players who have something.',
+    ahigh:   'Fold. Three outs and no showdown value against two players.',
+    air:     'Fold. Nothing, and nobody is folding to you.'
+  }
+};
+(function(){ const B=POSTFLOP['bb-vs-cbet-mw'].boards, changed=new Set(MWC_CHANGES.map(function(c){return c[5];}));
+  Object.keys(B).forEach(function(bc){ ['small','big'].forEach(function(sz){ const r=B[bc][sz];
+    Object.keys(r).forEach(function(k){ if(!Array.isArray(r[k])) return; r[k].forEach(function(it){
+      if(changed.has(it[1])) return; const t=MWC_REASONS[sz][it[0]]; if(!t) return;
+      if(bc==='monotone' && !(sz==='small'&&it[0]==='overpair') && !(sz==='big'&&['wp','gut','oc','ahigh','air'].indexOf(it[0])>=0)) return;
+      it[1]=t; }); }); }); });
+})();
+
+// ---------- the in-between player: on the Button with the big blind still behind you ----------
+// You flatted a Cutoff open on the Button (Part V calling band) and the big blind overcalled. He checks,
+// the Cutoff bets, and you act with the big blind still to speak. The three-way lists above, with the
+// one thing position cannot fix: you do not close the action, so a big bet needs more.
+const IPMW_CHANGES=[
+  ['*','big','tp',  'call','fold','top pair calls one big bet when it closes the action. With a player still behind you it does not: fold, and let the two of them play it.'],
+  ['*','big','fd',  'call','fold','nine outs at a big price with a player still to act behind you. Closing the action you could call; here you cannot. Fold.'],
+  ['*','big','oesd','call','fold','eight outs at a big price with a player behind you who can raise. Fold.']
+];
+POSTFLOP['ip-vs-cbet-mw']={
+  label:'Button facing a c-bet, big blind behind',
+  setup:'The Cutoff opened, you called on the Button and the big blind came along. On the flop you act with the big blind still to speak.',
+  hero:'BTN', villain:'CO + BB', heroRange:{chart:'tbet-ip-wide', bands:['call']}, pot:8.0,
+  vbet:{small:50, big:75},
+  sizes:{
+    small:{label:'vs a small bet, big blind behind', range:'40–50% pot', need:'~25%', raiseTo:'3× his bet'},
+    big:  {label:'vs a big bet, big blind behind',   range:'66–75% pot', need:'~30%', raiseTo:'2.5× his bet'}
+  },
+  changes:IPMW_CHANGES,
+  lessonAdd:'With the big blind still behind you a big bet also folds top pair and the bare draws: you cannot close the action, so you need more.',
+  boards:deriveBoards(POSTFLOP['bb-vs-cbet-mw'].boards, IPMW_CHANGES, null, null, {actions:null})
+};
+// the inherited three-way wording assumes the Button already called; here the big blind is still to act
+(function(){ const B=POSTFLOP['ip-vs-cbet-mw'].boards, changed=new Set(IPMW_CHANGES.map(function(c){return c[5];}));
+  const fix=function(t){ return t.replace(/a bet and a call/g,'a bet into two players').replace(/A bet and a call/g,'A bet into two players')
+    .replace(/A big bet and a call/g,'A big bet into two players').replace(/a big bet and a call/g,'a big bet into two players')
+    .replace(/one of them called/g,'the big blind is still to act').replace(/two players who (both )?have something/g,'a bettor and a player still behind you')
+    .replace(/three players in/g,'three players and one still behind you').replace(/closing the action/g,'with a player behind you'); };
+  Object.keys(B).forEach(function(bc){ B[bc].lesson=fix(B[bc].lesson); ['small','big'].forEach(function(sz){ const r=B[bc][sz];
+    Object.keys(r).forEach(function(k){ if(Array.isArray(r[k])) r[k].forEach(function(it){ if(!changed.has(it[1])) it[1]=fix(it[1]); }); }); }); });
+})();
+
 </script>
 <script>
 (function(){
@@ -2543,8 +2701,9 @@ POSTFLOP['cbet-multiway']={
 
   // ---------- postflop boards, drawn from POSTFLOP ----------
   const SUIT_SYM={s:'♠',h:'♥',d:'♦',c:'♣'};
-  function flopGroup(cards,primary){ return '<span class="flopgrp'+(primary?' primary':'')+'">'+cards.map(function(c){ return '<span class="pcard'+((c[1]==='h'||c[1]==='d')?' r':'')+'">'+c[0]+SUIT_SYM[c[1]]+'</span>'; }).join('')+'</span>'; }
-  function cardsHTML(cards){ return '<span class="pcards">'+cards.map(function(c){ return '<span class="pcard'+((c[1]==='h'||c[1]==='d')?' r':'')+'">'+c[0]+SUIT_SYM[c[1]]+'</span>'; }).join('')+'</span>'; }
+  function rankTxt(c){ return c[0]==='T'?'10':c[0]; }
+  function flopGroup(cards,primary){ return '<span class="flopgrp'+(primary?' primary':'')+'">'+cards.map(function(c){ return '<span class="pcard'+((c[1]==='h'||c[1]==='d')?' r':'')+'">'+rankTxt(c)+SUIT_SYM[c[1]]+'</span>'; }).join('')+'</span>'; }
+  function cardsHTML(cards){ return '<span class="pcards">'+cards.map(function(c){ return '<span class="pcard'+((c[1]==='h'||c[1]==='d')?' r':'')+'">'+rankTxt(c)+SUIT_SYM[c[1]]+'</span>'; }).join('')+'</span>'; }
   function handName(a,b){ const ra=a[0],rb=b[0]; if(ra===rb) return ra+rb; const hi=RANK_VAL[ra]>=RANK_VAL[rb]?[a,b]:[b,a]; return hi[0][0]+hi[1][0]+(a[1]===b[1]?'s':'o'); }
   // share of the preflop-calling range that raises / calls / folds against each size on this board
   function boardFreq(sit, board, rules){
@@ -2563,7 +2722,7 @@ POSTFLOP['cbet-multiway']={
     return out;
   }
   // change tables (in-position vs BB lists; iso pot vs normal c-bet lists)
-  [['ip-changes','ip-vs-cbet',true],['iso-changes','iso-ip',false],['mw-changes','cbet-multiway',false]].forEach(function(cfg){
+  [['ip-changes','ip-vs-cbet',true],['iso-changes','iso-ip',false],['mw-changes','cbet-multiway',false],['mwc-changes','bb-vs-cbet-mw',true],['ipmw-changes','ip-vs-cbet-mw',true]].forEach(function(cfg){
     const tb=document.getElementById(cfg[0]); if(!tb) return; const S=POSTFLOP[cfg[1]];
     S.changes.forEach(function(ch){ const b=ch[0],sz=ch[1],cls=ch[2],from=ch[3],to=ch[4]; if(from===to) return;
       tb.insertAdjacentHTML('beforeend','<tr><td class="plain">'+(b==='*'?'any':BOARD_CLASSES[b].label.toLowerCase())+'</td>'+(cfg[2]?'<td class="plain">'+sz+' bet</td>':'')+'<td>'+HAND_CLASSES[cls].label+'</td><td class="num">'+from+'</td><td class="num" style="color:var(--accent)">'+to+'</td></tr>'); });
@@ -2650,12 +2809,12 @@ POSTFLOP['cbet-multiway']={
     });
     // sidebar
     const side=document.getElementById('sidenav');
-    side.innerHTML='<a class="sn-title" href="#top">The Playbook</a><p class="sn-sub">NL25 6-max &middot; GGPoker</p>'+groups.map(function(g,i){
+    side.innerHTML='<p class="sn-brand">Sharkline Poker</p><a class="sn-title" href="#top">The Playbook</a><p class="sn-sub">NL25 6-max &middot; online</p>'+groups.map(function(g,i){
       return '<div class="sn-grp" data-g="'+i+'"><a class="sn-lab" href="'+(g.part||g.links[0].href)+'">'+g.label+'</a><div class="sn-links">'+g.links.map(function(l){ return '<a href="'+l.href+'">'+l.text+'</a>'; }).join('')+'</div></div>';
     }).join('')+'<div class="sn-foot"><a href="./">Open the trainer &rarr;</a></div>';
     // drawer
     const drawer=document.getElementById('drawer');
-    drawer.innerHTML='<div class="dr-head"><p>Contents</p><button id="dr-close">Close</button></div>'+groups.map(function(g,i){
+    drawer.innerHTML='<div class="dr-head"><p>Sharkline Poker &middot; Contents</p><button id="dr-close">Close</button></div>'+groups.map(function(g,i){
       return '<details data-g="'+i+'"><summary>'+g.label+'</summary><div class="dr-links">'+(g.part?'<a href="'+g.part+'">Part overview</a>':'')+g.links.map(function(l){ return '<a href="'+l.href+'">'+l.text+'</a>'; }).join('')+'</div></details>';
     }).join('')+'<p style="margin:1rem 0 0;"><a href="./" style="color:var(--accent);">Open the trainer &rarr;</a></p>';
     const open=function(){ drawer.classList.add('open'); document.body.style.overflow='hidden'; const cur=drawer.querySelector('details[data-g="'+activeG+'"]'); if(cur) cur.open=true; };
