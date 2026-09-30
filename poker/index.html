@@ -200,8 +200,8 @@
   .gate-card{max-width:560px; width:100%; background:#14171B; border:1px solid rgba(255,255,255,.1); border-radius:18px; padding:1.6rem 1.5rem 1.4rem; box-shadow:0 30px 60px rgba(0,0,0,.6);}
   .gate-suits{font-family:var(--disp); letter-spacing:.5em; color:var(--accent); margin:0 0 .4rem; font-size:.95rem;}
   .gate-card p.gate-brand{font-family:var(--disp); font-weight:700; font-size:1.75rem; letter-spacing:.005em; margin:0; line-height:1.1; color:#F2F1EC;}
-  .gate-card p.gate-tag{font-family:var(--mono); font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin:.3rem 0 1.1rem;}
-  .gate-card p.gate-upd{margin:0 0 .35rem; font-family:var(--mono); font-size:.68rem; color:#8F948E;}
+  .gate-card p.gate-tag{font-family:var(--mono); font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin:.3rem 0 1.4rem;}
+  .gate-card p.gate-upd{margin:.55rem 0 0; text-align:center; font-family:var(--mono); font-size:.66rem; letter-spacing:.04em; color:#6F746E;}
   .gate-card h2{font-family:var(--disp); font-weight:600; font-size:1.55rem; margin:0 0 .8rem; letter-spacing:-.01em; color:#ECEBE6;}
   .gate-card p{margin:0 0 .8rem; font-size:.93rem; line-height:1.55; color:#C9CEC8;}
   .gate-card p strong{color:#ECEBE6; font-weight:600;}
@@ -346,7 +346,6 @@
     <p class="gate-suits">♠ ♥ ♦ ♣</p>
     <p class="gate-brand">Sharkline Poker</p>
     <p class="gate-tag">Drill your A-Game</p>
-    <p class="gate-upd">Updated 30 September 2026</p>
     <h2 id="gate-title">Before you sit down</h2>
     <div id="gate-intro">
     <p>Sharkline Poker was built for one job: beating NL25 6&#8209;max online, one of the busiest games there is. Don't let the stakes fool you &mdash; a regular winner at NL25 is better than most people who play poker.</p>
@@ -366,6 +365,7 @@
         </a>
       </div>
       <p class="gate-foot">Built with Claude Fable&nbsp;5.1, from the <a href="reference.html">Playbook</a>'s own data. &middot; <button class="gate-skip" id="btn-skip">Don't show this again</button></p>
+      <p class="gate-upd">Updated 30 September 2026</p>
     </div>
     <div id="gate-step2" class="hidden">
       <p class="gate-lead">Pick what to drill and where to start. You can change both later, under the table.</p>
@@ -419,8 +419,8 @@
   <details class="panel" open id="panel">
     <summary>What to drill <span class="sum" id="pool-note"></span></summary>
     <div class="modes" id="modes">
-      <button class="mode" data-mode="pre" aria-pressed="true"><b>Preflop</b><small>Every chart, one decision per hand. Start here.</small></button>
-      <button class="mode" data-mode="both" aria-pressed="false"><b>Preflop + flop</b><small>Play the flop your line leads to.</small></button>
+      <button class="mode" data-mode="pre" aria-pressed="false"><b>Preflop</b><small>Every chart, one decision per hand.</small></button>
+      <button class="mode" data-mode="both" aria-pressed="true"><b>Preflop + flop</b><small>The whole hand: your preflop line, then the flop it leads to.</small></button>
       <button class="mode" data-mode="flop" aria-pressed="false"><b>Flop only</b><small>Straight to the board, from the Playbook's ranges.</small></button>
     </div>
     <p class="lab" style="margin:.9rem 0 0;">Where to start</p>
@@ -1971,7 +1971,7 @@ Object.keys(POSTFLOP).forEach(function(k){ POSTFLOP[k].id=k; });
   const WHY={ value:'A value hand.', bluff:'A bluff: it blocks their strongest hands and has equity if called.', call:'Too good to fold, but a raise here would be a bluff.' };
 
   // ---------- state ----------
-  const S={ mode:'pre', active:{}, activeFlop:{}, diff:'all', reads:true,
+  const S={ mode:'both', active:{}, activeFlop:{}, diff:'all', reads:true,
             n:0, hits:0, streak:0, best:0, sizeMiss:0, per:{}, misses:{}, fper:{}, fmisses:{},
             cur:null, answered:false, street:'pre', retrain:false, timers:[], hand:null, force:null };
   Object.keys(SPOTS).forEach(k=>{ S.per[k]={n:0,hits:0}; });
