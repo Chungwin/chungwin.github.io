@@ -224,6 +224,14 @@
   #gate-settings .panel{margin:0 0 .4rem; background:#1A1D22; padding:.7rem .9rem;}
   #gate-settings .panel summary{pointer-events:none;} #gate-settings .panel summary .sum{display:none;}
   #gate-step2 .gate-btn{margin-top:.6rem;}
+  .gate-card.step2 .gate-suits, .gate-card.step2 .gate-brand, .gate-card.step2 .gate-tag{display:none;}
+  .gate-card.step2 h2{margin-top:0;}
+  #gate-settings .panel summary{display:none;}   /* the heading above already asks the question */
+  @media (max-width:520px){
+    .gate-card.step2{padding-bottom:.6rem;}
+    #gate-step2 .gate-btn{position:sticky; bottom:0; margin-top:.5rem; box-shadow:0 -10px 16px -6px rgba(14,16,18,.95), 0 0 0 .6rem #14171B;}
+    #gate-settings .mode{padding:.55rem .7rem;} #gate-settings .mode small{display:block; line-height:1.25;}
+  }
   @media (max-width:520px){ .gate{padding:.8rem; align-items:flex-start; padding-top:1.5rem;} .gate-card{padding:1.3rem 1.1rem 1.2rem;} .gate-card h2{font-size:1.35rem;} .gate-card p{font-size:.9rem;} }
   .hidden{display:none !important;}
 
@@ -368,7 +376,6 @@
       <p class="gate-upd">Updated 30 September 2026</p>
     </div>
     <div id="gate-step2" class="hidden">
-      <p class="gate-lead">Pick what to drill and where to start. You can change both later, under the table.</p>
       <div id="gate-settings"></div>
       <button class="gate-btn" id="btn-start">Shuffle up and deal</button>
     </div>
@@ -2618,7 +2625,7 @@ Object.keys(POSTFLOP).forEach(function(k){ POSTFLOP[k].id=k; });
   $('btn-reset').addEventListener('click',()=>{ S.n=0;S.hits=0;S.streak=0;S.best=0;S.sizeMiss=0;S.misses={};S.fmisses={}; Object.keys(S.per).forEach(k=>S.per[k]={n:0,hits:0}); Object.keys(S.fper).forEach(k=>S.fper[k]={n:0,hits:0}); restart(); });
   // gate
   const gate=$('gate'), panel=$('panel'), panelHome=panel.parentNode, panelNext=panel.nextSibling;
-  function toStep2(){ $('gate-step1').classList.add('hidden'); $('gate-intro').classList.add('hidden'); $('gate-title').textContent='What do you want to drill?'; $('gate-step2').classList.remove('hidden'); panel.setAttribute('open',''); $('gate-settings').appendChild(panel); gate.scrollTop=0; }
+  function toStep2(){ document.querySelector('.gate-card').classList.add('step2'); $('gate-step1').classList.add('hidden'); $('gate-intro').classList.add('hidden'); $('gate-title').textContent='What do you want to drill?'; $('gate-step2').classList.remove('hidden'); panel.setAttribute('open',''); $('gate-settings').appendChild(panel); gate.scrollTop=0; }
   function openTable(){ panelHome.insertBefore(panel,panelNext); if(phone&&phone.matches) panel.removeAttribute('open'); gate.classList.add('hidden'); showHand(); }
   $('btn-continue').addEventListener('click',toStep2);
   $('btn-start').addEventListener('click',openTable);
