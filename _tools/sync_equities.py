@@ -1,18 +1,25 @@
 #!/usr/bin/env python3
-"""Mirror the two Claude artifacts (rankings + research trackers) into /equities.
+"""Mirror the three Claude artifacts (landing, rankings, research trackers) into /equities.
 
 The artifacts stay the source of truth; this script only copies their published
 pages into the site and adapts them:
-  * claude.ai artifact links  -> /equities/ and /equities/trackers/
+  * claude.ai artifact links -> /equities/ (landing), /equities/rankings/, /equities/trackers/
+  * links to chungwin.com become site-relative; on the landing page and the two hub
+    strips they open in the same tab instead of a new one
   * every inner page gets a disclaimer at the very end of its content
-  * the two hub pages get a proper <head>, GoatCounter and anonymous usage events
+  * the landing and hub pages get a proper <head>, the coin favicon and GoatCounter;
+    the hubs also send anonymous usage events, the landing counts clicks on its doors
+  * old links to /equities/#pmd etc. (rankings used to live there) are forwarded
 
 Usage:
-  python3 _tools/sync_equities.py RANKINGS_DIR TRACKERS_DIR [--synced "9 Oct 2026"]
+  python3 _tools/sync_equities.py LANDING_DIR RANKINGS_DIR TRACKERS_DIR [--synced "10 Oct 2026"]
 
+LANDING_DIR  holds index.html
 RANKINGS_DIR holds index.html, pmd.html, pmp.html, cu.html, cm.html, hist.html, cal.html
 TRACKERS_DIR holds index.html, pm.html, cu.html, cm.html
 (as downloaded from the artifacts' published files; src/ is never copied).
+Every .html under /equities is regenerated on each run, so pages that no longer
+exist in the artifacts disappear from the site too.
 """
 import argparse
 import datetime as dt
@@ -23,11 +30,14 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "equities"
 
+LANDING_ID = "DcGSVz6AUYzMi8bUGubeJM"
 RANKINGS_ID = "EPtwiXUgx3npYc8cMUDtmX"
 TRACKERS_ID = "6gR9W2PZBcPxcHj1e4VgFX"
 LINKS = {
-    f"https://claude.ai/artifact/{RANKINGS_ID}": "/equities/",
+    f"https://claude.ai/artifact/{LANDING_ID}": "/equities/",
+    f"https://claude.ai/artifact/{RANKINGS_ID}": "/equities/rankings/",
     f"https://claude.ai/artifact/{TRACKERS_ID}": "/equities/trackers/",
+    "https://chungwin.com/": "/",
 }
 
 RANKING_PAGES = ["pmd.html", "pmp.html", "cu.html", "cm.html", "hist.html", "cal.html"]
@@ -117,6 +127,28 @@ ANALYTICS = """<script>
 })();
 </script>"""
 
+# Landing page only: forward old /equities/#pmd-style links (the rankings used to
+# live at /equities/) and give the page a quiet way back to the rest of the site.
+LEGACY_REDIRECT = """<script>
+(function(){ var h = location.hash, k = h.slice(1).split('.')[0];
+  if(['pmd','pmp','cu','cm','hist','cal'].indexOf(k) !== -1) location.replace('/equities/rankings/' + h); })();
+</script>"""
+LANDING_CSS = ".small a { color:inherit; text-decoration:none; border-bottom:1px solid var(--line2,#323B40); } .small a:hover { color:var(--ink,#E8EBEC); }"
+
+
+def same_tab(html: str) -> str:
+    """Site-internal links on the landing page and hub strips open in the same tab."""
+    return re.sub(r'(<a\b[^>]*\bhref="/[^"]*"[^>]*?)\s+target="_blank"', r"\1", html)
+
+
+def landing_extras(html: str) -> str:
+    def door(m):
+        name = {"/equities/rankings/": "rankings", "/equities/trackers/": "company-cards", "/scarce-inputs-thesis/": "thesis"}.get(
+            m.group(2), m.group(2).strip("/").split("/")[-1] or "home")
+        return f'{m.group(1)} data-goatcounter-click="equities/landing/{name}" data-goatcounter-title="Landing: {name}"'
+    html = re.sub(r'(<a class="door[^"]*" href="([^"]+)")', door, html)
+    html = re.sub(r'(<p class="small">.*?)</p>', r'\1 · <a href="/">chungwin.com</a></p>', html, count=1, flags=re.S)
+    return html
 
 
 def rewrite_links(html: str) -> str:
@@ -127,35 +159,47 @@ def rewrite_links(html: str) -> str:
 
 def rebuild_hub(html: str, title: str, area: str) -> str:
     """The artifact service wraps pages in its own skeleton and leaves <title>,
-    fonts and <style> in <body>. Rebuild a clean document around the same parts."""
+    fonts and <style> in <body>. Rebuild a clean document around the same parts.
+    area is 'rankings' or 'trackers' for the hubs, 'landing' for the landing page."""
     body = html.split("<body>", 1)[1]
     head_part, rest = body.split("</style>", 1)
     head_part = re.sub(r'<meta charset="utf-8">\s*', "", head_part)
     head_part = re.sub(r"<title>.*?</title>\s*", "", head_part, flags=re.S)
-    rest = rest.replace("</body></html>", "").rstrip()
+    rest = same_tab(rest.replace("</body></html>", "").rstrip())
+    landing = area == "landing"
+    if landing:
+        rest = landing_extras(rest)
+    extra_css = ("\n" + LANDING_CSS) if landing else ""
+    script = "" if landing else "\n" + ANALYTICS.replace("{area}", area)
     return (
         '<!doctype html>\n<html lang="en">\n<head>\n'
         '<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
         f"<title>{title} · Chung Huynh</title>\n"
+        + (LEGACY_REDIRECT + "\n" if landing else "") +
         '<link rel="icon" href="/assets/favicons/coin.svg" type="image/svg+xml">\n'
         '<link rel="icon" href="/assets/favicons/coin-32.png" type="image/png" sizes="32x32">\n'
         '<link rel="apple-touch-icon" href="/assets/favicons/coin-touch.png">\n'
-        '<meta name="description" content="Chung Huynh\'s personal equity research on metals developers and producers — rankings and company trackers. Not investment advice.">\n'
-        f"{head_part.strip()}\n</style>\n</head>\n<body>\n"
-        f"{rest.strip()}\n{GOATCOUNTER}\n{ANALYTICS.replace('{area}', area)}\n</body>\n</html>\n"
+        '<meta name="description" content="Chung Huynh\'s personal equity research on small mining companies — rankings and company cards for gold, silver, copper and critical minerals. Not investment advice.">\n'
+        f"{head_part.strip()}{extra_css}\n</style>\n</head>\n<body>\n"
+        f"{rest.strip()}\n{GOATCOUNTER}{script}\n</body>\n</html>\n"
     )
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
+    ap.add_argument("landing_dir", type=pathlib.Path)
     ap.add_argument("rankings_dir", type=pathlib.Path)
     ap.add_argument("trackers_dir", type=pathlib.Path)
     ap.add_argument("--synced", default=dt.date.today().strftime("%-d %b %Y"))
     a = ap.parse_args()
 
-    (OUT / "trackers").mkdir(parents=True, exist_ok=True)
-    jobs = [(a.rankings_dir / p, OUT / p) for p in RANKING_PAGES]
+    for old in OUT.rglob("*.html"):
+        old.unlink()
+    for d in ("rankings", "trackers"):
+        (OUT / d).mkdir(parents=True, exist_ok=True)
+
+    jobs = [(a.rankings_dir / p, OUT / "rankings" / p) for p in RANKING_PAGES]
     jobs += [(a.trackers_dir / p, OUT / "trackers" / p) for p in TRACKER_PAGES]
     for src, dst in jobs:
         html = rewrite_links(src.read_text(encoding="utf-8"))
@@ -164,7 +208,8 @@ def main() -> int:
         dst.write_text(html[:i] + footer + "\n" + html[i:], encoding="utf-8")
 
     hubs = [
-        (a.rankings_dir / "index.html", OUT / "index.html", "Metals Rankings", "rankings"),
+        (a.landing_dir / "index.html", OUT / "index.html", "Metals Research", "landing"),
+        (a.rankings_dir / "index.html", OUT / "rankings" / "index.html", "Metals Rankings", "rankings"),
         (a.trackers_dir / "index.html", OUT / "trackers" / "index.html", "Metals Research Trackers", "trackers"),
     ]
     for src, dst, title, area in hubs:

@@ -7,7 +7,7 @@
 <link rel="icon" href="/assets/favicons/coin.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/favicons/coin-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/assets/favicons/coin-touch.png">
-<meta name="description" content="Chung Huynh's personal equity research on metals developers and producers — rankings and company trackers. Not investment advice.">
+<meta name="description" content="Chung Huynh's personal equity research on small mining companies — rankings and company cards for gold, silver, copper and critical minerals. Not investment advice.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -43,7 +43,7 @@ header.strip { flex:none; background:var(--panel); border-bottom:1px solid var(-
 .tab:focus-visible { outline:2px solid var(--ink); outline-offset:-4px; border-radius:4px; }
 .side a { color:var(--mute); text-decoration:none; border-bottom:1px solid var(--line); }
 .side a:hover { color:var(--ink); }
-.side { display:flex; align-items:center; font-size:12.5px; color:var(--mute); white-space:nowrap; }
+.side { display:flex; align-items:center; gap:14px; font-size:12.5px; color:var(--mute); white-space:nowrap; }
 main { flex:1; min-height:0; position:relative; }
 iframe { position:absolute; inset:0; width:100%; height:100%; border:0; background:var(--bg); }
 iframe[hidden] { display:none; }
@@ -64,7 +64,7 @@ iframe[hidden] { display:none; }
     <button class="tab" role="tab" id="tab-cu" data-tab="cu" aria-selected="false" aria-controls="frame-cu" tabindex="-1" type="button"><span class="dot" aria-hidden="true"></span>Copper<span class="meta">24 names</span></button>
     <button class="tab" role="tab" id="tab-cm" data-tab="cm" aria-selected="false" aria-controls="frame-cm" tabindex="-1" type="button"><span class="dot" aria-hidden="true"></span>Critical minerals<span class="meta">5 names</span></button>
   </div>
-  <div class="side"><a href="/equities/" target="_blank" rel="noopener">Rankings ↗</a></div>
+  <div class="side"><a href="/scarce-inputs-thesis/" rel="noopener">Investment thesis ↗</a><a href="/equities/rankings/" rel="noopener">Rankings ↗</a></div>
 </header>
 <main>
   <iframe id="frame-pm" title="Precious metals research tracker" role="tabpanel" aria-labelledby="tab-pm"></iframe>

@@ -3,239 +3,102 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Metals Rankings · Chung Huynh</title>
+<title>Metals Research · Chung Huynh</title>
+<script>
+(function(){ var h = location.hash, k = h.slice(1).split('.')[0];
+  if(['pmd','pmp','cu','cm','hist','cal'].indexOf(k) !== -1) location.replace('/equities/rankings/' + h); })();
+</script>
 <link rel="icon" href="/assets/favicons/coin.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/favicons/coin-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/assets/favicons/coin-touch.png">
-<meta name="description" content="Chung Huynh's personal equity research on metals developers and producers — rankings and company trackers. Not investment advice.">
+<meta name="description" content="Chung Huynh's personal equity research on small mining companies — rankings and company cards for gold, silver, copper and critical minerals. Not investment advice.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* Layout: one fixed tab strip at the top; the active tracker fills the rest of the viewport in its own frame.
-   Single dark look by choice — both embedded trackers are dark-only, and the strip has to sit flush against them. */
-:root {
-  --bg:#111517; --panel:#181D20; --ink:#E8EBEC; --mute:#8D999E; --line:#262E32;
-  --pm:#D9A94A;   /* gold — precious metals tracker accent */
-  --cm:#A99BF0;
-  --cu:#4FB3A3;   /* teal — copper tracker accent */
-  --hs:#C2C9CC;   /* history — neutral, spans all groups */
-  --cl:#89A8DC;   /* calendar */
-  --font:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+/* Layout: one phone screen — a short header, then three equal doors (Rankings, Company cards, Investment thesis),
+   each with a one-line summary and three keywords. Dark only, to sit flush with the pages it leads into. */
+:root{
+  --bg:#111517; --panel:#181D20; --raised:#1E2427; --line:#262E32; --line2:#323B40;
+  --ink:#E8EBEC; --ink2:#C2C9CC; --mute:#8D999E;
+  --pm:#D9A94A; --cu:#4FB3A3; --cm:#A99BF0; --rk:#E3A35F; --cd:#89A8DC; --th:#C2C9CC; --focus:#89A8DC;
+  --display:"IBM Plex Sans Condensed","IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --sans:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   color-scheme:dark;
 }
-* { box-sizing:border-box; }
-html, body { height:100%; }
-body { margin:0; background:var(--bg); color:var(--ink); font-family:var(--font); font-size:16px; line-height:1.4; display:flex; flex-direction:column; overflow:hidden; }
-header.strip { flex:none; background:var(--panel); border-bottom:1px solid var(--line); padding:0 16px; display:flex; align-items:stretch; justify-content:space-between; gap:12px; }
-.tabs { display:flex; gap:4px; min-width:0; }
-.tab { font:inherit; font-size:15px; font-weight:500; color:var(--mute); background:none; border:none; border-bottom:3px solid transparent; padding:14px 14px 11px; cursor:pointer; display:flex; align-items:baseline; gap:10px; white-space:nowrap; letter-spacing:-0.005em; }
-.tab .meta { font-size:12px; font-weight:400; color:var(--mute); font-variant-numeric:tabular-nums; }
-.tab:hover { color:var(--ink); }
-.tab[aria-selected="true"] { color:var(--ink); font-weight:600; }
-.tab[data-tab^="pm"][aria-selected="true"] { border-bottom-color:var(--pm); }
-.tab[data-tab="cu"][aria-selected="true"] { border-bottom-color:var(--cu); }
-.tab[data-tab="cm"][aria-selected="true"] { border-bottom-color:var(--cm); }
-.tab[data-tab="hist"][aria-selected="true"] { border-bottom-color:var(--hs); }
-.tab[data-tab="cal"][aria-selected="true"] { border-bottom-color:var(--cl); }
-.tab.hist { margin-left:6px; border-left:1px solid var(--line); padding-left:16px; }
-.hico { width:13px; height:13px; align-self:center; flex:none; color:var(--mute); }
-.tab[aria-selected="true"] .hico { color:var(--ink); }
-.dot.pm { background:var(--pm); }
-.dot.cu { background:var(--cu); }
-.dot.cm { background:var(--cm); }
-.side a { color:var(--mute); text-decoration:none; border-bottom:1px solid var(--line); }
-.side a:hover { color:var(--ink); }
-.tabs { overflow-x:auto; scrollbar-width:none; }
-.tabs::-webkit-scrollbar { display:none; }
-.dot { width:9px; height:9px; border-radius:50%; align-self:center; flex:none; }
-.tab:focus-visible { outline:2px solid var(--ink); outline-offset:-4px; border-radius:4px; }
-.side { display:flex; align-items:center; font-size:12.5px; color:var(--mute); white-space:nowrap; }
-main { flex:1; min-height:0; position:relative; }
-iframe { position:absolute; inset:0; width:100%; height:100%; border:0; background:var(--bg); }
-iframe[hidden] { display:none; }
-@media (max-width:1499px) { .tab .meta { display:none; } }
-@media (max-width:1150px) { .tab .grp { display:none; } }
-.tabwrap { position:relative; display:flex; min-width:0; }
-.more { display:none; position:absolute; right:0; top:0; bottom:0; width:44px; border:0; padding:0 4px 0 18px; cursor:pointer; color:var(--ink); font:inherit; font-size:20px; line-height:1;
-  background:linear-gradient(to right, rgba(24,29,32,0), var(--panel) 45%); text-align:right; }
-.tabwrap.more-r .more { display:block; }
-@media (max-width:520px) {
-  .tab .grp { display:none; }
-  header.strip { padding:0 8px; }
-  .tab { padding:12px 10px 9px; font-size:14px; gap:7px; }
-  .tab .meta { display:none; }
-  .side { display:none; }
-}
-@media (prefers-reduced-motion: no-preference) { .tab { transition:color .12s, border-color .12s; } }
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+html{ background:var(--bg); -webkit-text-size-adjust:100%; }
+body{ margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.5; }
+.wrap{ min-height:100%; max-width:600px; margin:0 auto; padding-inline:18px; padding-block:clamp(22px,5vh,60px) 16px; display:flex; flex-direction:column; gap:16px; overflow:hidden; }
+.strata{ display:flex; height:5px; width:96px; border-radius:3px; overflow:hidden; }
+.strata i{ flex:1; } .strata i:nth-child(1){ background:var(--pm); } .strata i:nth-child(2){ background:var(--cu); } .strata i:nth-child(3){ background:var(--cm); }
+.eyebrow{ margin:14px 0 0; font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--mute); }
+h1{ font-family:var(--display); font-weight:600; font-size:clamp(28px,7.6vw,40px); line-height:1.08; letter-spacing:-.01em; margin:6px 0 0; text-wrap:balance; }
+.lede{ margin:8px 0 0; color:var(--ink2); font-size:15.5px; max-width:48ch; }
+.doors{ display:grid; gap:10px; }
+.door{ --c:var(--ink2); min-width:0; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2px 14px; align-items:center; text-decoration:none; color:var(--ink);
+  background:var(--panel); border:1px solid var(--line2); border-left:3px solid var(--c); border-radius:12px; padding:13px 16px 13px 15px; transition:background .15s, border-color .15s; }
+.door:hover{ background:var(--raised); border-color:var(--c); }
+.door:focus-visible{ outline:2px solid var(--focus); outline-offset:3px; }
+.door h2{ margin:0; font-size:18px; font-weight:600; letter-spacing:-.005em; }
+.door p{ margin:0; grid-column:1; font-size:14px; color:var(--ink2); line-height:1.45; }
+.door .k{ grid-column:1; margin-top:4px; font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; color:var(--c); font-weight:500; letter-spacing:.01em; }
+.door .k i{ font-style:normal; color:var(--mute); margin:0 4px; }
+.door .arr{ grid-row:1 / span 3; grid-column:2; font-size:20px; color:var(--mute); }
+.door:hover .arr{ color:var(--ink); }
+.door.rk{ --c:var(--rk); } .door.cd{ --c:var(--cd); } .door.th{ --c:var(--th); }
+.foot{ margin-top:auto; display:flex; flex-direction:column; gap:8px; border-top:1px solid var(--line); padding-top:12px; }
+.groups{ display:flex; flex-wrap:wrap; gap:6px 16px; font-size:13px; color:var(--mute); }
+.groups span{ display:inline-flex; align-items:center; gap:6px; }
+.groups i{ width:8px; height:8px; border-radius:50%; }
+.groups b{ color:var(--ink2); font-weight:500; font-variant-numeric:tabular-nums; }
+.small{ margin:0; font-size:12.5px; color:var(--mute); line-height:1.5; }
+@media (max-height:860px){ .wrap{ padding-block:16px 10px; gap:12px; } h1{ font-size:26px; } .lede{ font-size:14px; margin-top:6px; } .door{ padding:10px 13px 10px 12px; } .door p{ font-size:13.5px; } .door h2{ font-size:17px; } .small{ font-size:12px; } .foot{ padding-top:10px; gap:6px; } }
+@media (max-height:700px){ .eyebrow{ display:none; } .door p{ display:none; } .door .k{ margin-top:2px; } }
+.small a { color:inherit; text-decoration:none; border-bottom:1px solid var(--line2,#323B40); } .small a:hover { color:var(--ink,#E8EBEC); }
 </style>
 </head>
 <body>
-<header class="strip">
-  <div class="tabwrap"><div class="tabs" role="tablist" aria-label="Rankings">
-    <button class="tab" role="tab" id="tab-pmd" data-tab="pmd" aria-selected="true" aria-controls="frame-pmd" type="button"><span class="dot pm" aria-hidden="true"></span><span class="lbl"><span class="grp">Gold &amp; silver · </span>Developers</span><span class="meta">12 names</span></button>
-    <button class="tab" role="tab" id="tab-pmp" data-tab="pmp" aria-selected="false" aria-controls="frame-pmp" tabindex="-1" type="button"><span class="dot pm" aria-hidden="true"></span><span class="lbl"><span class="grp">Gold &amp; silver · </span>Producers</span><span class="meta">13 names</span></button>
-    <button class="tab" role="tab" id="tab-cu" data-tab="cu" aria-selected="false" aria-controls="frame-cu" tabindex="-1" type="button"><span class="dot cu" aria-hidden="true"></span>Copper<span class="meta">24 names</span></button>
-    <button class="tab" role="tab" id="tab-cm" data-tab="cm" aria-selected="false" aria-controls="frame-cm" tabindex="-1" type="button"><span class="dot cm" aria-hidden="true"></span>Critical minerals<span class="meta">5 names</span></button>
-    <button class="tab hist" role="tab" id="tab-hist" title="How ranks, odds and costs moved over time" data-tab="hist" aria-selected="false" aria-controls="frame-hist" tabindex="-1" type="button"><svg class="hico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13h12M3.5 10.5l3-3.5 2.5 2 3.5-4.5"/></svg>History</button>
-    <button class="tab" role="tab" id="tab-cal" title="Results, production releases and AGMs" data-tab="cal" aria-selected="false" aria-controls="frame-cal" tabindex="-1" type="button"><svg class="hico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="1.5"/><path d="M2 7h12M5 1.5v3M11 1.5v3"/></svg>Calendar</button>
-  </div><button class="more" type="button" aria-label="More tabs" tabindex="-1">›</button></div>
-  <div class="side"><a href="/equities/trackers/" target="_blank" rel="noopener">Research trackers ↗</a></div>
-</header>
-<main>
-  <iframe id="frame-pmd" title="Gold and silver developer rankings" role="tabpanel" aria-labelledby="tab-pmd"></iframe>
-  <iframe id="frame-pmp" title="Gold and silver producer rankings" role="tabpanel" aria-labelledby="tab-pmp" hidden></iframe>
-  <iframe id="frame-cu" title="Copper rankings" role="tabpanel" aria-labelledby="tab-cu" hidden></iframe>
-  <iframe id="frame-cm" title="Critical minerals rankings" role="tabpanel" aria-labelledby="tab-cm" hidden></iframe>
-  <iframe id="frame-hist" title="Rankings history" role="tabpanel" aria-labelledby="tab-hist" hidden></iframe>
-  <iframe id="frame-cal" title="Reporting calendar" role="tabpanel" aria-labelledby="tab-cal" hidden></iframe>
+<main class="wrap">
+  <header>
+    <div class="strata" aria-hidden="true"><i></i><i></i><i></i></div>
+    <p class="eyebrow">Metals research</p>
+    <h1>Hunting for multibaggers</h1>
+    <p class="lede">54 small mining companies, scored after every US trading day. A 3× in 3–5 years is only the first checkpoint. The real aim is 5–10× over a decade.</p>
+  </header>
+
+  <nav class="doors" aria-label="Where to go">
+    <a class="door rk" href="/equities/rankings/" data-goatcounter-click="equities/landing/rankings" data-goatcounter-title="Landing: rankings" rel="noopener">
+      <h2>Rankings</h2>
+      <p>Who looks best right now, and what changed since yesterday.</p>
+      <span class="k">Odds of a first 3×<i>·</i>Room for a 2nd<i>·</i>History</span>
+      <span class="arr" aria-hidden="true">↗</span>
+    </a>
+    <a class="door cd" href="/equities/trackers/" data-goatcounter-click="equities/landing/company-cards" data-goatcounter-title="Landing: company-cards" rel="noopener">
+      <h2>Company cards</h2>
+      <p>One card per company, with everything behind its score.</p>
+      <span class="k">Story<i>·</i>Numbers<i>·</i>Team<i>·</i>Financials<i>·</i>News</span>
+      <span class="arr" aria-hidden="true">↗</span>
+    </a>
+    <a class="door th" href="/scarce-inputs-thesis/" data-goatcounter-click="equities/landing/thesis" data-goatcounter-title="Landing: thesis" rel="noopener">
+      <h2>Investment thesis</h2>
+      <p>Why these metals, why small companies, and what would prove it wrong.</p>
+      <span class="k">Scarce inputs<i>·</i>5–10× over 10 years<i>·</i>Sell rules</span>
+      <span class="arr" aria-hidden="true">↗</span>
+    </a>
+  </nav>
+
+  <div class="foot">
+    <div class="groups" aria-label="Groups covered">
+      <span><i style="background:var(--pm)"></i>Gold &amp; silver <b>25</b></span>
+      <span><i style="background:var(--cu)"></i>Copper <b>24</b></span>
+      <span><i style="background:var(--cm)"></i>Critical minerals <b>5</b></span>
+    </div>
+    <p class="small">Personal research, not investment advice. Small mining companies can lose most of their value. · <a href="/">chungwin.com</a></p>
+  </div>
 </main>
-
-<script>
-(function(){
-  var KEYS = ['pmd','pmp','cu','cm','hist','cal'];
-  var SRC = { pmd:'pmd.html', pmp:'pmp.html', cu:'cu.html', cm:'cm.html', hist:'hist.html', cal:'cal.html' };
-  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
-  var frames = {}; KEYS.forEach(function(k){ frames[k] = document.getElementById('frame-' + k); });
-  var current = null;
-
-  // Hash forms: #pmd, #pmp, #cu, and #<tab>.<section> e.g. #cu.rank-b
-  function parseHash(){
-    var h = (location.hash || '').slice(1);
-    if(!h) return null;
-    var i = h.indexOf('.');
-    var key = i === -1 ? h : h.slice(0, i);
-    var slug = i === -1 ? '' : h.slice(i + 1);
-    if(KEYS.indexOf(key) === -1) return null;
-    return { key:key, slug:slug };
-  }
-  function remember(key){ try { localStorage.setItem('rankings-tab', key); } catch(e){} }
-  function recall(){ try { return localStorage.getItem('rankings-tab'); } catch(e){ return null; } }
-
-  function load(key, slug){
-    var f = frames[key];
-    var want = SRC[key] + (slug ? '#' + slug : '');
-    if(!f.getAttribute('src')){ f.setAttribute('src', want); return; }
-    if(slug){ try { f.contentWindow.location.hash = slug; } catch(e){ f.setAttribute('src', want); } }
-  }
-
-  function show(key, slug, fromHash){
-    if(KEYS.indexOf(key) === -1) key = 'pmd';
-    tabs.forEach(function(t){
-      var on = t.getAttribute('data-tab') === key;
-      t.setAttribute('aria-selected', on ? 'true' : 'false');
-      t.tabIndex = on ? 0 : -1;
-    });
-    KEYS.forEach(function(k){ frames[k].hidden = k !== key; });
-    load(key, slug);
-    current = key;
-    remember(key);
-    if(!fromHash){
-      var h = '#' + key + (slug ? '.' + slug : '');
-      if(location.hash !== h) history.replaceState(null, '', h);
-    }
-  }
-  // called from inside the frames ("Producer rankings" / "Developer rankings" links)
-  window.showRanking = function(key, slug){
-    // from a ranking tab, "History" opens the history on that tab's group
-    if(key === 'hist' && !slug && current && current !== 'hist') slug = current;
-    show(key, slug); var t = document.getElementById('tab-' + key); if(t) t.focus();
-  };
-
-  tabs.forEach(function(t, i){
-    t.addEventListener('click', function(){ show(t.getAttribute('data-tab')); });
-    t.addEventListener('keydown', function(e){
-      if(e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
-      e.preventDefault();
-      var n = (i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
-      var key = tabs[n].getAttribute('data-tab');
-      show(key); tabs[n].focus();
-    });
-  });
-
-  function syncHash(){
-    if(!current) return;
-    try {
-      var inner = frames[current].contentWindow.location.hash.slice(1);
-      var h = '#' + current + (inner ? '.' + inner : '');
-      if(location.hash !== h) history.replaceState(null, '', h);
-    } catch(e){}
-  }
-  KEYS.forEach(function(k){
-    frames[k].addEventListener('load', function(){
-      try { frames[k].contentWindow.addEventListener('hashchange', syncHash); } catch(e){}
-    });
-  });
-
-  window.addEventListener('hashchange', function(){ var p = parseHash(); if(p) show(p.key, p.slug, true); });
-
-  var strip = document.querySelector('.tabs'), wrap = document.querySelector('.tabwrap');
-  function hint(){ wrap.classList.toggle('more-r', strip.scrollWidth - strip.clientWidth - strip.scrollLeft > 4); }
-  strip.addEventListener('scroll', hint, {passive:true}); window.addEventListener('resize', hint);
-  document.querySelector('.more').addEventListener('click', function(){ strip.scrollBy({left: strip.clientWidth * 0.7, behavior:'smooth'}); });
-  tabs.forEach(function(t){ t.addEventListener('click', function(){ t.scrollIntoView({block:'nearest', inline:'nearest', behavior:'smooth'}); }); });
-
-  var start = parseHash();
-  if(start) show(start.key, start.slug, true);
-  else { var r = recall(); show(KEYS.indexOf(r) !== -1 ? r : 'pmd'); }
-  hint(); setTimeout(hint, 400);
-  var act = document.getElementById('tab-' + current); if(act && act.offsetLeft + act.offsetWidth > strip.clientWidth) strip.scrollLeft = act.offsetLeft - 40;
-})();
-</script>
 <script data-goatcounter="https://chungwin.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
-<script>
-(function(){
-  var AREA = 'rankings', q = [], seen = {};
-  function flush(){ var gc = window.goatcounter; if(!gc || !gc.count) return; while(q.length){ try { gc.count(q.shift()); } catch(e){} } }
-  function ev(path, title){
-    path = 'equities/' + path;
-    if(seen[path]) return; seen[path] = 1;
-    if(window.__eqTest) window.__eqTest.push({ path:path, title:title });
-    q.push({ path:path, title:title || path, event:true }); flush();
-  }
-  var gcs = document.querySelector('script[data-goatcounter]');
-  if(gcs) gcs.addEventListener('load', flush);
-  window.addEventListener('load', flush);
-
-  function txt(el){ return el ? (el.textContent || '').replace(/\s+/g, ' ').trim() : ''; }
-  function tab(){
-    var t = document.querySelector('.tab[aria-selected="true"]'); if(!t) return;
-    var lbl = t.cloneNode(true); Array.prototype.forEach.call(lbl.querySelectorAll('.meta'), function(m){ m.remove(); });
-    ev(AREA + '/' + t.getAttribute('data-tab'), (AREA === 'rankings' ? 'Rankings: ' : 'Trackers: ') + txt(lbl));
-  }
-  new MutationObserver(tab).observe(document.querySelector('.tabs'), { subtree:true, attributes:true, attributeFilter:['aria-selected'] });
-  tab();
-
-  function hook(f){
-    var d; try { d = f.contentDocument; } catch(e){ return; }
-    if(!d || d.__eqHooked || !d.body) return; d.__eqHooked = true;
-    function opened(el){
-      if(!el || !el.open) return;
-      if(el.classList.contains('card') && el.id) ev('company/' + el.id, el.getAttribute('data-name') || el.id);
-      else if(el.classList.contains('row') && el.getAttribute('data-k')){
-        var nm = txt(el.querySelector('.rm b, .rm strong, .rm .nm, .rm .co')) || el.getAttribute('data-k');
-        // use the tracker card's slug when the row links to it, so a company counts under one name
-        var a = el.querySelector('a[href*="/equities/trackers/#"]'), m = a && a.getAttribute('href').match(/#[a-z]+\.([a-z0-9-]+)/);
-        ev('company/' + (m ? m[1] : el.getAttribute('data-k')), nm);
-      }
-    }
-    d.addEventListener('toggle', function(e){ opened(e.target); }, true);
-    // a company reached by link (e.g. rankings -> tracker card) may open before this hook is attached
-    function fromHash(){ var h = ''; try { h = decodeURIComponent((f.contentWindow.location.hash || '').slice(1)); } catch(e){} if(h) opened(d.getElementById(h)); }
-    fromHash(); setTimeout(fromHash, 800);
-    d.addEventListener('click', function(e){
-      if(!e.isTrusted) return;   // the page clicks some tabs itself; count only real clicks
-      var b = e.target.closest && e.target.closest('.card .tabs button[data-tab]'); if(!b) return;
-      ev('card-tab/' + b.getAttribute('data-tab'), 'Card tab: ' + txt(b));
-    }, true);
-    var s = d.getElementById('q');
-    if(s) s.addEventListener('input', function(){ ev(AREA + '/search', (AREA === 'rankings' ? 'Rankings' : 'Trackers') + ': search used'); });
-  }
-  Array.prototype.forEach.call(document.querySelectorAll('main iframe'), function(f){
-    f.addEventListener('load', function(){ hook(f); }); hook(f);
-  });
-})();
-</script>
 </body>
 </html>
