@@ -28,6 +28,9 @@
     -webkit-font-smoothing:antialiased;
   }
   .wrap{max-width:640px; margin:0 auto; padding:2rem 1.1rem 4rem;}
+  .topbar{font-family:var(--mono); font-size:.72rem; color:var(--muted); margin:0 0 .9rem; display:flex; gap:1.2rem; flex-wrap:wrap;}
+  .topbar a{color:var(--muted); text-decoration:none; transition:color .15s ease;}
+  .topbar a:hover{color:var(--accent);}
 
   header.masthead{border-bottom:1px solid var(--border); padding-bottom:1.4rem; margin-bottom:1.6rem;}
   .privacy{max-width:640px; margin:2.2rem auto .5rem; text-align:center; font-size:.72rem; line-height:1.5; color:#6F746E;} .privacy a{color:inherit;}
@@ -221,6 +224,8 @@
 <body>
 <nav class="sidenav" id="sidenav" aria-label="Contents"></nav>
 <div class="wrap">
+
+  <p class="topbar"><a href="/">← chungwin.com</a><a href="./">← back to the trainer</a></p>
   <div class="mobbar" id="mobbar"><button id="mb-open">Contents</button><span class="cur" id="mb-cur"></span><button id="mb-top" title="Back to top">&uarr;</button></div>
   <div class="drawer" id="drawer" aria-label="Contents"></div>
 
@@ -2848,12 +2853,12 @@ POSTFLOP['ip-vs-cbet-mw']={
     const side=document.getElementById('sidenav');
     side.innerHTML='<p class="sn-brand">Sharkline Poker</p><a class="sn-title" href="#top">The Playbook</a><p class="sn-sub">NL25 6-max &middot; online</p>'+groups.map(function(g,i){
       return '<div class="sn-grp" data-g="'+i+'"><a class="sn-lab" href="'+(g.part||g.links[0].href)+'">'+g.label+'</a><div class="sn-links">'+g.links.map(function(l){ return '<a href="'+l.href+'">'+l.text+'</a>'; }).join('')+'</div></div>';
-    }).join('')+'<div class="sn-foot"><a href="trainer.html">Open the trainer &rarr;</a></div>';
+    }).join('')+'<div class="sn-foot"><a href="./">Open the trainer &rarr;</a></div>';
     // drawer
     const drawer=document.getElementById('drawer');
     drawer.innerHTML='<div class="dr-head"><p>Sharkline Poker &middot; Contents</p><button id="dr-close">Close</button></div>'+groups.map(function(g,i){
       return '<details data-g="'+i+'"><summary>'+g.label+'</summary><div class="dr-links">'+(g.part?'<a href="'+g.part+'">Part overview</a>':'')+g.links.map(function(l){ return '<a href="'+l.href+'">'+l.text+'</a>'; }).join('')+'</div></details>';
-    }).join('')+'<p style="margin:1rem 0 0;"><a href="trainer.html" style="color:var(--accent);">Open the trainer &rarr;</a></p>';
+    }).join('')+'<p style="margin:1rem 0 0;"><a href="./" style="color:var(--accent);">Open the trainer &rarr;</a></p>';
     const open=function(){ drawer.classList.add('open'); document.body.style.overflow='hidden'; const cur=drawer.querySelector('details[data-g="'+activeG+'"]'); if(cur) cur.open=true; };
     const close=function(){ drawer.classList.remove('open'); document.body.style.overflow=''; };
     document.getElementById('mb-open').addEventListener('click',open);
@@ -2882,7 +2887,7 @@ POSTFLOP['ip-vs-cbet-mw']={
     window.addEventListener('resize',spy); spy();
     // usage counts: arriving on a specific board or chart (the trainer's verdict links), and going to the trainer
     if(location.hash.length>1) SL.once('book/arrived-at/'+location.hash.slice(1), 'Arrived at #'+location.hash.slice(1));
-    document.addEventListener('click',function(e){ const a=e.target.closest('a[href="trainer.html"]'); if(a) SL.ev('book/open-trainer','Went from the Playbook to the trainer'); });
+    document.addEventListener('click',function(e){ const a=e.target.closest('a[href="./"]'); if(a) SL.ev('book/open-trainer','Went from the Playbook to the trainer'); });
   })();
 })();
 </script>

@@ -163,6 +163,9 @@
   .overlay .v-note{margin-top:.5rem; font-size:.76rem; color:#8F948E; font-style:italic;}
   .overlay .v-lesson{margin-top:.55rem; font-size:.76rem; line-height:1.45; color:#A9AEA7; text-align:left;}
   .overlay .v-link{display:inline-block; margin-top:.55rem; font-size:.78rem; color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(93,202,165,.4);}
+  .privacy{max-width:640px; margin:2.2rem auto .5rem; text-align:center; font-size:.72rem; line-height:1.5; color:#6F746E;} .privacy a{color:inherit;}
+  .overlay .v-report{display:block; margin-top:.45rem; font-size:.7rem; color:#7D837C; text-decoration:none;}
+  @media (hover:hover){ .overlay .v-report:hover{color:#B9BFB8; text-decoration:underline;} }
   @media (prefers-reduced-motion:no-preference){ .overlay{animation:pop .16s ease-out;} @keyframes pop{from{opacity:0; transform:translate(-50%,-46%) scale(.96);} to{opacity:1; transform:translate(-50%,-50%) scale(1);} } }
   .after{display:flex; gap:.45rem; align-items:stretch;}
   .next{font:inherit; font-size:1rem; font-weight:600; padding:.7rem 1.2rem; border-radius:10px; border:none; background:#5DCAA5; color:#0E1012; cursor:pointer; flex:1; min-height:56px;}
@@ -522,8 +525,49 @@
     </div>
     <div class="refcard-mini" aria-hidden="true"><div class="grid" id="refgrid"></div></div>
   </a>
-
+  <p class="privacy" id="privacy" hidden>Sharkline Poker counts visits and anonymous in-app events (hands played, spots missed, sections read) with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>. No cookies, no accounts, nothing that identifies you.</p>
 </div>
+<script>
+/* inlined from src/analytics.js — edit that file, not this block */
+/* analytics.js — anonymous, cookie-free usage counts for Sharkline Poker, via GoatCounter.
+   Inlined by build.py into both pages. Two settings below; while GC_CODE is empty nothing is loaded
+   or sent, and while REPORT_EMAIL is empty the "report a wrong verdict" link is hidden.
+   Privacy: no cookies, no IDs, nothing read from the device for analytics — every count is about
+   the current visit only (in-memory counters). GoatCounter counts paths; events are paths like
+   "trainer/start". It skips file:// and localhost on its own, so local testing never counts. */
+const SL_CONFIG = {
+  GC_CODE: 'chungwin',          // your GoatCounter site code, e.g. 'sharklinepoker' → https://sharklinepoker.goatcounter.com
+  REPORT_EMAIL: 'mail@chungwin.com',     // where "Think this is wrong?" reports go, e.g. 'sharklinepoker@gmail.com'
+  SAMPLE: 0.2           // share of individual decisions counted per spot (percentages stay right, totals ×5)
+};
+const SL = (function(){
+  const q=[]; let ready=false; const once=new Set();
+  const on = !!SL_CONFIG.GC_CODE;
+  function flush(){ if(!window.goatcounter||!window.goatcounter.count) return; ready=true; while(q.length){ try{ window.goatcounter.count(q.shift()); }catch(e){} } }
+  if(on){
+    window.goatcounter = window.goatcounter || {};
+    const s=document.createElement('script'); s.async=true; s.src='https://gc.zgo.at/count.js';
+    s.dataset.goatcounter='https://'+SL_CONFIG.GC_CODE+'.goatcounter.com/count';
+    s.onload=flush; document.head.appendChild(s);
+  }
+  // one event: a path ("trainer/start") and an optional readable title
+  function ev(path, title){
+    if(window.__slTest) window.__slTest.push(path);          // headless tests read the stream here
+    if(!on) return;
+    const o={path:path, title:title||path, event:true};
+    if(ready) { try{ window.goatcounter.count(o); }catch(e){} } else q.push(o);
+  }
+  return {
+    on: on,
+    ev: ev,
+    once: function(path,title){ if(once.has(path)) return; once.add(path); ev(path,title); },   // at most once per visit
+    sampled: function(path,title){ if(Math.random()<SL_CONFIG.SAMPLE) ev(path,title); },
+    reportEmail: SL_CONFIG.REPORT_EMAIL
+  };
+})();
+
+</script>
+<script>if(typeof SL!=='undefined'&&SL.on){ var pv=document.getElementById('privacy'); if(pv) pv.hidden=false; }</script>
 <script>
 /* inlined from src/poker-data.js — edit that file, not this block */
 /* poker-data.js — the single source of truth for the NL25 6-max library.
@@ -2247,9 +2291,33 @@ Object.keys(POSTFLOP).forEach(function(k){ POSTFLOP[k].id=k; });
     if(sizeWrong) S.sizeMiss++;
     return m;
   }
+  // ---------- usage counts (analytics.js) — this visit only, nothing read from the device ----------
+  const SESS={dec:0, hits:0};
+  const MODE_NAME={pre:'preflop', both:'preflop-flop', flop:'flop-only'};
+  const DEC_MILESTONES=[10,25,50,100,200,500], STAT_MILESTONES=[25,50,100,200];
+  function trackDecision(kind, id, detail, result, title){
+    SESS.dec++; if(result==='right') SESS.hits++;
+    if(SESS.dec===1){ SL.once('trainer/4-first-decision','First decision made'); trackDrill(); }
+    if(DEC_MILESTONES.includes(SESS.dec)) SL.once('trainer/decisions-'+SESS.dec, SESS.dec+' decisions in one visit');
+    if(STAT_MILESTONES.includes(SESS.dec)){ const acc=Math.floor(100*SESS.hits/SESS.dec/10)*10; const b=acc>=100?'100%':acc+'-'+(acc+9)+'%';
+      SL.once('stats/after-'+SESS.dec+'/accuracy-'+b, 'Accuracy '+b+' after '+SESS.dec+' decisions'); }
+    SL.sampled('spot/'+kind+'/'+id+(detail?'/'+detail:'')+'/'+result, title+' — '+result);
+  }
+  function trackDrill(){ SL.once('drill/'+MODE_NAME[S.mode]+'/'+currentPreset(), 'Drill: '+MODE_NAME[S.mode]+' · '+((presetList().find(p=>p.id===currentPreset())||{}).label||'Custom')); }
+  // "Think this is wrong?" — a pre-filled email with the hand, for the player to add one sentence
+  const APP_VERSION=(document.querySelector('.gate-upd')||{}).textContent||'';
+  function reportLink(lines){
+    if(!SL.reportEmail) return '';
+    const body=lines.join('\n')+'\n\nWhy I disagree:\n\n\n— '+APP_VERSION;
+    const href='mailto:'+SL.reportEmail+'?subject='+encodeURIComponent('Sharkline Poker: verdict report')+'&body='+encodeURIComponent(body);
+    return '<a class="v-report" href="'+href+'">Think this is wrong? Tell us.</a>';
+  }
+  const cardTxt=c=>(c[0]==='T'?'10':c[0])+SUIT_SYM[SUIT_IDX[c[1]]][0];
+
   function celebrate(m){
     if(!m) return;
     const box=$('tablebox'); box.querySelectorAll('.reward').forEach(r=>r.remove());
+    SL.ev('reward/'+(m.best&&!m.ladder?'new-best':'streak-'+m.n), m.best&&!m.ladder?'New best streak':'Streak '+m.n);
     const r=document.createElement('div'); r.className='reward'+(m.best?' best':'');
     const main=m.best&&!m.ladder?'New best':m.n+' in a row', sub=m.best&&!m.ladder?m.n+' in a row':(m.best?'new best':'streak');
     r.innerHTML='<div class="rstack"><span class="chip c25"></span><span class="chip c5"></span><span class="chip c10"></span><span class="chip c1"></span></div><div class="rbadge"><b>'+main+'</b><small>'+sub+'</small></div>';
@@ -2305,7 +2373,9 @@ Object.keys(POSTFLOP).forEach(function(k){ POSTFLOP[k].id=k; });
       flow=flowFor(chart, v, Math.random); S.cur.flow=flow; S.cur.choice=v; S.cur.size=size;
       if(flow.end) extra='<div class="v-note">'+flow.end+' Hand over.</div>';
     }
-    $('overlay').innerHTML=overlayHTML(hit,headline,yourWord,word,correct,v,whyText?'<span class="v-cap">'+(sizeWrong?'Why this size':'Why')+'</span>'+whyText:'')+extra+preLink;
+    const repPre=reportLink(['Spot: '+sp.label+(pr?' · read: '+pr.tag:''), 'Hand: '+(S.cur.hole?S.cur.hole.map(cardTxt).join(' ')+' ('+hand+')':hand), 'Situation: '+$('spot').textContent.replace(/ ?What's the right play\?/,''), 'I chose: '+yourWord, 'Trainer said: '+word]);
+    $('overlay').innerHTML=overlayHTML(hit,headline,yourWord,word,correct,v,whyText?'<span class="v-cap">'+(sizeWrong?'Why this size':'Why')+'</span>'+whyText:'')+extra+preLink+repPre;
+    trackDecision('pre', chart, prof||'', hit?'right':(sizeWrong?'wrong-size':v+'-not-'+correct), sp.label);
     $('overlay').classList.remove('hidden');
     $('verdict').textContent=(hit?'Correct. '+word+'. ':headline+'. You chose '+yourWord+'. The right move is '+word+'. ')+whyText; $('verdict').classList.remove('hidden');
     $('answers').classList.add('hidden'); $('after').classList.remove('hidden');
@@ -2453,7 +2523,9 @@ Object.keys(POSTFLOP).forEach(function(k){ POSTFLOP[k].id=k; });
     const boardLine='<div class="v-board">'+miniCards(deal.board)+'<span class="cls">'+HAND_CLASSES[deal.cls].label+'</span></div>';
     const link='<a class="v-link" href="reference.html#'+r.anchor+'" target="_blank" rel="noopener">Read this board in the Playbook ↗</a>';
     const lesson=r.lesson?'<div class="v-lesson"><span class="v-cap">This board</span>'+r.lesson+'</div>':'';
-    $('overlay').innerHTML=overlayHTML(r.hit,headline,yourWord,word,r.correct,picked.key,whyHTML,boardLine)+lesson+link;
+    const repFlop=reportLink(['Spot: '+sit.label+(sit.sizes[deal.vsize]&&sit.sizes[deal.vsize].label?' · '+sit.sizes[deal.vsize].label:''), 'Board: '+deal.board.map(cardTxt).join(' ')+' ('+BOARD_CLASSES[deal.bc].label+')', 'Hand: '+deal.hole.map(cardTxt).join(' ')+' ('+HAND_CLASSES[deal.cls].label+')', 'Situation: '+$('spot').textContent.replace(/ ?What's the right play\?/,''), 'I chose: '+yourWord, 'Trainer said: '+word]);
+    $('overlay').innerHTML=overlayHTML(r.hit,headline,yourWord,word,r.correct,picked.key,whyHTML,boardLine)+lesson+link+repFlop;
+    trackDecision('flop', sit.id, deal.bc+'/'+deal.cls, r.hit?'right':(r.sizeWrong?'wrong-size':picked.key+'-not-'+r.correct), sit.label+' · '+BOARD_CLASSES[deal.bc].label+' · '+HAND_CLASSES[deal.cls].label);
     $('overlay').classList.remove('hidden');
     $('verdict').textContent=(r.hit?'Correct. '+word+'. ':headline+'. You chose '+yourWord+'. The right move is '+word+'. ')+r.why; $('verdict').classList.remove('hidden');
     $('answers').classList.add('hidden'); $('after').classList.remove('hidden');
@@ -2542,7 +2614,7 @@ Object.keys(POSTFLOP).forEach(function(k){ POSTFLOP[k].id=k; });
     $('misses').innerHTML=html;
     $('misses').querySelectorAll('[data-miss]').forEach(el=>{ el.addEventListener('click',()=>{ const k=el.dataset.key.split('|');
       S.force = el.dataset.miss==='pre' ? {kind:'pre', chart:k[0], hand:k[1], prof:k[2]||null} : {kind:'flop', sit:k[0], bc:k[1], cls:k[2]};
-      S.retrain=false; syncMissesBtn(); showHand(); window.scrollTo({top:0, behavior:'smooth'}); }); });
+      S.retrain=false; syncMissesBtn(); showHand(); window.scrollTo({top:0, behavior:'smooth'}); SL.ev('tool/replay-miss','Replayed a missed hand'); }); });
     const ac=activeCharts(), as=activeSits();
     const pname=(presetList().find(p=>p.id===currentPreset())||{}).label||'Custom';
     $('pool-note').textContent = ({pre:'Preflop',both:'Preflop + flop',flop:'Flop only'})[S.mode]+' · '+pname+' · '+(S.mode==='flop'?as.length+' situation'+(as.length===1?'':'s'):ac.length+' spot'+(ac.length===1?'':'s'))+(S.diff!=='all'?' · '+({lean:'leaning to edges',edge:'edges only'})[S.diff]:'');
@@ -2587,6 +2659,7 @@ Object.keys(POSTFLOP).forEach(function(k){ POSTFLOP[k].id=k; });
   function restart(){
     const sig=drillSigOf();
     if(drillSig!==null && sig!==drillSig){ S.streak=0; S.bestPassed=false; }   // a different drill is a fresh table
+    if(drillSig!==null && sig!==drillSig) trackDrill();
     drillSig=sig; S.retrain=false; syncMissesBtn(); save(); renderStats(); renderPresets(); showHand();
   }
   document.querySelectorAll('.pick[data-chart]').forEach(b=>{
@@ -2609,29 +2682,32 @@ Object.keys(POSTFLOP).forEach(function(k){ POSTFLOP[k].id=k; });
   $('btn-misses').addEventListener('click',()=>{
     if(S.retrain){ S.retrain=false; syncMissesBtn(); showHand(); return; }
     const have = S.mode==='flop' ? Object.keys(S.fmisses).some(k=>activeSits().includes(k.split('|')[0])) : Object.keys(S.misses).some(k=>activeCharts().includes(k.split('|')[0]));
-    if(have){ S.retrain=true; syncMissesBtn(); showHand(); }
+    if(have){ S.retrain=true; syncMissesBtn(); showHand(); SL.ev('tool/retrain-misses','Retrain misses'); }
   });
   function nextStep(){ if(!S.answered) return; if(S.street==='pre' && S.cur.next==='stage2'){ resetUI(); toStage2(); } else if(S.street==='pre' && S.mode==='both' && S.cur.flow && !S.cur.flow.end){ resetUI(); toFlop(); } else showHand(); }
   $('btn-next').addEventListener('click',nextStep);
-  $('btn-alt').addEventListener('click',()=>{ if(!S.answered||!S.alt) return; const a=S.alt; resetUI();
+  $('btn-alt').addEventListener('click',()=>{ if(!S.answered||!S.alt) return; const a=S.alt; resetUI(); SL.ev('tool/play-on-anyway','Played on with the right move');
     if(a.kind==='stage2'){ S.cur.openSize=a.size; S.cur.scene.heroBet=a.size; S.cur.next='stage2'; toStage2(); }
     else { S.cur.choice=a.choice; S.cur.size=a.size; S.cur.flow=a.flow; toFlop(); } });
   $('btn-chart').addEventListener('click',()=>{
     const r=$('reveal'); const open=r.classList.toggle('hidden'); const flop=S.street==='flop';
     $('btn-chart').innerHTML=(open?(flop?'Show lists':'Show chart'):(flop?'Hide lists':'Hide chart'))+'<span class="kcap" aria-hidden="true">C</span>';
     $('reveal-pre').classList.toggle('hidden',flop); $('reveal-flop').classList.toggle('hidden',!flop);
-    if(!open){ if(flop) renderLists(); else renderChart(); }
+    if(!open){ if(flop) renderLists(); else renderChart(); SL.ev(flop?'tool/show-lists':'tool/show-chart', flop?'Opened the flop lists':'Opened the preflop chart'); }
   });
   $('btn-reset').addEventListener('click',()=>{ S.n=0;S.hits=0;S.streak=0;S.best=0;S.sizeMiss=0;S.misses={};S.fmisses={}; Object.keys(S.per).forEach(k=>S.per[k]={n:0,hits:0}); Object.keys(S.fper).forEach(k=>S.fper[k]={n:0,hits:0}); restart(); });
   // gate
   const gate=$('gate'), panel=$('panel'), panelHome=panel.parentNode, panelNext=panel.nextSibling;
-  function toStep2(){ document.querySelector('.gate-card').classList.add('step2'); $('gate-step1').classList.add('hidden'); $('gate-intro').classList.add('hidden'); $('gate-title').textContent='What do you want to drill?'; $('gate-step2').classList.remove('hidden'); panel.setAttribute('open',''); $('gate-settings').appendChild(panel); gate.scrollTop=0; }
-  function openTable(){ panelHome.insertBefore(panel,panelNext); if(phone&&phone.matches) panel.removeAttribute('open'); gate.classList.add('hidden'); showHand(); }
+  function toStep2(){ SL.once('trainer/2-settings','Opened the drill settings'); document.querySelector('.gate-card').classList.add('step2'); $('gate-step1').classList.add('hidden'); $('gate-intro').classList.add('hidden'); $('gate-title').textContent='What do you want to drill?'; $('gate-step2').classList.remove('hidden'); panel.setAttribute('open',''); $('gate-settings').appendChild(panel); gate.scrollTop=0; }
+  function openTable(){ SL.once('trainer/3-dealt','First hand dealt'); trackDrill(); panelHome.insertBefore(panel,panelNext); if(phone&&phone.matches) panel.removeAttribute('open'); gate.classList.add('hidden'); showHand(); }
   $('btn-continue').addEventListener('click',toStep2);
+  $('overlay').addEventListener('click',e=>{ const a=e.target.closest('a'); if(!a) return; if(a.classList.contains('v-report')) SL.ev('tool/report-wrong-verdict','Reported a verdict'); else if(a.classList.contains('v-link')) SL.ev('tool/playbook-from-verdict','Opened the Playbook from a verdict'); });
+  document.querySelectorAll('.gate-card-btn.book').forEach(a=>a.addEventListener('click',()=>SL.ev('trainer/2-playbook-from-start','Chose the Playbook on the start screen')));
   $('btn-start').addEventListener('click',openTable);
   $('btn-skip').addEventListener('click',()=>{ try{ localStorage.setItem('range-trainer-gate','off'); }catch(e){} openTable(); });
   let gateOff=false; try{ gateOff=localStorage.getItem('range-trainer-gate')==='off'; }catch(e){}
   if(gateOff) gate.classList.add('hidden');
+  SL.once('trainer/1-open','Opened the trainer');
   document.addEventListener('keydown',e=>{
     if(!gate.classList.contains('hidden')){ if(e.key==='Enter'){ e.preventDefault(); $('gate-step2').classList.contains('hidden')?toStep2():openTable(); } return; }
     if(e.target.tagName==='INPUT'||e.target.tagName==='SUMMARY') return;
