@@ -28,11 +28,9 @@
     -webkit-font-smoothing:antialiased;
   }
   .wrap{max-width:640px; margin:0 auto; padding:2rem 1.1rem 4rem;}
-  .topbar{font-family:var(--mono); font-size:.72rem; color:var(--muted); margin:0 0 .9rem; display:flex; gap:1.2rem; flex-wrap:wrap;}
-  .topbar a{color:var(--muted); text-decoration:none; transition:color .15s ease;}
-  .topbar a:hover{color:var(--accent);}
 
   header.masthead{border-bottom:1px solid var(--border); padding-bottom:1.4rem; margin-bottom:1.6rem;}
+  .privacy{max-width:640px; margin:2.2rem auto .5rem; text-align:center; font-size:.72rem; line-height:1.5; color:#6F746E;} .privacy a{color:inherit;}
   .suits{font-family:var(--disp); font-size:1rem; letter-spacing:.5em; color:var(--accent); margin:0 0 .5rem;}
   .brand{font-family:var(--disp); font-weight:600; font-size:1rem; margin:0 0 .2rem; color:var(--text);}
   .brand span{font-family:var(--mono); font-weight:400; font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-left:.5rem;}
@@ -223,8 +221,6 @@
 <body>
 <nav class="sidenav" id="sidenav" aria-label="Contents"></nav>
 <div class="wrap">
-
-  <p class="topbar"><a href="/">← chungwin.com</a><a href="./">← back to the trainer</a></p>
   <div class="mobbar" id="mobbar"><button id="mb-open">Contents</button><span class="cur" id="mb-cur"></span><button id="mb-top" title="Back to top">&uarr;</button></div>
   <div class="drawer" id="drawer" aria-label="Contents"></div>
 
@@ -1555,9 +1551,50 @@
     </div>
     <a class="toplink" href="#top">↑ back to index</a>
   </section>
-
+  <p class="privacy" id="privacy" hidden>Sharkline Poker counts visits and anonymous in-app events (hands played, spots missed, sections read) with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>. No cookies, no accounts, nothing that identifies you.</p>
 </div>
 
+<script>
+/* inlined from src/analytics.js — edit that file, not this block */
+/* analytics.js — anonymous, cookie-free usage counts for Sharkline Poker, via GoatCounter.
+   Inlined by build.py into both pages. Two settings below; while GC_CODE is empty nothing is loaded
+   or sent, and while REPORT_EMAIL is empty the "report a wrong verdict" link is hidden.
+   Privacy: no cookies, no IDs, nothing read from the device for analytics — every count is about
+   the current visit only (in-memory counters). GoatCounter counts paths; events are paths like
+   "trainer/start". It skips file:// and localhost on its own, so local testing never counts. */
+const SL_CONFIG = {
+  GC_CODE: 'chungwin',          // your GoatCounter site code, e.g. 'sharklinepoker' → https://sharklinepoker.goatcounter.com
+  REPORT_EMAIL: 'mail@chungwin.com',     // where "Think this is wrong?" reports go, e.g. 'sharklinepoker@gmail.com'
+  SAMPLE: 0.2           // share of individual decisions counted per spot (percentages stay right, totals ×5)
+};
+const SL = (function(){
+  const q=[]; let ready=false; const once=new Set();
+  const on = !!SL_CONFIG.GC_CODE;
+  function flush(){ if(!window.goatcounter||!window.goatcounter.count) return; ready=true; while(q.length){ try{ window.goatcounter.count(q.shift()); }catch(e){} } }
+  if(on){
+    window.goatcounter = window.goatcounter || {};
+    const s=document.createElement('script'); s.async=true; s.src='https://gc.zgo.at/count.js';
+    s.dataset.goatcounter='https://'+SL_CONFIG.GC_CODE+'.goatcounter.com/count';
+    s.onload=flush; document.head.appendChild(s);
+  }
+  // one event: a path ("trainer/start") and an optional readable title
+  function ev(path, title){
+    if(window.__slTest) window.__slTest.push(path);          // headless tests read the stream here
+    if(!on) return;
+    const o={path:path, title:title||path, event:true};
+    if(ready) { try{ window.goatcounter.count(o); }catch(e){} } else q.push(o);
+  }
+  return {
+    on: on,
+    ev: ev,
+    once: function(path,title){ if(once.has(path)) return; once.add(path); ev(path,title); },   // at most once per visit
+    sampled: function(path,title){ if(Math.random()<SL_CONFIG.SAMPLE) ev(path,title); },
+    reportEmail: SL_CONFIG.REPORT_EMAIL
+  };
+})();
+
+</script>
+<script>if(typeof SL!=='undefined'&&SL.on){ var pv=document.getElementById('privacy'); if(pv) pv.hidden=false; }</script>
 <script>
 /* inlined from src/poker-data.js — edit that file, not this block */
 /* poker-data.js — the single source of truth for the NL25 6-max library.
@@ -2811,12 +2848,12 @@ POSTFLOP['ip-vs-cbet-mw']={
     const side=document.getElementById('sidenav');
     side.innerHTML='<p class="sn-brand">Sharkline Poker</p><a class="sn-title" href="#top">The Playbook</a><p class="sn-sub">NL25 6-max &middot; online</p>'+groups.map(function(g,i){
       return '<div class="sn-grp" data-g="'+i+'"><a class="sn-lab" href="'+(g.part||g.links[0].href)+'">'+g.label+'</a><div class="sn-links">'+g.links.map(function(l){ return '<a href="'+l.href+'">'+l.text+'</a>'; }).join('')+'</div></div>';
-    }).join('')+'<div class="sn-foot"><a href="./">Open the trainer &rarr;</a></div>';
+    }).join('')+'<div class="sn-foot"><a href="trainer.html">Open the trainer &rarr;</a></div>';
     // drawer
     const drawer=document.getElementById('drawer');
     drawer.innerHTML='<div class="dr-head"><p>Sharkline Poker &middot; Contents</p><button id="dr-close">Close</button></div>'+groups.map(function(g,i){
       return '<details data-g="'+i+'"><summary>'+g.label+'</summary><div class="dr-links">'+(g.part?'<a href="'+g.part+'">Part overview</a>':'')+g.links.map(function(l){ return '<a href="'+l.href+'">'+l.text+'</a>'; }).join('')+'</div></details>';
-    }).join('')+'<p style="margin:1rem 0 0;"><a href="./" style="color:var(--accent);">Open the trainer &rarr;</a></p>';
+    }).join('')+'<p style="margin:1rem 0 0;"><a href="trainer.html" style="color:var(--accent);">Open the trainer &rarr;</a></p>';
     const open=function(){ drawer.classList.add('open'); document.body.style.overflow='hidden'; const cur=drawer.querySelector('details[data-g="'+activeG+'"]'); if(cur) cur.open=true; };
     const close=function(){ drawer.classList.remove('open'); document.body.style.overflow=''; };
     document.getElementById('mb-open').addEventListener('click',open);
@@ -2828,11 +2865,13 @@ POSTFLOP['ip-vs-cbet-mw']={
     // scroll-spy: the last link target above the reading line is the current one
     const targets=[]; groups.forEach(function(g,gi){ if(g.part){ const pe=document.querySelector(g.part); if(pe) targets.push({el:pe, href:null, g:gi, text:''}); } g.links.forEach(function(l){ const el=document.querySelector(l.href); if(el) targets.push({el:el, href:l.href, g:gi, text:l.text}); }); });
     targets.sort(function(a,b){ return (a.el.compareDocumentPosition(b.el)&Node.DOCUMENT_POSITION_FOLLOWING)?-1:1; });
-    let activeG=0, activeHref=null, ticking=false;
+    let activeG=0, activeHref=null, ticking=false, readTimer=null;
     function spy(){
       ticking=false; const line=window.scrollY+110; let cur=null;
       for(const t of targets){ if(t.el.offsetParent===null) continue; const top=t.el.getBoundingClientRect().top+window.scrollY; if(top<=line) cur=t; else break; }
       const key=cur?(cur.href||('g'+cur.g)):null; if(key===activeHref) return; activeHref=key; activeG=cur?cur.g:0; const href=cur?cur.href:null;
+      // usage count: a part counts as read once someone has stayed in it for 8 seconds
+      clearTimeout(readTimer); if(cur){ const gi=cur.g; readTimer=setTimeout(function(){ if(activeG!==gi) return; const lab=groups[gi].label; SL.once('book/read/'+lab.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''), 'Read: '+lab); },8000); }
       side.querySelectorAll('.sn-links a').forEach(function(a){ a.classList.toggle('active',a.getAttribute('href')===href); });
       side.querySelectorAll('.sn-grp').forEach(function(g){ g.classList.toggle('open',g.dataset.g===String(activeG)); });
       drawer.querySelectorAll('.dr-links a').forEach(function(a){ a.classList.toggle('active',a.getAttribute('href')===href); });
@@ -2841,6 +2880,9 @@ POSTFLOP['ip-vs-cbet-mw']={
     }
     window.addEventListener('scroll',function(){ if(!ticking){ ticking=true; requestAnimationFrame(spy); } },{passive:true});
     window.addEventListener('resize',spy); spy();
+    // usage counts: arriving on a specific board or chart (the trainer's verdict links), and going to the trainer
+    if(location.hash.length>1) SL.once('book/arrived-at/'+location.hash.slice(1), 'Arrived at #'+location.hash.slice(1));
+    document.addEventListener('click',function(e){ const a=e.target.closest('a[href="trainer.html"]'); if(a) SL.ev('book/open-trainer','Went from the Playbook to the trainer'); });
   })();
 })();
 </script>
