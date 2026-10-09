@@ -138,6 +138,9 @@ def rebuild_hub(html: str, title: str, area: str) -> str:
         '<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
         f"<title>{title} · Chung Huynh</title>\n"
+        '<link rel="icon" href="/assets/favicons/coin.svg" type="image/svg+xml">\n'
+        '<link rel="icon" href="/assets/favicons/coin-32.png" type="image/png" sizes="32x32">\n'
+        '<link rel="apple-touch-icon" href="/assets/favicons/coin-touch.png">\n'
         '<meta name="description" content="Chung Huynh\'s personal equity research on metals developers and producers — rankings and company trackers. Not investment advice.">\n'
         f"{head_part.strip()}\n</style>\n</head>\n<body>\n"
         f"{rest.strip()}\n{GOATCOUNTER}\n{ANALYTICS.replace('{area}', area)}\n</body>\n</html>\n"
