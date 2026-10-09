@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Precious Metals Producer Rankings — Compounder vs Leverage</title>
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* Layout: sticky section bar · latest update · table A then table B (each self-explaining) · two ranked lists side by side · method.
+   Single dark look by choice: it sits flush inside the dark tab strip and matches the trackers. */
+:root{
+  --bg:#111517; --panel:#181D20; --raised:#1E2427; --sunk:#0E1214;
+  --ink:#E8EBEC; --ink2:#C2C9CC; --mute:#8D999E; --line:#262E32; --line2:#323B40;
+  --a:#89A8DC; --a-soft:rgba(137,168,220,.11); --b:#E6A867; --b-soft:rgba(230,168,103,.11);
+  --good:#72C9A9; --warn:#E3A35F; --bad:#E78C7D;
+  --tab:#D9A94A;
+  --sans:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{ box-sizing:border-box; }
+html{ background:var(--bg); -webkit-text-size-adjust:100%; scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px); }
+body{ margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:15px; line-height:1.55; }
+a{ color:var(--tab); text-underline-offset:2px; }
+button{ font:inherit; color:inherit; }
+:focus-visible{ outline:2px solid var(--tab); outline-offset:2px; border-radius:4px; }
+.wrap{ max-width:1200px; margin:0 auto; padding-inline:20px; padding-block:0 72px; }
+.num, .tab-num{ font-family:var(--mono); font-variant-numeric:tabular-nums; }
+
+/* header */
+.hd{ padding-block:26px 14px; }
+.eyebrow{ font-size:11.5px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; color:var(--mute); display:flex; align-items:center; gap:8px; }
+.eyebrow .dot{ width:8px; height:8px; border-radius:50%; background:var(--tab); flex:none; }
+h1{ font-size:30px; line-height:1.15; font-weight:600; letter-spacing:-.02em; margin:8px 0 6px; text-wrap:balance; }
+.lede{ margin:0; max-width:68ch; color:var(--ink2); font-size:16px; }
+.meta{ margin-top:10px; display:flex; flex-wrap:wrap; gap:6px 16px; font-size:13px; color:var(--mute); }
+.meta .upd{ color:var(--ink2); }
+.meta .upd b{ color:var(--ink); font-weight:600; }
+.meta a{ color:var(--ink2); text-decoration:none; border-bottom:1px solid var(--line2); }
+.meta a:hover{ color:var(--ink); border-color:var(--tab); }
+
+/* section bar */
+nav.sec{ position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background:rgba(17,21,23,.92); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  display:flex; gap:6px; padding:10px 0; border-bottom:1px solid var(--line); overflow-x:auto; scrollbar-width:none; margin-inline:-20px; padding-inline:20px; }
+nav.sec::-webkit-scrollbar{ display:none; }
+nav.sec a{ flex:none; font-size:13px; text-decoration:none; color:var(--ink2); padding:5px 12px; border-radius:999px; border:1px solid var(--line2); background:var(--panel); white-space:nowrap; }
+nav.sec a:hover{ color:var(--ink); }
+nav.sec a.a{ color:var(--a); border-color:color-mix(in srgb, var(--a) 45%, transparent); }
+nav.sec a.b{ color:var(--b); border-color:color-mix(in srgb, var(--b) 45%, transparent); }
+
+section.blk{ margin-top:28px; }
+.sh{ display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 16px; margin-bottom:12px; }
+h2{ font-size:20px; line-height:1.25; font-weight:600; letter-spacing:-.01em; margin:0; text-wrap:balance; }
+.sh .hint{ font-size:13px; color:var(--mute); }
+.card{ background:var(--panel); border:1px solid var(--line); border-radius:10px; }
+
+/* overview */
+.ov{ display:grid; grid-template-columns:1fr; gap:14px; }
+.lead{ padding:16px 18px 14px; display:grid; grid-template-columns:1fr; gap:18px; align-content:start; }
+.lcol{ min-width:0; }
+.lh{ display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; color:var(--ink2); margin-bottom:8px; }
+.tag{ display:inline-grid; place-items:center; width:20px; height:20px; border-radius:5px; font-size:11.5px; font-weight:700; color:#0E1214; flex:none; }
+.tag.a{ background:var(--a); } .tag.b{ background:var(--b); }
+.lstat{ font-size:12.5px; color:var(--mute); font-weight:400; margin-left:auto; text-align:right; }
+.lead ol{ list-style:none; margin:0; padding:0; display:grid; gap:2px; }
+.lead li{ display:grid; grid-template-columns:22px minmax(0,1fr) auto; align-items:center; gap:10px; padding:7px 8px; margin-inline:-8px; border-radius:6px; cursor:pointer; }
+.lead li:hover{ background:var(--raised); }
+.lead li .r{ font-family:var(--mono); font-size:15px; text-align:right; }
+.lcol.a li .r{ color:var(--a); } .lcol.b li .r{ color:var(--b); }
+.lead li .n{ min-width:0; }
+.lead li .n b{ font-weight:600; }
+.lead li .n .sub{ display:block; font-size:12.5px; color:var(--mute); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.lead li .o{ display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:13.5px; color:var(--b); white-space:nowrap; }
+.latest{ padding:16px 18px; min-width:0; }
+.latest .lh{ margin-bottom:6px; }
+.latest .lh .when{ margin-left:auto; font-weight:400; color:var(--mute); font-size:12.5px; }
+.latest p{ margin:0 0 10px; font-size:14.5px; line-height:1.62; color:var(--ink2); max-width:75ch; }
+.latest p strong{ color:var(--ink); font-weight:600; }
+.latest p b{ color:var(--ink); }
+.earlier{ margin-top:4px; border-top:1px solid var(--line); padding-top:8px; }
+.earlier > summary, details.x > summary{ cursor:pointer; list-style:none; font-size:13px; font-weight:600; color:var(--ink2); display:flex; align-items:center; gap:8px; padding:4px 0; }
+.earlier > summary::-webkit-details-marker, details.x > summary::-webkit-details-marker, details.row > summary::-webkit-details-marker{ display:none; }
+.earlier > summary::before, details.x > summary::before{ content:""; width:7px; height:7px; border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor; transform:rotate(-45deg); transition:transform .15s; flex:none; margin-right:2px; }
+.earlier[open] > summary::before, details.x[open] > summary::before{ transform:rotate(45deg); }
+.earlier .eb p{ font-size:14px; }
+
+/* odds bar */
+.ob{ position:relative; display:inline-block; width:72px; height:6px; border-radius:3px; background:var(--sunk); box-shadow:inset 0 0 0 1px var(--line2); flex:none; vertical-align:middle; }
+.ob i{ position:absolute; left:0; top:0; bottom:0; border-radius:3px; background:var(--b); }
+.ob s{ position:absolute; top:-3px; bottom:-3px; width:2px; margin-left:-1px; background:var(--ink); opacity:.55; border-radius:1px; }
+.ob.below i{ background:color-mix(in srgb, var(--b) 45%, var(--mute)); }
+
+/* compare */
+.cmp{ overflow:hidden; }
+.cbar{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px 16px; padding:12px 14px; border-bottom:1px solid var(--line); }
+.seg{ display:inline-flex; background:var(--sunk); border:1px solid var(--line2); border-radius:8px; padding:3px; gap:2px; }
+.seg button{ border:0; background:none; padding:5px 12px; border-radius:6px; font-size:13px; color:var(--ink2); cursor:pointer; white-space:nowrap; }
+.seg button[aria-selected="true"], .seg button[aria-pressed="true"]{ background:var(--raised); color:var(--ink); box-shadow:0 0 0 1px var(--line2); font-weight:600; }
+.cbar .hint{ font-size:12.5px; color:var(--mute); }
+.tscroll{ position:relative; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:thin; }
+.tscroll::after{ content:""; position:absolute; top:0; right:0; bottom:0; width:32px; pointer-events:none; opacity:0; transition:opacity .2s; background:linear-gradient(to right, transparent, var(--panel)); transform:translateX(var(--sl,0px)); z-index:4; }
+.tscroll.fade-r::after{ opacity:1; }
+table.ct{ width:100%; border-collapse:collapse; font-size:13.5px; font-variant-numeric:tabular-nums; }
+.ct th{ text-align:left; font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--mute); padding:9px 10px; border-bottom:1px solid var(--line); white-space:nowrap; vertical-align:bottom; background:var(--panel); }
+.ct th .s{ display:block; font-size:10px; letter-spacing:.03em; text-transform:none; font-weight:500; opacity:.8; margin-top:1px; }
+.ct th.srt{ cursor:pointer; user-select:none; }
+.ct th.srt:hover{ color:var(--ink); }
+.ct th .ar{ display:inline-block; width:10px; margin-left:3px; color:var(--tab); }
+.ct th[aria-sort="none"] .ar::after{ content:"↕"; color:var(--line2); }
+.ct th[aria-sort="ascending"] .ar::after{ content:"↑"; }
+.ct th[aria-sort="descending"] .ar::after{ content:"↓"; }
+.ct td{ padding:10px 10px; border-bottom:1px solid var(--line); vertical-align:middle; white-space:nowrap; }
+.ct tbody tr:last-child td{ border-bottom:0; }
+.ct tbody tr{ cursor:pointer; }
+.ct tbody tr:hover td, .ct tbody tr.hl td{ background:var(--raised); }
+.ct .c-n{ position:sticky; left:0; z-index:2; background:var(--panel); min-width:150px; }
+.tscroll.scrolled .ct .c-n{ box-shadow:8px 0 10px -8px rgba(0,0,0,.6); clip-path:inset(0 -14px 0 0); }
+.ct th.c-n{ z-index:3; }
+.ct .c-n b{ font-weight:600; }
+.ct .c-n .tk{ display:block; font-size:11.5px; color:var(--mute); }
+.ct .bk{ display:inline-block; width:3px; height:26px; border-radius:2px; background:var(--bkc); vertical-align:middle; margin-right:9px; float:left; margin-top:2px; }
+.ct td.r{ text-align:right; } .ct th.r{ text-align:right; }
+.ct td.c-k{ white-space:normal; min-width:220px; max-width:320px; color:var(--ink2); font-size:12.5px; line-height:1.45; }
+.ct td.c-drv{ white-space:normal; min-width:150px; max-width:240px; color:var(--ink2); font-size:12.5px; line-height:1.4; }
+.ct td.sc{ font-family:var(--mono); font-size:12.5px; text-align:right; }
+.ct td.sc.est{ color:var(--ink2); }
+.ct td.sc.wide{ white-space:normal; min-width:120px; text-align:left; font-family:var(--sans); }
+.pill{ display:inline-grid; place-items:center; min-width:26px; height:22px; padding:0 6px; border-radius:6px; font-family:var(--mono); font-size:12.5px; font-weight:500; }
+.pill.a{ background:var(--a-soft); color:var(--a); } .pill.b{ background:var(--b-soft); color:var(--b); }
+.pill.lo{ background:transparent; color:var(--mute); box-shadow:inset 0 0 0 1px var(--line2); }
+.oc{ display:flex; align-items:center; gap:9px; justify-content:flex-end; }
+.oc .v{ font-family:var(--mono); font-size:13.5px; min-width:34px; text-align:right; color:var(--b); font-weight:500; }
+.oc .v.lo{ color:var(--mute); }
+.legend{ display:flex; flex-wrap:wrap; gap:6px 18px; padding:10px 14px 12px; border-top:1px solid var(--line); font-size:12.5px; color:var(--mute); }
+.legend b{ color:var(--ink2); font-weight:600; }
+.legend .ob{ width:44px; }
+
+/* risk badge */
+.rsb{ display:inline-grid; place-items:center; min-width:22px; height:22px; padding:0 6px; border-radius:6px; font-family:var(--mono); font-size:12px; font-weight:600; color:#101416; }
+.rsb.r1{ background:#4FB3A3; } .rsb.r2{ background:#8CC9A0; } .rsb.r3{ background:#D4A24C; } .rsb.r4{ background:#E0875A; } .rsb.r5{ background:#D46A5E; }
+
+/* metal badge + pick */
+.mb{ display:inline-block; vertical-align:1px; margin-left:6px; font-size:10.5px; font-weight:700; letter-spacing:.02em; padding:0 5px; border-radius:4px; border:1.5px solid currentColor; line-height:1.4; }
+.pk{ margin-left:5px; font-size:13px; }
+.dg{ color:var(--b); font-weight:600; margin-left:2px; font-size:.85em; }
+.tgx{ display:inline-block; margin-left:6px; font-size:10px; font-weight:600; letter-spacing:.03em; padding:0 5px; border-radius:4px; color:var(--good); border:1px solid rgba(114,201,169,.5); white-space:nowrap; vertical-align:1px; cursor:help; }
+
+
+/* what changed */
+.chg{ padding:18px 20px 8px; border-color:color-mix(in srgb, var(--tab) 38%, var(--line)); background:linear-gradient(180deg, color-mix(in srgb, var(--tab) 8%, var(--panel)) 0, var(--panel) 160px); }
+.chh{ display:flex; align-items:center; gap:10px; }
+.chh .eyebrow{ color:var(--tab); }
+.chh .when{ margin-left:auto; font-size:12.5px; color:var(--ink2); font-family:var(--mono); background:var(--sunk); border:1px solid var(--line2); padding:2px 8px; border-radius:6px; }
+.chl{ margin:8px 0 14px; font-size:18px; line-height:1.45; font-weight:500; color:var(--ink); max-width:72ch; text-wrap:pretty; }
+.mvs{ display:flex; flex-wrap:wrap; align-items:center; gap:6px 6px; margin:0 0 16px; }
+.mvl{ font-size:11.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--mute); margin-right:6px; }
+.mvc{ display:inline-flex; align-items:center; gap:6px; background:var(--sunk); border:1px solid var(--line2); border-radius:999px; padding:3px 10px 3px 4px; font-size:13px; cursor:pointer; color:var(--ink2); }
+.mvc:hover{ border-color:var(--tab); color:var(--ink); }
+.mvc b{ color:var(--ink); font-weight:600; }
+.mvc .tag{ width:18px; height:18px; font-size:10.5px; border-radius:999px; }
+.mvc .num{ font-family:var(--mono); font-size:12.5px; }
+.mvc .mv{ margin-left:0; vertical-align:0; }
+.mvc .nt{ font-size:11.5px; color:var(--mute); }
+.mvc .rsb{ min-width:18px; height:18px; font-size:11px; padding:0 4px; }
+.mvc:not(:has(.tag)){ padding-left:10px; }
+.more1{ font-size:12.5px; color:var(--mute); margin-left:4px; cursor:help; }
+.mvs .none{ font-size:13px; color:var(--ink2); }
+.st{ display:flex; align-items:baseline; gap:7px; background:var(--sunk); border:1px solid var(--line); border-radius:8px; padding:7px 12px; }
+.st .sn{ font-family:var(--mono); font-size:20px; font-weight:500; color:var(--ink); line-height:1; }
+.st .sl{ font-size:12.5px; color:var(--mute); }
+.st.a .sn{ color:var(--a); } .st.b .sn{ color:var(--b); } .st.w .sn{ color:var(--warn); }
+.chgrid{ display:grid; grid-template-columns:1fr; gap:18px 28px; }
+.chcol{ min-width:0; }
+.chcol h3{ font-size:11.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--mute); margin:0 0 2px; }
+ul.moves{ list-style:none; margin:0; padding:0; }
+.moves li{ display:grid; grid-template-columns:22px minmax(0,1fr) auto; align-items:center; gap:10px; padding:8px 8px; margin-inline:-8px; border-radius:6px; cursor:pointer; }
+.moves li:hover{ background:var(--raised); }
+.moves .mn b{ font-weight:600; }
+.moves .ms{ display:block; font-size:12.5px; color:var(--mute); }
+.ft2{ display:flex; align-items:center; gap:6px; font-family:var(--mono); font-size:15px; color:var(--mute); }
+.ft2 .to{ color:var(--ink); font-weight:500; } .ft2 .to.a{ color:var(--a); } .ft2 .to.b{ color:var(--b); }
+.ft2 .arr{ color:var(--line2); font-family:var(--sans); }
+.tag.rk2{ background:var(--ink2); }
+.minor{ display:flex; gap:8px; align-items:flex-start; font-size:13px; color:var(--mute); margin:8px 0 4px; line-height:1.5; }
+.minor .tag{ width:18px; height:18px; font-size:10.5px; margin-top:1px; }
+.none{ color:var(--ink2); margin:6px 0; }
+ul.flags{ list-style:none; margin:0; padding:0; }
+.fl{ display:grid; grid-template-columns:minmax(0,1fr); gap:3px; padding:9px 0; border-top:1px solid var(--line); font-size:14px; line-height:1.55; color:var(--ink2); }
+ul.flags{ display:grid; grid-template-columns:1fr; column-gap:28px; margin:0; }
+.fl b{ color:var(--ink); font-weight:600; }
+.ft{ justify-self:start; font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:1px 7px; border-radius:4px; border:1px solid currentColor; }
+.fl.hot .ft{ color:var(--bad); background:rgba(231,140,125,.12); }
+.fl.watch .ft{ color:var(--warn); border-style:dashed; }
+.fl.news .ft{ color:var(--ink2); border-color:var(--line2); }
+.fl.fix .ft{ color:var(--a); border-color:color-mix(in srgb, var(--a) 50%, transparent); }
+.px{ margin:10px 0 0; font-size:12.5px; color:var(--mute); }
+.chfoot{ display:flex; flex-wrap:wrap; gap:0 24px; margin-top:10px; border-top:1px solid var(--line); }
+.chfoot .earlier{ border-top:0; margin:0; padding:8px 0; flex:1 1 100%; }
+.mv{ display:inline-block; font-family:var(--mono); font-size:10.5px; font-weight:600; margin-left:4px; vertical-align:2px; letter-spacing:-.02em; }
+.mv.up{ color:var(--good); } .mv.dn{ color:var(--bad); }
+.ct .rkn + .mv{ margin-left:-8px; margin-right:6px; }
+.rkm{ font-size:0; line-height:1; margin-top:3px; } .rkm .mv{ font-size:10.5px; margin:0; }
+@media (min-width:860px){ ul.flags{ grid-template-columns:1fr 1fr; } }
+
+/* compact panel */
+.chg{ padding:12px 16px 4px; background:linear-gradient(180deg, color-mix(in srgb, var(--tab) 7%, var(--panel)) 0, var(--panel) 110px); }
+.chh .pxh{ font-size:12px; color:var(--mute); margin-left:auto; }
+.chh .when{ margin-left:10px; font-size:11.5px; padding:1px 7px; }
+.chl{ margin:5px 0 9px; font-size:15.5px; line-height:1.45; }
+.mvs{ margin:0 0 6px; gap:5px; }
+.mvc{ padding:2px 9px 2px 3px; font-size:12.5px; }
+.fl{ display:block; padding:6px 0; font-size:13.5px; line-height:1.5; }
+.fl .ft{ display:inline-block; margin-right:7px; vertical-align:1px; font-size:9.5px; padding:0 5px; }
+.chfoot{ margin-top:4px; gap:0 22px; flex-wrap:nowrap; }
+.chfoot .earlier{ flex:0 1 auto; padding:5px 0; }
+.chfoot .earlier[open]{ flex:1 1 100%; }
+.chfoot:has(.earlier[open]){ flex-wrap:wrap; }
+.mfl{ border-top:0; margin:0; padding:2px 0 4px; }
+.mfl > summary{ font-size:12.5px; color:var(--mute); }
+.earlier > summary{ font-size:12.5px; }
+@media (max-width:560px){ .chh .pxh{ display:none; } .chh .when{ margin-left:auto; } }
+
+.nwb{ display:inline-block; font-size:9.5px; font-weight:700; letter-spacing:.06em; padding:0 5px; border-radius:4px; color:#0E1214; background:var(--tab); margin-left:5px; vertical-align:2px; }
+.mvc .nwb{ margin-left:2px; }
+.ct .rkn + .nwb{ margin-left:-4px; margin-right:8px; }
+.mvc.nwc{ padding-left:6px; }
+.ccna{ font-size:12px; color:var(--mute); }
+.ccb.na{ color:var(--mute); background:transparent; border-style:dashed; }
+.fl.new .ftg, .fl.new .ft{ color:var(--tab); border-color:color-mix(in srgb, var(--tab) 60%, transparent); }
+
+/* the line: plain-sentence dividers */
+.ct tr.line td{ text-transform:none !important; letter-spacing:0 !important; font-size:13px !important; font-weight:400 !important; color:var(--ink2) !important; line-height:1.5; padding:10px 12px !important; }
+.ct tr.line td b{ color:var(--ink); font-weight:600; }
+.divider{ display:block !important; text-transform:none !important; letter-spacing:0 !important; font-size:13.5px !important; font-weight:400 !important; color:var(--ink2) !important; line-height:1.55; padding:11px 13px !important; margin:12px 0 4px; border:1px dashed var(--line2); border-radius:8px; background:rgba(255,255,255,.025); }
+.divider::before, .divider::after{ display:none !important; }
+.divider b{ color:var(--ink); font-weight:600; }
+
+/* the two tables */
+.tables{ display:grid; grid-template-columns:1fr; gap:18px; }
+.tp{ overflow:hidden; }
+.tp.ta{ border-top:3px solid var(--a); } .tp.tb{ border-top:3px solid var(--b); }
+.tph{ display:flex; align-items:center; gap:10px; padding:14px 16px 2px; }
+.tph h2{ font-size:18px; }
+.tph .hint{ margin-left:auto; font-size:12.5px; color:var(--mute); }
+.tin{ margin:0; padding:4px 16px 12px; font-size:14px; line-height:1.55; color:var(--ink2); max-width:90ch; }
+.tp .tscroll{ border-top:1px solid var(--line); }
+.tin b{ color:var(--ink); font-weight:600; }
+.ct .rkn{ display:inline-block; width:24px; margin-right:10px; text-align:right; font-family:var(--mono); font-size:15px; vertical-align:top; }
+.ct .rkn.a{ color:var(--a); } .ct .rkn.b{ color:var(--b); } .ct .rkn.lo{ color:var(--mute); }
+.ct .nmw{ display:inline-block; vertical-align:top; }
+.ct tr.line td{ padding:7px 12px; background:var(--sunk); font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--mute); white-space:normal; cursor:default; }
+.ct tr.line td span{ position:sticky; left:12px; display:inline-block; max-width:calc(100vw - 72px); }
+.ct tbody tr.line:hover td{ background:var(--sunk); }
+.tp .xs{ margin:0; padding:0 16px; }
+.tp details.x:last-child{ border-bottom:0; }
+.lede b.ta{ color:var(--a); } .lede b.tb{ color:var(--b); }
+
+/* explainers */
+.xs{ display:grid; grid-template-columns:1fr; gap:0; margin-top:12px; }
+details.x{ border-top:1px solid var(--line); padding:10px 2px; }
+details.x:last-child{ border-bottom:1px solid var(--line); }
+details.x > summary{ font-size:14px; }
+.xb{ padding:6px 0 4px 17px; font-size:14px; line-height:1.62; color:var(--ink2); max-width:78ch; }
+.xb p{ margin:0 0 9px; } .xb ul{ margin:4px 0 10px; padding-left:18px; } .xb li{ margin:4px 0; }
+.xb b, .xb strong{ color:var(--ink); font-weight:600; }
+.xb .ex{ background:rgba(255,255,255,.035); border:1px solid #2C3539; border-radius:8px; padding:10px 12px; margin:6px 0 12px; font-size:13.5px; }
+.xb .note-top{ color:var(--ink2); }
+
+/* ranked lists */
+.lists{ display:grid; grid-template-columns:1fr; gap:22px; margin-top:30px; }
+.list{ min-width:0; --c:var(--a); --soft:var(--a-soft); }
+.list.lb{ --c:var(--b); --soft:var(--b-soft); }
+.lhd{ border-top:3px solid var(--c); padding-top:14px; margin-bottom:6px; }
+.lhd .eyebrow{ color:var(--c); }
+.lhd h2{ margin-top:4px; }
+.lhd .q{ margin:6px 0 0; color:var(--ink2); font-size:14.5px; max-width:62ch; }
+.crit{ margin:10px 0 6px; }
+.crit > summary{ color:var(--c) !important; }
+.crit ol{ margin:6px 0 2px; padding-left:20px; font-size:14px; line-height:1.55; color:var(--ink2); }
+.crit li{ margin:4px 0; } .crit li b{ color:var(--ink); }
+.crit li.note-li{ list-style:none; margin-left:-20px; color:var(--mute); font-size:13px; }
+.divider{ display:flex; align-items:center; gap:10px; font-size:11.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--mute); padding:16px 0 6px; }
+.divider::before, .divider::after{ content:""; height:1px; flex:1; background:repeating-linear-gradient(90deg, var(--line2) 0 6px, transparent 6px 10px); }
+.divider span{ max-width:80%; text-align:center; }
+details.row{ border-bottom:1px solid var(--line); }
+details.row > summary{ list-style:none; cursor:pointer; display:grid; grid-template-columns:38px minmax(0,1fr); gap:12px; padding:14px 8px 12px; margin-inline:-8px; border-radius:8px; }
+details.row > summary:hover, details.row.hl > summary{ background:var(--raised); }
+details.row.flash > summary{ background:var(--soft); }
+.rk{ font-family:var(--mono); font-size:24px; line-height:1.05; color:var(--c); text-align:right; padding-top:1px; }
+.row.low .rk{ color:var(--mute); font-size:19px; }
+.rm{ min-width:0; }
+.l1{ display:flex; align-items:baseline; gap:4px 10px; flex-wrap:wrap; }
+.l1 .nm{ font-size:16px; font-weight:600; }
+.row.low .l1 .nm{ font-weight:500; }
+.l1 .tk{ font-size:12.5px; color:var(--mute); }
+.l1 .hm{ margin-left:auto; display:flex; align-items:center; gap:8px; }
+.hm .o3{ font-family:var(--mono); font-size:18px; font-weight:500; color:var(--b); }
+.row.low .hm .o3{ color:var(--mute); font-size:16px; }
+.hm .o3 small{ font-family:var(--sans); font-size:11px; color:var(--mute); margin-left:3px; letter-spacing:.02em; }
+.l2{ margin-top:3px; font-size:13.5px; color:var(--ink2); }
+.l2 .cap{ color:var(--mute); }
+.facts{ display:flex; flex-wrap:wrap; align-items:center; gap:4px 14px; margin-top:7px; font-size:12.5px; color:var(--mute); }
+.facts b{ color:var(--ink); font-weight:600; font-family:var(--mono); font-size:12.5px; }
+.facts .bkt{ display:inline-flex; align-items:center; gap:6px; }
+.facts .bkt::before{ content:""; width:8px; height:8px; border-radius:2px; background:var(--bkc); }
+.gist{ margin:8px 0 0; font-size:14.5px; line-height:1.55; color:var(--ink); max-width:66ch; }
+.row.low .gist{ color:var(--ink2); }
+.mo{ display:inline-flex; align-items:center; gap:6px; margin-top:8px; font-size:12.5px; font-weight:600; color:var(--c); }
+.mo::after{ content:"▾"; font-size:11px; transition:transform .15s; }
+details.row[open] .mo::after{ transform:rotate(180deg); }
+details.row[open] .mo .t1, details.row:not([open]) .mo .t2{ display:none; }
+.more{ padding:0 0 16px 50px; }
+.more p{ margin:0 0 10px; font-size:14.5px; line-height:1.62; color:var(--ink2); max-width:66ch; }
+.more .wif{ color:var(--ink); }
+.more b{ color:var(--ink); font-weight:600; }
+.kv{ display:grid; grid-template-columns:96px minmax(0,1fr); gap:0 12px; margin:6px 0 10px; font-size:13.5px; line-height:1.55; }
+.kv > div{ padding:8px 0; border-top:1px solid var(--line); }
+.kv .k{ color:var(--mute); font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; padding-top:10px; }
+.kv .v{ color:var(--ink2); }
+.kv .v .rsb{ margin-right:8px; vertical-align:1px; }
+.ntag{ display:inline-block; font-size:11px; font-weight:600; padding:0 7px; border-radius:4px; margin-right:6px; border:1px solid currentColor; }
+.n-high{ color:var(--warn); } .n-med{ color:var(--a); } .n-low{ color:var(--mute); }
+.scg{ display:grid; grid-template-columns:repeat(auto-fill, minmax(104px, 1fr)); gap:6px; margin:4px 0 12px; }
+.scg div{ background:rgba(255,255,255,.035); border:1px solid #2C3539; border-radius:7px; padding:6px 9px; }
+.scg .sk{ display:block; font-size:10.5px; color:var(--mute); letter-spacing:.03em; }
+.scg .sv{ font-family:var(--mono); font-size:13px; color:var(--ink); }
+.scg .sv.est{ color:var(--ink2); }
+.drv{ font-size:12.5px; color:var(--mute); margin:0 0 6px; }
+.trk{ font-size:13px; font-weight:600; text-decoration:none; border-bottom:1px solid currentColor; }
+
+/* cost curve (producers) */
+.ccl{ display:flex; flex-wrap:wrap; align-items:center; gap:4px 9px; margin-top:7px; font-size:12.5px; font-variant-numeric:tabular-nums; color:var(--mute); }
+.ccm{ position:relative; display:inline-block; flex:none; width:84px; height:8px; border-radius:4px; vertical-align:middle; isolation:isolate;
+  background:linear-gradient(90deg, rgba(79,179,163,.6) 0 25%, rgba(140,201,160,.55) 25% 50%, rgba(212,162,76,.6) 50% 75%, rgba(212,106,94,.65) 75% 100%); }
+.ccm::after{ content:""; position:absolute; left:50%; top:-3px; bottom:-3px; width:2px; margin-left:-1px; background:var(--ink); opacity:.5; border-radius:1px; }
+.ccm i{ position:absolute; top:50%; display:block; }
+.ccm .d{ left:calc(var(--p) * 1%); width:12px; height:12px; margin:-6px 0 0 -6px; border-radius:50%; background:var(--ink); border:2px solid var(--panel); box-shadow:0 0 0 1px var(--ink); z-index:2; }
+.ccm .o{ left:calc(var(--p) * 1%); width:9px; height:9px; margin:-4.5px 0 0 -4.5px; border-radius:50%; border:1.5px solid var(--ink); background:var(--panel); opacity:.8; z-index:1; }
+.ccm .t{ left:calc(var(--a) * 1%); width:calc((var(--b) - var(--a)) * 1%); height:2px; margin-top:-1px; background:var(--ink); opacity:.55; }
+.ccm.sm{ width:56px; height:6px; } .ccm.sm .d{ width:10px; height:10px; margin:-5px 0 0 -5px; } .ccm.sm .o{ width:7px; height:7px; margin:-3.5px 0 0 -3.5px; }
+.ccm.big{ width:100%; height:12px; border-radius:6px; } .ccm.big .d{ width:16px; height:16px; margin:-8px 0 0 -8px; } .ccm.big .o{ width:12px; height:12px; margin:-6px 0 0 -6px; }
+.ccb{ font-size:11.5px; font-weight:600; padding:1px 7px; border-radius:4px; white-space:nowrap; border:1px solid currentColor; }
+.ccb.lo, .ccn.lo, .cct.dn{ color:var(--good); } .ccb.q3, .ccn.q3{ color:var(--warn); } .ccb.q4, .ccn.q4, .cct.up{ color:var(--bad); }
+.ccb.lo{ background:rgba(114,201,169,.12); } .ccb.q3{ background:rgba(227,163,95,.12); } .ccb.q4{ background:rgba(231,140,125,.12); }
+.ccx{ color:var(--ink2); }
+.ccw{ font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:1px 6px; border-radius:4px; color:var(--warn); border:1px dashed currentColor; white-space:nowrap; }
+.ccw.hot{ color:var(--bad); border-style:solid; }
+.ccn{ font-family:var(--mono); font-size:12.5px; margin-left:8px; }
+.ccdemo{ max-width:360px; margin:8px 0 10px; padding:0 8px; }
+.cdl{ position:relative; height:18px; font-size:11.5px; font-weight:600; color:var(--ink); }
+.cdl span{ position:absolute; bottom:4px; left:calc(var(--p) * 1%); transform:translateX(-50%); white-space:nowrap; }
+.cde{ display:flex; justify-content:space-between; margin-top:6px; font-size:11.5px; color:var(--mute); }
+
+/* method */
+.method{ margin-top:36px; padding-top:18px; border-top:1px solid var(--line); display:grid; grid-template-columns:1fr; gap:10px 32px; font-size:13px; color:var(--mute); }
+.method p{ margin:0 0 8px; max-width:72ch; }
+.method h3{ font-size:12px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--ink2); margin:0 0 6px; }
+
+@media (min-width:760px){
+  .ov{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
+  .lead{ grid-template-columns:1fr; }
+}
+@media (min-width:1040px){
+  h1{ font-size:34px; }
+  .ov{ grid-template-columns:minmax(0,1.05fr) minmax(0,1fr); }
+  .lists{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:36px; }
+  .method{ grid-template-columns:1fr 1fr; }
+}
+@media (max-width:560px){
+  .wrap{ padding-inline:16px; }
+  nav.sec{ margin-inline:-16px; padding-inline:16px; }
+  h1{ font-size:25px; }
+  .more{ padding-left:0; }
+  details.row > summary{ grid-template-columns:30px minmax(0,1fr); gap:10px; }
+  .rk{ font-size:20px; }
+  .kv{ grid-template-columns:1fr; }
+  .kv .k{ padding-bottom:0; border-top:1px solid var(--line); }
+  .kv .v{ border-top:0; padding-top:2px; }
+  .ct .c-n{ min-width:128px; }
+  .lead li .o .ob{ width:48px; }
+  .tph .hint{ display:none; }
+}
+@media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+
+
+
+/* hover info */
+.htip{ position:fixed; z-index:100; max-width:300px; padding:7px 10px; border-radius:7px; background:#262E33; border:1px solid var(--line2); color:var(--ink); font-size:12.5px; line-height:1.45; box-shadow:0 8px 22px rgba(0,0,0,.45); pointer-events:none; }
+.ct th[data-tip]{ cursor:help; }
+.ct th[data-tip]:hover{ color:var(--ink); }
+.rwb[data-tip], .mwt[data-tip], .rsb[data-tip], .mb[data-tip], .pill, .ccm[data-tip]{ cursor:help; }
+/* runway */
+.legend .lg-rw{ flex-basis:100%; line-height:1.7; }
+.legend .lg-rw .rwb, .legend .lg-rw .mwt{ margin:0 3px 0 6px; }
+.rwb{ display:inline-block; font-size:11px; font-weight:600; padding:1px 7px; border-radius:4px; border:1px solid currentColor; white-space:nowrap; line-height:1.45; }
+.rwb.long{ color:var(--good); background:rgba(114,201,169,.10); } .rwb.medium{ color:var(--ink2); border-color:var(--line2); } .rwb.short{ color:var(--mute); border-style:dashed; border-color:var(--line2); }
+.mwt{ display:inline-block; margin-left:5px; font-size:10px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:1px 5px; border-radius:4px; color:var(--b); border:1px dashed currentColor; white-space:nowrap; }
+.facts .rwb{ font-family:var(--sans); }
+.tin.tin2{ padding-top:0; font-size:13.5px; color:var(--mute); }
+.fl.mth .ft{ color:var(--mute); border-color:var(--line2); border-style:dashed; }
+/* management grade */
+.mgb{ display:inline-grid; grid-auto-flow:column; place-items:center; min-width:22px; height:22px; padding:0 6px; border-radius:6px; font-family:var(--mono); font-size:12px; font-weight:700; border:1px solid currentColor; white-space:nowrap; letter-spacing:.02em; }
+.mgb.gA{ color:var(--good); background:rgba(114,201,169,.12); } .mgb.gB{ color:var(--ink2); border-color:var(--line2); } .mgb.gC{ color:var(--warn); border-style:dashed; } .mgb.gD{ color:var(--bad); background:rgba(231,140,125,.12); }
+.mgb .mgst{ font-size:10px; margin-left:3px; line-height:1; }
+.mgb.lc{ opacity:.75; }
+.kv .v .mgb{ margin-right:8px; vertical-align:1px; }
+.facts .mgb{ font-size:11px; height:18px; min-width:18px; padding:0 5px; }
+.legend .lg-mg{ flex-basis:100%; line-height:1.7; } .legend .lg-mg .mgb{ margin:0 3px 0 6px; height:18px; min-width:18px; font-size:11px; }
+.fl.mgmt .ft{ color:var(--a); border-style:dashed; }
+.mvc .mgb{ height:18px; min-width:18px; font-size:11px; padding:0 4px; }
+/* rolling window */
+.meta .lrun{ color:var(--mute); font-family:var(--mono); font-size:12px; }
+.wseg{ padding:2px; margin-left:auto; }
+.wseg button{ padding:2px 9px; font-size:12px; }
+.chh .when{ margin-left:8px; }
+.chd{ color:var(--mute); font-family:var(--mono); font-size:13px; font-weight:400; }
+.fdt{ display:inline-block; font-family:var(--mono); font-size:11.5px; color:var(--mute); margin-right:7px; }
+.dli{ padding:6px 0 4px; border-top:1px solid var(--line); }
+.dli:first-child{ border-top:0; }
+.dlh{ font-size:13.5px; color:var(--ink); line-height:1.5; }
+.dli ul.flags{ grid-template-columns:1fr !important; margin-left:2px; }
+.dli .fl{ border-top:0; padding:3px 0; font-size:13px; }
+.dlmore{ margin:8px 0 2px; font-size:13px; }
+.dlmore a, nav.sec a.hs{ color:var(--tab); }
+@media (max-width:560px){ .chh{ flex-wrap:wrap; } .wseg{ margin-left:0; order:3; } .chh .when{ margin-left:auto; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hd">
+    <div class="eyebrow"><span class="dot"></span>Gold &amp; silver · Producers &amp; royalties · 13 names · 3–5 year horizon</div>
+    <h1>Gold &amp; silver producers: safest bets vs. biggest upside</h1>
+    <p class="lede"><b class="ta">List A · Quality compounder</b> ranks who is most likely to deliver. <b class="tb">List B · Leverage &amp; re-rate</b> ranks who has the best odds of tripling your money in 3–5 years.</p>
+    <div class="meta"><span class="upd">Updated <b>8 Oct 2026</b> · prices to the 8 Oct close</span><span><a href="/equities/trackers/#pm" rel="noopener" target="_blank">Open the tracker ↗</a></span> <span><a data-goto="pmd" href="#">Developer rankings</a></span></div>
+  </header>
+  <nav class="sec" aria-label="Sections"><a href="#latest">Latest</a><a href="#tables">Tables</a><a class="a" href="#rank-a">A · details</a><a class="b" href="#rank-b">B · details</a><a href="#method">Method</a><a class="hs" href="#" data-goto="hist">History ↗</a></nav>
+
+  <section class="blk" id="latest">
+    <div class="card chg">
+      <div class="chh"><span class="eyebrow">What changed</span>
+        <div class="seg wseg" role="group" aria-label="Period"><button type="button" data-w="u">Last update</button><button type="button" data-w="7">7 days</button><button type="button" data-w="30">30 days</button></div>
+        <span class="when" id="chwhen"></span></div>
+      <p class="chl"><span class="chd" id="chd"></span>Quiet day: First Majestic&#x27;s Q3 output fell on a San Dimas labour dispute (watch) and Pan American set its results date. Prices to the 8 Oct close (Fresnillo at 7 Oct); no ranking or odds changes.</p>
+      <div class="mvs" id="moves"></div>
+      <div class="chcol" id="flags"></div>
+      <p class="px">Gold ~US$4,130 · silver ~US$59.2 (8 Oct close)</p>
+      <div class="chfoot">
+        <details class="earlier" id="daylog"><summary>Day by day</summary><div class="eb" id="daylog-b"></div></details>
+        <details class="earlier"><summary>Full note</summary><div class="eb"><p><strong>3 Oct — three seniors added.</strong> <b>Agnico Eagle</b> goes straight to first on the compounder list: lower-half costs (~31st percentile), US$3.3B net cash with an A rating, ~85% Canadian ounces — at ~8.9× EBITDA, the bottom of its own range. <b>Franco-Nevada</b> (2nd) and <b>Wheaton</b> (3rd) open a new <b>Royalty &amp; streaming</b> bucket: the best cost position possible (~87–92% margins, no capex), priced at ~22–24× EBITDA; Franco-Nevada ranks ahead on its zero debt and diversification, Wheaton carries US$1.9B of debt after Antamina and a third of revenue from Salobo. The miners below move down three places but keep their order. On list B all three sit near the bottom by design (~2–3%): a 3× would make them US$140–280B companies.</p><p><strong>3 Oct — cost-curve position added.</strong> Each producer now shows where its 2026 all-in sustaining cost sits among the world's primary gold or silver mines. Only Hecla (~41st percentile) and Fresnillo (~39th) are in the cheaper half. Pan American (~59th), First Majestic (~60th), Coeur (~63rd, estimated), Aya (~64th) and Equinox (~66th) sit just above the middle; IAMGOLD (~74th), Avino (~83rd) and B2Gold (~89th) are the costliest. One ranking change follows: <b>B2Gold drops below the compounder line</b> (8th → 9th) — top decile and up from ~57th in 2025 — and <b>Aya moves up to 8th</b> (cheaper and improving, net cash, longer reserves). Avino has gone from ~26th to ~83rd on Q2 costs: the lower-to-upper-half move that is a sell trigger, with its fix still unproven (Q3 results, November). Pan American's silver segment is ~61st — Juanicipio is first-quartile, the segment is not.</p><p><strong>3 Oct refresh — prices moved no ranks.</strong> Prices are within ~7% of the audit (gold ~US$4,160, silver ~US$60.7 on 2 Oct). Avino's management now describes a bigger, later plan — a standalone 2,500–3,000 tpd La Preciosa mill producing from ~2030 (spoken on 29 Sep, not yet in a release) — so the chance its plan works drops to ~20% while the multiple if it works rises to ~1.5–2.3×; its odds stay ~11%. Coeur's debt breakdown is corrected (no note before Feb 2029).</p></div></details>
+        <details class="earlier"><summary>Earlier notes (6)</summary><div class="eb"><p><strong>2 October audit — list B now ranks on the odds of a 3×.</strong> Each row shows the chance its plan works, the multiple per share if it does, and the resulting odds of tripling. For producers the no-edge base rate is low — roughly 5% for a mid-tier, less for a US$10B+ senior — and no name here clears ~15%.</p><p><strong>What moved.</strong> Aya (~13%) leads: Boumadine is the only dated study big enough to more than double a producer's EBITDA. Avino drops from first to second (~11%) because its 'doubling' was an arithmetic error — 500 tpd at La Preciosa adds ~0.7 Moz AgEq a year and is already inside the 2026 guide — and its risk score moves to 3. B2Gold (~10%) is the deepest discount with dated operational fixes. IAMGOLD's risk moves to 3, level with B2Gold: the same ~47% Sahel share under a junta. First Majestic moves above B2Gold on certainty — a better margin at spot and net cash against net debt plus converts. Coeur, Hecla, Fresnillo and Pan American sit below the line as benchmarks.</p><p><strong>Arithmetic fixes.</strong> Every price column now includes the company's growth step (Hecla, First Majestic, IAMGOLD and B2Gold had left it out, so columns above the deck sat below Progress), Progress is struck at today's spot, and the three names whose discount is jurisdictional or structural — IAMGOLD, B2Gold and Fresnillo — share one 6–8× multiple. Equinox's columns now use its pro forma costs after Orla.</p><p><strong>Today's prices.</strong> Gold ~US$4,180 and silver ~US$61 (1 Oct) sit between the first two columns. Multiples quoted on Q2 or H1 earnings were struck at US$63–79 silver and are 10–25% higher at today's price (Fresnillo ~7×, not 6×).</p><p><strong>Silver-branded is not silver-earning.</strong> Pan American earns ~60% of revenue from gold and Coeur ~64%; Aya, Hecla and First Majestic are the silver exposures.</p><p><strong>Read with care.</strong> The odds are judgement and the columns are arithmetic that orders the names, not price targets. Risk scores measure the chance of permanent loss or no re-rate, not volatility.</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk tables" id="tables">
+    <div class="card tp ta">
+      <div class="tph"><span class="tag a">A</span><h2>Quality compounder</h2><span class="hint">tap a company for details</span></div>
+      <p class="tin">Own the cash flow for <b>3–5 years</b> and let it compound. Ranks on <b>cost position</b>, <b>free-cash-flow yield at spot and stressed</b>, <b>balance sheet</b>, <b>reserve life</b>, <b>jurisdiction</b> and <b>capital discipline</b>.</p>
+      <div class="tscroll"><table class="ct" id="ta" aria-label="Ranking A, Quality compounder"></table></div>
+      <div class="legend"><span><b>In B</b> the same company's rank in list B; outlined = below that list's line</span><span><b>Risk 1–5</b> chance of permanent loss or no re-rate (1 lowest)</span><span class="lg-mg"><b>Mgmt</b> — the people, graded on track record, fit to this exact job and candour (promises vs delivery): <span class="mgb gA">A<span class="mgst">★</span></span> tier 1 · <span class="mgb gB">B</span> solid, or unproven but clean (the default) · <span class="mgb gC">C</span> real weaknesses · <span class="mgb gD">D</span> a pattern of failing shareholders. Odds move only with evidence; hover a grade for the reason, the tracker card has the full review. <b>Skin in the game</b> (1–5, in the hover) is the team's own money at risk, a conviction signal that never moves the odds but breaks near-ties in list B.</span><span><b>†</b> key trigger may fall at or beyond the 3–5 year horizon</span><span><b>*</b> estimate</span></div>
+      <div class="xs"><details class="x"><summary>How to read the cost-curve bar</summary><div class="xb"><div aria-hidden="true" class="ccdemo">
+<div class="cdl"><span style="--p:26">2025</span><span style="--p:50">halfway</span><span style="--p:83">today</span></div>
+<span class="ccm big" style="--p:83"><i class="t" style="--a:26;--b:83"></i><i class="o" style="--p:26"></i><i class="d"></i></span>
+<div class="cde"><span>← cheapest to run</span><span>most expensive →</span></div>
+</div>
+<p><b>Example: Avino</b> — dot at <b>83rd</b>, ring at ~26th.</p>
+<ul>
+<li><b>The bar</b> is every gold (or silver) mine in the world, lined up from cheapest to run on the left to most expensive on the right. Green = the cheapest quarter, red = the most expensive quarter.</li>
+<li><b>The middle line</b> is halfway. Left of it = <b>Lower half</b>: cheaper than most of the world's mines. Right of it = <b>Upper half</b>.</li>
+<li><b>The dot</b> is the company today (2026 costs). <b>83rd</b> means 83% of the world's output is cheaper to produce than Avino's.</li>
+<li><b>The ring</b> is where it stood in 2025, and the line shows the move. Avino went from the cheap side to the expensive side in one year. No ring = no 2025 comparison.</li>
+</ul>
+<p><b>Why it matters:</b> when metal prices fall, mines on the left still make money; mines on the right get squeezed first. A move from the left half to the right half with no fix in sight is a sell signal.</p>
+<p>Gold companies sit on the gold curve, silver companies on the silver curve. <b>*</b> = estimate (Coeur publishes no all-in cost). Positions are approximate — good for putting the names in order, not to the decimal.</p></div></details></div>
+    </div>
+    <div class="card tp tb">
+      <div class="tph"><span class="tag b">B</span><h2>Leverage &amp; re-rate</h2><span class="hint">tap a company for details</span></div>
+      <p class="tin">Ranked on the odds of a 3× per share within <b>3–5 years</b> (to ~2030): the chance the thesis <b>works</b> × the share of its <b>if-it-works</b> range at or above 3×, plus a small chance of a 3× without it.</p>
+      <p class="tin tin2">A 3× in 3–5 years is the first leg of a 10× in 10 years: the same pace, ~26–32% a year. <b>2nd 3×</b> asks about the second leg: after that first 3×, is there room for another 3× by about year 10 (yes / partly / little — not a cash question)? When two companies' odds are within 2 points, the one with more room for a 2nd 3× ranks first; if that is the same, the team with more skin in the game ranks first.</p>
+      <div class="tscroll"><table class="ct" id="tb" aria-label="Ranking B, Leverage &amp; re-rate"></table></div>
+      <div class="legend"><span><span class="ob"><i style="width:60%"></i><s style="left:33%"></s></span> odds of a 3×; the tick is the ~5% luck line</span><span class="lg-rw"><b>2nd 3×?</b> — after a first 3× in years 1–5, is there room for <b>another 3× by about year 10</b>? Not about cash (that is on the card's Financials tab). <span class="rwb long">Yes</span> a believable path (big or growing resource, several assets, growth paid from cash flow) · <span class="rwb medium">Partly</span> capped or dependent on the metal price · <span class="rwb short">Little</span> the first re-rating is most of the value · <span class="mwt">watch</span> room for a 2nd 3×, but the big catalysts fall after year 5</span><span><b>Price columns</b> multiple of today's market cap if the market adopts that metal price</span><span><b>In A</b> rank in list A</span><span><b>Risk 1–5</b> chance of permanent loss or no re-rate (1 lowest)</span><span class="lg-mg"><b>Mgmt</b> — the people, graded on track record, fit to this exact job and candour (promises vs delivery): <span class="mgb gA">A<span class="mgst">★</span></span> tier 1 · <span class="mgb gB">B</span> solid, or unproven but clean (the default) · <span class="mgb gC">C</span> real weaknesses · <span class="mgb gD">D</span> a pattern of failing shareholders. Odds move only with evidence; hover a grade for the reason, the tracker card has the full review. <b>Skin in the game</b> (1–5, in the hover) is the team's own money at risk, a conviction signal that never moves the odds but breaks near-ties in list B.</span><span><b>†</b> key trigger may fall at or beyond the 3–5 year horizon</span></div>
+      <div class="xs"><details class="x"><summary>How to read the odds — in plain words</summary><div class="xb"><p><b>Example: Aya</b> — 3×+ <b>13%</b> · Works <b>42%</b> · If it works <b>~1.2–2×</b></p>
+<ul>
+<li><b>Works</b> — the chance the company's plan succeeds. Here: Aya turns its new Boumadine project into a funded mine. 42% = a bit less than a coin flip.</li>
+<li><b>If it works</b> — how far the share price could rise if the plan succeeds: ~1.2–2× = one and a fifth to two times today's price (after new shares are issued).</li>
+<li><b>3×+</b> — both steps together: the chance the share price at least <b>triples</b> within 3–5 years. 13% = about 1 in 8.</li>
+</ul>
+<p><b>Is that good?</b> A typical mid-size producer has about a 1 in 20 (~5%) chance of tripling by luck alone. Above that is better than chance. And "doesn't triple" doesn't mean you lose money — it may just rise less.</p>
+<p><b>What about the metal price?</b> <i>Works</i> is about the company, not the metal. <i>If it works</i> runs from a cautious lower price (US$3,500 gold / US$54 silver) to today's (~US$4,180 / ~US$61) — it never assumes the metal goes up. <i>3×+</i> includes the chance the metal rises or falls. The columns further right show higher metal prices, but before new shares are issued, so they look bigger.</p></div></details><details class="x"><summary>Why 3–5 years, and what "2nd 3×" means</summary><div class="xb"><p><b>Why 3–5 years.</b> The goal is a 5–10× in about 10 years. A 3× in 3–5 years needs the same pace (~26–32% a year), so it is the first leg of that journey — and a window short enough to check: the catalysts are dated, and mistakes show up quickly.</p>
+<p><b>What "2nd 3×" means.</b> List B asks whether a company can triple in the next 3–5 years (the first leg). The 2nd-3× label asks what happens <i>after</i> that, from about year 5 to year 10: is there room, per share, for another 3×? Two 3× legs make roughly a 10×. It is <b>not</b> about cash: how many months of money a company has left is on the Financials tab of its tracker card.</p>
+<ul><li><span class="rwb long">Long</span> yes — a believable path to a second 3× by about year 10: a district-scale or still-growing resource, several assets, or production that can more than double from its own cash flow.</li>
+<li><span class="rwb medium">Medium</span> partly — a second leg exists, but it is capped (for example ~1.5–2×) or depends on the metal price rising.</li>
+<li><span class="rwb short">Short</span> no — the first re-rating is most of the value: a single asset, a short mine life, a takeover-type ending, a small carried stake, or a company already too big to multiply.</li></ul>
+<p>It is judged per share and on today's market value: a great deposit inside a company that is already priced for it can still be <i>partly</i> or <i>little</i>.</p>
+<p><b>How it affects the order.</b> Only as a tie-break: when two neighbours are within 2 points of each other and on the same side of the luck line, the one with more room for a 2nd 3× ranks first. A company can never pass one with clearly better odds.</p>
+<p><b>Monster watch</b> (<span class="mwt">watch</span>) marks companies with room for a 2nd 3× whose odds sit below the luck line because their big catalysts fall beyond 3–5 years. They are re-checked every Saturday and re-scored when a catalyst moves into the window.</p>
+<p><b>Reading the two together.</b> High odds + room for a 2nd 3× = a true 10× candidate. High odds + little room = a re-rating trade. Low odds + room for a 2nd 3× = a watchlist name.</p></div></details><details class="x"><summary>How management is graded</summary><div class="xb"><p><b>The people are often the asset.</b> The deposit does not move; the team decides whether it ever gets built. So every company carries a management grade from a one-off review (5 Oct 2026), refreshed every Saturday and whenever a CEO changes.</p>
+<p><b>Three sub-scores, 1–5.</b> <b>Track record</b>: what the CEO, chair and key executives built, sold or ran before, counting the misses as well as the hits and how many boards they sit on today. <b>Fit</b>: have they done <i>this</i> job before — same stage, same kind of deposit, same region. <b>Candour</b>: only from evidence, a dated promises-vs-delivery log per company and how bad news was handled. A fact line records insider ownership and pay.</p>
+<p><b>The grade.</b> <span class="mgb gA">A<span class="mgst">★</span></span> tier 1 — proven at this exact job, candid, invested. <span class="mgb gB">B</span> solid, or unproven but clean: the default when there is little evidence either way. <span class="mgb gC">C</span> real weaknesses — slipped dates, thin fit, thin candour. <span class="mgb gD">D</span> a pattern of failing shareholders.</p>
+<p><b>Skin in the game (1–5).</b> How much of their own money the team has at risk: <b>5</b> a large stake bought at market and still being added to · <b>3</b> a meaningful stake, mostly founder stock or grants, no selling · <b>1</b> under about half a percent, options only, net sellers while promoting, or a team that gets paid while shareholders lose (pay large against the market cap or rising while the share price falls, selling into weakness, bonuses on missed targets, a failed say-on-pay). Cheap founder paper and a controlling shareholder's block are not skin. Getting paid while shareholders lose is a bad signal on its own; as a repeated pattern it also counts against the grade. It is a signal of the team's own conviction and never moves the odds; when two companies' odds are within 2 points and the runway is the same, the team with more skin ranks first in list B.</p>
+<p><b>Failure is not a mark against anyone.</b> Almost every serial winner has a dead company behind them. What counts is how a failure ended for shareholders and what the team did next: a loss owned plainly and carried alongside shareholders is neutral, sometimes a plus (perseverance, lessons paid for); a loss hidden, re-dated into a new target, or carried by shareholders while the founder was paid is the negative — and only when it repeats does it become a pattern.</p>
+<p><b>How it moves the odds.</b> Neutral by default. "Chance it works" goes up only with a good reason (a team that has done exactly this before and delivers on dates) and down only with one (a pattern of missed promises, undisclosed problems, self-dealing). Full weight for explorers and developers, half for producers, a token amount for seniors and royalty companies, where the asset base carries the firm. Every move is written down in the history. A famous name earns nothing by itself.</p></div></details><details class="x"><summary>How to read the multiple columns</summary><div class="xb"><p class="note-top">Multiple = re-rated EV ÷ today's market cap, where re-rated EV = expected EBITDA at that price × a peer multiple (8–10× for seniors, 10–12× for growth mid-caps, 6–8× where the discount is jurisdictional or structural, ~20–25× for royalty and streaming companies — IAMGOLD, B2Gold, Fresnillo). <b>Progress</b> = the growth or turnaround delivered, at today's spot (US$4,180 / US$61). <b>Price columns</b> = the market adopts that long-term price: <b>US$3,500 Au / US$54 Ag</b>, <b>US$4,500 / US$69</b>, <b>US$5,500 / US$85</b>, <b>US$6,500 / US$100</b>, <b>US$7,000 / US$108</b> (~65:1; the US$7,000 column is extrapolated from the two before it). Gold-led names read the gold figure, silver-led the silver figure; Today's spot sits between the first and second columns (Q2 2026 realised prices sat near the middle one), and every column includes the growth step. <b>~</b> = judgement. Before buybacks, dilution and cost inflation.</p><p><b>Every column uses the same formula:</b> re-rated EV ÷ today's market cap, where re-rated EV = the company's expected EBITDA at that metal price × a peer multiple (~8–10× for seniors, ~10–12× for growth mid-caps, ~6–8× where the discount is jurisdictional or structural, ~20–25× for royalty and streaming companies). Producers already have cash flow, so unlike the developer page there is no P/NAV step — the question is what the market pays for a dollar of margin at each price.</p>
+<p><b>Progress</b> holds metal prices at today's spot (US$4,180 / US$61) and assumes the growth or turnaround it has promised (a new mine, a cost reset, a restart) is delivered. It isolates the operational story from the metal.</p>
+<p><b>The price columns</b> (US$3,500 / 54 · 4,500 / 69 · 5,500 / 85 · 6,500 / 100 · 7,000 / 108) re-run the same formula with margin at that gold / silver pair. They are <em>not</em> "if gold hits 5,500 tomorrow, the stock does X": producers re-rate when the market adopts a price as its long-term view and the margin shows up in reported quarters, not on the day of a spike. Today's spot sits between the first and second columns; Q2 2026 realised prices sat near the middle one. Every column includes the growth step. They include the Progress step — do not add the two.</p>
+<p><b>Which half of the pair?</b> Each column is one scenario (~65:1). A gold-led name reads 3,500 / 4,500 / 5,500 / 6,500 / 7,000; a silver-led name reads 54 / 69 / 85 / 100 / 108; a balanced Au·Ag name sits between.</p>
+<p><b>Why the fan-out differs by company.</b> Margin is leveraged to price — revenue rises, costs don't — so a high-cost producer (B2Gold, Equinox) spreads wide across the columns and a lower-cost one (Hecla, Fresnillo, Pan American) spreads less. That leverage is exactly List B's argument and List A's warning.</p>
+<p><b>What the numbers ignore:</b> cost inflation that follows metal prices, buybacks, dividends, hedges and dilution. Treat the columns as arithmetic that orders the names, not as price targets.</p>
+<p><b>The odds columns on list B</b> are a separate, per-share view. <em>Works</em> is the chance the row's plan is delivered inside the horizon; <em>If it works</em> is the multiple per share from a long-term price (US$3,500 / 54) to today's spot; <em>3×+</em> is the chance it works × the share of that range at or above 3×, plus a small chance of a 3× from the metal alone. For producers those odds are low by nature: a triple of a US$10B company is a US$30B company.</p></div></details></div>
+    </div>
+  </section>
+
+  <div class="lists">
+    <section class="list la" id="rank-a">
+      <div class="lhd"><div class="eyebrow">Ranking A</div><h2>Quality compounder</h2><p class="q">For the investor who wants to own producing cash flow through the cycle and accepts a market multiple to get it.</p></div>
+      <details class="x crit"><summary>What it ranks on</summary><div class="xb"><ol><li><b>Cost position</b> — AISC (or cash cost where AISC isn't published) versus the industry curve, and whether it is holding or drifting — the <em>cost curve</em> bar under each name</li>
+<li><b>Free-cash-flow yield</b> — at spot <em>and</em> at a stressed price (US$3,000 Au / US$45 Ag); how much of today's FCF is price</li>
+<li><b>Balance sheet</b> — net cash or debt, liquidity, refinancing dates</li>
+<li><b>Reserve life and replacement</b> — years of P&amp;P, and whether exploration replaces depletion</li>
+<li><b>Jurisdiction</b> — spread and quality; one country or many</li>
+<li><b>Capital discipline</b> — dividends and buybacks versus dilution history and deal record</li>
+<li class="note-li"><b>Reading the cost-curve bar:</b> every primary gold (or silver) mine in the world lined up from cheapest (left) to most expensive (right), by output. The dot is the company in 2026, the ring in 2025; the middle line splits the cheaper half from the costlier half. Lower-half producers keep earning when prices fall. Gold: Metals Focus / WGC, Q1 2026 (quartile lines estimated). Silver: estimated from 18 mines' 2026 guidance on the Silver Institute's by-product basis — silver-equivalent figures converted (±US$3–5/oz). * = Coeur publishes no AISC; estimate. Each tracker card's Numbers tab shows the figure used.</li></ol></div></details>
+      <div id="list-a"></div>
+    </section>
+    <section class="list lb" id="rank-b">
+      <div class="lhd"><div class="eyebrow">Ranking B</div><h2>Leverage &amp; re-rate — best odds of a 3×</h2><p class="q">For the investor who wants a producer that can multiply — through a growth project, a cost turnaround or the metal — ranked by the odds of a 3× per share inside 3–5 years. For producers those odds are low by nature.</p></div>
+      <details class="x crit"><summary>How the odds are built</summary><div class="xb"><ol><li><b>Works if</b> — the one thing that has to happen inside the horizon, and the chance it does (trigger dates, funding, track record)</li>
+<li><b>If it works</b> — the multiple per share after the dilution the plan needs; low end at US$3,500 gold / US$54 silver, high end at today's spot</li>
+<li><b>3×+ odds</b> — the chance it works × the share of that range at or above 3× (metal moves included), plus a small chance of a 3× without it</li>
+<li><b>The line</b> — a mid-tier producer with no edge has about a 5% chance of tripling in four to five years, a US$10B+ senior less; names below it don't beat that</li>
+<li class="note-li">The earlier criteria — starting discount, dated trigger, dilution, size of the prize, underwritability, survivable downside — now feed these numbers instead of a weighted order.</li></ol></div></details>
+      <div id="list-b"></div>
+    </section>
+  </div>
+
+  <footer class="method" id="method">
+    <div><h3>Read with care</h3><p>Every figure is approximate and mixed-date; unit costs are on each company's own definition (Coeur and Aya do not publish AISC). The cost-curve bar puts them on one basis — by-product AISC per ounce of the main metal, silver-equivalent figures converted (±US$3–5/oz); its gold curve is Metals Focus / WGC Q1 2026 with estimated quartile lines, its silver curve an estimate from 18 mines' 2026 guidance. Multiples are illustrative re-rating arithmetic, not forecasts or targets.</p><p>This is research shorthand to structure thinking, not investment advice — it does not account for position sizing, existing exposure, liquidity or currency.</p></div>
+    <div><h3>Page history</h3><p>Companies with revenue, ranked for two different appetites: what you pay for cash flow, and how much of the upside is the metal. Started 24 September 2026; First Majestic, IAMGOLD and Hecla added 1 October; audited 2 October (list B now ranks on the odds of a 3×); refreshed 3 October (prices to the 2 Oct close), with cost-curve positions.</p><p>Each list explains its own criteria above its first row; the explainers under the table cover the odds and the price columns.</p></div>
+  </footer>
+</div>
+<script>
+var CFG = {"base": 5, "aName": "Quality compounder", "bName": "Leverage & re-rate", "T": "/equities/trackers/#pm.", "MBT": {"au": "Gold-led", "ag": "Silver-led", "mixed": "Balanced Au/Ag", "other": "Other-metal-led"}, "mbcol": {"au": "#D9A94A", "ag": "#8A97A0", "mixed": "#9AA5A9", "other": "#B57AA8"}, "bkcol": {"value": "#D9A94A", "grade": "#E08A5C", "quality": "#7C9BD0", "scale": "#B57AA8", "producer": "#5FC49A", "royalty": "#5BB8C9"}};
+var D = [
+ {
+  "k": "firstmajestic",
+  "m": "ag",
+  "sc": [
+   "~1.2–1.5×",
+   "~0.95–1.2×",
+   "~1.4–1.75×",
+   "~1.85–2.3×",
+   "~2.3–2.9×",
+   "~2.5–3.2×"
+  ],
+  "rs": 3,
+  "rsWhy": "US$1.25B of cash against ~US$405M of near-zero-coupon converts, four producing mines and ~US$250M of quarterly FCF at US$60 silver — it cannot be forced to raise. A 3 because AISC of US$27–29 leaves a thin margin at US$45 silver, reserves cover ~6 years, nearly all cash flow is Mexican under hardening water, fee and tax rules with an unresolved Supreme Court loss, and a 2.2 beta makes 40–60% drawdowns routine. The loss path is silver at US$40–45 with a strong peso, AISC above US$30, a disappointing Jerritt PFS and a premium acquisition.",
+  "tm": "Q3 financials and AISC 5 Nov (announced) · San Dimas labour dispute (Q3: 12 days lost, unresolved 8 Oct) · Jerritt Canyon PFS Q4 2026 (management 28 Sep: \"end of this year, early next year\") · San Martin close Q4 · 2027 guidance mid-Jan · 2027 converts mature Jan 2027 · MRMR Mar 2027 · Jerritt first gold H2 2027",
+  "late": 0,
+  "ex": "US$41–45M, ~308,000 m: bonanza-over-narrow at San Dimas (1.30 m @ 6,994 g/t AgEq) replaces depletion; Navidad/Santo Niño (90.7 Moz AgEq) and Jerritt (7.8 Moz Au) are the two that could change the shape. Reserve life ~6 years is the number to watch at the Mar 2027 update.",
+  "exN": "Medium",
+  "exC": "med",
+  "name": "First Majestic Silver",
+  "short": "First Majestic",
+  "tick": "NYSE/TSX: AG",
+  "bk": "producer",
+  "cap": "US$8.37B",
+  "a": 10,
+  "b": 3,
+  "slug": "first-majestic-silver",
+  "pm": "Ag (~60–66% of revenue)",
+  "aKey": "~8–9× EBITDA · AISC US$27–29 · net cash US$0.7B · 6-yr reserves",
+  "aWhy": "The balance sheet is a compounder's — US$1.25B in the bank, converts at 0.125%, no bank debt — and nothing else is: the highest AISC among the larger silver names (guide US$27.69–28.77 against FY2025's US$21.17), ~6 years of reserves, ~95% of EBITDA in one country whose water, fee and tax rules are tightening, and a Jerritt restart that already failed once under this management. Stressed FCF (US$3,000 / US$45) is a 1–2% yield. Tenth: ahead of B2Gold on margin at spot (~54% vs ~44%) and a net-cash balance sheet against B2Gold's net debt and converts; ahead of Aya and Avino on scale and cash; behind IAMGOLD and Equinox on cost trend and reserve life.",
+  "aRisk": "AISC prints above US$30 while silver retreats; the Primero tax quantum; a water or EIA step in Mexico; a premium acquisition out of the treasury; Jerritt capex balloons after the PFS.",
+  "bKey": "~14% EBITDA per 10% in Ag+Au · 8–9× · −45% from the high · Jerritt PFS Q4",
+  "bWhy": "The Jerritt PFS is dated (Q4) but small (+~US$0.3B EBITDA on ~US$1B), Jerritt already failed once under this management, and at ~8× there is no multiple discount to harvest. Size: ~1–1.5× at spot; a 3× is mostly silver at US$100+ with a cycle-high multiple.",
+  "bRisk": "Silver mean-reverts before Los Gatos and Jerritt deliver; by-product mechanics push AISC above US$30; the treasury is spent on M&A rather than returned.",
+  "pw": 40,
+  "mw": "~1–1.5×",
+  "p3": 9,
+  "wi": "The Jerritt PFS and restart deliver 100–150 koz of gold from 2028 with AISC under US$29",
+  "cc": {
+   "p": 60,
+   "q": 3,
+   "curve": "silver",
+   "p0": 49,
+   "p0t": "~49th",
+   "w": "Borderline watch"
+  },
+  "rw": "medium",
+  "rwWhy": "Jerritt Canyon and Navidad could change the shape, but ~6-year reserves and size limit a second 3×.",
+  "mg": {
+   "g": "B",
+   "t": 3,
+   "f": 4,
+   "c": 3,
+   "why": "Twenty-year Mexican silver operator, guidance met since 2023, Gatos deal good; offset by the Jerritt Canyon failure, the SAT tax fight and a CEO who sells while promoting.",
+   "conf": "medium",
+   "odds": "no odds change",
+   "s": 2
+  }
+ },
+ {
+  "k": "iamgold",
+  "m": "au",
+  "sc": [
+   "~1.2–1.55×",
+   "~0.9–1.2×",
+   "~1.3–1.75×",
+   "~1.7–2.3×",
+   "~2.1–2.8×",
+   "~2.3–3.1×"
+  ],
+  "rs": 3,
+  "rsWhy": "Net cash, US$1.35B of liquidity, one US$450M note due 2028 and ~80% of NAV in Ontario and Québec on a 16–18-year Côté reserve: a Burkina shock would not threaten solvency at today's gold. A 3, level with B2Gold, because ~47% of production and most near-term repatriable cash sit in Burkina Faso (junta, 12% sliding royalty, 15% state stake, 4-year reserve, convoy attacks), the cost base is fourth-quartile (AISC ~US$2,200 incl. royalties — margin collapses below ~US$3,000) and reserves fell 7% in 2025. The loss path is gold toward US$3,000 while Essakane's extension slips.",
+  "tm": "Q3 results early Nov 2026 · Côté mine plan + reserve Q4 2026 (technical report shortly after) · NCIB renewal ~Dec · 2027 guidance + dividend decision Feb 2027 · Franco-Nevada royalty tranche-1 decision ~Apr 2027 · Essakane extension report H1 2027 · Nelligan PEA mid-2027",
+  "late": 0,
+  "ex": "US$54M, 30,000 m at Côté/Gosselin feeding the Q4 reserve (M&I 20.34 Moz, +12% in June) and ~US$24M at the Nelligan district (4.3 Moz Ind. / 7.5 Moz Inf., PEA mid-2027). Conversion, not discovery: management expects 70–75% of the 20 Moz to convert.",
+  "exN": "Medium (conversion)",
+  "exC": "med",
+  "name": "IAMGOLD",
+  "short": "IAMGOLD",
+  "tick": "NYSE: IAG · TSX: IMG",
+  "bk": "producer",
+  "cap": "US$10.6B",
+  "a": 9,
+  "b": 4,
+  "slug": "iamgold",
+  "pm": "Au",
+  "aKey": "~4.7× EBITDA · net cash · AISC US$2,200 · Burkina 47%",
+  "aWhy": "Capital discipline since 2024 is the best in the file — a US$865M net-debt swing to net cash, US$510M of buybacks at ~US$18, no M&A, a dividend promised only after the balance sheet was fixed — and Côté is the only new, long-life, tier-1 bulk mine any mid-tier owns. Ninth rather than higher because the two heaviest criteria are weak: cost position sits at the third/fourth-quartile boundary (~74th percentile on the US$2,000–2,150 guide, ~82nd on Q2's US$2,271, both incl. royalties; FCF yield falls from ~9–10% at spot to ~3% at US$3,000) and ~47% of ounces plus most of the free cash come from Burkina Faso with a 4-year reserve. Level with Equinox on costs and ramp-up risk; below it on reserve life and dividends, above it on balance sheet and discipline.",
+  "aRisk": "Essakane — a security stoppage, a repatriation block, or an uneconomic extension; AISC stuck above US$2,150; Côté grades drifting toward the 0.75 g/t resource average; insiders who sold at C$31–33.",
+  "bKey": "~5.6× at spot vs 8–10× peers · +16% EBITDA per 10% gold · Côté report Q4",
+  "bWhy": "The hardest-dated trigger on the page (Côté technical report, Q4) at ~5.6× spot EBITDA — but the re-rate is capped by Burkina Faso, which no study fixes. Size: ~1–1.55× at a 6–8× multiple; 3× needs gold at ~US$6,000+ plus continued buybacks.",
+  "bRisk": "The Côté report lands with lower grades and higher capex than hoped; gold falls before the dividend starts; Burkina re-opens the 85/15 split; the discount proves to be about Burkina, which no study fixes.",
+  "pw": 45,
+  "mw": "~1–1.55×",
+  "p3": 7,
+  "wi": "The Côté technical report (Q4) converts reserves, Essakane is extended and the dividend starts in 2027",
+  "cc": {
+   "p": 74,
+   "q": 3,
+   "curve": "gold",
+   "p0": 79,
+   "p0t": "~79th"
+  },
+  "rw": "medium",
+  "rwWhy": "Côté conversion plus the Nelligan district give growth, but US$10.6B and Burkina Faso cap the multiple.",
+  "mg": {
+   "g": "B",
+   "t": 4,
+   "f": 4,
+   "c": 3,
+   "why": "Adams finished Côté's ramp-up early, bought back the Sumitomo stake and cleared debt; two mine-level misses and a quietly raised cost guide keep it off A.",
+   "conf": "medium",
+   "odds": "no odds change",
+   "s": 2
+  }
+ },
+ {
+  "k": "hecla",
+  "m": "ag",
+  "sc": [
+   "~0.8–1×",
+   "~0.65–0.85×",
+   "~0.95–1.15×",
+   "~1.2–1.5×",
+   "~1.5–1.85×",
+   "~1.65–2.05×"
+  ],
+  "rs": 2,
+  "rsWhy": "Zero debt, ~US$0.5B of cash plus a US$0.5B revolver, 12–15-year reserves at US$25 silver and two Tier-1 US mines that generate free cash even at US$30 silver because by-products cover most of the cost. Not a 1 because the equity trades at ~13× EBITDA on by-product-flattered costs — a 30% silver pullback compresses EBITDA and the multiple together — and Lucky Friday has twice lost years of production. The loss path is operational: a Keno Hill permit refusal or tailings event under the post-Eagle Yukon regime, a Lucky Friday shaft event, or a zinc/lead/gold slump that turns 'negative AISC' into US$20+ real costs.",
+  "tm": "Lucky Friday cooling (due Sep — confirm at Q3) · Q3 results ~5 Nov · Greens Creek tailings Phase 4 decision Q4 · 2027 guidance Dec/Jan · YE reserves Feb 2027 (re-priced from US$25?) · Yukon mine-waste guidelines spring 2027 · Keno Hill licence amendments 2027, undated · pyrite circuit first production Q4 2027–H1 2028",
+  "late": 1,
+  "ex": "Record US$55M (US$16M Nevada): Bermingham Deep 62.7 oz/t Ag over 10.2 ft extends Keno Hill's high-grade trend; Greens Creek East Zone 169.5 oz/t Ag; Lucky Friday 30 Vein; new veins at Midas. With 12–15 years of reserves this is for Keno Hill's step-up and a Midas restart case, not replacement.",
+  "exN": "Medium",
+  "exC": "med",
+  "name": "Hecla Mining",
+  "short": "Hecla",
+  "tick": "NYSE: HL",
+  "bk": "producer",
+  "cap": "US$11.3B",
+  "a": 5,
+  "b": 7,
+  "slug": "hecla-mining",
+  "pm": "Ag (~70% of sales)",
+  "aKey": "zero debt · Alaska/Idaho ~85% · AISC US$6–13 (by-products) · 12–15-yr reserves",
+  "aWhy": "The strongest balance sheet and the cleanest jurisdiction mix of any producer here — debt-free, ~US$0.6B of cash and investments, a US$500M revolver, 12–15-year reserves at a US$25 reserve price, two Tier-1 US mines — and a reported AISC that is best-in-class because Greens Creek's gold, zinc and lead pay for the silver. Fifth (second of the miners) rather than higher because the two things a compounder also needs are missing: it pays almost nothing (US$0.015/yr, buybacks deferred until cash nears US$1B) and the price already says quality (~13× EBITDA, ~21× earnings), so the yield is ~5% at spot and ~1.5% stressed. It also beats Pan American on cost — lower half of the silver curve (~41st percentile) against Pan American's ~59th — but Pan American stays ahead on free-cash-flow yield (~8% vs ~5%), diversification and cash returned.",
+  "aRisk": "By-product prices fall and 'negative AISC' becomes US$20 real costs; Keno Hill permits slip into 2028; a Lucky Friday outage; multiple compression from 13× to a producer's 8–9×.",
+  "bKey": "~14× spot EBITDA · plan already priced · no dated trigger",
+  "bWhy": "The gate is Yukon permits, not money — about even odds. Size: at ~14× spot EBITDA the 20 Moz plan is already in the price (~0.7–1× even if delivered); a 3× needs silver near US$150.",
+  "bRisk": "Eighteen months of permit waiting while the multiple normalises; a silver pullback that compresses 13× and EBITDA at once.",
+  "pw": 45,
+  "mw": "~0.7–1×",
+  "p3": 3,
+  "wi": "Keno Hill 440 tpd is permitted in 2027, the pyrite circuit runs in 2028 and the 20 Moz plan holds",
+  "cc": {
+   "p": 41,
+   "q": 2,
+   "curve": "silver",
+   "p0": 50,
+   "p0t": "~50th"
+  },
+  "rw": "medium",
+  "rwWhy": "Keno Hill's step-up and 12–15 years of reserves; already priced at ~14× EBITDA.",
+  "mg": {
+   "g": "B",
+   "t": 3,
+   "f": 3,
+   "c": 4,
+   "why": "Unproven first-time CEO who has met guidance two years, cleaned the balance sheet and is candid about Keno Hill; executives only sell, CEO owns 0.03%.",
+   "conf": "medium",
+   "odds": "no odds change",
+   "s": 1
+  }
+ },
+ {
+  "k": "equinox",
+  "m": "au",
+  "sc": [
+   "~1.55–1.95×",
+   "~1.15–1.45×",
+   "~1.75–2.2×",
+   "~2.4–3×",
+   "~3–3.75×",
+   "~3.3–4.1×"
+  ],
+  "rs": 3,
+  "rsWhy": "Seven mines, 22.7 Moz of reserves, net cash, US$1.2B of liquidity, majority-Canadian ounces — permanent loss is remote. A 3 because its costs sit in the upper half of the curve (~66th percentile on guidance; Q2 US$2,175), both flagship ramps have missed repeatedly, ~25% of production sits under US sanctions authority, and the share count doubled through deals not yet proven.",
+  "tm": "Q3 results early Nov (Greenstone recovery, Valentine costs, first Orla quarter) · CEO handover Nov 1 · Castle Mountain federal permits Dec 2026 · Los Filos into 2027 guidance (Feb) · Valentine Phase 2 late 2028 · South Railroad gold 2028",
+  "late": 0,
+  "ex": "US$110–120M budget aimed at Greenstone underground (1.63 Moz @ 2.36 g/t), Camino Rojo sulphides and Musselwhite life (~6 years — the quiet number). With 22.7 Moz of reserves, exploration is about short-life assets, not the case.",
+  "exN": "Low–medium",
+  "exC": "low",
+  "name": "Equinox Gold",
+  "short": "Equinox",
+  "tick": "TSX/NYSE-A: EQX",
+  "bk": "producer",
+  "cap": "US$13.0B",
+  "a": 8,
+  "b": 6,
+  "slug": "equinox-gold",
+  "pm": "Au",
+  "aKey": "22.7 Moz P&P · net cash · AISC US$2,000+",
+  "aWhy": "The longest reserve life and the most Canadian ounces of the gold seniors, a balance sheet that went from US$1.2B of net debt to net cash in a year, a dividend and a buyback. Eighth rather than higher because cost position — criterion one — is poor, though no longer the worst here: Q2 AISC US$2,175, guidance raised to US$1,900–2,000, and the two Canadian mines that justify the multiple have missed every year since they opened. FCF yield is ~4–5% on what has been printed, ~10% on what has been promised.",
+  "aRisk": "Greenstone recovery stays ~80%; Valentine's Phase 2 is built before Phase 1 delivers a clean year; Nicaragua sanctions; a third CEO in fifteen months; gold at US$3,500 with costs at US$2,000.",
+  "bKey": "~4× pro forma EBITDA · ~8.8× trailing · 38% off high",
+  "bWhy": "Two flagships that have missed every year, a third CEO in November and a sanctions overhang make delivery about one in three. Size: if they deliver, ~5× spot pro forma EBITDA re-rates to 7–9× (~1.1–1.75× after the 2028 converts); 3× needs gold at ~US$5,800+.",
+  "bRisk": "Costs stay high and gold falls — the beta cuts both ways; Nicaragua; integration; the pro forma never arrives.",
+  "pw": 32,
+  "mw": "~1.1–1.75×",
+  "p3": 7,
+  "wi": "Greenstone and Valentine run at design through 2027 and group AISC falls toward US$1,800",
+  "cc": {
+   "p": 66,
+   "q": 3,
+   "curve": "gold",
+   "p0": 76,
+   "p0t": "~73–80th"
+  },
+  "rw": "short",
+  "rwWhy": "22.7 Moz of reserves at US$13B: the case is delivery and a multiple, not another 3× after that.",
+  "mg": {
+   "g": "C",
+   "t": 3,
+   "f": 3,
+   "c": 3,
+   "why": "Original guidance missed three years running and three CEOs in 15 months; Beaty's money and plain disclosure keep it off D.",
+   "conf": "medium",
+   "odds": "works 35% → 32%, 3×+ odds stay 7%",
+   "s": 4
+  }
+ },
+ {
+  "k": "fresnillo",
+  "m": "ag",
+  "sc": [
+   "~0.85–1.15×",
+   "~0.7–0.95×",
+   "~1–1.3×",
+   "~1.25–1.65×",
+   "~1.5–2×",
+   "~1.6–2.2×"
+  ],
+  "rs": 2,
+  "rsWhy": "Six mines, US$2.5B of cash against one 2050 bond, a 70% EBITDA margin, 362 Moz of silver reserves and a dividend paid through every cycle since 2008. Not a 1: one country with rising duties, security and water limits; a controlling shareholder that is also customer, refiner and service provider; falling grade at both flagships; two mines with under four years of reserves; a 2019–23 record of silver misses.",
+  "tm": "Q3 production ~Oct 21–22 · Rodeo PEA overdue · Novador PFS 2H 2026 · CFO handover Nov 1 · Q4 report with 2027–28 guidance Jan · FY results + final dividend ~Mar 2027",
+  "late": 0,
+  "ex": "~US$260M/yr, 75% brownfield; resources already 5.7× reserves. Novador (~10 Moz Au), Orisyvo (9.6 Moz), Guanajuato (388 Moz Ag) are the growth — all 2033. Watch replacement at Fresnillo and Saucito specifically.",
+  "exN": "Medium (life), low (multiple)",
+  "exC": "low",
+  "name": "Fresnillo plc",
+  "short": "Fresnillo",
+  "tick": "LSE: FRES",
+  "bk": "producer",
+  "cap": "US$26.2B",
+  "a": 6,
+  "b": 12,
+  "slug": "fresnillo",
+  "aKey": "~6× EBITDA at H1 prices (~7× spot) · ~7–9% FCF yield · US$1.7B net cash · 4% yield",
+  "aWhy": "On the numbers alone this is first: the lowest multiple, the highest FCF yield, the largest net cash, a 70% margin, and the deepest silver reserves of any producer here, with a payout policy heading to 50%. Sixth rather than higher on the two criteria numbers don't capture — jurisdiction (every mine in Mexico, Zacatecas the worst of it; Pan American spreads seven countries) and capital discipline as a minority experiences it (Peñoles refines every ounce, sets treatment charges with itself, and once sold the company a stream on its own failed mine). Ahead of Coeur on cost, balance sheet and reserve depth by a wide margin.",
+  "aRisk": "Grade decline at Fresnillo (162 g/t) and Saucito constrained through 2028; peso and wage inflation (+22% in dollars); H2 silver at US$55 not US$79; duties and water law; Herradura labour; a float that never lets the multiple close.",
+  "bKey": "~7× at spot · structural discount · no dated trigger",
+  "bWhy": "No dated trigger and a float that will not change — the re-rate has been 'available' for fifteen years. Size: even a full peer 9× is ~1.3× at spot, ~1× on a realistic 6–8×. Returns come from the ~4% yield and silver, not from a multiple.",
+  "bRisk": "The discount is permanent; H2 margins compress on US$55 silver and a 17.5 peso before any print shows it; Saucito output falls 2027–28; a dividend cut if silver revisits US$40.",
+  "pw": 20,
+  "mw": "~1–1.35×",
+  "p3": 2,
+  "wi": "The market re-rates it toward ~9× EBITDA as the 50% payout holds and grades stabilise",
+  "cc": {
+   "p": 39,
+   "q": 2,
+   "curve": "silver",
+   "p0": 46,
+   "p0t": "~46th"
+  },
+  "rw": "short",
+  "rwWhy": "Large brownfield resources, but growth projects are ~2033 and the float never changes.",
+  "mg": {
+   "g": "B",
+   "t": 3,
+   "f": 5,
+   "c": 3,
+   "why": "Perfect fit and no capital-allocation errors; silver guidance missed roughly every other year on grades, CEO holds no shares, 75% controlled by Peñoles.",
+   "conf": "medium",
+   "odds": "no odds change",
+   "s": 1
+  }
+ },
+ {
+  "k": "b2gold",
+  "m": "au",
+  "sc": [
+   "~2.15–2.9×",
+   "~1.65–2.2×",
+   "~2.4–3.2×",
+   "~3.15–4.2×",
+   "~3.9–5.2×",
+   "~4.3–5.7×"
+  ],
+  "rs": 3,
+  "rsWhy": "Four mines on three continents, ~US$2B of EBITDA, a buyback and a dividend. A 3 because half the ounces are in Mali, Goose has missed every guidance and lost its crusher to a fire, AISC has risen 50% in eighteen months, US$460M of converts dilute at US$3.17, and the founder just left.",
+  "tm": "Goose Phase-1 crusher mid-Oct 2026 · Q3 results ~early Nov · collars expire Dec · 2027 guidance Jan/Feb · Goose Phase 2 (4,000 tpd) with 10-week shutdown H1 2027 · Fekola Regional ounces 2028",
+  "late": 0,
+  "ex": "Back River US$46M, >35,000 m: Llama 21 m @ 19 g/t, new Tattuk zone, George 9 m @ 26 g/t. Goose reserves 2.4 Moz vs 3.8 Moz Indicated — conversion is the lever; watch the Dec 2026 reserve update.",
+  "exN": "High (Goose life)",
+  "exC": "med",
+  "name": "B2Gold",
+  "short": "B2Gold",
+  "tick": "TSX/NYSE-A: BTO/BTG",
+  "bk": "producer",
+  "cap": "US$6.75B",
+  "a": 12,
+  "b": 5,
+  "slug": "b2gold",
+  "aKey": "3.5× EBITDA · AISC US$2,400 · Mali 47% · Goose unproven",
+  "aWhy": "The cheapest multiple on the page and the worst cost position, the lead criterion: guidance of US$2,370–2,550 (Q2 US$2,356) puts it in the top decile of the industry curve (~89th percentile), up from ~57th in 2025 — and the weakest jurisdiction (Mali is half the ounces and a junta at war). Balance sheet is fine, reserve life ~7 years ex-Gramalote, capital returns real (US$224M in H1). Below the line since 3 Oct: a compounder has to compound through a downturn, and at US$3,000 gold the margin is ~US$500/oz. Ahead of Avino on multiple and diversification; behind Aya on cost, stressed margin, balance sheet (B2Gold carries net debt plus US$460M of in-the-money converts) and reserve life.",
+  "aRisk": "Another Goose miss through the H1 2027 shutdown; a Mali fiscal or security event; AISC stuck above US$2,300; ~145M convert shares; a first-year CEO and CFO.",
+  "bKey": "3.5× vs 5–7× peers · Goose to 4,000 tpd H2 2027 · collars off Dec",
+  "bWhy": "Dated operational fixes (Goose Phase 2 in H1 2027, collars off in December, Fekola Regional in 2028) on the cheapest multiple on the page — against a Goose that has missed every number and a Mali at war. Size: if the market only lifts it to IAMGOLD's ~5–6×, it is ~1.4–2.3× per share after the converts; 3× needs gold at ~US$5,000+ or a 6–8× multiple.",
+  "bRisk": "Goose Phase 2 slips into H2 2027 and the market stops believing 300 koz; Mali; the re-rate arrives after the converts; gold falls before costs do.",
+  "pw": 32,
+  "mw": "~1.4–2.3×",
+  "p3": 9,
+  "wi": "Goose reaches 4,000 tpd by H2 2027, Fekola Regional produces in 2028, and Mali holds",
+  "cc": {
+   "p": 89,
+   "q": 4,
+   "curve": "gold",
+   "p0": 57,
+   "p0t": "~57th",
+   "w": "Rising — watch"
+  },
+  "rw": "medium",
+  "rwWhy": "Goose conversion and Fekola Regional add life; size and Mali cap anything beyond a re-rating.",
+  "mg": {
+   "g": "C",
+   "t": 3,
+   "f": 4,
+   "c": 2,
+   "why": "Founder retired; a career CFO is CEO. Goose capex went C$800M → C$1.54B and guidance was cut twice, with the misses buried under neutral headlines.",
+   "conf": "medium",
+   "odds": "works 35% → 32%, 3×+ odds 10% → 9%",
+   "s": 1
+  }
+ },
+ {
+  "k": "paas",
+  "m": "mixed",
+  "sc": [
+   "~1.1–1.3×",
+   "~0.9–1.1×",
+   "~1.2–1.4×",
+   "~1.5–1.8×",
+   "~1.8–2.2×",
+   "~1.95–2.4×"
+  ],
+  "rs": 2,
+  "rsWhy": "Net cash, US$3.2B liquidity, eleven mines, 511 Moz of silver reserves. Not a 1: Q2 miss with gold costs above guide, live disruptions in three of seven countries, and two growth assets that are blocked or a decade out.",
+  "tm": "Q3 results Nov (gold-cost recovery; Q3 gold warned 3–6 koz below range) · Skarn shaft engineering to Board H2 2026 · Escobal consultation open-ended · Timmins PEA H1 2027",
+  "late": 1,
+  "ex": "US$132–135M budget replaces depletion; silver reserves +13% on Juanicipio inclusion, gold flat. The Skarn (309 Moz Indicated) needs US$1.9B, not more drilling.",
+  "exN": "Low",
+  "exC": "low",
+  "name": "Pan American Silver",
+  "short": "Pan American",
+  "tick": "NYSE/TSX: PAAS",
+  "bk": "producer",
+  "cap": "US$18.7B",
+  "a": 4,
+  "b": 13,
+  "slug": "pan-american-silver",
+  "aKey": "9× EBITDA · ~8% FCF yield at H1 prices · net cash",
+  "aWhy": "The widest jurisdiction spread, the largest reserve base, net cash with US$3.2B of liquidity and the clearest capital-return framework (US$1B/yr, buybacks at ~US$49). Cost position is the weak leg: both segments sit just above the middle of the industry curve — gold ~59th percentile on guidance (~68th on Q2's US$1,984), silver ~61st. Juanicipio alone is first-quartile, but it is 44% owned and averaged with costlier mines. At ~8% FCF yield with net cash this is what a compounder looks like; the price already says so.",
+  "aRisk": "Gold-segment cost creep at Jacobina/El Peñon/Timmins; H2-weighted delivery through Bolivia, Chile and Argentina disruptions; Skarn capex; a gold-miner multiple that may never re-rate to a silver one.",
+  "bKey": "US$20B base · benchmark, not candidate",
+  "bWhy": "High odds that the plan holds, but it is a plan to compound, not to re-rate. Size: ~0.95–1.35× at spot; a triple is a US$60B company.",
+  "bRisk": "Multiple compression on a gold-cost miss; Escobal stays idle; Skarn re-scoped again.",
+  "pw": 60,
+  "mw": "~0.95–1.35×",
+  "p3": 2,
+  "wi": "Gold AISC returns inside guidance, US$1B a year of returns continue and Skarn stays on schedule",
+  "cc": {
+   "p": 59,
+   "q": 3,
+   "curve": "gold",
+   "p0": 60,
+   "p0t": "~60th",
+   "x": "gold segment ~59th · silver ~61st"
+  },
+  "rw": "short",
+  "rwWhy": "Skarn and Escobal are real options, but on US$19B they compound rather than multiply.",
+  "mg": {
+   "g": "B",
+   "t": 3,
+   "f": 5,
+   "c": 4,
+   "why": "Candid operator that delivers roughly to guidance and returns cash; its three biggest deals (Tahoe, Yamana, MAG) were bought at or near the top and Escobal is seven years idle.",
+   "conf": "medium",
+   "odds": "no odds change",
+   "s": 1
+  }
+ },
+ {
+  "k": "coeur",
+  "m": "au",
+  "sc": [
+   "~1.3–1.6×",
+   "~0.9–1.2×",
+   "~1.3–1.6×",
+   "~1.7–2.2×",
+   "~2.1–2.7×",
+   "~2.3–2.95×"
+  ],
+  "rs": 3,
+  "rsWhy": "Seven mines in Canada, the US and Mexico, net cash, record FCF — permanent loss is remote. A 3 because the last four quarters hold three misses, a mid-year guidance cut, three simultaneous ramps and a tripled share count; the loss path is another de-rating.",
+  "tm": "Q3 results early Nov (H2 weighted to Q4 with Q3 the peak capex quarter, so a soft Q3 FCF is guided; Rochester H2 crushing, Rainy River UG to 5,000 tpd, New Afton C-Zone to 16k tpd by year-end) · combined reserve statement Feb 2027 · Silvertip PFS early 2027",
+  "late": 0,
+  "ex": "Brownfield: Palmarejo drilling outside the Franco-Nevada stream, New Afton K-Zone, Silvertip PFS. Reserve life is the quiet issue — Kensington 5 years, Rainy River to 2035.",
+  "exN": "Low–medium",
+  "exC": "low",
+  "name": "Coeur Mining",
+  "short": "Coeur",
+  "tick": "NYSE/TSX: CDE",
+  "bk": "producer",
+  "cap": "US$17.4B",
+  "a": 7,
+  "b": 9,
+  "slug": "coeur-mining",
+  "aKey": "~8× target EBITDA · net cash · 3 ramps",
+  "aWhy": "Cheapest of the ten on forward numbers (~7.7% FCF yield on target, 11.5× forward P/E) with net cash, a US$1B undrawn revolver, a US$750M buyback and the cleanest jurisdictions in the file. Seventh — behind Fresnillo and Hecla — because the yield is a target, not a print: H1 delivered 43% of the year's FCF, Rochester has missed three years running, and Kensington has five years of reserves.",
+  "aRisk": "H2 delivery on a cut guidance; Rainy River CAS US$2,700–3,000; Franco-Nevada stream on Palmarejo gold; integration of assets never run through a full year.",
+  "bKey": "turnaround at ~8× · 30% off high",
+  "bWhy": "Three ramps at once after three misses — about a coin flip, tested at the Q3 print in November. Size: ~1.1–1.6× at a peer 8–10×; on a US$19B base a 3× needs gold near US$7,000.",
+  "bRisk": "A fourth Rochester miss; Rainy River underground stalls; the market keeps pricing the dilution memory.",
+  "pw": 45,
+  "mw": "~1.1–1.6×",
+  "p3": 3,
+  "wi": "H2 meets the cut guidance and the Rainy River, New Afton and Rochester ramps hold",
+  "cc": {
+   "p": 63,
+   "q": 3,
+   "curve": "gold",
+   "est": 1
+  },
+  "rw": "short",
+  "rwWhy": "Three ramps and short reserve lives at US$18B: a re-rating story, not a multiplier.",
+  "mg": {
+   "g": "B",
+   "t": 3,
+   "f": 4,
+   "c": 4,
+   "why": "Hits annual guidance and reports bad news plainly; Rochester came in 72% over budget, Silvertip was written off, and the New Gold block cave is new ground.",
+   "conf": "medium",
+   "odds": "no odds change",
+   "s": 2
+  }
+ },
+ {
+  "k": "aya",
+  "m": "ag",
+  "sc": [
+   "~1.1–1.45×",
+   "~0.8–1.2×",
+   "~1.2–1.7×",
+   "~1.6–2.3×",
+   "~2–2.9×",
+   "~2.2–3.2×"
+  ],
+  "rs": 3,
+  "rsWhy": "A producing, net-cash, 65%-margin mine limits permanent loss; but one asset, one country, a 2025 guidance miss, an H2 cost step-up, and a ~14× valuation that needs a PEA-stage gold project to work. The loss path is de-rating.",
+  "tm": "Q3 production Oct (catch-up sales; first ~16:1 strip quarter) · Boumadine infill through 2027 · Boumadine FS H2 2027 (slipped once) · ground-breaking end-2026 · Moroccan mining-law adoption undated",
+  "late": 0,
+  "ex": "Boumadine: 145,000 m YTD on 14 rigs, 360,000 m infill to convert 4.3 Moz AuEq Inferred — conversion drilling that is the thesis. Zgounder near-mine targets life beyond 2036.",
+  "exN": "High",
+  "exC": "high",
+  "name": "Aya Gold & Silver",
+  "short": "Aya",
+  "tick": "TSX/Nasdaq: AYA",
+  "bk": "producer",
+  "cap": "US$3.78B",
+  "a": 11,
+  "b": 1,
+  "slug": "aya-gold-silver",
+  "aKey": "US$17 cash cost · 65% margin · single asset",
+  "aWhy": "The lowest cost of the five silver names per silver-equivalent ounce (cash cost US$16.82, AISC ~US$19 per management, gross margin 65.5%) and falling while peers' rise; net cash, no equity since 2025. On the industry curve it is mid-pack (~64th percentile, from ~86th in 2025) only because a pure-silver mine has no by-products to subtract. Eleventh because the FCF yield is ~3% at a 14× multiple, the reserve life is 11 years on one mine in one country, and no AISC is published — a compounder's economics at a growth stock's price. Moved above B2Gold on 3 Oct: ahead of B2Gold on cost, stressed margin, balance sheet and reserve life.",
+  "aRisk": "Zgounder grade (145 reserve vs 165 M&I vs ~140 milled); H2 strip doubling; Morocco's draft mining law; a 3.3-beta stock in a silver pullback.",
+  "bKey": "Boumadine NPV US$3.5B vs EV ~US$4B",
+  "bWhy": "The only producer with a dated study (Boumadine FS, 2027) on a project big enough to more than double EBITDA — but 80% of that resource is Inferred, the FS has slipped once, and ~15× spot EBITDA already prices much of it. Size: a funded Boumadine is ~1.2–2× per share at today's prices; 3× needs gold and silver 20–40% higher, which a 3.3 beta makes plausible.",
+  "bRisk": "FS at an 8% rate with Indicated-only tonnes and FS capex shrinks the NPV; a US$463M+ build brings back the equity market; silver at US$50 compresses the multiple before the mine feels it.",
+  "pw": 42,
+  "mw": "~1.2–2×",
+  "p3": 13,
+  "wi": "The Boumadine FS (2027) holds the PEA economics and the build is funded without a large raise",
+  "cc": {
+   "p": 64,
+   "q": 3,
+   "curve": "silver",
+   "p0": 86,
+   "p0t": "~86th"
+  },
+  "rw": "long",
+  "rwWhy": "Boumadine (4.3 Moz AuEq Inferred, 14 rigs) could more than double the company after Zgounder — a true second mine.",
+  "mg": {
+   "g": "B",
+   "t": 3,
+   "f": 4,
+   "c": 2,
+   "why": "Built Zgounder on budget and 2026 is running to plan: the team has proved it can deliver a mine. Held at B, not higher, because two straight years of missed production guidance went out under 'record' headlines and the 2025 pay vote failed. Candour stays 2 — the test is whether 2026 guidance is met and said plainly.",
+   "conf": "medium",
+   "odds": "no odds change",
+   "s": 1
+  }
+ },
+ {
+  "k": "avino",
+  "m": "ag",
+  "sc": [
+   "~0.9–1.15×",
+   "~0.75–0.95×",
+   "~1.05–1.4×",
+   "~1.4–1.85×",
+   "~1.75–2.3×",
+   "~1.9–2.5×"
+  ],
+  "rs": 3,
+  "rsWhy": "Producing, debt-free, US$144M cash and reserve-backed growth keep it from a 4. A 3, level with Aya and First Majestic: one country (Mexico), effectively one producing mine, a Q2 AISC ~50% over guidance that halved per-ounce margin, and a valuation that needs an expansion with no study, capex or date.",
+  "tm": "Q3 production Oct · Q3 financials Nov (AISC vs US$25–27 guide) · long-hole stoping start \"Q4, any day now\" (was 500 tpd in H2 2026) · La Preciosa standalone 2,500–3,000 tpd mill: PFS mid-2027 → FS mid-2028 → production ~2030, capex US$100–200M (management, 29 Sep)",
+  "late": 0,
+  "ex": "301 Moz AgEq M&I already booked; 2026 step-outs at both sites are nice-to-have. What moves the stock is grade delivered to the mill, not more ounces.",
+  "exN": "Medium",
+  "exC": "med",
+  "name": "Avino Silver & Gold",
+  "short": "Avino",
+  "tick": "NYSE-A/TSX: ASM",
+  "bk": "producer",
+  "cap": "US$928M",
+  "a": 13,
+  "b": 2,
+  "slug": "avino-silver-gold",
+  "aKey": "AISC US$38.75 vs US$25–27 guide",
+  "aWhy": "Debt-free with US$144M cash and a buyback — the balance sheet is a compounder's. The cost position is not: Q2 AISC US$38.75 against US$25–27 guided, recoveries down to 69% silver, and a ~2.5% FCF yield on a US$1B cap at ~17× EBITDA. Last, below the line, until unit costs re-converge with guidance.",
+  "aRisk": "Costs stay elevated while development rock and oxidised ore keep recoveries low; a standalone-mill decision adds capex and Mexican permitting; H1 delivered ~45% of guidance; management plays down bad numbers (see the 5 Oct candour note on the card).",
+  "bKey": "US$0.94B base · standalone mill ~2030",
+  "bWhy": "The cost reversal is dated (Q3 print, November) but worth only ~1.1×. The real upside is now a bigger, later plan: management said on 29 Sep (spoken, not yet in a release) that it is pursuing a standalone 2,500–3,000 tpd La Preciosa mill — PFS mid-2027, FS mid-2028, production ~2030, capex US$100–200M — that could lift output to ~6.5 Moz AgEq. Size: ~1.5–2.3× per share at today's silver if it is built and costs return to guidance. But first production lands at the edge of the horizon and needs a new-mill permit in Mexico, so 'works' is about one in five, and a 3× still needs silver at ~US$70–80+.",
+  "bRisk": "Long-hole grades disappoint; the standalone mill becomes a US$100M+ build; silver mean-reverts before the ramp; 2026 guidance missed.",
+  "pw": 20,
+  "mw": "~1.5–2.3×",
+  "p3": 11,
+  "wi": "AISC returns to guidance and a standalone La Preciosa mill (PFS mid-2027, FS mid-2028) is funded and built by ~2030",
+  "cc": {
+   "p": 83,
+   "q": 4,
+   "curve": "silver",
+   "p0": 26,
+   "p0t": "~26th",
+   "w": "Sell-trigger watch"
+  },
+  "rw": "medium",
+  "rwWhy": "A standalone La Preciosa mill could lift output to ~6.5 Moz AgEq by ~2030; costs must come back first.",
+  "mg": {
+   "g": "B",
+   "t": 3,
+   "f": 4,
+   "c": 3,
+   "why": "Met production guidance three years running and runs no debt; the Q2 2026 cost miss sat in a table rather than the headline and insiders are net sellers. Yellow flag, not a pattern yet.",
+   "conf": "medium",
+   "odds": "no odds change",
+   "s": 2
+  }
+ },
+ {
+  "k": "agnico",
+  "m": "au",
+  "sc": [
+   "~1–1.25×",
+   "~0.8–1×",
+   "~1.1–1.35×",
+   "~1.4–1.75×",
+   "~1.75–2.15×",
+   "~1.9–2.35×"
+  ],
+  "rs": 1,
+  "rsWhy": "Net cash US$3.3B, A-/A3 ratings, ~US$2B undrawn revolver, 11 mines with ~85% of ounces in Canada and free cash flow even at US$3,000 gold — nothing can force a raise or impair the equity. The loss path is mark-to-market: US$3,500 gold at ~9× is ~0.8× today, worse with a Hope Bay overrun or another geotechnical or safety event.",
+  "tm": "Q3 results 28 Oct · Barnat restart Q4 2026 · FY results, reserves and 2027 (possibly five-year) guidance Feb 2027 · Odyssey shaft Q2 2027 · Detour underground plan mid-2027 · Hope Bay first gold 2030",
+  "late": 0,
+  "ex": "Industry-largest budget (US$565–635M in 2026) replaces depletion at ~US$10/oz: Odyssey Artemis 13.7 g/t over 14.6 m, Detour West Pit 2.5 g/t over 62.3 m, Hope Bay Patch 7 18.5 g/t over 11.3 m. On a US$93B company no single hole moves the stock.",
+  "exN": "Low (on this scale)",
+  "exC": "low",
+  "name": "Agnico Eagle Mines",
+  "short": "Agnico",
+  "tick": "NYSE/TSX: AEM",
+  "bk": "producer",
+  "cap": "US$93.1B",
+  "slug": "agnico-eagle-mines",
+  "pm": "Au (~98.5% of revenue)",
+  "aKey": "~8.9× EBITDA · AISC ~31st pct · net cash US$3.3B · ~85% Canada",
+  "aWhy": "First on every criterion except price, and the price is unusually low: lower-half costs (AISC US$1,459 in Q2, ~31st percentile of world gold output), net cash US$3.27B with an A rating, ~16 years of reserves anchored by Detour and Malartic, ~85% of ounces in Canada, and ≥40% of free cash flow returned (H1 ~48%). It trades at ~8.9× EBITDA, the bottom of its own five-year range, for a ~4.9% FCF yield. First ahead of the two royalty companies because it offers a similar quality of cash flow at less than half their multiple.",
+  "aRisk": "Barnat losses beyond ~150 koz a year; a Hope Bay overrun in Nunavut; another fatality or geotechnical event; AISC drifting above US$1,600 as royalties and labour inflate.",
+  "bKey": "US$93B base · compounder, not candidate",
+  "bWhy": "High odds the plan holds (~60%), but the growth that matters — Hope Bay and Detour underground — arrives around 2030, at the edge of the horizon. Size: ~0.8–1.25× at today's prices; a 3× is a ~US$280B company and needs US$6,700–7,200 gold plus the full plan.",
+  "bRisk": "Gold falls while capex peaks (2027); a de-rating toward 8× on more operating incidents.",
+  "pw": 63,
+  "mw": "~0.8–1.25×",
+  "p3": 3,
+  "wi": "Barnat is contained, Odyssey's shaft starts in 2027 and Hope Bay stays on its US$2.4B budget for first gold in 2030",
+  "cc": {
+   "p": 31,
+   "q": 2,
+   "curve": "gold",
+   "p0": 36,
+   "p0t": "~36th"
+  },
+  "a": 1,
+  "b": 10,
+  "rw": "short",
+  "rwWhy": "Grows for decades (Hope Bay, Detour, Odyssey), but at US$93B it compounds rather than multiplies.",
+  "mg": {
+   "g": "A",
+   "t": 5,
+   "f": 5,
+   "c": 4,
+   "why": "Has hit production guidance every year since the Kirkland merger, returned record cash and quantified the Malartic ounce loss by year in the headline release.",
+   "conf": "medium",
+   "odds": "works 60% → 63%, 3×+ odds stay 3%",
+   "s": 2
+  }
+ },
+ {
+  "k": "wheaton",
+  "m": "mixed",
+  "sc": [
+   "~1.25–1.55×",
+   "~1.05–1.3×",
+   "~1.4–1.75×",
+   "~1.7–2.15×",
+   "~2.05–2.55×",
+   "~2.2–2.8×"
+  ],
+  "rs": 2,
+  "rsWhy": "~87% cash margins on contractual costs, no capex or mine-operating exposure, 47 assets with 38 partners and positive free cash flow even at US$3,000/US$45. Not a 1: ~24× EBITDA, US$1.87B of net debt after Antamina, and Vale plus Newmont still ~55% of revenue. The loss path is metal plus multiple: US$3,000 at 18× is ~0.6× today.",
+  "tm": "Kurmuk first gold Oct 2026 · Q3 results early Nov · Blackwater 1A, Platreef and Fenix commercial production Q4 2026 · 2027 guidance + five-year outlook Feb 2027 · C$346M minimum-tax payment Mar 2027 · back to net cash ~2027 · Salobo expansion H1 2028",
+  "late": 0,
+  "ex": "No exploration budget of its own — partners' drilling extends streams for free (Antamina ~95% reserve replacement, Salobo 40–50-year life, Blackwater expansion). Optionality, not a driver.",
+  "exN": "Low (free optionality)",
+  "exC": "low",
+  "name": "Wheaton Precious Metals",
+  "short": "Wheaton",
+  "tick": "NYSE/TSX: WPM",
+  "bk": "royalty",
+  "cap": "US$61.3B",
+  "slug": "wheaton-precious-metals",
+  "pm": "Au·Ag (~49% / 49% of H1 revenue)",
+  "aKey": "Streamer · ~87% margin · ~24× EBITDA · net debt US$1.9B",
+  "aWhy": "The best cost position a precious-metals company can have — contractual costs of ~US$568 per ounce, ~87% margins, no capex — plus ~23 years of reserves and growth to ~1.2M GEOs by 2030 that is already built or paid for. Third, behind Franco-Nevada, because the US$4.3B Antamina stream turned net cash into US$1.87B of net debt, a third of revenue still comes from Vale's Salobo, and the price is ~24× EBITDA for a ~4% cash-flow yield. Above Pan American on cost position, stressed cash flow and reserve life.",
+  "aRisk": "Antamina earns a low return at today's silver; a Salobo or Antamina disruption while debt is high; the 15% Canadian minimum tax; the multiple falls from ~24× toward 18×.",
+  "bKey": "US$62B base · lowest operating leverage",
+  "bWhy": "The 1.2M GEO plan is likely (~65%) because most of it is already built, but it is priced in at ~21–24× EBITDA. Size: ~1.05–1.55× at today's prices by 2030; a 3× is a ~US$186B company and needs US$7,000 gold and US$108 silver with the multiple held.",
+  "bRisk": "Ramp-ups slip (Goose, Mineral Park and Kurmuk already ran late); multiple compression on a metal pullback.",
+  "pw": 65,
+  "mw": "~1.05–1.55×",
+  "p3": 3,
+  "wi": "The 2026–28 ramp-ups deliver ~1.2M GEOs by 2030, net cash returns by ~2027 and the market keeps paying ~20× or more",
+  "ccna": "n/a · fixed ~US$568/GEO",
+  "a": 3,
+  "b": 11,
+  "rw": "short",
+  "rwWhy": "Built-in growth to ~1.2M GEOs, but at US$62B a second 3× is not realistic.",
+  "mg": {
+   "g": "A",
+   "t": 4,
+   "f": 5,
+   "c": 4,
+   "why": "Beat guidance three years running, no debt, no write-offs; the CEO changed in March 2026 and the growth plan depends on other operators' builds, so no odds move.",
+   "conf": "medium",
+   "odds": "no odds change",
+   "s": 2
+  }
+ },
+ {
+  "k": "franco",
+  "m": "au",
+  "sc": [
+   "~1.2–1.5×",
+   "~0.85–1.05×",
+   "~1.05–1.3×",
+   "~1.25–1.55×",
+   "~1.5–1.85×",
+   "~1.6–1.95×"
+  ],
+  "rs": 2,
+  "rsWhy": "Zero debt, US$4.3B of available capital, ~91% EBITDA margins with no cost or capex exposure and 121 cash-flowing assets, none above ~12% of revenue — it never needs equity, even at US$3,000 gold. Not a 1: the risk is valuation (~22× EBITDA, ~31× earnings) and two top-4 streams step down in 2027–28. The loss path is multiple compression to 15–18× with gold at US$3,000–3,500: a 35–50% drawdown, not a wipe-out.",
+  "tm": "Q3 results early Nov · Panama: decision on formal negotiations with First Quantum (no date) · first Cobre stockpile ounces H2 2026 · 2027 guidance + five-year outlook Mar 2027 · Candelaria step-down 2027 · Côté buy-back decision ~mid-2027 · Antapaccay step-down H2 2028",
+  "late": 1,
+  "ex": "No exploration spend — 275 exploration and 41 advanced royalties ride on operators' drilling (Hemlo resource growth, Detour underground, Porcupine, Valentine Phase 2). No single result moves a 550k-GEO portfolio by more than 2–3%.",
+  "exN": "Low (free optionality)",
+  "exC": "low",
+  "name": "Franco-Nevada",
+  "short": "Franco-Nevada",
+  "tick": "NYSE/TSX: FNV",
+  "bk": "royalty",
+  "cap": "US$46.4B",
+  "slug": "franco-nevada",
+  "pm": "Au 68% · Ag 16% · energy ~10% of H1 revenue",
+  "aKey": "Royalties · zero debt · ~91% margin · 435 assets · ~22× EBITDA",
+  "aWhy": "Unbeatable on cost and balance sheet: no mining costs (US$344 per GEO, ~92% margin), zero debt, US$4.3B to deploy, 435 assets with none above ~12% of revenue and 19 straight dividend increases. Second, behind Agnico, on price: ~22× EBITDA buys a ~3.7–3.9% cash-flow yield, organic growth to 2030 is only ~8%, and Candelaria and Antapaccay step down in 2027–28. Ahead of Wheaton on balance sheet (no debt) and diversification (largest asset ~11% of revenue vs Salobo's 34%).",
+  "aRisk": "Capital deployed at peak prices into development juniors (i-80, Bullabulling, Orezone); a Panama deal that ends the arbitration but cuts the stream; Karma-style sovereign hits; multiple compression.",
+  "bKey": "US$46B base · Cobre is the only lever",
+  "bWhy": "Organic delivery is likely; the re-rate case needs Panama to restart Cobre with the stream intact (~35%), which adds ~30% to GEOs. Size: ~1–1.5× at today's prices; a 3× is a ~US$138B company and needs gold near US$9,000 or transformational deals.",
+  "bRisk": "Panama frames Cobre as a short closure with no stream value; the royalty multiple compresses.",
+  "pw": 35,
+  "mw": "~1–1.5×",
+  "p3": 2,
+  "wi": "Panama signs a restart framework that keeps the stream intact and the 2030 organic outlook is delivered through the 2027–28 step-downs",
+  "ccna": "n/a · fixed ~US$344/GEO",
+  "a": 2,
+  "b": 8,
+  "rw": "short",
+  "rwWhy": "Panama is the one big lever; at US$46B the portfolio compounds rather than multiplies.",
+  "mg": {
+   "g": "B",
+   "t": 3,
+   "f": 5,
+   "c": 4,
+   "why": "Proven royalty team that reports plainly and runs no debt; the Cobre Panama concentration was a US$1B misjudgement whose resolution is outside its hands.",
+   "conf": "medium",
+   "odds": "no odds change",
+   "s": 3
+  }
+ }
+];
+var LOW_FROM = {a:12, b:7};
+var SC = ["Progress", "3,500 / 54", "4,500 / 69", "5,500 / 85", "6,500 / 100", "7,000 / 108"];
+var BK = {"value": "Cheap defined ounces", "grade": "Grade / discovery", "quality": "Quality / jurisdiction", "scale": "Scale & financing", "producer": "Producer / cash flow", "royalty": "Royalty & streaming"};
+var DIV = {"a": "not yet a compounder. Costs are too high, or rising too fast, for these companies to keep earning well if metal prices fall.", "b": "no better than luck. A typical mid-size producer has roughly a 1-in-20 (~5%) chance of tripling in 4–5 years; these don't beat that. Good businesses to own — just not bets on a triple."};
+var MB = {"au": "Au", "ag": "Ag", "mixed": "Au·Ag", "other": "Mn"};
+var HIST = {"snaps": [{"d": "2026-10-02", "headline": "Starting point for the history: the page was audited and list B now ranks on the odds of a 3×.", "px": "", "low": {"a": 10, "b": 7}, "rows": {"firstmajestic": {"a": 7, "b": 4, "p3": 9, "rs": 3}, "iamgold": {"a": 6, "b": 6, "p3": 7, "rs": 3}, "hecla": {"a": 2, "b": 8, "p3": 3, "rs": 2}, "equinox": {"a": 5, "b": 5, "p3": 7, "rs": 3}, "fresnillo": {"a": 3, "b": 9, "p3": 2, "rs": 2}, "b2gold": {"a": 8, "b": 3, "p3": 10, "rs": 3}, "paas": {"a": 1, "b": 10, "p3": 2, "rs": 2}, "coeur": {"a": 4, "b": 7, "p3": 3, "rs": 3}, "aya": {"a": 9, "b": 1, "p3": 13, "rs": 3}, "avino": {"a": 10, "b": 2, "p3": 11, "rs": 3}}}, {"d": "2026-10-03", "headline": "Three seniors added: Agnico Eagle goes straight to first on the compounder list, with Franco-Nevada and Wheaton second and third in a new royalty & streaming bucket. Cost-curve positions added; B2Gold drops below the line and Avino is flagged for its cost climb.", "px": "Gold ~US$4,160 · silver ~US$60.7 (2 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 4, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 6, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 8, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 5, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 11, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 3, "p3": 10, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 12, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 7, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 9, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 10, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 13, "p3": 2, "rs": 2}}}, {"d": "2026-10-04", "headline": "Runway labels added: only Aya has a long runway; the seniors and royalty companies compound rather than multiply. Two near-ties in list B swap (IAMGOLD above Equinox, Hecla above Coeur). No odds changed.", "px": "Gold ~US$4,160 · silver ~US$60.7 (2 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 4, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 5, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 11, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 3, "p3": 10, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 12, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 8, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 9, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 10, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 13, "p3": 2, "rs": 2}}}, {"d": "2026-10-05", "headline": "No new releases or outside news for the producers and royalty companies. Prices stay at the 2 Oct close; no ranking changes.", "px": "Gold ~US$4,140 · silver ~US$60.3 (2 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 4, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 5, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 11, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 3, "p3": 10, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 12, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 8, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 9, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 10, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 13, "p3": 2, "rs": 2}}}, {"d": "2026-10-06", "headline": "No material news for the producers and royalty companies. Prices to the 6 Oct close (B2Gold kept at 5 Oct); no ranking or odds changes.", "px": "Gold ~US$4,166 · silver ~US$61.2 (6 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 3, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 4, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 12, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 5, "p3": 9, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 13, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 9, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 10, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 11, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 8, "p3": 2, "rs": 2}}}, {"d": "2026-10-07", "headline": "No material news: a Wheaton results-date notice and no Cobre Panamá decision yet. Prices to the 7 Oct close; no ranking or odds changes.", "px": "Gold ~US$4,110 · silver ~US$59.7 (7 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 3, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 4, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 12, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 5, "p3": 9, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 13, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 9, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 10, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 11, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 8, "p3": 2, "rs": 2}}}, {"d": "2026-10-08", "headline": "Quiet day: First Majestic's Q3 output fell on a San Dimas labour dispute (watch) and Pan American set its results date. Prices to the 8 Oct close (Fresnillo at 7 Oct); no ranking or odds changes.", "px": "Gold ~US$4,130 · silver ~US$59.2 (8 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 3, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 4, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 12, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 5, "p3": 9, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 13, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 9, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 10, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 11, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 8, "p3": 2, "rs": 2}}}], "events": [{"d": "2026-10-03", "t": "new", "co": "Agnico Eagle", "ks": ["agnico"], "x": "US$93B · lower-half costs (~31st percentile), US$3.3B net cash, ~85% Canada, ~8.9× EBITDA — 1st on the compounder list. Barnat wall failure costs up to ~150 koz a year in 2027–28."}, {"d": "2026-10-03", "t": "new", "co": "Franco-Nevada · Wheaton", "ks": ["franco", "wheaton"], "x": "Royalty & streaming: ~87–92% margins and no capex, at ~22–24× EBITDA. Franco-Nevada 2nd (zero debt, 435 assets); Wheaton 3rd (US$1.9B debt after Antamina, Salobo 34% of revenue)."}, {"d": "2026-10-03", "t": "hot", "co": "Avino", "ks": ["avino"], "x": "Cost curve: from ~26th percentile (2025) to ~83rd on Q2 costs — the lower-to-upper-half move. Fix (long-hole stoping) unproven; Q3 results in November are the test."}, {"d": "2026-10-03", "t": "watch", "co": "B2Gold", "ks": ["b2gold"], "x": "Top decile of the cost curve (~89th), up from ~57th in 2025 — the reason it drops below the compounder line."}, {"d": "2026-10-03", "t": "watch", "co": "First Majestic", "ks": ["firstmajestic"], "x": "Crossed the middle of the cost curve (~49th → ~60th): borderline."}, {"d": "2026-10-03", "t": "news", "co": "Avino", "ks": ["avino"], "x": "Management now describes a standalone 2,500–3,000 tpd La Preciosa mill producing from ~2030 (spoken 29 Sep). Chance it works ~20%, multiple if it works ~1.5–2.3×; odds stay ~11%."}, {"d": "2026-10-03", "t": "news", "co": "Pan American", "ks": ["paas"], "x": "Silver segment sits ~61st on the cost curve: Juanicipio is first-quartile, the segment as a whole is not."}, {"d": "2026-10-03", "t": "fix", "co": "Coeur", "ks": ["coeur"], "x": "Debt breakdown corrected: no note matures before Feb 2029."}, {"d": "2026-10-04", "t": "method", "co": "IAMGOLD · Hecla", "ks": ["iamgold", "hecla"], "x": "List B tie-break by runway (odds unchanged): IAMGOLD 6→5, Equinox 5→6, Hecla 8→7, Coeur 7→8."}, {"d": "2026-10-05", "t": "watch", "co": "Avino", "ks": ["avino"], "src": "manual", "x": "Management candour review: the cause of the Q2 cost jump was disclosed early, but its size was played down (guidance kept, cost per tonne cited instead of per ounce, the results release silent on it), and the 500 t/day timeline turned into a later standalone-mill plan announced only on stage. Yellow flag on the promotional-management trigger; the Q3 reports are the test."}, {"d": "2026-10-06", "t": "mgmt", "co": "Equinox", "ks": ["equinox"], "x": "Management C: chance it works 35% → 32%, 3×+ odds stay 7%. Original guidance missed three years running and three CEOs in 15 months; Beaty's money and plain disclosure keep it off D.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "B2Gold", "ks": ["b2gold"], "x": "Management C: chance it works 35% → 32%, 3×+ odds 10% → 9%. Founder retired; a career CFO is CEO. Goose capex went C$800M → C$1.54B and guidance was cut twice, with the misses buried under neutral headlines.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "Agnico", "ks": ["agnico"], "x": "Management A: chance it works 60% → 63%, 3×+ odds stay 3%. Has hit production guidance every year since the Kirkland merger, returned record cash and quantified the Malartic ounce loss by year in the headline release.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "All names", "ks": ["firstmajestic", "iamgold", "hecla", "equinox", "fresnillo", "b2gold", "paas", "coeur", "aya", "avino", "agnico", "wheaton", "franco"], "x": "Management graded A–D (track record, fit to the task, candour; neutral by default, odds moved only with evidence). A: Agnico, Wheaton · B: Aya, First Majestic, IAMGOLD, Hecla, Fresnillo, Pan American, Coeur, Avino, Franco-Nevada · C: Equinox, B2Gold.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "Aya", "ks": ["aya"], "x": "Management C → B after the owner's review: the team has already built and run a mine, which outweighs the slipped dates. Odds restored (works 39% → 42%, 3×+ odds 12% → 13%). Candour stays 2 on the card.", "src": "manual"}, {"d": "2026-10-06", "t": "watch", "co": "Franco-Nevada", "ks": ["franco"], "x": "Cobre Panamá: Panama's Chamber of Commerce backs talks with First Quantum on the commission's operate-then-close idea (Forbes Centroamérica, EFE), but President Mulino has left for Asia with no decision or deadline. No change to the card or odds."}, {"d": "2026-10-06", "t": "method", "co": "All names", "ks": ["firstmajestic", "iamgold", "hecla", "equinox", "fresnillo", "b2gold", "paas", "coeur", "aya", "avino", "agnico", "wheaton", "franco"], "x": "Skin-in-the-game score (1–5) added for every team: the management's own money at risk. It never moves the odds; it breaks near-ties in list B after runway. Track record now counts outcomes for shareholders, not the number of past failures. List B near-ties re-broken by skin: First Majestic 4→3, IAMGOLD 5→4, B2Gold 3→5, Franco-Nevada 13→8, Coeur 8→9, Agnico 9→10, Wheaton 10→11, Fresnillo 11→12, Pan American 12→13.", "src": "manual"}, {"d": "2026-10-06", "t": "news", "co": "Franco-Nevada", "ks": ["franco"], "x": "Bought 12.42% of explorer Kenorland (C$22M, from two existing holders) for investment: small next to a ~US$47B company. Cobre Panamá: still no government decision. Odds unchanged."}, {"d": "2026-10-06", "t": "news", "co": "IAMGOLD", "ks": ["iamgold"], "x": "Q3 2026 results set for 5 Nov (call 6 Nov). Calendar item only."}, {"d": "2026-10-06", "t": "watch", "co": "Aya", "ks": ["aya"], "x": "Financial statements (new tab): G&A jumped to US$7.9M in Q2 2026 from ~US$3M a quarter, while H1 2026 brought ~US$80M of free cash flow and EBRD debt fell from US$112M to US$84M. Overhead added to the management red flags; odds unchanged.", "src": "manual"}, {"d": "2026-10-06", "t": "method", "co": "All names", "ks": ["firstmajestic", "iamgold", "hecla", "equinox", "fresnillo", "b2gold", "paas", "coeur", "aya", "avino", "agnico", "wheaton", "franco"], "x": "Financials tab rolled out to every producer (revenue, margin, free cash flow, debt, dividends and buybacks) and a reporting Calendar tab added to the rankings with production and results dates. Nothing net new for this group beyond what the cards already said. Odds unchanged.", "src": "manual"}, {"d": "2026-10-07", "t": "watch", "co": "Franco-Nevada", "ks": ["franco"], "x": "Cobre Panamá: still no government decision (President Mulino abroad). A J.P. Morgan note sees a renegotiated restart as the base case, possibly not before 2027; environmental groups reject the operate-then-close idea (EFE, 7 Oct). Odds unchanged."}, {"d": "2026-10-08", "t": "watch", "co": "First Majestic", "ks": ["firstmajestic"], "x": "Q3 production: silver 3.44 Moz (−11% y/y), gold 29.6 koz (−17%), after a 12-day labour dispute at San Dimas that is not yet resolved. Guidance kept and buyback renewed; a longer stoppage would put silver guidance and AISC at risk. Odds unchanged at 9%."}, {"d": "2026-10-08", "t": "news", "co": "Pan American", "ks": ["paas"], "x": "Q3 results set for 4 Nov (call 5 Nov); director Chuck Jeannes leaves the board on 31 Oct to focus on chairing Equinox Gold. Not material; odds unchanged."}], "first": {"firstmajestic": "2026-10-02", "iamgold": "2026-10-02", "hecla": "2026-10-02", "equinox": "2026-10-02", "fresnillo": "2026-10-02", "b2gold": "2026-10-02", "paas": "2026-10-02", "coeur": "2026-10-02", "aya": "2026-10-02", "avino": "2026-10-02", "agnico": "2026-10-03", "wheaton": "2026-10-03", "franco": "2026-10-03"}, "since": "2026-10-02"};
+var HISTURL = "hist.html#pmp";
+
+(function(){
+  var esc = function(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); };
+  var BASE = CFG.base, NA = CFG.aName, NB = CFG.bName;
+  var MAXO = Math.max(30, Math.ceil(Math.max.apply(null, D.map(function(d){ return d.p3 || 0; })) / 5) * 5);
+  var hasCC = D.some(function(d){ return d.cc; });
+  function ord(n){ var v = n % 100; if(v >= 11 && v <= 13) return n + "th"; return n + ({1:"st",2:"nd",3:"rd"}[n % 10] || "th"); }
+  function mb(d){ return d.m && MB[d.m] ? "<span class='mb' style='color:" + (CFG.mbcol[d.m] || "var(--mute)") + "' title='" + esc(CFG.MBT[d.m] || "") + "'>" + esc(MB[d.m]) + "</span>" : ""; }
+  function pk(d){ return d.pick ? "<span class='pk' title='My pick: entry plan in the tracker (does not affect the ranking)'>&#x1F4B8;</span>" : ""; }
+  function tgx(d){ return d.tagx ? "<span class='tgx' title='" + esc(d.tagx.tip || "") + "'>" + esc(d.tagx.t) + "</span>" : ""; }
+  function late(d){ return d.late ? "<sup class='dg' title='Key trigger may fall at or beyond the 3–5 year horizon'>†</sup>" : ""; }
+  var RWL = {long:"Yes", medium:"Partly", short:"Little"};
+  function mon(d){ return d.rw === "long" && d.p3 < BASE; }
+  function rwb(d, sm){ if(!d.rw) return ""; return "<span class='rwb " + d.rw + "' title='" + esc("Room for a 2nd 3×? After a first 3× (years 1–5), is there room for another 3× by about year 10? Not about cash — cash runway is on the Financials tab of the card. " + RWL[d.rw] + ": " + (d.rwWhy || "")) + "'>" + (sm ? RWL[d.rw].charAt(0) : RWL[d.rw]) + "</span>" + (mon(d) ? "<span class='mwt' title='Monster watch: room for a 2nd 3×, but the big catalysts sit beyond 3–5 years'>watch</span>" : ""); }
+  function bkc(d){ return CFG.bkcol[d.bk] || "var(--mute)"; }
+  var MGL = {A:"tier 1 — proven at this job, candid, invested", B:"solid, or unproven but clean (the default)", C:"real weaknesses: slipped dates, thin fit or thin candour", D:"a pattern of failing shareholders"};
+  function mgTip(m){ return "Management " + m.g + " — " + MGL[m.g] + ". Track record " + m.t + "/5 · fit " + m.f + "/5 · candour " + m.c + "/5" + (m.s ? " · skin in the game " + m.s + "/5 (signal only: never moves the odds, breaks near-ties in list B)" : "") + (m.conf === "low" ? " · low confidence" : "") + ". " + (m.why || "") + (m.odds && m.odds !== "no odds change" ? " Odds: " + m.odds + "." : ""); }
+  function mgb(d, sm){ var m = d.mg; if(!m) return ""; return "<span class='mgb g" + m.g + (m.conf === "low" ? " lc" : "") + "' title='" + esc(mgTip(m)) + "'>" + m.g + (m.g === "A" ? "<span class='mgst'>★</span>" : "") + "</span>"; }
+  function low(d, key){ return d[key] >= LOW_FROM[key]; }
+  function ob(p){ var below = p < BASE; return "<span class='ob" + (below ? " below" : "") + "' aria-hidden='true'><i style='width:" + Math.min(100, p / MAXO * 100) + "%'></i><s style='left:" + (BASE / MAXO * 100) + "%'></s></span>"; }
+  function split1(t){ t = String(t || ""); var m = t.match(/^([\s\S]{40,}?[.!?])\s+(?=[A-Z0-9"'‘“(~])/); return m ? [m[1], t.slice(m[0].length)] : [t, ""]; }
+  function capNum(s){ var m = /([\d.,]+)\s*([MB])/.exec(s || ""); return m ? parseFloat(m[1].replace(/,/g, "")) * (m[2] === "B" ? 1000 : 1) : 0; }
+  function lowNum(s){ var m = /(\d+(?:\.\d+)?)/.exec(String(s || "")); return m ? parseFloat(m[1]) : -1; }
+  // cost curve
+  var CCN = {gold:"primary gold mines", silver:"primary silver mines"};
+  function ccCls(c){ return c.p < 50 ? "lo" : (c.p < 75 ? "q3" : "q4"); }
+  function ccMini(c, sm){
+    var t = "Cost curve: " + ord(c.p) + " percentile of " + CCN[c.curve] + ", " + (c.p < 50 ? "lower" : "upper") + " half" + (c.p0 != null ? "; 2025 position " + c.p0t : "");
+    var inner = "";
+    if(c.p0 != null && Math.abs(c.p - c.p0) >= 5){ var a = Math.min(c.p, c.p0), b = Math.max(c.p, c.p0); inner += "<i class='t' style='--a:" + a + ";--b:" + b + "'></i><i class='o' style='--p:" + c.p0 + "'></i>"; }
+    return "<span class='ccm" + (sm ? " sm" : "") + "' style='--p:" + c.p + "' role='img' aria-label='" + esc(t) + "' title='" + esc(t) + "'>" + inner + "<i class='d'></i></span>";
+  }
+  function ccLine(c){
+    var x = c.x || ("~" + ord(c.p) + " percentile" + (c.est ? " (est.)" : "") + " · " + c.curve + " mines");
+    var h = "<div class='ccl'><span>Cost curve</span>" + ccMini(c) + "<span class='ccb " + ccCls(c) + "'>" + (c.p < 50 ? "Lower half" : "Upper half") + "</span><span class='ccx'>" + esc(x) + "</span>";
+    if(c.p0 != null && Math.abs(c.p - c.p0) >= 8) h += "<span class='cct " + (c.p > c.p0 ? "up" : "dn") + "'>was " + esc(c.p0t) + " in 2025</span>";
+    if(c.w) h += "<span class='ccw" + (c.w.indexOf("Sell") === 0 ? " hot" : "") + "'>" + esc(c.w) + "</span>";
+    return h + "</div>";
+  }
+
+  /* ---------- what changed (rolling window over HIST snapshots) ---------- */
+  var SN = HIST.snaps, LAST = SN[SN.length - 1], EV = HIST.events;
+  var MO = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  function dn(s){ return Date.parse(s + "T00:00:00Z") / 864e5; }
+  function fd(s){ var p = s.split("-"); return (+p[2]) + " " + MO[+p[1] - 1]; }
+  var TAGS = {hot:"Sell-trigger watch", watch:"Watch", news:"News", fix:"Correction", "new":"Added", method:"Method", mgmt:"Management"};
+  var REL = {a:{}, b:{}}, NEWN = [], PREV_LOW = LOW_FROM, BASE_S = null, WIN = "u";
+  function baseFor(w){
+    if(SN.length < 2) return null;
+    if(w === "u") return SN[SN.length - 2];
+    var cut = dn(LAST.d) - (+w), b = SN[0];
+    SN.forEach(function(s){ if(dn(s.d) <= cut) b = s; });
+    return b === LAST ? SN[SN.length - 2] : b;
+  }
+  function setWindow(w){
+    WIN = w; BASE_S = baseFor(w);
+    PREV_LOW = BASE_S ? BASE_S.low : LOW_FROM;
+    D.forEach(function(d){ d.pv = BASE_S && BASE_S.rows[d.k] ? BASE_S.rows[d.k] : null; });
+    REL = {a:{}, b:{}};
+    ["a","b"].forEach(function(key){ D.filter(function(d){ return d.pv; }).sort(function(x,y){ return x[key] - y[key]; }).forEach(function(d, i){ REL[key][d.k] = i + 1; }); });
+    NEWN = BASE_S ? D.filter(function(d){ return !d.pv; }) : [];
+  }
+  function nw(d){ return !BASE_S || d.pv ? "" : "<span class='nwb' title='Added on " + esc(fd(HIST.first[d.k] || LAST.d)) + "'>NEW</span>"; }
+  function mv(d, key){ if(!BASE_S) return ""; if(!d.pv || d.pv[key] == null) return nw(d); var x = d.pv[key] - REL[key][d.k]; if(!x) return ""; return "<span class='mv " + (x > 0 ? "up" : "dn") + "' title='Was " + d.pv[key] + " on " + fd(BASE_S.d) + "'>" + (x > 0 ? "▲" : "▼") + Math.abs(x) + "</span>"; }
+  function paintArrows(){
+    Array.prototype.forEach.call(document.querySelectorAll(".rkm[data-mv]"), function(el){
+      var p = el.getAttribute("data-mv").split(":"), d = D.filter(function(x){ return x.k === p[1]; })[0];
+      var h = d ? mv(d, p[0]) : ""; el.innerHTML = h; el.hidden = !h;
+    });
+  }
+  function flagLi(e, dated){ return "<li class='fl " + (e.t === "method" ? "mth" : e.t) + "'><span class='ft'>" + TAGS[e.t] + "</span>" + (dated ? "<span class='fdt'>" + fd(e.d) + "</span>" : "") + "<b>" + esc(e.co) + "</b> " + esc(e.x) + "</li>"; }
+  function renderChanges(){
+    var big = [], small = {a:[], b:[]}, risk = [], odds = [], ccm = [], mgm = [];
+    D.forEach(function(d){
+      if(!d.pv) return;
+      var movedB = false;
+      ["a","b"].forEach(function(key){
+        var f = d.pv[key], t = REL[key][d.k]; if(f == null || f === t) return;
+        if(key === "b") movedB = true;
+        var cross = (f >= PREV_LOW[key]) !== (t >= LOW_FROM[key]);
+        var dp = key === "b" && d.pv.p3 != null ? d.p3 - d.pv.p3 : 0;
+        if(D.length <= 12 || Math.abs(f - t) >= 2 || cross || Math.abs(dp) >= 2) big.push({d:d, key:key, f:f, t:t, cross:cross, dp:dp});
+        else small[key].push(d.short);
+      });
+      if(!movedB && d.pv.p3 != null && Math.abs(d.p3 - d.pv.p3) >= 3) odds.push(d);
+      if(d.pv.rs != null && d.pv.rs !== d.rs) risk.push(d);
+      if(d.cc && d.pv.cc != null && Math.abs(d.cc.p - d.pv.cc) >= 5) ccm.push(d);
+      if(d.mg && d.pv.mg && d.pv.mg !== d.mg.g) mgm.push(d);
+    });
+    function sc(m){ return Math.abs(m.f - m.t) + (m.cross ? 3 : 0) + (Math.min(m.f, m.t) <= 3 ? 3 : 0); }
+    big.sort(function(x, y){ return sc(y) - sc(x) || x.t - y.t; });
+    var nsmall = small.a.length + small.b.length;
+    var h = "<span class='mvl'>Ranking moves</span>";
+    NEWN.forEach(function(d){ h += "<button type='button' class='mvc nwc' data-go='a' data-k='" + d.k + "' title='" + esc(d.name + ": new — A #" + d.a + ", B #" + d.b) + "'><span class='nwb'>NEW</span><b>" + esc(d.short) + "</b><span class='num'>A" + d.a + " · B" + d.b + "</span></button>"; });
+    if(!BASE_S) h += "<span class='none'>History starts with this update</span>";
+    else if(!big.length && !risk.length && !nsmall && !NEWN.length && !odds.length && !ccm.length && !mgm.length) h += "<span class='none'>No ranking changes</span>";
+    big.forEach(function(m){
+      var up = m.t < m.f;
+      var note = m.cross ? (up ? "above the line" : "below the line") : "";
+      var tip = esc((m.key === "a" ? NA : NB) + ": " + m.d.short + " " + m.f + " → " + m.t + (m.key === "b" && m.dp ? " · odds " + m.d.pv.p3 + "% → " + m.d.p3 + "%" : "") + (note ? " · " + note : ""));
+      h += "<button type='button' class='mvc' data-go='" + m.key + "' data-k='" + m.d.k + "' title='" + tip + "'><span class='tag " + m.key + "'>" + m.key.toUpperCase() + "</span><b>" + esc(m.d.short) + "</b><span class='num'>" + m.f + "→" + m.t + "</span><span class='mv " + (up ? "up" : "dn") + "'>" + (up ? "▲" : "▼") + Math.abs(m.f - m.t) + "</span>" + (note ? "<span class='nt'>" + note + "</span>" : "") + "</button>";
+    });
+    odds.forEach(function(d){ var up = d.p3 > d.pv.p3; h += "<button type='button' class='mvc' data-go='b' data-k='" + d.k + "' title='Odds of a 3× " + d.pv.p3 + "% → " + d.p3 + "% (rank unchanged)'><b>" + esc(d.short) + "</b><span class='nt'>odds</span><span class='num'>" + d.pv.p3 + "→" + d.p3 + "%</span><span class='mv " + (up ? "up" : "dn") + "'>" + (up ? "▲" : "▼") + "</span></button>"; });
+    risk.forEach(function(d){ h += "<button type='button' class='mvc' data-go='a' data-k='" + d.k + "' title='Risk score " + d.pv.rs + " → " + d.rs + "'><b>" + esc(d.short) + "</b><span class='nt'>risk</span><span class='rsb r" + d.pv.rs + "'>" + d.pv.rs + "</span><span class='num'>→</span><span class='rsb r" + d.rs + "'>" + d.rs + "</span></button>"; });
+    ccm.forEach(function(d){ var f = d.pv.cc, t = d.cc.p, cross = (f < 50) !== (t < 50); h += "<button type='button' class='mvc' data-go='a' data-k='" + d.k + "' title='Cost-curve percentile " + f + " → " + t + (cross ? " · crossed the middle" : "") + "'><b>" + esc(d.short) + "</b><span class='nt'>cost curve</span><span class='num'>" + ord(f) + "→" + ord(t) + "</span><span class='mv " + (t < f ? "up" : "dn") + "'>" + (t < f ? "▼" : "▲") + "</span>" + (cross ? "<span class='nt'>" + (t >= 50 ? "into upper half" : "into lower half") + "</span>" : "") + "</button>"; });
+    mgm.forEach(function(d){ h += "<button type='button' class='mvc' data-go='a' data-k='" + d.k + "' title='" + esc("Management grade " + d.pv.mg + " → " + d.mg.g + ". " + d.mg.why) + "'><b>" + esc(d.short) + "</b><span class='nt'>management</span><span class='mgb g" + d.pv.mg + "'>" + d.pv.mg + "</span><span class='num'>→</span>" + mgb(d) + "</button>"; });
+    if(nsmall) h += "<span class='more1' title='" + esc(small.a.concat(small.b).join(", ")) + "'>+ " + nsmall + " one-place shifts</span>";
+    if(NEWN.length) h += "<span class='more1'>Other names move down only because of the additions; arrows compare order among the names already listed.</span>";
+    var el = document.getElementById("moves"); el.innerHTML = h;
+    Array.prototype.forEach.call(el.querySelectorAll(".mvc"), function(li){ li.addEventListener("click", function(){ openRow(li.getAttribute("data-go"), li.getAttribute("data-k")); }); });
+    // flags & news inside the window, newest first
+    var from = BASE_S ? BASE_S.d : "";
+    var ev = EV.map(function(e, i){ return [e, i]; }).filter(function(p){ return p[0].d > from && p[0].d <= LAST.d; }).sort(function(x, y){ return x[0].d < y[0].d ? 1 : x[0].d > y[0].d ? -1 : x[1] - y[1]; }).map(function(p){ return p[0]; });
+    var runs = SN.filter(function(s){ return s.d > from; });
+    var dated = runs.length > 1;
+    var fl = ev.map(function(e){ return flagLi(e, dated); });
+    var fh = fl.length ? "<ul class='flags'>" + fl.slice(0, 4).join("") + "</ul>" + (fl.length > 4 ? "<details class='earlier mfl'><summary>" + (fl.length - 4) + " more</summary><ul class='flags'>" + fl.slice(4).join("") + "</ul></details>" : "") : "<p class='none'>No flags or news in this period.</p>";
+    document.getElementById("flags").innerHTML = fh;
+    document.getElementById("chwhen").textContent = BASE_S ? fd(BASE_S.d) + " → " + fd(LAST.d) : fd(LAST.d);
+    document.getElementById("chwhen").title = BASE_S ? "Compared with the update of " + fd(BASE_S.d) + (BASE_S === SN[0] && WIN !== "u" && dn(LAST.d) - dn(BASE_S.d) < +WIN ? " — the start of the history" : "") : "";
+    document.getElementById("chd").textContent = dated ? fd(LAST.d) + " · " : "";
+    // day by day
+    var dl = runs.slice().reverse().map(function(s){
+      var es = EV.filter(function(e){ return e.d === s.d; });
+      return "<div class='dli'><div class='dlh'><span class='fdt'>" + fd(s.d) + "</span>" + esc(s.headline) + "</div>" + (es.length ? "<ul class='flags'>" + es.map(function(e){ return flagLi(e, false); }).join("") + "</ul>" : "") + "</div>";
+    }).join("");
+    document.getElementById("daylog-b").innerHTML = (dl || "<p class='none'>No updates in this period.</p>") + "<p class='dlmore'><a href='#' data-goto='hist'>Full history: rank, odds and cost-curve paths →</a></p>";
+    var sm = document.querySelector("#daylog > summary"); sm.textContent = "Day by day (" + runs.length + (runs.length === 1 ? " update)" : " updates)");
+    Array.prototype.forEach.call(document.querySelectorAll(".wseg button"), function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-w") === WIN ? "true" : "false"); });
+  }
+  function applyWindow(w){ setWindow(w); renderChanges(); renderTables(); paintArrows(); if(window.__convTips) window.__convTips(); try { localStorage.setItem("rk-win", w); } catch(e){} }
+  Array.prototype.forEach.call(document.querySelectorAll(".wseg button"), function(b){ b.addEventListener("click", function(){ applyWindow(b.getAttribute("data-w")); }); });
+
+  /* ---------- the two tables ---------- */
+  function rankCell(d, key){ return "<td class='c-n'><span class='rkn " + key + (low(d,key) ? " lo" : "") + "'>" + d[key] + "</span>" + mv(d, key) + "<span class='nmw'><b>" + esc(d.short) + "</b>" + mb(d) + pk(d) + late(d) + tgx(d) + "<span class='tk'>" + esc(d.tick) + "</span></span></td>"; }
+  function scHead(s, i){ var pr = s.split(" / "); return pr.length === 2 ? "Au " + pr[0] + "<span class='s'>Ag " + pr[1] + "</span>" : esc(s) + "<span class='s'>" + (i === 0 ? "own study deck" : "&nbsp;") + "</span>"; }
+  function renderTables(){
+    ["a", "b"].forEach(function(key){
+      var other = key === "a" ? "b" : "a";
+      var rows = D.slice().sort(function(x,y){ return x[key] - y[key]; });
+      function th(label, sub, tip, cls){ return "<th" + (cls ? " class='" + cls + "'" : "") + " data-tip='" + esc(tip) + "'>" + label + (sub ? "<span class='s'>" + sub + "</span>" : "") + "</th>"; }
+      var TIP = {
+        coA: "Rank in list A (most likely to deliver), metal and ticker. Small arrows = move since the compared update. Tap a row for the full write-up.",
+        coB: "Rank in list B (best odds of tripling in 3–5 years), metal and ticker. Small arrows = move since the compared update. Tap a row for the full write-up.",
+        key: "The main fact behind the A rank.",
+        cc: "Where the company's all-in sustaining cost sits among the industry's mines: 0 = cheapest, 100 = costliest. Below 50 (lower half) is good; the ring shows 2025.",
+        cap: "Market value today (in US$ unless noted).",
+        risk: "Risk 1–5: chance of a permanent loss or no re-rating within 3–5 years. 1 = lowest, 5 = highest.",
+        inB: "Where this company ranks in list B (odds of a 3×). Outlined = below that list's line.",
+        inA: "Where this company ranks in list A (most likely to deliver). Outlined = below that list's line.",
+        odds: "Odds that the share price triples within 3–5 years: chance it works × the share of the 'if it works' range at 3× or more, plus a small luck component. The tick on the bar is the luck line (~" + BASE + "%).",
+        works: "Chance the plan works within 3–5 years — the key milestones (study, permit, financing, production) actually happen.",
+        ifw: "Multiple of today's share price if it works, after the expected new shares (dilution).",
+        mg: "Management grade A–D from the people's track record, fit to this exact job and candour (promises vs delivery). B is the default; A★ = tier 1; odds are moved only with evidence. A fourth score, skin in the game (1–5), shows how much of their own money the team has at risk: it never moves the odds, but breaks near-ties in list B. Hover a grade for the sub-scores and the reason; the tracker card has the full review.",
+        rw: "Room for a 2nd 3×: after a first 3× in years 1–5, is there room for another 3× by about year 10? Yes · Partly (capped or metal-price dependent) · Little (the first re-rating is most of the value). This is about size and structure, not cash: months of cash are on the Financials tab of the card.",
+        sc0: "Multiple of today's market value if the company reaches its next stage at its own study's metal price.",
+        sc: "Multiple of today's market value if the market adopts this metal price (includes the growth step)."
+      };
+      var head = key === "a"
+        ? [th("Company", "", TIP.coA, "c-n"), th("Key point", "", TIP.key)].concat(hasCC ? [th("Cost curve", "percentile", TIP.cc)] : []).concat([th("Mkt cap", "", TIP.cap, "r"), th("Mgmt", "A–D", TIP.mg), th("Risk", "1–5", TIP.risk, "r"), th("In B", "", TIP.inB, "r")])
+        : [th("Company", "", TIP.coB, "c-n"), th("3×+ odds", "line ~" + BASE + "%", TIP.odds, "r"), th("Works", "", TIP.works, "r"), th("If it works", "", TIP.ifw, "r"), th("2nd 3×?", "room after the first", TIP.rw), th("Mgmt", "A–D", TIP.mg)].concat(SC.map(function(s, i){ var pr = s.split(" / "); return "<th class='r scg-h' data-tip='" + esc(i === 0 && pr.length !== 2 ? TIP.sc0 : TIP.sc) + "'>" + scHead(s, i) + "</th>"; })).concat([th("Risk", "1–5", TIP.risk, "r"), th("In A", "", TIP.inA, "r")]);
+      var n = head.length;
+      var h = "<thead><tr>" + head.join("") + "</tr></thead><tbody>";
+      rows.forEach(function(d){
+        if(d[key] === LOW_FROM[key]) h += "<tr class='line'><td colspan='" + n + "'><span><b>▼ Below this line:</b> " + esc(DIV[key]) + "</span></td></tr>";
+        var cells = [rankCell(d, key)];
+        if(key === "a"){
+          cells.push("<td class='c-k'>" + esc(d.aKey) + "</td>");
+          if(hasCC) cells.push("<td>" + (d.cc ? ccMini(d.cc, true) + "<span class='ccn " + ccCls(d.cc) + "'>" + ord(d.cc.p) + (d.cc.est ? "*" : "") + "</span>" : (d.ccna ? "<span class='ccna' title='Royalty and streaming companies pay a fixed price per ounce, so the mine cost curve does not apply'>" + esc(d.ccna) + "</span>" : "")) + "</td>");
+          cells.push("<td class='r num'>" + esc(d.cap) + "</td>");
+        } else {
+          cells.push("<td class='r'><span class='oc'>" + ob(d.p3) + "<span class='v" + (d.p3 < BASE ? " lo" : "") + "'>~" + d.p3 + "%</span></span></td>");
+          cells.push("<td class='r num'>~" + d.pw + "%</td>");
+          cells.push("<td class='r num'>" + esc(d.mw) + "</td>");
+          cells.push("<td>" + rwb(d) + "</td>");
+          cells.push("<td>" + mgb(d) + "</td>");
+          d.sc.forEach(function(v){ var wide = v.length > 16; cells.push("<td class='sc" + (v.charAt(0) === "~" ? " est" : "") + (wide ? " wide" : "") + "'>" + esc(v) + "</td>"); });
+        }
+        if(key === "a") cells.push("<td>" + mgb(d) + "</td>");
+        cells.push("<td class='r'><span class='rsb r" + d.rs + "' title='Risk " + d.rs + " of 5'>" + d.rs + "</span></td>");
+        cells.push("<td class='r'><span class='pill " + other + (low(d, other) ? " lo" : "") + "' data-tip='" + esc((other === "a" ? "Rank in list A (most likely to deliver): #" : "Rank in list B (odds of a 3×): #") + d[other] + (low(d, other) ? " — below that list's line" : "")) + "'>" + d[other] + "</span></td>");
+        h += "<tr data-k='" + d.k + "' tabindex='0' aria-label='" + esc(d.name) + ", rank " + d[key] + ": open details'>" + cells.join("") + "</tr>";
+      });
+      var t = document.getElementById("t" + key); t.innerHTML = h + "</tbody>";
+      Array.prototype.forEach.call(t.querySelectorAll("tbody tr[data-k]"), function(tr){
+        var k = tr.getAttribute("data-k");
+        tr.addEventListener("click", function(){ openRow(key, k); });
+        tr.addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); openRow(key, k); } });
+        if(hover){ tr.addEventListener("mouseenter", function(){ hl(k); }); tr.addEventListener("mouseleave", function(){ hl(null); }); }
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll(".tscroll"), function(ts){
+      function fade(){ ts.style.setProperty("--sl", ts.scrollLeft + "px"); ts.classList.toggle("fade-r", ts.scrollWidth - ts.clientWidth - ts.scrollLeft > 4); ts.classList.toggle("scrolled", ts.scrollLeft > 2); }
+      ts.addEventListener("scroll", fade, {passive:true}); window.addEventListener("resize", fade); fade();
+    });
+  }
+
+  /* ---------- ranked lists ---------- */
+  function renderList(key){
+    var rows = D.slice().sort(function(x,y){ return x[key] - y[key]; });
+    var h = "";
+    rows.forEach(function(d){
+      var r = d[key], lo = low(d, key);
+      if(r === LOW_FROM[key]) h += "<div class='divider' role='separator'><b>▼ Below this line:</b> " + esc(DIV[key]) + "</div>";
+      var why = split1(d[key + "Why"]);
+      var head = "<div class='l1'><span class='nm'>" + esc(d.name) + "</span>" + mb(d) + pk(d) + tgx(d) + "<span class='tk'>" + esc(d.tick) + "</span>" +
+        (key === "b" ? "<span class='hm'>" + ob(d.p3) + "<span class='o3'>~" + d.p3 + "%<small>3×+</small></span></span>" : "<span class='hm'><span class='rsb r" + d.rs + "' title='Risk " + d.rs + " of 5'>" + d.rs + "</span></span>") + "</div>";
+      var l2 = "<div class='l2'>" + esc(d[key + "Key"]) + "</div>";
+      var facts = key === "b"
+        ? "<div class='facts'><span>Works <b>~" + d.pw + "%</b></span><span>If it works <b>" + esc(d.mw) + "</b></span><span>Risk <b>" + d.rs + "/5</b></span><span>2nd 3× " + rwb(d) + "</span>" + (d.mg ? "<span>Mgmt " + mgb(d) + "</span>" : "") + "<span>" + esc(d.cap) + "</span></div>"
+        : "<div class='facts'><span class='bkt' style='--bkc:" + bkc(d) + "'>" + esc(BK[d.bk] || "") + "</span><span>" + esc(d.cap) + "</span><span>In list B <b>#" + d.b + "</b> · ~" + d.p3 + "%</span>" + (d.mg ? "<span>Mgmt " + mgb(d) + "</span>" : "") + "</div>" + (d.cc ? ccLine(d.cc) : (d.ccna ? "<div class='ccl'><span>Cost curve</span><span class='ccb na'>Not applicable</span><span class='ccx'>" + esc(d.ccna.replace(/^n\/a · /, "")) + " — no mining costs</span></div>" : ""));
+      var sum = "<summary><div class='rk'>" + r + "<div class='rkm' data-mv='" + key + ":" + d.k + "' hidden></div></div><div class='rm'>" + head + l2 + facts + "<p class='gist'>" + esc(why[0]) + "</p><span class='mo'><span class='t1'>More</span><span class='t2'>Less</span></span></div></summary>";
+      var more = "<div class='more'>" + (why[1] ? "<p>" + esc(why[1]) + "</p>" : "") +
+        (key === "b" ? "<p class='wif'><b>Works if:</b> " + esc(d.wi) + "</p>" : "") +
+        "<div class='kv'>" +
+          "<div class='k'>Risk</div><div class='v'><span class='rsb r" + d.rs + "'>" + d.rs + "</span>" + esc(d.rsWhy) + "</div>" +
+          (key === "b" && d.rw ? "<div class='k'>Room for a 2nd 3×</div><div class='v'>" + rwb(d) + " " + esc(d.rwWhy) + (mon(d) ? " <b>Monster watch:</b> re-checked every Saturday; re-scored when a big catalyst moves inside the 3–5 year window." : "") + "</div>" : "") +
+          (d.mg ? "<div class='k'>Management</div><div class='v'>" + mgb(d) + "<b>Track " + d.mg.t + " · fit " + d.mg.f + " · candour " + d.mg.c + (d.mg.s ? " · skin " + d.mg.s : "") + "</b>" + (d.mg.conf === "low" ? " · low confidence" : "") + " — " + esc(d.mg.why) + (d.mg.odds && d.mg.odds !== "no odds change" ? " <i>Odds: " + esc(d.mg.odds) + ".</i>" : "") + " <a href='" + CFG.T + d.slug + "' target='_blank' rel='noopener'>Full review on the card ↗</a></div>" : "") +
+          "<div class='k'>Timing</div><div class='v'>" + esc(d.tm) + (d.late ? " <span class='dg' title='Key trigger may fall at or beyond the horizon'>†</span>" : "") + "</div>" +
+          (d[key + "Risk"] ? "<div class='k'>Main risk</div><div class='v'>" + esc(d[key + "Risk"]) + "</div>" : "") +
+          "<div class='k'>Exploration</div><div class='v'><span class='ntag n-" + d.exC + "'>" + esc(d.exN) + "</span>" + esc(d.ex) + "</div>" +
+        "</div>" +
+        (key === "b" ? "<p class='drv'><b>Price scenarios</b> · driver: " + esc(d.pm || "") + "</p><div class='scg'>" + d.sc.map(function(v, i){ return "<div><span class='sk'>" + esc(SC[i]) + "</span><span class='sv" + (v.charAt(0) === "~" ? " est" : "") + "'>" + esc(v) + "</span></div>"; }).join("") + "</div>" : "") +
+        "<a class='trk' href='" + CFG.T + d.slug + "' target='_blank' rel='noopener'>Open " + esc(d.short) + " in the tracker ↗</a></div>";
+      h += "<details class='row" + (lo ? " low" : "") + "' id='" + key + "-" + d.k + "' data-k='" + d.k + "'>" + sum + more + "</details>";
+    });
+    document.getElementById("list-" + key).innerHTML = h;
+  }
+
+
+  /* ---------- hover info: one floating tip for headers and labels ---------- */
+  (function(){
+    var tip = document.createElement("div"); tip.className = "htip"; tip.setAttribute("role", "tooltip"); tip.hidden = true; document.body.appendChild(tip);
+    function conv(root){ Array.prototype.forEach.call((root || document).querySelectorAll("[title]"), function(el){ if(el.tagName === "A" || el.tagName === "IFRAME") return; el.setAttribute("data-tip", el.getAttribute("title")); el.removeAttribute("title"); }); }
+    window.__convTips = conv; conv();
+    var cur = null;
+    function show(el){
+      var t = el.getAttribute("data-tip"); if(!t) return;
+      cur = el; tip.textContent = t; tip.hidden = false;
+      var r = el.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
+      var x = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), window.innerWidth - w - 8);
+      var y = r.top - h - 8; if(y < 8) y = r.bottom + 8;
+      tip.style.left = x + "px"; tip.style.top = y + "px";
+    }
+    function hide(){ cur = null; tip.hidden = true; }
+    document.addEventListener("mouseover", function(e){ var el = e.target.closest && e.target.closest("[data-tip]"); if(el && el !== cur) show(el); else if(!el && cur) hide(); });
+    document.addEventListener("scroll", hide, true);
+    document.addEventListener("click", function(e){ var el = e.target.closest && e.target.closest("th[data-tip]"); if(el){ if(cur === el) hide(); else show(el); } else if(!(e.target.closest && e.target.closest("[data-tip]"))) hide(); });
+  })();
+  /* ---------- cross-highlight + navigation ---------- */
+  var hover = window.matchMedia("(hover: hover)").matches;
+  function hl(k){ Array.prototype.forEach.call(document.querySelectorAll("[data-k]"), function(el){ if(el.tagName === "TH") return; el.classList.toggle("hl", !!k && el.getAttribute("data-k") === k && !el.matches("li")); }); }
+  function openRow(key, k){
+    var el = document.getElementById(key + "-" + k); if(!el) return;
+    el.open = true; el.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"});
+    el.classList.add("flash"); setTimeout(function(){ el.classList.remove("flash"); }, 1400);
+  }
+  var w0 = "u"; try { w0 = localStorage.getItem("rk-win") || "u"; } catch(e){}
+  if(["u","7","30"].indexOf(w0) === -1) w0 = "u";
+  renderList("a"); renderList("b"); applyWindow(w0);
+  if(hover){ Array.prototype.forEach.call(document.querySelectorAll("details.row"), function(r){ var k = r.getAttribute("data-k"); r.addEventListener("mouseenter", function(){ hl(k); }); r.addEventListener("mouseleave", function(){ hl(null); }); }); }
+  var hsh = (location.hash || "").slice(1); if(/^[ab]-/.test(hsh)) openRow(hsh.charAt(0), hsh.slice(2));
+  window.addEventListener("hashchange", function(){ var x = (location.hash || "").slice(1); if(/^[ab]-/.test(x)) openRow(x.charAt(0), x.slice(2)); });
+})();
+document.addEventListener("click", function(e){ var a = e.target.closest && e.target.closest("a[data-goto]"); if(!a) return; e.preventDefault(); try { parent.showRanking(a.getAttribute("data-goto")); } catch(x){} });
+
+</script>
+<div class="cw-disc" role="contentinfo">
+<style>
+.cw-disc { max-width:1180px; margin:56px auto 0; padding:18px 20px 28px; border-top:1px solid var(--line,#262E32);
+  font:12.5px/1.55 "IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--mute,#8D999E); }
+.cw-disc p { margin:0 0 4px; max-width:72ch; }
+.cw-disc strong { color:var(--ink,#E8EBEC); font-weight:500; }
+.cw-disc a { color:inherit; text-decoration:none; border:0; border-bottom:1px solid var(--line,#262E32); padding:0; margin:0; background:none; border-radius:0; display:inline; font:inherit; }
+.cw-disc a:hover { color:var(--ink,#E8EBEC); }
+.cw-disc .cw-meta { font-variant-numeric:tabular-nums; }
+</style>
+<p><strong>Not investment advice.</strong> Personal research notes by Chung Huynh — views, rankings and estimates may be wrong or out of date. Do your own research.</p>
+<p class="cw-meta">Synced 9 Oct 2026 · <a href="/" target="_top">chungwin.com</a></p>
+</div>
+</body>
+</html>

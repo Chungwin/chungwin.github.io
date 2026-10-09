@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Critical Minerals Rankings — Certainty vs Multi-bagger</title>
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* Layout: sticky section bar · latest update · table A then table B (each self-explaining) · two ranked lists side by side · method.
+   Single dark look by choice: it sits flush inside the dark tab strip and matches the trackers. */
+:root{
+  --bg:#111517; --panel:#181D20; --raised:#1E2427; --sunk:#0E1214;
+  --ink:#E8EBEC; --ink2:#C2C9CC; --mute:#8D999E; --line:#262E32; --line2:#323B40;
+  --a:#89A8DC; --a-soft:rgba(137,168,220,.11); --b:#E6A867; --b-soft:rgba(230,168,103,.11);
+  --good:#72C9A9; --warn:#E3A35F; --bad:#E78C7D;
+  --tab:#A99BF0;
+  --sans:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{ box-sizing:border-box; }
+html{ background:var(--bg); -webkit-text-size-adjust:100%; scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px); }
+body{ margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:15px; line-height:1.55; }
+a{ color:var(--tab); text-underline-offset:2px; }
+button{ font:inherit; color:inherit; }
+:focus-visible{ outline:2px solid var(--tab); outline-offset:2px; border-radius:4px; }
+.wrap{ max-width:1200px; margin:0 auto; padding-inline:20px; padding-block:0 72px; }
+.num, .tab-num{ font-family:var(--mono); font-variant-numeric:tabular-nums; }
+
+/* header */
+.hd{ padding-block:26px 14px; }
+.eyebrow{ font-size:11.5px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; color:var(--mute); display:flex; align-items:center; gap:8px; }
+.eyebrow .dot{ width:8px; height:8px; border-radius:50%; background:var(--tab); flex:none; }
+h1{ font-size:30px; line-height:1.15; font-weight:600; letter-spacing:-.02em; margin:8px 0 6px; text-wrap:balance; }
+.lede{ margin:0; max-width:68ch; color:var(--ink2); font-size:16px; }
+.meta{ margin-top:10px; display:flex; flex-wrap:wrap; gap:6px 16px; font-size:13px; color:var(--mute); }
+.meta .upd{ color:var(--ink2); }
+.meta .upd b{ color:var(--ink); font-weight:600; }
+.meta a{ color:var(--ink2); text-decoration:none; border-bottom:1px solid var(--line2); }
+.meta a:hover{ color:var(--ink); border-color:var(--tab); }
+
+/* section bar */
+nav.sec{ position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background:rgba(17,21,23,.92); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  display:flex; gap:6px; padding:10px 0; border-bottom:1px solid var(--line); overflow-x:auto; scrollbar-width:none; margin-inline:-20px; padding-inline:20px; }
+nav.sec::-webkit-scrollbar{ display:none; }
+nav.sec a{ flex:none; font-size:13px; text-decoration:none; color:var(--ink2); padding:5px 12px; border-radius:999px; border:1px solid var(--line2); background:var(--panel); white-space:nowrap; }
+nav.sec a:hover{ color:var(--ink); }
+nav.sec a.a{ color:var(--a); border-color:color-mix(in srgb, var(--a) 45%, transparent); }
+nav.sec a.b{ color:var(--b); border-color:color-mix(in srgb, var(--b) 45%, transparent); }
+
+section.blk{ margin-top:28px; }
+.sh{ display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 16px; margin-bottom:12px; }
+h2{ font-size:20px; line-height:1.25; font-weight:600; letter-spacing:-.01em; margin:0; text-wrap:balance; }
+.sh .hint{ font-size:13px; color:var(--mute); }
+.card{ background:var(--panel); border:1px solid var(--line); border-radius:10px; }
+
+/* overview */
+.ov{ display:grid; grid-template-columns:1fr; gap:14px; }
+.lead{ padding:16px 18px 14px; display:grid; grid-template-columns:1fr; gap:18px; align-content:start; }
+.lcol{ min-width:0; }
+.lh{ display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; color:var(--ink2); margin-bottom:8px; }
+.tag{ display:inline-grid; place-items:center; width:20px; height:20px; border-radius:5px; font-size:11.5px; font-weight:700; color:#0E1214; flex:none; }
+.tag.a{ background:var(--a); } .tag.b{ background:var(--b); }
+.lstat{ font-size:12.5px; color:var(--mute); font-weight:400; margin-left:auto; text-align:right; }
+.lead ol{ list-style:none; margin:0; padding:0; display:grid; gap:2px; }
+.lead li{ display:grid; grid-template-columns:22px minmax(0,1fr) auto; align-items:center; gap:10px; padding:7px 8px; margin-inline:-8px; border-radius:6px; cursor:pointer; }
+.lead li:hover{ background:var(--raised); }
+.lead li .r{ font-family:var(--mono); font-size:15px; text-align:right; }
+.lcol.a li .r{ color:var(--a); } .lcol.b li .r{ color:var(--b); }
+.lead li .n{ min-width:0; }
+.lead li .n b{ font-weight:600; }
+.lead li .n .sub{ display:block; font-size:12.5px; color:var(--mute); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.lead li .o{ display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:13.5px; color:var(--b); white-space:nowrap; }
+.latest{ padding:16px 18px; min-width:0; }
+.latest .lh{ margin-bottom:6px; }
+.latest .lh .when{ margin-left:auto; font-weight:400; color:var(--mute); font-size:12.5px; }
+.latest p{ margin:0 0 10px; font-size:14.5px; line-height:1.62; color:var(--ink2); max-width:75ch; }
+.latest p strong{ color:var(--ink); font-weight:600; }
+.latest p b{ color:var(--ink); }
+.earlier{ margin-top:4px; border-top:1px solid var(--line); padding-top:8px; }
+.earlier > summary, details.x > summary{ cursor:pointer; list-style:none; font-size:13px; font-weight:600; color:var(--ink2); display:flex; align-items:center; gap:8px; padding:4px 0; }
+.earlier > summary::-webkit-details-marker, details.x > summary::-webkit-details-marker, details.row > summary::-webkit-details-marker{ display:none; }
+.earlier > summary::before, details.x > summary::before{ content:""; width:7px; height:7px; border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor; transform:rotate(-45deg); transition:transform .15s; flex:none; margin-right:2px; }
+.earlier[open] > summary::before, details.x[open] > summary::before{ transform:rotate(45deg); }
+.earlier .eb p{ font-size:14px; }
+
+/* odds bar */
+.ob{ position:relative; display:inline-block; width:72px; height:6px; border-radius:3px; background:var(--sunk); box-shadow:inset 0 0 0 1px var(--line2); flex:none; vertical-align:middle; }
+.ob i{ position:absolute; left:0; top:0; bottom:0; border-radius:3px; background:var(--b); }
+.ob s{ position:absolute; top:-3px; bottom:-3px; width:2px; margin-left:-1px; background:var(--ink); opacity:.55; border-radius:1px; }
+.ob.below i{ background:color-mix(in srgb, var(--b) 45%, var(--mute)); }
+
+/* compare */
+.cmp{ overflow:hidden; }
+.cbar{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px 16px; padding:12px 14px; border-bottom:1px solid var(--line); }
+.seg{ display:inline-flex; background:var(--sunk); border:1px solid var(--line2); border-radius:8px; padding:3px; gap:2px; }
+.seg button{ border:0; background:none; padding:5px 12px; border-radius:6px; font-size:13px; color:var(--ink2); cursor:pointer; white-space:nowrap; }
+.seg button[aria-selected="true"], .seg button[aria-pressed="true"]{ background:var(--raised); color:var(--ink); box-shadow:0 0 0 1px var(--line2); font-weight:600; }
+.cbar .hint{ font-size:12.5px; color:var(--mute); }
+.tscroll{ position:relative; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:thin; }
+.tscroll::after{ content:""; position:absolute; top:0; right:0; bottom:0; width:32px; pointer-events:none; opacity:0; transition:opacity .2s; background:linear-gradient(to right, transparent, var(--panel)); transform:translateX(var(--sl,0px)); z-index:4; }
+.tscroll.fade-r::after{ opacity:1; }
+table.ct{ width:100%; border-collapse:collapse; font-size:13.5px; font-variant-numeric:tabular-nums; }
+.ct th{ text-align:left; font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--mute); padding:9px 10px; border-bottom:1px solid var(--line); white-space:nowrap; vertical-align:bottom; background:var(--panel); }
+.ct th .s{ display:block; font-size:10px; letter-spacing:.03em; text-transform:none; font-weight:500; opacity:.8; margin-top:1px; }
+.ct th.srt{ cursor:pointer; user-select:none; }
+.ct th.srt:hover{ color:var(--ink); }
+.ct th .ar{ display:inline-block; width:10px; margin-left:3px; color:var(--tab); }
+.ct th[aria-sort="none"] .ar::after{ content:"↕"; color:var(--line2); }
+.ct th[aria-sort="ascending"] .ar::after{ content:"↑"; }
+.ct th[aria-sort="descending"] .ar::after{ content:"↓"; }
+.ct td{ padding:10px 10px; border-bottom:1px solid var(--line); vertical-align:middle; white-space:nowrap; }
+.ct tbody tr:last-child td{ border-bottom:0; }
+.ct tbody tr{ cursor:pointer; }
+.ct tbody tr:hover td, .ct tbody tr.hl td{ background:var(--raised); }
+.ct .c-n{ position:sticky; left:0; z-index:2; background:var(--panel); min-width:150px; }
+.tscroll.scrolled .ct .c-n{ box-shadow:8px 0 10px -8px rgba(0,0,0,.6); clip-path:inset(0 -14px 0 0); }
+.ct th.c-n{ z-index:3; }
+.ct .c-n b{ font-weight:600; }
+.ct .c-n .tk{ display:block; font-size:11.5px; color:var(--mute); }
+.ct .bk{ display:inline-block; width:3px; height:26px; border-radius:2px; background:var(--bkc); vertical-align:middle; margin-right:9px; float:left; margin-top:2px; }
+.ct td.r{ text-align:right; } .ct th.r{ text-align:right; }
+.ct td.c-k{ white-space:normal; min-width:220px; max-width:320px; color:var(--ink2); font-size:12.5px; line-height:1.45; }
+.ct td.c-drv{ white-space:normal; min-width:150px; max-width:240px; color:var(--ink2); font-size:12.5px; line-height:1.4; }
+.ct td.sc{ font-family:var(--mono); font-size:12.5px; text-align:right; }
+.ct td.sc.est{ color:var(--ink2); }
+.ct td.sc.wide{ white-space:normal; min-width:120px; text-align:left; font-family:var(--sans); }
+.pill{ display:inline-grid; place-items:center; min-width:26px; height:22px; padding:0 6px; border-radius:6px; font-family:var(--mono); font-size:12.5px; font-weight:500; }
+.pill.a{ background:var(--a-soft); color:var(--a); } .pill.b{ background:var(--b-soft); color:var(--b); }
+.pill.lo{ background:transparent; color:var(--mute); box-shadow:inset 0 0 0 1px var(--line2); }
+.oc{ display:flex; align-items:center; gap:9px; justify-content:flex-end; }
+.oc .v{ font-family:var(--mono); font-size:13.5px; min-width:34px; text-align:right; color:var(--b); font-weight:500; }
+.oc .v.lo{ color:var(--mute); }
+.legend{ display:flex; flex-wrap:wrap; gap:6px 18px; padding:10px 14px 12px; border-top:1px solid var(--line); font-size:12.5px; color:var(--mute); }
+.legend b{ color:var(--ink2); font-weight:600; }
+.legend .ob{ width:44px; }
+
+/* risk badge */
+.rsb{ display:inline-grid; place-items:center; min-width:22px; height:22px; padding:0 6px; border-radius:6px; font-family:var(--mono); font-size:12px; font-weight:600; color:#101416; }
+.rsb.r1{ background:#4FB3A3; } .rsb.r2{ background:#8CC9A0; } .rsb.r3{ background:#D4A24C; } .rsb.r4{ background:#E0875A; } .rsb.r5{ background:#D46A5E; }
+
+/* metal badge + pick */
+.mb{ display:inline-block; vertical-align:1px; margin-left:6px; font-size:10.5px; font-weight:700; letter-spacing:.02em; padding:0 5px; border-radius:4px; border:1.5px solid currentColor; line-height:1.4; }
+.pk{ margin-left:5px; font-size:13px; }
+.dg{ color:var(--b); font-weight:600; margin-left:2px; font-size:.85em; }
+.tgx{ display:inline-block; margin-left:6px; font-size:10px; font-weight:600; letter-spacing:.03em; padding:0 5px; border-radius:4px; color:var(--good); border:1px solid rgba(114,201,169,.5); white-space:nowrap; vertical-align:1px; cursor:help; }
+
+
+/* what changed */
+.chg{ padding:18px 20px 8px; border-color:color-mix(in srgb, var(--tab) 38%, var(--line)); background:linear-gradient(180deg, color-mix(in srgb, var(--tab) 8%, var(--panel)) 0, var(--panel) 160px); }
+.chh{ display:flex; align-items:center; gap:10px; }
+.chh .eyebrow{ color:var(--tab); }
+.chh .when{ margin-left:auto; font-size:12.5px; color:var(--ink2); font-family:var(--mono); background:var(--sunk); border:1px solid var(--line2); padding:2px 8px; border-radius:6px; }
+.chl{ margin:8px 0 14px; font-size:18px; line-height:1.45; font-weight:500; color:var(--ink); max-width:72ch; text-wrap:pretty; }
+.mvs{ display:flex; flex-wrap:wrap; align-items:center; gap:6px 6px; margin:0 0 16px; }
+.mvl{ font-size:11.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--mute); margin-right:6px; }
+.mvc{ display:inline-flex; align-items:center; gap:6px; background:var(--sunk); border:1px solid var(--line2); border-radius:999px; padding:3px 10px 3px 4px; font-size:13px; cursor:pointer; color:var(--ink2); }
+.mvc:hover{ border-color:var(--tab); color:var(--ink); }
+.mvc b{ color:var(--ink); font-weight:600; }
+.mvc .tag{ width:18px; height:18px; font-size:10.5px; border-radius:999px; }
+.mvc .num{ font-family:var(--mono); font-size:12.5px; }
+.mvc .mv{ margin-left:0; vertical-align:0; }
+.mvc .nt{ font-size:11.5px; color:var(--mute); }
+.mvc .rsb{ min-width:18px; height:18px; font-size:11px; padding:0 4px; }
+.mvc:not(:has(.tag)){ padding-left:10px; }
+.more1{ font-size:12.5px; color:var(--mute); margin-left:4px; cursor:help; }
+.mvs .none{ font-size:13px; color:var(--ink2); }
+.st{ display:flex; align-items:baseline; gap:7px; background:var(--sunk); border:1px solid var(--line); border-radius:8px; padding:7px 12px; }
+.st .sn{ font-family:var(--mono); font-size:20px; font-weight:500; color:var(--ink); line-height:1; }
+.st .sl{ font-size:12.5px; color:var(--mute); }
+.st.a .sn{ color:var(--a); } .st.b .sn{ color:var(--b); } .st.w .sn{ color:var(--warn); }
+.chgrid{ display:grid; grid-template-columns:1fr; gap:18px 28px; }
+.chcol{ min-width:0; }
+.chcol h3{ font-size:11.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--mute); margin:0 0 2px; }
+ul.moves{ list-style:none; margin:0; padding:0; }
+.moves li{ display:grid; grid-template-columns:22px minmax(0,1fr) auto; align-items:center; gap:10px; padding:8px 8px; margin-inline:-8px; border-radius:6px; cursor:pointer; }
+.moves li:hover{ background:var(--raised); }
+.moves .mn b{ font-weight:600; }
+.moves .ms{ display:block; font-size:12.5px; color:var(--mute); }
+.ft2{ display:flex; align-items:center; gap:6px; font-family:var(--mono); font-size:15px; color:var(--mute); }
+.ft2 .to{ color:var(--ink); font-weight:500; } .ft2 .to.a{ color:var(--a); } .ft2 .to.b{ color:var(--b); }
+.ft2 .arr{ color:var(--line2); font-family:var(--sans); }
+.tag.rk2{ background:var(--ink2); }
+.minor{ display:flex; gap:8px; align-items:flex-start; font-size:13px; color:var(--mute); margin:8px 0 4px; line-height:1.5; }
+.minor .tag{ width:18px; height:18px; font-size:10.5px; margin-top:1px; }
+.none{ color:var(--ink2); margin:6px 0; }
+ul.flags{ list-style:none; margin:0; padding:0; }
+.fl{ display:grid; grid-template-columns:minmax(0,1fr); gap:3px; padding:9px 0; border-top:1px solid var(--line); font-size:14px; line-height:1.55; color:var(--ink2); }
+ul.flags{ display:grid; grid-template-columns:1fr; column-gap:28px; margin:0; }
+.fl b{ color:var(--ink); font-weight:600; }
+.ft{ justify-self:start; font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:1px 7px; border-radius:4px; border:1px solid currentColor; }
+.fl.hot .ft{ color:var(--bad); background:rgba(231,140,125,.12); }
+.fl.watch .ft{ color:var(--warn); border-style:dashed; }
+.fl.news .ft{ color:var(--ink2); border-color:var(--line2); }
+.fl.fix .ft{ color:var(--a); border-color:color-mix(in srgb, var(--a) 50%, transparent); }
+.px{ margin:10px 0 0; font-size:12.5px; color:var(--mute); }
+.chfoot{ display:flex; flex-wrap:wrap; gap:0 24px; margin-top:10px; border-top:1px solid var(--line); }
+.chfoot .earlier{ border-top:0; margin:0; padding:8px 0; flex:1 1 100%; }
+.mv{ display:inline-block; font-family:var(--mono); font-size:10.5px; font-weight:600; margin-left:4px; vertical-align:2px; letter-spacing:-.02em; }
+.mv.up{ color:var(--good); } .mv.dn{ color:var(--bad); }
+.ct .rkn + .mv{ margin-left:-8px; margin-right:6px; }
+.rkm{ font-size:0; line-height:1; margin-top:3px; } .rkm .mv{ font-size:10.5px; margin:0; }
+@media (min-width:860px){ ul.flags{ grid-template-columns:1fr 1fr; } }
+
+/* compact panel */
+.chg{ padding:12px 16px 4px; background:linear-gradient(180deg, color-mix(in srgb, var(--tab) 7%, var(--panel)) 0, var(--panel) 110px); }
+.chh .pxh{ font-size:12px; color:var(--mute); margin-left:auto; }
+.chh .when{ margin-left:10px; font-size:11.5px; padding:1px 7px; }
+.chl{ margin:5px 0 9px; font-size:15.5px; line-height:1.45; }
+.mvs{ margin:0 0 6px; gap:5px; }
+.mvc{ padding:2px 9px 2px 3px; font-size:12.5px; }
+.fl{ display:block; padding:6px 0; font-size:13.5px; line-height:1.5; }
+.fl .ft{ display:inline-block; margin-right:7px; vertical-align:1px; font-size:9.5px; padding:0 5px; }
+.chfoot{ margin-top:4px; gap:0 22px; flex-wrap:nowrap; }
+.chfoot .earlier{ flex:0 1 auto; padding:5px 0; }
+.chfoot .earlier[open]{ flex:1 1 100%; }
+.chfoot:has(.earlier[open]){ flex-wrap:wrap; }
+.mfl{ border-top:0; margin:0; padding:2px 0 4px; }
+.mfl > summary{ font-size:12.5px; color:var(--mute); }
+.earlier > summary{ font-size:12.5px; }
+@media (max-width:560px){ .chh .pxh{ display:none; } .chh .when{ margin-left:auto; } }
+
+.nwb{ display:inline-block; font-size:9.5px; font-weight:700; letter-spacing:.06em; padding:0 5px; border-radius:4px; color:#0E1214; background:var(--tab); margin-left:5px; vertical-align:2px; }
+.mvc .nwb{ margin-left:2px; }
+.ct .rkn + .nwb{ margin-left:-4px; margin-right:8px; }
+.mvc.nwc{ padding-left:6px; }
+.ccna{ font-size:12px; color:var(--mute); }
+.ccb.na{ color:var(--mute); background:transparent; border-style:dashed; }
+.fl.new .ftg, .fl.new .ft{ color:var(--tab); border-color:color-mix(in srgb, var(--tab) 60%, transparent); }
+
+/* the line: plain-sentence dividers */
+.ct tr.line td{ text-transform:none !important; letter-spacing:0 !important; font-size:13px !important; font-weight:400 !important; color:var(--ink2) !important; line-height:1.5; padding:10px 12px !important; }
+.ct tr.line td b{ color:var(--ink); font-weight:600; }
+.divider{ display:block !important; text-transform:none !important; letter-spacing:0 !important; font-size:13.5px !important; font-weight:400 !important; color:var(--ink2) !important; line-height:1.55; padding:11px 13px !important; margin:12px 0 4px; border:1px dashed var(--line2); border-radius:8px; background:rgba(255,255,255,.025); }
+.divider::before, .divider::after{ display:none !important; }
+.divider b{ color:var(--ink); font-weight:600; }
+
+/* the two tables */
+.tables{ display:grid; grid-template-columns:1fr; gap:18px; }
+.tp{ overflow:hidden; }
+.tp.ta{ border-top:3px solid var(--a); } .tp.tb{ border-top:3px solid var(--b); }
+.tph{ display:flex; align-items:center; gap:10px; padding:14px 16px 2px; }
+.tph h2{ font-size:18px; }
+.tph .hint{ margin-left:auto; font-size:12.5px; color:var(--mute); }
+.tin{ margin:0; padding:4px 16px 12px; font-size:14px; line-height:1.55; color:var(--ink2); max-width:90ch; }
+.tp .tscroll{ border-top:1px solid var(--line); }
+.tin b{ color:var(--ink); font-weight:600; }
+.ct .rkn{ display:inline-block; width:24px; margin-right:10px; text-align:right; font-family:var(--mono); font-size:15px; vertical-align:top; }
+.ct .rkn.a{ color:var(--a); } .ct .rkn.b{ color:var(--b); } .ct .rkn.lo{ color:var(--mute); }
+.ct .nmw{ display:inline-block; vertical-align:top; }
+.ct tr.line td{ padding:7px 12px; background:var(--sunk); font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--mute); white-space:normal; cursor:default; }
+.ct tr.line td span{ position:sticky; left:12px; display:inline-block; max-width:calc(100vw - 72px); }
+.ct tbody tr.line:hover td{ background:var(--sunk); }
+.tp .xs{ margin:0; padding:0 16px; }
+.tp details.x:last-child{ border-bottom:0; }
+.lede b.ta{ color:var(--a); } .lede b.tb{ color:var(--b); }
+
+/* explainers */
+.xs{ display:grid; grid-template-columns:1fr; gap:0; margin-top:12px; }
+details.x{ border-top:1px solid var(--line); padding:10px 2px; }
+details.x:last-child{ border-bottom:1px solid var(--line); }
+details.x > summary{ font-size:14px; }
+.xb{ padding:6px 0 4px 17px; font-size:14px; line-height:1.62; color:var(--ink2); max-width:78ch; }
+.xb p{ margin:0 0 9px; } .xb ul{ margin:4px 0 10px; padding-left:18px; } .xb li{ margin:4px 0; }
+.xb b, .xb strong{ color:var(--ink); font-weight:600; }
+.xb .ex{ background:rgba(255,255,255,.035); border:1px solid #2C3539; border-radius:8px; padding:10px 12px; margin:6px 0 12px; font-size:13.5px; }
+.xb .note-top{ color:var(--ink2); }
+
+/* ranked lists */
+.lists{ display:grid; grid-template-columns:1fr; gap:22px; margin-top:30px; }
+.list{ min-width:0; --c:var(--a); --soft:var(--a-soft); }
+.list.lb{ --c:var(--b); --soft:var(--b-soft); }
+.lhd{ border-top:3px solid var(--c); padding-top:14px; margin-bottom:6px; }
+.lhd .eyebrow{ color:var(--c); }
+.lhd h2{ margin-top:4px; }
+.lhd .q{ margin:6px 0 0; color:var(--ink2); font-size:14.5px; max-width:62ch; }
+.crit{ margin:10px 0 6px; }
+.crit > summary{ color:var(--c) !important; }
+.crit ol{ margin:6px 0 2px; padding-left:20px; font-size:14px; line-height:1.55; color:var(--ink2); }
+.crit li{ margin:4px 0; } .crit li b{ color:var(--ink); }
+.crit li.note-li{ list-style:none; margin-left:-20px; color:var(--mute); font-size:13px; }
+.divider{ display:flex; align-items:center; gap:10px; font-size:11.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--mute); padding:16px 0 6px; }
+.divider::before, .divider::after{ content:""; height:1px; flex:1; background:repeating-linear-gradient(90deg, var(--line2) 0 6px, transparent 6px 10px); }
+.divider span{ max-width:80%; text-align:center; }
+details.row{ border-bottom:1px solid var(--line); }
+details.row > summary{ list-style:none; cursor:pointer; display:grid; grid-template-columns:38px minmax(0,1fr); gap:12px; padding:14px 8px 12px; margin-inline:-8px; border-radius:8px; }
+details.row > summary:hover, details.row.hl > summary{ background:var(--raised); }
+details.row.flash > summary{ background:var(--soft); }
+.rk{ font-family:var(--mono); font-size:24px; line-height:1.05; color:var(--c); text-align:right; padding-top:1px; }
+.row.low .rk{ color:var(--mute); font-size:19px; }
+.rm{ min-width:0; }
+.l1{ display:flex; align-items:baseline; gap:4px 10px; flex-wrap:wrap; }
+.l1 .nm{ font-size:16px; font-weight:600; }
+.row.low .l1 .nm{ font-weight:500; }
+.l1 .tk{ font-size:12.5px; color:var(--mute); }
+.l1 .hm{ margin-left:auto; display:flex; align-items:center; gap:8px; }
+.hm .o3{ font-family:var(--mono); font-size:18px; font-weight:500; color:var(--b); }
+.row.low .hm .o3{ color:var(--mute); font-size:16px; }
+.hm .o3 small{ font-family:var(--sans); font-size:11px; color:var(--mute); margin-left:3px; letter-spacing:.02em; }
+.l2{ margin-top:3px; font-size:13.5px; color:var(--ink2); }
+.l2 .cap{ color:var(--mute); }
+.facts{ display:flex; flex-wrap:wrap; align-items:center; gap:4px 14px; margin-top:7px; font-size:12.5px; color:var(--mute); }
+.facts b{ color:var(--ink); font-weight:600; font-family:var(--mono); font-size:12.5px; }
+.facts .bkt{ display:inline-flex; align-items:center; gap:6px; }
+.facts .bkt::before{ content:""; width:8px; height:8px; border-radius:2px; background:var(--bkc); }
+.gist{ margin:8px 0 0; font-size:14.5px; line-height:1.55; color:var(--ink); max-width:66ch; }
+.row.low .gist{ color:var(--ink2); }
+.mo{ display:inline-flex; align-items:center; gap:6px; margin-top:8px; font-size:12.5px; font-weight:600; color:var(--c); }
+.mo::after{ content:"▾"; font-size:11px; transition:transform .15s; }
+details.row[open] .mo::after{ transform:rotate(180deg); }
+details.row[open] .mo .t1, details.row:not([open]) .mo .t2{ display:none; }
+.more{ padding:0 0 16px 50px; }
+.more p{ margin:0 0 10px; font-size:14.5px; line-height:1.62; color:var(--ink2); max-width:66ch; }
+.more .wif{ color:var(--ink); }
+.more b{ color:var(--ink); font-weight:600; }
+.kv{ display:grid; grid-template-columns:96px minmax(0,1fr); gap:0 12px; margin:6px 0 10px; font-size:13.5px; line-height:1.55; }
+.kv > div{ padding:8px 0; border-top:1px solid var(--line); }
+.kv .k{ color:var(--mute); font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; padding-top:10px; }
+.kv .v{ color:var(--ink2); }
+.kv .v .rsb{ margin-right:8px; vertical-align:1px; }
+.ntag{ display:inline-block; font-size:11px; font-weight:600; padding:0 7px; border-radius:4px; margin-right:6px; border:1px solid currentColor; }
+.n-high{ color:var(--warn); } .n-med{ color:var(--a); } .n-low{ color:var(--mute); }
+.scg{ display:grid; grid-template-columns:repeat(auto-fill, minmax(104px, 1fr)); gap:6px; margin:4px 0 12px; }
+.scg div{ background:rgba(255,255,255,.035); border:1px solid #2C3539; border-radius:7px; padding:6px 9px; }
+.scg .sk{ display:block; font-size:10.5px; color:var(--mute); letter-spacing:.03em; }
+.scg .sv{ font-family:var(--mono); font-size:13px; color:var(--ink); }
+.scg .sv.est{ color:var(--ink2); }
+.drv{ font-size:12.5px; color:var(--mute); margin:0 0 6px; }
+.trk{ font-size:13px; font-weight:600; text-decoration:none; border-bottom:1px solid currentColor; }
+
+/* cost curve (producers) */
+.ccl{ display:flex; flex-wrap:wrap; align-items:center; gap:4px 9px; margin-top:7px; font-size:12.5px; font-variant-numeric:tabular-nums; color:var(--mute); }
+.ccm{ position:relative; display:inline-block; flex:none; width:84px; height:8px; border-radius:4px; vertical-align:middle; isolation:isolate;
+  background:linear-gradient(90deg, rgba(79,179,163,.6) 0 25%, rgba(140,201,160,.55) 25% 50%, rgba(212,162,76,.6) 50% 75%, rgba(212,106,94,.65) 75% 100%); }
+.ccm::after{ content:""; position:absolute; left:50%; top:-3px; bottom:-3px; width:2px; margin-left:-1px; background:var(--ink); opacity:.5; border-radius:1px; }
+.ccm i{ position:absolute; top:50%; display:block; }
+.ccm .d{ left:calc(var(--p) * 1%); width:12px; height:12px; margin:-6px 0 0 -6px; border-radius:50%; background:var(--ink); border:2px solid var(--panel); box-shadow:0 0 0 1px var(--ink); z-index:2; }
+.ccm .o{ left:calc(var(--p) * 1%); width:9px; height:9px; margin:-4.5px 0 0 -4.5px; border-radius:50%; border:1.5px solid var(--ink); background:var(--panel); opacity:.8; z-index:1; }
+.ccm .t{ left:calc(var(--a) * 1%); width:calc((var(--b) - var(--a)) * 1%); height:2px; margin-top:-1px; background:var(--ink); opacity:.55; }
+.ccm.sm{ width:56px; height:6px; } .ccm.sm .d{ width:10px; height:10px; margin:-5px 0 0 -5px; } .ccm.sm .o{ width:7px; height:7px; margin:-3.5px 0 0 -3.5px; }
+.ccm.big{ width:100%; height:12px; border-radius:6px; } .ccm.big .d{ width:16px; height:16px; margin:-8px 0 0 -8px; } .ccm.big .o{ width:12px; height:12px; margin:-6px 0 0 -6px; }
+.ccb{ font-size:11.5px; font-weight:600; padding:1px 7px; border-radius:4px; white-space:nowrap; border:1px solid currentColor; }
+.ccb.lo, .ccn.lo, .cct.dn{ color:var(--good); } .ccb.q3, .ccn.q3{ color:var(--warn); } .ccb.q4, .ccn.q4, .cct.up{ color:var(--bad); }
+.ccb.lo{ background:rgba(114,201,169,.12); } .ccb.q3{ background:rgba(227,163,95,.12); } .ccb.q4{ background:rgba(231,140,125,.12); }
+.ccx{ color:var(--ink2); }
+.ccw{ font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:1px 6px; border-radius:4px; color:var(--warn); border:1px dashed currentColor; white-space:nowrap; }
+.ccw.hot{ color:var(--bad); border-style:solid; }
+.ccn{ font-family:var(--mono); font-size:12.5px; margin-left:8px; }
+.ccdemo{ max-width:360px; margin:8px 0 10px; padding:0 8px; }
+.cdl{ position:relative; height:18px; font-size:11.5px; font-weight:600; color:var(--ink); }
+.cdl span{ position:absolute; bottom:4px; left:calc(var(--p) * 1%); transform:translateX(-50%); white-space:nowrap; }
+.cde{ display:flex; justify-content:space-between; margin-top:6px; font-size:11.5px; color:var(--mute); }
+
+/* method */
+.method{ margin-top:36px; padding-top:18px; border-top:1px solid var(--line); display:grid; grid-template-columns:1fr; gap:10px 32px; font-size:13px; color:var(--mute); }
+.method p{ margin:0 0 8px; max-width:72ch; }
+.method h3{ font-size:12px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--ink2); margin:0 0 6px; }
+
+@media (min-width:760px){
+  .ov{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
+  .lead{ grid-template-columns:1fr; }
+}
+@media (min-width:1040px){
+  h1{ font-size:34px; }
+  .ov{ grid-template-columns:minmax(0,1.05fr) minmax(0,1fr); }
+  .lists{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:36px; }
+  .method{ grid-template-columns:1fr 1fr; }
+}
+@media (max-width:560px){
+  .wrap{ padding-inline:16px; }
+  nav.sec{ margin-inline:-16px; padding-inline:16px; }
+  h1{ font-size:25px; }
+  .more{ padding-left:0; }
+  details.row > summary{ grid-template-columns:30px minmax(0,1fr); gap:10px; }
+  .rk{ font-size:20px; }
+  .kv{ grid-template-columns:1fr; }
+  .kv .k{ padding-bottom:0; border-top:1px solid var(--line); }
+  .kv .v{ border-top:0; padding-top:2px; }
+  .ct .c-n{ min-width:128px; }
+  .lead li .o .ob{ width:48px; }
+  .tph .hint{ display:none; }
+}
+@media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+
+
+
+/* hover info */
+.htip{ position:fixed; z-index:100; max-width:300px; padding:7px 10px; border-radius:7px; background:#262E33; border:1px solid var(--line2); color:var(--ink); font-size:12.5px; line-height:1.45; box-shadow:0 8px 22px rgba(0,0,0,.45); pointer-events:none; }
+.ct th[data-tip]{ cursor:help; }
+.ct th[data-tip]:hover{ color:var(--ink); }
+.rwb[data-tip], .mwt[data-tip], .rsb[data-tip], .mb[data-tip], .pill, .ccm[data-tip]{ cursor:help; }
+/* runway */
+.legend .lg-rw{ flex-basis:100%; line-height:1.7; }
+.legend .lg-rw .rwb, .legend .lg-rw .mwt{ margin:0 3px 0 6px; }
+.rwb{ display:inline-block; font-size:11px; font-weight:600; padding:1px 7px; border-radius:4px; border:1px solid currentColor; white-space:nowrap; line-height:1.45; }
+.rwb.long{ color:var(--good); background:rgba(114,201,169,.10); } .rwb.medium{ color:var(--ink2); border-color:var(--line2); } .rwb.short{ color:var(--mute); border-style:dashed; border-color:var(--line2); }
+.mwt{ display:inline-block; margin-left:5px; font-size:10px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:1px 5px; border-radius:4px; color:var(--b); border:1px dashed currentColor; white-space:nowrap; }
+.facts .rwb{ font-family:var(--sans); }
+.tin.tin2{ padding-top:0; font-size:13.5px; color:var(--mute); }
+.fl.mth .ft{ color:var(--mute); border-color:var(--line2); border-style:dashed; }
+/* management grade */
+.mgb{ display:inline-grid; grid-auto-flow:column; place-items:center; min-width:22px; height:22px; padding:0 6px; border-radius:6px; font-family:var(--mono); font-size:12px; font-weight:700; border:1px solid currentColor; white-space:nowrap; letter-spacing:.02em; }
+.mgb.gA{ color:var(--good); background:rgba(114,201,169,.12); } .mgb.gB{ color:var(--ink2); border-color:var(--line2); } .mgb.gC{ color:var(--warn); border-style:dashed; } .mgb.gD{ color:var(--bad); background:rgba(231,140,125,.12); }
+.mgb .mgst{ font-size:10px; margin-left:3px; line-height:1; }
+.mgb.lc{ opacity:.75; }
+.kv .v .mgb{ margin-right:8px; vertical-align:1px; }
+.facts .mgb{ font-size:11px; height:18px; min-width:18px; padding:0 5px; }
+.legend .lg-mg{ flex-basis:100%; line-height:1.7; } .legend .lg-mg .mgb{ margin:0 3px 0 6px; height:18px; min-width:18px; font-size:11px; }
+.fl.mgmt .ft{ color:var(--a); border-style:dashed; }
+.mvc .mgb{ height:18px; min-width:18px; font-size:11px; padding:0 4px; }
+/* rolling window */
+.meta .lrun{ color:var(--mute); font-family:var(--mono); font-size:12px; }
+.wseg{ padding:2px; margin-left:auto; }
+.wseg button{ padding:2px 9px; font-size:12px; }
+.chh .when{ margin-left:8px; }
+.chd{ color:var(--mute); font-family:var(--mono); font-size:13px; font-weight:400; }
+.fdt{ display:inline-block; font-family:var(--mono); font-size:11.5px; color:var(--mute); margin-right:7px; }
+.dli{ padding:6px 0 4px; border-top:1px solid var(--line); }
+.dli:first-child{ border-top:0; }
+.dlh{ font-size:13.5px; color:var(--ink); line-height:1.5; }
+.dli ul.flags{ grid-template-columns:1fr !important; margin-left:2px; }
+.dli .fl{ border-top:0; padding:3px 0; font-size:13px; }
+.dlmore{ margin:8px 0 2px; font-size:13px; }
+.dlmore a, nav.sec a.hs{ color:var(--tab); }
+@media (max-width:560px){ .chh{ flex-wrap:wrap; } .wseg{ margin-left:0; order:3; } .chh .when{ margin-left:auto; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hd">
+    <div class="eyebrow"><span class="dot"></span>Critical minerals · 5 names · 3–5 year horizon</div>
+    <h1>Critical minerals: safest bets vs. biggest upside</h1>
+    <p class="lede"><b class="ta">List A · Certainty alpha</b> ranks who is most likely to deliver. <b class="tb">List B · Multi-bagger</b> ranks who has the best odds of tripling your money in 3–5 years.</p>
+    <div class="meta"><span class="upd">Updated <b>8 Oct 2026</b> · prices to the 5 Oct (ATHA, Ucore, Antimony 2 Oct) close</span><span><a href="/equities/trackers/#cm" rel="noopener" target="_blank">Open the tracker ↗</a></span></div>
+  </header>
+  <nav class="sec" aria-label="Sections"><a href="#latest">Latest</a><a href="#tables">Tables</a><a class="a" href="#rank-a">A · details</a><a class="b" href="#rank-b">B · details</a><a href="#method">Method</a><a class="hs" href="#" data-goto="hist">History ↗</a></nav>
+
+  <section class="blk" id="latest">
+    <div class="card chg">
+      <div class="chh"><span class="eyebrow">What changed</span>
+        <div class="seg wseg" role="group" aria-label="Period"><button type="button" data-w="u">Last update</button><button type="button" data-w="7">7 days</button><button type="button" data-w="30">30 days</button></div>
+        <span class="when" id="chwhen"></span></div>
+      <p class="chl"><span class="chd" id="chd"></span>One new release (ATHA drill results, not material yet). Prices unchanged (no 8 Oct closes found); no ranking or odds changes.</p>
+      <div class="mvs" id="moves"></div>
+      <div class="chcol" id="flags"></div>
+      <p class="px">Nickel ~US$15,550/t (8 Oct) · ex-China NdPr ~US$106.5/kg (Sep)</p>
+      <div class="chfoot">
+        <details class="earlier" id="daylog"><summary>Day by day</summary><div class="eb" id="daylog-b"></div></details>
+        <details class="earlier"><summary>Full note</summary><div class="eb"><p><strong>3 Oct refresh — no ranking changes.</strong> China extended the suspension of its Oct-2025 rare-earth controls to 10 Jan 2027 with the US–China truce, and heavy rare-earth prices outside China widened further (Dy oxide in Europe ~US$3,500/kg, ~16× China; ex-China NdPr ~US$106.5/kg in September) — supportive for Ucore, offset by its factory-acceptance results, now about a month overdue. ATHA's cash is thinner than the page assumed (C$47.6M at 30 Jun, ~C$34M est. at 30 Sep). Nickel fell to ~US$15,435/t, the lowest since December, which keeps Centaurus's case a nickel call.</p></div></details>
+        <details class="earlier"><summary>Earlier notes (4)</summary><div class="eb"><p><strong>2 October audit — list B now ranks on the odds of a 3×.</strong> Each row shows the chance its thesis works, the multiple per share if it does (after the dilution the plan needs), and the resulting odds of a 3×. A volatile junior with no edge has about a one-in-ten chance of tripling in four to five years, so the line sits at ~10%.</p><p><strong>Netting out dilution moved this tab more than any other.</strong> Centaurus's 0.25× NAV is measured at the US$19,800 study deck; at today's ~US$15,800 nickel the project's NAV is ~US$300–360M, so a funded FID with a US$110–230M equity slice is worth roughly today's price per share — the 3× case is a nickel call (~10%). ATHA's market cap already pays ~US$3 per conceptual pound, so a Nunavut resource re-rates it ~1.3–2.5×, not ~5× (~8%). Ucore (~18%) moves to first: if Machine A works, it would be valued as a scarce strategic asset rather than on plant cash flow. Antimony Resources (~8%) keeps the fattest tail and the only path to zero. Earlier odds on this tab (Centaurus ~30–35%, ATHA ~20–25%) did not net out dilution; these replace them.</p><p><strong>None of the four is an anchor.</strong> All sit at the risky end of their group (risk 3, 4, 4 and 5), and the certainty list is unchanged. The copper tab still holds better-odds multi-bagger candidates than this one.</p><p><strong>Read with care.</strong> Nickel, uranium, antimony and rare-earth prices are set by Indonesian quotas, utility contracting and Chinese export policy — the price cases are scenarios, not forecasts, and the price columns ignore the dilution the odds now include.</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk tables" id="tables">
+    <div class="card tp ta">
+      <div class="tph"><span class="tag a">A</span><h2>Certainty alpha</h2><span class="hint">tap a company for details</span></div>
+      <p class="tin">Beat the index with higher odds, accept a capped upside, over <b>3–5 years</b> (to ~2030). Ranks on <b>de-risking</b>, <b>funded runway</b>, <b>room left to re-rate</b>, <b>local licence</b> and <b>execution</b>.</p>
+      <div class="tscroll"><table class="ct" id="ta" aria-label="Ranking A, Certainty alpha"></table></div>
+      <div class="legend"><span><b>In B</b> the same company's rank in list B; outlined = below that list's line</span><span><b>Risk 1–5</b> chance of permanent loss or no re-rate (1 lowest)</span><span class="lg-mg"><b>Mgmt</b> — the people, graded on track record, fit to this exact job and candour (promises vs delivery): <span class="mgb gA">A<span class="mgst">★</span></span> tier 1 · <span class="mgb gB">B</span> solid, or unproven but clean (the default) · <span class="mgb gC">C</span> real weaknesses · <span class="mgb gD">D</span> a pattern of failing shareholders. Odds move only with evidence; hover a grade for the reason, the tracker card has the full review. <b>Skin in the game</b> (1–5, in the hover) is the team's own money at risk, a conviction signal that never moves the odds but breaks near-ties in list B.</span><span><b>†</b> key trigger may fall at or beyond the 3–5 year horizon</span></div>
+      
+    </div>
+    <div class="card tp tb">
+      <div class="tph"><span class="tag b">B</span><h2>Multi-bagger</h2><span class="hint">tap a company for details</span></div>
+      <p class="tin">Ranked on the odds of a 3× per share within <b>3–5 years</b> (to ~2030): the chance the thesis <b>works</b> × the share of its <b>if-it-works</b> range at or above 3×, plus a small chance of a 3× without it.</p>
+      <p class="tin tin2">A 3× in 3–5 years is the first leg of a 10× in 10 years: the same pace, ~26–32% a year. <b>2nd 3×</b> asks about the second leg: after that first 3×, is there room for another 3× by about year 10 (yes / partly / little — not a cash question)? When two companies' odds are within 2 points, the one with more room for a 2nd 3× ranks first; if that is the same, the team with more skin in the game ranks first.</p>
+      <div class="tscroll"><table class="ct" id="tb" aria-label="Ranking B, Multi-bagger"></table></div>
+      <div class="legend"><span><span class="ob"><i style="width:60%"></i><s style="left:33%"></s></span> odds of a 3×; the tick is the ~10% luck line</span><span class="lg-rw"><b>2nd 3×?</b> — after a first 3× in years 1–5, is there room for <b>another 3× by about year 10</b>? Not about cash (that is on the card's Financials tab). <span class="rwb long">Yes</span> a believable path (big or growing resource, several assets, growth paid from cash flow) · <span class="rwb medium">Partly</span> capped or dependent on the metal price · <span class="rwb short">Little</span> the first re-rating is most of the value · <span class="mwt">watch</span> room for a 2nd 3×, but the big catalysts fall after year 5</span><span><b>Price columns</b> multiple of today's market cap if the market adopts that metal price</span><span><b>In A</b> rank in list A</span><span><b>Risk 1–5</b> chance of permanent loss or no re-rate (1 lowest)</span><span class="lg-mg"><b>Mgmt</b> — the people, graded on track record, fit to this exact job and candour (promises vs delivery): <span class="mgb gA">A<span class="mgst">★</span></span> tier 1 · <span class="mgb gB">B</span> solid, or unproven but clean (the default) · <span class="mgb gC">C</span> real weaknesses · <span class="mgb gD">D</span> a pattern of failing shareholders. Odds move only with evidence; hover a grade for the reason, the tracker card has the full review. <b>Skin in the game</b> (1–5, in the hover) is the team's own money at risk, a conviction signal that never moves the odds but breaks near-ties in list B.</span><span><b>†</b> key trigger may fall at or beyond the 3–5 year horizon</span></div>
+      <div class="xs"><details class="x"><summary>How to read the odds — in plain words</summary><div class="xb"><p><b>Example: Ucore</b> — 3×+ <b>18%</b> · Works <b>35%</b> · If it works <b>~2–4×</b></p>
+<ul>
+<li><b>Works</b> — the chance the company's plan succeeds. Here: Ucore gets its plant running with signed customers. 35% = about 1 in 3.</li>
+<li><b>If it works</b> — how far the share price could rise if the plan succeeds: ~2–4× = two to four times today's price (after new shares are issued).</li>
+<li><b>3×+</b> — both steps together: the chance the share price at least <b>triples</b> within 3–5 years. 18% = about 1 in 5–6.</li>
+</ul>
+<p><b>Is that good?</b> A random small mining stock has about a 1 in 10 (~10%) chance of tripling by luck alone. Above that is better than chance. And "doesn't triple" doesn't mean you lose money — it may just rise less.</p>
+<p><b>What about the metal price?</b> <i>Works</i> is about the company, not the metal. <i>If it works</i> runs from a cautious lower metal price to today's price — it never assumes the metal goes up. <i>3×+</i> includes the chance the metal rises or falls. The columns further right show higher metal prices, but before new shares are issued, so they look bigger.</p></div></details><details class="x"><summary>Why 3–5 years, and what "2nd 3×" means</summary><div class="xb"><p><b>Why 3–5 years.</b> The goal is a 5–10× in about 10 years. A 3× in 3–5 years needs the same pace (~26–32% a year), so it is the first leg of that journey — and a window short enough to check: the catalysts are dated, and mistakes show up quickly.</p>
+<p><b>What "2nd 3×" means.</b> List B asks whether a company can triple in the next 3–5 years (the first leg). The 2nd-3× label asks what happens <i>after</i> that, from about year 5 to year 10: is there room, per share, for another 3×? Two 3× legs make roughly a 10×. It is <b>not</b> about cash: how many months of money a company has left is on the Financials tab of its tracker card.</p>
+<ul><li><span class="rwb long">Long</span> yes — a believable path to a second 3× by about year 10: a district-scale or still-growing resource, several assets, or production that can more than double from its own cash flow.</li>
+<li><span class="rwb medium">Medium</span> partly — a second leg exists, but it is capped (for example ~1.5–2×) or depends on the metal price rising.</li>
+<li><span class="rwb short">Short</span> no — the first re-rating is most of the value: a single asset, a short mine life, a takeover-type ending, a small carried stake, or a company already too big to multiply.</li></ul>
+<p>It is judged per share and on today's market value: a great deposit inside a company that is already priced for it can still be <i>partly</i> or <i>little</i>.</p>
+<p><b>How it affects the order.</b> Only as a tie-break: when two neighbours are within 2 points of each other and on the same side of the luck line, the one with more room for a 2nd 3× ranks first. A company can never pass one with clearly better odds.</p>
+<p><b>Monster watch</b> (<span class="mwt">watch</span>) marks companies with room for a 2nd 3× whose odds sit below the luck line because their big catalysts fall beyond 3–5 years. They are re-checked every Saturday and re-scored when a catalyst moves into the window.</p>
+<p><b>Reading the two together.</b> High odds + room for a 2nd 3× = a true 10× candidate. High odds + little room = a re-rating trade. Low odds + room for a 2nd 3× = a watchlist name.</p></div></details><details class="x"><summary>How management is graded</summary><div class="xb"><p><b>The people are often the asset.</b> The deposit does not move; the team decides whether it ever gets built. So every company carries a management grade from a one-off review (5 Oct 2026), refreshed every Saturday and whenever a CEO changes.</p>
+<p><b>Three sub-scores, 1–5.</b> <b>Track record</b>: what the CEO, chair and key executives built, sold or ran before, counting the misses as well as the hits and how many boards they sit on today. <b>Fit</b>: have they done <i>this</i> job before — same stage, same kind of deposit, same region. <b>Candour</b>: only from evidence, a dated promises-vs-delivery log per company and how bad news was handled. A fact line records insider ownership and pay.</p>
+<p><b>The grade.</b> <span class="mgb gA">A<span class="mgst">★</span></span> tier 1 — proven at this exact job, candid, invested. <span class="mgb gB">B</span> solid, or unproven but clean: the default when there is little evidence either way. <span class="mgb gC">C</span> real weaknesses — slipped dates, thin fit, thin candour. <span class="mgb gD">D</span> a pattern of failing shareholders.</p>
+<p><b>Skin in the game (1–5).</b> How much of their own money the team has at risk: <b>5</b> a large stake bought at market and still being added to · <b>3</b> a meaningful stake, mostly founder stock or grants, no selling · <b>1</b> under about half a percent, options only, net sellers while promoting, or a team that gets paid while shareholders lose (pay large against the market cap or rising while the share price falls, selling into weakness, bonuses on missed targets, a failed say-on-pay). Cheap founder paper and a controlling shareholder's block are not skin. Getting paid while shareholders lose is a bad signal on its own; as a repeated pattern it also counts against the grade. It is a signal of the team's own conviction and never moves the odds; when two companies' odds are within 2 points and the runway is the same, the team with more skin ranks first in list B.</p>
+<p><b>Failure is not a mark against anyone.</b> Almost every serial winner has a dead company behind them. What counts is how a failure ended for shareholders and what the team did next: a loss owned plainly and carried alongside shareholders is neutral, sometimes a plus (perseverance, lessons paid for); a loss hidden, re-dated into a new target, or carried by shareholders while the founder was paid is the negative — and only when it repeats does it become a pattern.</p>
+<p><b>How it moves the odds.</b> Neutral by default. "Chance it works" goes up only with a good reason (a team that has done exactly this before and delivers on dates) and down only with one (a pattern of missed promises, undisclosed problems, self-dealing). Full weight for explorers and developers, half for producers, a token amount for seniors and royalty companies, where the asset base carries the firm. Every move is written down in the history. A famous name earns nothing by itself.</p></div></details><details class="x"><summary>How to read the multiple columns</summary><div class="xb"><p class="note-top">Multiple = target P/NAV × NAV at that price ÷ today's market cap (developers 0.3–0.5×; a funded, in-construction project 0.7×). <b>Progress</b> = the company's own study deck. <b>Price columns</b> are mineral-specific — each row's <b>Driver</b> line states the four price cases used (downside / base / upside / super) in that mineral's unit; they are not comparable across rows the way the copper page's US$5–8 columns are. Where no NAV exists (no resource or study) the cells say so rather than invent one. <b>~</b> = judgement or own calibration. Before dilution — which for two of these three names is the dominant variable.</p><p><b>Same formula as the other tabs</b> — target P/NAV × NAV at that price ÷ market cap — with one difference: the price cases are per mineral. Nickel is quoted in US$/t (LME), uranium in US$/lb U<sub>3</sub>O<sub>8</sub> (term matters more than spot for a 2030s project), antimony in US$/t Rotterdam metal (no exchange; assessed prices and a China–Europe spread). The four cases per row are set to that mineral's own history: a return to the pre-spike level, roughly today, the company's study deck or a policy-supported premium, and a re-run of the last squeeze.</p>
+<p><b>Where there is no NAV, there is no multiple.</b> Antimony Resources has no resource or study; the row shows the in-situ value of its exploration target and what share of it the market is paying, which is an honest number and not a target. ATHA has no NAV either — its row uses an explorer's capture of in-situ value (5% pre-resource, 10% once a resource exists) as a proxy.</p>
+<p><b>Processors have no NAV.</b> Ucore's cells show two figures — merchant NdPr feed at 70% payable, then Machine A on heavy-rich clay feed at 50% payable plus Line 1 at 60% — and its Progress cell shows the strategic re-rate if the plant works, which is the real upside case. Ucore separates other companies' concentrate, so its row uses EV/EBITDA (6–8×) on run-rate EBITDA of the costed 3,600 tpa build at each NdPr price. The company publishes no opex or margin, so those EBITDA figures are my illustration (22% NdPr in feed, feed at 70% payable, opex US$3–6/kg) — treat them as a shape, and note that feed terms move the result more than the price does.</p>
+<p><b>Dilution is the column that isn't printed.</b> Centaurus needs US$110–230M of equity on a US$180M market cap; Antimony Resources needs hard dollars within two quarters; Ucore needs ~US$70M for its second phase. Read every multiple here as 'before the raise that is coming'.</p>
+<p><b>The odds columns on list B</b> are a separate, per-share view. <em>Works</em> is the chance the row's thesis happens inside the horizon; <em>If it works</em> is the multiple per share after the dilution the plan needs; <em>3×+</em> is the chance it works × the share of that range at or above 3×, plus a small chance of a 3× without it. Those three are judgement; the price columns above are arithmetic before dilution.</p></div></details></div>
+    </div>
+  </section>
+
+  <div class="lists">
+    <section class="list la" id="rank-a">
+      <div class="lhd"><div class="eyebrow">Ranking A</div><h2>Alpha with more certainty</h2><p class="q">For the investor who wants to beat the index with a higher probability of success, and accepts a capped upside to get it.</p></div>
+      <details class="x crit"><summary>What it ranks on</summary><div class="xb"><ol><li><b>De-risking</b> — reserves, permits, financing line of sight</li>
+<li><b>Funded runway</b> — can it sit through a price slump in its mineral without raising at the bottom</li>
+<li><b>Remaining mispricing</b> — room to re-rate from developer (~0.3–0.5× NAV) toward producer (~0.8–1.0×) inside 3–5 years</li>
+<li><b>Jurisdiction</b> — local licence more than national politics</li>
+<li><b>Execution credibility</b> — team, backers, cost position</li></ol></div></details>
+      <div id="list-a"></div>
+    </section>
+    <section class="list lb" id="rank-b">
+      <div class="lhd"><div class="eyebrow">Ranking B</div><h2>Multi-bagger — best odds of a 3×</h2><p class="q">For the investor who wants a realistic path to 3×+ and accepts high risk — ranked by the odds of a 3× per share inside 3–5 years, not by the size of the dream.</p></div>
+      <details class="x crit"><summary>How the odds are built</summary><div class="xb"><ol><li><b>Works if</b> — the one thing that has to happen inside the horizon, and the chance it does (trigger dates, funding, track record)</li>
+<li><b>If it works</b> — the multiple per share after the dilution the plan needs; low end at the long-term case (for Centaurus, today's nickel — spot sits below its study deck), high end at today's spot</li>
+<li><b>3×+ odds</b> — the chance it works × the share of that range at or above 3× (metal moves included), plus a small chance of a 3× without it</li>
+<li><b>The line</b> — a volatile junior with no edge has about a one-in-ten (~10%) chance of tripling in four to five years; names below it don't beat that</li>
+<li class="note-li">The earlier criteria — starting discount, dated trigger, dilution, size of the prize, underwritability, survivable downside — now feed these numbers instead of a weighted order.</li></ol></div></details>
+      <div id="list-b"></div>
+    </section>
+  </div>
+
+  <footer class="method" id="method">
+    <div><h3>Read with care</h3><p>Every figure is approximate and mixed-date; NPVs and IRRs sit on each study's own price deck; two of the three names have no study at all. Multiples are illustrative re-rating arithmetic from current discounts, not forecasts or targets.</p><p>This is research shorthand to structure thinking, not investment advice — it does not account for position sizing, existing exposure, liquidity or currency.</p></div>
+    <div><h3>Page history</h3><p>Same four companies, ranked for two different risk appetites — three miners/explorers and one processor so far; the lists grow as names are added. Started and audited 2 October 2026 (list B ranks on the odds of a 3×); refreshed 3 October (prices to the 2 Oct close).</p><p>Each list explains its own criteria above its first row; the explainers under the table cover the odds and the price columns.</p></div>
+  </footer>
+</div>
+<script>
+var CFG = {"base": 10, "aName": "Certainty alpha", "bName": "Multi-bagger", "T": "/equities/trackers/#cm.", "MBT": {"battery": "Battery metals", "strategic": "Defence / strategic", "uranium": "Uranium", "ree": "Defence / strategic — rare earths"}, "mbcol": {"battery": "#5FC49A", "strategic": "#E0875A", "uranium": "#C8D44C", "ree": "#E0875A"}, "bkcol": {"value": "#A99BF0", "grade": "#D4A24C", "quality": "#7C9BD0", "scale": "#B57AA8", "producer": "#5FC49A", "processor": "#5BB8C9"}};
+var D = [
+ {
+  "k": "centaurus",
+  "m": "battery",
+  "pm": "Ni · cases US$14k / 16k / 19.8k (deck) / 24k per t (spot ~US$15.4k on 2 Oct)",
+  "sc": [
+   "~1.6–2.9×",
+   "~0.2×",
+   "~0.7–1.2×",
+   "~1.6–2.9×",
+   "~2.7–4.6×"
+  ],
+  "rs": 3,
+  "rsWhy": "Fully permitted, a 1.2 Mt nickel resource with a reserve, a binding Glencore offtake, ten lender proposals plus BNDES, no debt and a tight register — the asset would be sold or farmed down, not abandoned. Not a 2 because the equity gap (US$110–230M) is roughly the market cap, FID has slipped three times, Glencore's FID condition has been missed (it now has a right to terminate), cash is ~3 quarters and nickel sits near 39-week lows. Not a 4 because there is no debt and 0.5× NAV at spot already discounts heavy dilution.",
+  "tm": "Funding package + FID 'near term' (Oct 2026) · Q3 quarterly late Oct · equity raise + strategic Q4 2026/Q1 2027 · BNDES board approval · construction 2027 · first concentrate 2028 (Glencore deadline 15 Jan 2029)",
+  "late": 0,
+  "ex": "Underground below the pits (21.5 Mt @ 1.46% Ni) and the Boi Novo copper-gold option — real, cheap, and shelved until FID. Nothing a rig does changes the valuation before the money closes.",
+  "exN": "Medium",
+  "exC": "med",
+  "name": "Centaurus Metals",
+  "short": "Centaurus",
+  "tick": "ASX: CTM",
+  "bk": "scale",
+  "cap": "US$184M",
+  "a": 1,
+  "b": 3,
+  "slug": "centaurus-metals",
+  "aKey": "FS · fully permitted · Glencore offtake · equity gap ≈ mcap",
+  "aWhy": "The most de-risked name on the tab by a distance — feasibility, reserve, every permit, grid contract, tax incentives, a binding offtake for 30% of output, ten lender proposals and a state-bank letter. First because everything a developer can do has been done; not higher than a 3 on risk because the one thing left is the cheque, and the cheque is the size of the company. Runway is the weak criterion: A$17.5M against A$3–4M a quarter and a going-concern note.",
+  "aRisk": "A discounted rights issue of A$200M+; another FID slip into 2027; nickel below US$15,000 making the equity prohibitively dilutive; Glencore walking.",
+  "bKey": "0.25× NAV at deck · ~0.5× at spot · dated trigger: FID",
+  "bWhy": "A funded FID with a strategic partner is roughly a coin flip in the next few quarters — but at today's ~US$15,800 nickel the project's NAV is only ~US$300–360M, so even a clean FID with a US$110–230M equity slice is worth roughly today's price per share. ~2.5× needs nickel back at the US$19,800 study deck, and 3× needs ~US$23,000+. The multi-bagger case is a nickel call with a financing binary attached, not a discount waiting to close.",
+  "pw": 42,
+  "mw": "~0.8–2.5×",
+  "p3": 9,
+  "wi": "A funded FID with a strategic partner by mid-2027, and the build starts",
+  "rw": "medium",
+  "rwWhy": "Jaguar first; the underground and Boi Novo copper-gold are real but shelved, and nickel sets the value.",
+  "mg": {
+   "g": "C",
+   "t": 3,
+   "f": 3,
+   "c": 3,
+   "why": "Seventeen-year team that got Jaguar to licence and offtake but has never built a mine; the DFS slipped three times and the FID four times, openly disclosed but still a pattern.",
+   "conf": "medium",
+   "odds": "works 45% → 42%, 3×+ odds 10% → 9%",
+   "s": 2
+  }
+ },
+ {
+  "k": "atha",
+  "m": "uranium",
+  "pm": "U₃O₈ · cases US$60 / 90 (≈spot) / 120 / 150 per lb · 5% explorer capture of in-situ",
+  "sc": [
+   "~1.4× (~2–3× on a 150 Mlb resource)",
+   "~0.9×",
+   "~1.4×",
+   "~1.8×",
+   "~2.3×"
+  ],
+  "rs": 4,
+  "rsWhy": "C$47.6M of cash at 30 June (~C$34M est. at 30 Sep), a program funded to end-2027, a QRC conversion price below market and URNM/URA membership limit permanent loss. Not a 3 because there is no compliant resource, no assays yet for the 2026 holes, a 12% senior convertible ahead of the equity, a remote Nunavut setting with the Kiggavik rejection as precedent, insiders selling and an ETF-flow register. Not a 5 because the cash means no forced raise within twelve months.",
+  "tm": "Q4 2026 assays (RIB North, Lac 50 West) · Q3 financials late Nov (30 Jun cash: C$47.6M) · 2027 program + MRE-pathway decision Jan–Feb · delineation drilling May–Sep 2027 · resource 2027–28 (soft) · US waivers on Russian LEU expire 1 Jan 2028",
+  "late": 1,
+  "ex": "The entire thesis: ~20,000 m in 2026 on three rigs, 16+ step-outs, a 1.45 km horizon, a new discovery 4 km from Lac 50 — all radiometric. Assays in Q4 are the first hard test.",
+  "exN": "High",
+  "exC": "high",
+  "name": "ATHA Energy",
+  "short": "ATHA",
+  "tick": "TSXV: SASK",
+  "bk": "grade",
+  "cap": "US$246M",
+  "a": 2,
+  "b": 2,
+  "slug": "atha-energy",
+  "aKey": "no current resource · funded to end-2027 · Nunavut",
+  "aWhy": "Second on the strength of one criterion — funded runway, the best of any pre-resource uranium explorer (C$63M raised in February and guided to fund it to end-2027, though cash was C$47.6M at 30 June, ~C$34M est. at 30 Sep) — and the weakness of the others: no compliant resource, 2026 results that are counts not assays, a historical deposit that has sat undeveloped since 2013, and the only Canadian uranium jurisdiction with a rejected project as its precedent. The market already pays a developer's price (~US$3 per conceptual pound) for an explorer.",
+  "aRisk": "Q4 assays average under 0.2% U₃O₈; Nunavut permitting; a spot price at US$60 compounding through ETF outflows; the 12% convertible ahead of equity.",
+  "bKey": "~US$3/conceptual lb · 3.5% of in-situ · assays Q4",
+  "bWhy": "Q4 assays are the first hard test, and a 100–150 Mlb resource by 2028 is about a one-in-three outcome. Size: the market already pays ~US$3 per conceptual pound, so a Nunavut resource valued at US$3–5/lb is ~1.3–2.5× after 2027–28 drilling; 3× needs ~200 Mlb or uranium well above US$100.",
+  "pw": 25,
+  "mw": "~1.3–2.5×",
+  "p3": 7,
+  "wi": "Q4 assays confirm grade and a ≥100 Mlb resource lands by 2028",
+  "rw": "long",
+  "rwWhy": "A 1.45 km uranium horizon plus a new discovery 4 km away in an under-explored Nunavut district.",
+  "mg": {
+   "g": "C",
+   "t": 2,
+   "f": 3,
+   "c": 2,
+   "why": "A first-time CEO sold ~1M shares while raising a 12% convertible, insiders own under 1%, and the regulator forced a resource retraction in 2025.",
+   "conf": "medium",
+   "odds": "works 30% → 25%, 3×+ odds 8% → 7%",
+   "s": 1
+  }
+ },
+ {
+  "k": "ucore",
+  "m": "ree",
+  "pm": "NdPr oxide · cases US$75 / 95 / 130 / 180 per kg (ex-China ~US$106 Sep avg) · EV/EBITDA 6–8× on illustrative run-rate EBITDA of the 3,600 tpa build (no company economics) · first figure = merchant NdPr feed at 70% payable; second = Machine A on heavy-rich clay feed at 50% payable plus Line 1 at 60% · Progress column = strategic re-rate if Machine A works and an offtake is binding",
+  "sc": [
+   "~3–5× strategic re-rate (before dilution)",
+   "~0.11× · ~0.4×",
+   "~0.26× · ~0.8×",
+   "~0.55× · ~1.2×",
+   "~1.04× · ~2×"
+  ],
+  "rs": 4,
+  "rsWhy": "Every processor risk is still open — technology scale-up (demo batches of 2–5 t; Machine A ~25–30× that), feed (no binding tonnes), offtake and price (no binding sales; ex-China NdPr below the MP-only floor), Line 1 funding (~US$70M) and execution (first production ~2 years late, capex doubled). Not a 3: no reserve-permit-offtake stack and no published economics. Not a 5: ~C$75M cash, no debt, US$21M of War Department milestones, funded through the 2027 Machine A test.",
+  "tm": "RSX factory-acceptance results (overdue) · Canada C$36.3M definitive agreement Q4 · Q3 financials late Nov · China's suspension of its Oct-2025 controls now runs to 10 Jan 2027 (truce extended 23 Sep) · first binding feed/offtake (any time) · Machine A commissioning + qualification H1 2027 · Line 1 funding 2027–28",
+  "late": 0,
+  "ex": "Not the driver: Bokan (Alaska) is small and deferred. The optionality is RapidSX licensing or partner plants — undisclosed economics.",
+  "exN": "Low",
+  "exC": "low",
+  "name": "Ucore Rare Metals",
+  "short": "Ucore",
+  "tick": "TSXV: UCU",
+  "bk": "processor",
+  "cap": "US$278M",
+  "a": 3,
+  "b": 1,
+  "slug": "ucore-rare-metals",
+  "aKey": "demo-scale · 0% contracted · cash, no debt · US co-funded",
+  "aWhy": "Third, between the funded explorer and the pre-resource one. For it: a physical, dated 2027 milestone, ~C$75M of cash and no debt, US$27M of War Department co-funding, a supportive Louisiana brownfield. Against it on the criteria a cautious investor uses: de-risking is demo-scale with no binding feed or offtake after four years of MOUs; execution is the weakest on the tab (two years late, capex doubled, first phase cut from 2,000 to 600 tpa); and there is no room left to re-rate — EV is 1.7× the build cost of its costed capacity. Behind ATHA because ATHA's runway is longer and its downside is a drill result, not a plant that may not earn its valuation.",
+  "aRisk": "Factory tests or Machine A slip into H2 2027; no binding feed or offtake; China eases after 10 Nov and the heavy-REE premium compresses; Line 1 funded at ~C$1.50.",
+  "bKey": "scarce Western heavy-REE separation · no starting discount",
+  "bWhy": "If Machine A runs on commercial feed in 2027 and a binding offtake follows, Ucore becomes one of a handful of Western plants separating heavy rare earths in a modular way — and the market would price that as a scarce strategic asset, not on plant cash flow. Machine A plus a binding contract by end-2027 is ~35%. Size: ~2–4× per share after the Line 1 raise (it was worth over C$1.5B on hype alone in late 2025). There is no starting discount, and the window is 2027–29 before Lynas, Aclara and others crowd it.",
+  "pw": 30,
+  "mw": "~2–4×",
+  "p3": 16,
+  "wi": "Machine A runs on commercial feed in 2027 and a binding offtake is signed",
+  "rw": "long",
+  "rwWhy": "A working modular plant could be licensed or copied — more plants and partners after Machine A.",
+  "mg": {
+   "g": "C",
+   "t": 2,
+   "f": 2,
+   "c": 2,
+   "why": "Nineteen years listed, three plant plans, none delivered; the Louisiana timeline was re-set again in May 2026 and framed as an upgrade. Real DoW backing noted.",
+   "conf": "medium",
+   "odds": "works 35% → 30%, 3×+ odds 18% → 16%",
+   "s": 1
+  }
+ },
+ {
+  "k": "antimony",
+  "m": "strategic",
+  "pm": "Sb · cases US$10k / 18k (≈Rotterdam) / 30k / 50k per t · no NAV — in-situ value of the target only",
+  "sc": [
+   "no NAV",
+   "EV = 3.3% of in-situ",
+   "EV = 1.8%",
+   "EV = 1.1%",
+   "EV = 0.65%"
+  ],
+  "rs": 5,
+  "rsWhy": "A 5: nothing limits permanent loss except the grade in the ground and the possibility of a resource: no MRE, no metallurgy, no study, under a year of cash, antimony −67% from peak, a missed resource date, a 3.5% royalty, insiders ~3%, promotional IR. Not a 4 because there is no partial de-risking anywhere — every value driver is binary.",
+  "tm": "C$5M flow-through closed 5 Oct · remaining 2026 assays Oct–Nov · China's US-export-ban suspension 27 Nov 2026 (may roll to 10 Jan 2027 with the truce — unconfirmed) · FY results ~Dec · maiden MRE Q4 2026–Q1 2027 (no date) · hard-dollar raise, first metallurgy, PEA at earliest 2027 · Globex payments Jan 2028/2029",
+  "late": 0,
+  "ex": "Everything: 19,000 m in 2026 on three rigs, three new zones, soils 3 km south, fresh geophysics. Needle moves both ways — a weak MRE from this drill density would be devastating.",
+  "exN": "High — both ways",
+  "exC": "high",
+  "name": "Antimony Resources",
+  "short": "Antimony Res.",
+  "tick": "CSE: ATMY",
+  "bk": "grade",
+  "cap": "US$38M",
+  "a": 4,
+  "b": 5,
+  "slug": "antimony-resources",
+  "aKey": "pre-resource · MRE two quarters late · <1 yr cash",
+  "aWhy": "Last on every criterion a cautious investor uses: no resource, no metallurgy, no study, no offtake, under a year of cash with a flow-through raise that cannot pay for G&A or permitting, a three-person board whose CEO is also the sole QP, a founder-level holder who sold 84% near the top, and an own MRE timetable missed twice. Below the line: not one binary but three (tonnes, continuity, price), none resolved.",
+  "aRisk": "The MRE slips again or classifies under 1 Mt; a hard-dollar raise at C$0.15–0.20 with full warrants; antimony at US$10–12k/t with Western funding going only to Perpetua and US Antimony.",
+  "bKey": "EV ~1–2% of target in-situ · −76% from high · MRE + 27 Nov binary",
+  "bWhy": "The maiden resource (two quarters late) and China's 27 November expiry both fall inside six months, which is the attraction. Size: even a 2.5 Mt+ resource at ≥3% Sb trades at a few percent of in-situ value, so after the hard-dollar raise it is ~1.2–2.5×; the fat tail is an antimony squeeze or a Western buyer, and the downside is a lapse, not a drawdown.",
+  "pw": 22,
+  "mw": "~1.2–2.5×",
+  "p3": 7,
+  "wi": "A maiden resource of ≥2.5 Mt at ≥3% Sb by mid-2027, funded without a deep discount",
+  "rw": "medium",
+  "rwWhy": "Three new zones and open soils, but the antimony market is small, which caps the value of size.",
+  "mg": {
+   "g": "C",
+   "t": 2,
+   "f": 3,
+   "c": 3,
+   "why": "Renamed CSE shell: the former CEO sold ~C$5.9M into the promotion, 118% dilution in a year, a three-person board with the CFO on it. Low confidence — re-check Saturday.",
+   "conf": "low",
+   "odds": "works 25% → 22%, 3×+ odds 8% → 7%",
+   "s": 1
+  }
+ },
+ {
+  "k": "stallion",
+  "m": "uranium",
+  "pm": "U₃O₈ · no pounds to price — cases are discovery outcomes on a cash-backed US$16M base (cash ~C$10–13.7M), not in-situ capture",
+  "sc": [
+   "~2–4× (on a confirmed intercept)",
+   "~0.4×",
+   "~0.7×",
+   "~6–10×",
+   "~15–25×"
+  ],
+  "rs": 4,
+  "rsWhy": "C$13.69M of cash at 30 June (~C$10M est. at 30 Sep) against a C$23M market cap, no debt, a program funded through the Q4 metres, a 16% control holder who paid C$0.20, and Saskatchewan limit permanent loss. Not a 3 because there is no discovery and no assay from any hole, two holes were lost and two contractors seriously injured in the first program, 85M warrants sit at C$0.26 above a C$0.155 stock, the 2027 raise is almost certainly a down-round, liquidity is C$50–100k a day, and progress against the C$12M ATHA option is undisclosed. Not a 5 because cash covers the next twelve months.",
+  "tm": "Q4 2026: remaining ~2,165 m of Phase II at Coyote (Target Areas A–E) · Q4 2026–Q1 2027: first assays from any 2026 hole · 17 Oct: Schachter conference · late Nov: Q3 financials (30 Jun cash C$13.69M) · 31 Dec 2026: flow-through spend deadline · Q1 2027: 2027 program + financing · ~Jul 2028: ATHA option deadline",
+  "late": 0,
+  "ex": "The entire thesis: a 6,750 m maiden program at Coyote two-thirds done — six holes with alteration, structure and a best reading of 2.3 m @ 595 cps (max 1,416), no assays — then Stone Island (three targets), Lynx and Fishhook, all untested and permitted.",
+  "exN": "High",
+  "exC": "high",
+  "name": "Stallion Uranium",
+  "short": "Stallion",
+  "tick": "TSXV: STUD",
+  "bk": "value",
+  "cap": "US$16M",
+  "a": 5,
+  "b": 4,
+  "slug": "stallion-uranium",
+  "aKey": "no discovery · cash ~60% of cap · Saskatchewan",
+  "aWhy": "Low on this list because the thing it has to deliver is a discovery, and six holes have delivered alteration and weak gamma. What it has going for it: the cheapest entry in the tracker (EV ~C$10M for 1,700 km² on the Patterson Lake trend), a CEO from the Arrow discovery team, three years of layered geophysics behind the targets, cash for the rest of 2026, and the world's best uranium jurisdiction. What it lacks: a single assay, a single intercept in the thousands of cps, a financing path that is not a down-round, and clarity on whether the ATHA 70% will be earned.",
+  "aRisk": "The Q4 metres and the assays confirm a barren alteration system; a 2027 raise at C$0.10 or lower; the ATHA option lapses or is dropped; a micro-cap that cannot be exited in size.",
+  "bKey": "EV ~C$10M · pw 12% · discovery = 3–10×",
+  "bWhy": "If a discovery hole lands the move is 3–10× almost by construction from a US$16M base — the western Athabasca precedents (F3, Fission, IsoEnergy) all re-rated past US$100M within months. The odds of that hole in the next 3–5 years from a corridor that has shown 1,416 cps at best are low — about one in eight — and most of the probability mass sits in 'more geophysics and another raise'.",
+  "pw": 10,
+  "mw": "~3–10×",
+  "p3": 8,
+  "wi": "the Q4 2026 or 2027 holes at Coyote / Stone Island return an assayed intercept of metres above 0.5% U₃O₈ and the follow-up is financed above C$0.26",
+  "rw": "medium",
+  "rwWhy": "A first 3× is the discovery itself; a second needs that discovery to grow into a Triple R-scale resource, and the ATHA 30% and the warrant overhang take a share of it. The corridor's record says discoveries here do grow (Arrow, Triple R), but Stallion would be a takeout long before year 10.",
+  "mg": {
+   "g": "C",
+   "t": 2,
+   "f": 3,
+   "c": 2,
+   "why": "The CEO and VP Exploration fit the western-Athabasca job (NexGen Arrow team, Hathor), but the company took a cease-trade order in 2025 for late filings, disclosed an unapproved marketing deal 17 months late, and promotes scintillometer counts with no assay from nine months of drilling. No chair named; CEO owns ~0.2%.",
+   "conf": "medium",
+   "odds": "works 12% → 10%, 3×+ odds 9% → 8%",
+   "s": 1
+  }
+ }
+];
+var LOW_FROM = {a:3, b:2};
+var SC = ["Progress", "Downside", "Base", "Upside", "Super"];
+var BK = {"value": "Cheap defined resources", "grade": "Grade / discovery", "quality": "Quality / jurisdiction", "scale": "Scale & financing", "producer": "Producer / cash flow", "processor": "Processor / midstream"};
+var DIV = {"a": "too uncertain for a cautious investor. Each of these depends on one big yes-or-no event — a permit, a financing or a discovery — that could go either way.", "b": "no better than luck. Any small mining stock has roughly a 1-in-10 (~10%) chance of tripling in 4–5 years; these names don't beat that. They can still go up — they just aren't better-than-chance bets on a triple."};
+var MB = {"battery": "Ni", "strategic": "Sb", "uranium": "U₃O₈", "ree": "REE"};
+var HIST = {"snaps": [{"d": "2026-10-02", "headline": "Starting point for the history: the page was audited and list B now ranks on the odds of a 3×.", "px": "", "low": {"a": 3, "b": 3}, "rows": {"centaurus": {"a": 1, "b": 2, "p3": 10, "rs": 3}, "atha": {"a": 2, "b": 3, "p3": 8, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 18, "rs": 4}, "antimony": {"a": 4, "b": 4, "p3": 8, "rs": 5}}}, {"d": "2026-10-03", "headline": "No ranking changes. The rare-earth backdrop strengthened for Ucore, ATHA has less cash than assumed, and nickel is at a ten-month low.", "px": "Nickel ~US$15,435/t · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 3}, "rows": {"centaurus": {"a": 1, "b": 2, "p3": 10, "rs": 3}, "atha": {"a": 2, "b": 3, "p3": 8, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 18, "rs": 4}, "antimony": {"a": 4, "b": 4, "p3": 8, "rs": 5}}}, {"d": "2026-10-04", "headline": "Runway labels added: Ucore and ATHA long, Centaurus and Antimony Resources medium; ATHA goes on monster watch. No ranking or odds changes.", "px": "Nickel ~US$15,435/t · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 3}, "rows": {"centaurus": {"a": 1, "b": 2, "p3": 10, "rs": 3}, "atha": {"a": 2, "b": 3, "p3": 8, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 18, "rs": 4}, "antimony": {"a": 4, "b": 4, "p3": 8, "rs": 5}}}, {"d": "2026-10-05", "headline": "No material news: no new releases from the four companies and nothing relevant in outside or theme coverage. Centaurus corrected to the 5 Oct ASX close of A$0.46 (unchanged on the day); the others stay at the 2 Oct close. No ranking or odds changes.", "px": "Nickel ~US$15,600/t (5 Oct) · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 3}, "rows": {"centaurus": {"a": 1, "b": 2, "p3": 10, "rs": 3}, "atha": {"a": 2, "b": 3, "p3": 8, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 18, "rs": 4}, "antimony": {"a": 4, "b": 4, "p3": 8, "rs": 5}}}, {"d": "2026-10-06", "headline": "No material news: no new releases and nothing relevant in outside or theme coverage. Prices unchanged (no 6 Oct closes found); no ranking or odds changes. Management grades and Stallion were added earlier today.", "px": "Nickel ~US$15,670/t (6 Oct) · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 2}, "rows": {"centaurus": {"a": 1, "b": 3, "p3": 9, "rs": 3}, "atha": {"a": 2, "b": 2, "p3": 7, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 16, "rs": 4}, "antimony": {"a": 4, "b": 5, "p3": 7, "rs": 5}, "stallion": {"a": 5, "b": 4, "p3": 8, "rs": 4}}}, {"d": "2026-10-07", "headline": "No material news: no new releases and nothing relevant in outside or theme coverage. Prices unchanged (no 7 Oct closes found); no ranking or odds changes.", "px": "Nickel ~US$15,720/t (7 Oct) · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 2}, "rows": {"centaurus": {"a": 1, "b": 3, "p3": 9, "rs": 3}, "atha": {"a": 2, "b": 2, "p3": 7, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 16, "rs": 4}, "antimony": {"a": 4, "b": 5, "p3": 7, "rs": 5}, "stallion": {"a": 5, "b": 4, "p3": 8, "rs": 4}}}, {"d": "2026-10-08", "headline": "One new release (ATHA drill results, not material yet). Prices unchanged (no 8 Oct closes found); no ranking or odds changes.", "px": "Nickel ~US$15,550/t (8 Oct) · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 2}, "rows": {"centaurus": {"a": 1, "b": 3, "p3": 9, "rs": 3}, "atha": {"a": 2, "b": 2, "p3": 7, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 16, "rs": 4}, "antimony": {"a": 4, "b": 5, "p3": 7, "rs": 5}, "stallion": {"a": 5, "b": 4, "p3": 8, "rs": 4}}}], "events": [{"d": "2026-10-03", "t": "watch", "co": "Ucore", "ks": ["ucore"], "x": "Factory-acceptance results are now about a month overdue."}, {"d": "2026-10-03", "t": "watch", "co": "ATHA", "ks": ["atha"], "x": "Cash C$47.6M at 30 Jun, ~C$34M estimated at 30 Sep — thinner than the page assumed."}, {"d": "2026-10-03", "t": "news", "co": "Ucore", "ks": ["ucore"], "x": "China extended its rare-earth control suspension to 10 Jan 2027; heavy rare earths outside China widened further (Dy oxide in Europe ~US$3,500/kg, ~16× China)."}, {"d": "2026-10-03", "t": "news", "co": "Centaurus", "ks": ["centaurus"], "x": "Nickel ~US$15,435/t, the lowest since December: the case stays a nickel call."}, {"d": "2026-10-04", "t": "watch", "co": "ATHA", "ks": ["atha"], "x": "Monster watch: long runway, but the big catalysts sit beyond 3–5 years, so the odds stay below the luck line. Re-checked every Saturday."}, {"d": "2026-10-05", "t": "fix", "co": "Centaurus", "ks": ["centaurus"], "x": "Price corrected: the ASX's own data shows the 5 Oct close at A$0.46, unchanged on the day (bid A$0.46 / ask A$0.49). The A$0.475 used in this morning's run was the bid-ask midpoint, not a trade. Market value back to ~US$184M; odds unchanged."}, {"d": "2026-10-06", "t": "mgmt", "co": "Centaurus", "ks": ["centaurus"], "x": "Management C: chance it works 45% → 42%, 3×+ odds 10% → 9%. Seventeen-year team that got Jaguar to licence and offtake but has never built a mine; the DFS slipped three times and the FID four times, openly disclosed but still a pattern.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "ATHA", "ks": ["atha"], "x": "Management C: chance it works 30% → 25%, 3×+ odds 8% → 7%. A first-time CEO sold ~1M shares while raising a 12% convertible, insiders own under 1%, and the regulator forced a resource retraction in 2025.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "Ucore", "ks": ["ucore"], "x": "Management C: chance it works 35% → 30%, 3×+ odds 18% → 16%. Nineteen years listed, three plant plans, none delivered; the Louisiana timeline was re-set again in May 2026 and framed as an upgrade. Real DoW backing noted.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "Antimony Res.", "ks": ["antimony"], "x": "Management C: chance it works 25% → 22%, 3×+ odds 8% → 7%. Renamed CSE shell: the former CEO sold ~C$5.9M into the promotion, 118% dilution in a year, a three-person board with the CFO on it. Low confidence — re-check Saturday.", "src": "manual"}, {"d": "2026-10-06", "t": "new", "co": "Stallion", "ks": ["stallion"], "x": "Stallion Uranium added (TSXV: STUD, US$16M): ~1,700 km² in the western Athabasca next to Arrow and Triple R, cash ~60% of the market cap, six reconnaissance holes with the right rocks but no assayed uranium yet; the Q4 holes at Coyote are the first targeted test. Works ~10%, 3×+ odds ~8%, risk 4.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "All names", "ks": ["centaurus", "atha", "ucore", "antimony", "stallion"], "x": "Management graded A–D (track record, fit to the task, candour; neutral by default, odds moved only with evidence). C: Centaurus, Stallion, ATHA, Ucore, Antimony Res..", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "Stallion", "ks": ["stallion"], "x": "Management C: chance it works 12% → 10%, 3×+ odds 9% → 8%. The CEO and VP Exploration fit the job (NexGen Arrow team), but a 2025 cease-trade order for late filings, a marketing deal disclosed 17 months late and nine months of drilling with no assay are shareholder-candour facts.", "src": "manual"}, {"d": "2026-10-06", "t": "method", "co": "All names", "ks": ["centaurus", "atha", "ucore", "antimony", "stallion"], "x": "Skin-in-the-game score (1–5) added for every team: the management's own money at risk. It never moves the odds; it breaks near-ties in list B after runway. Track record now counts outcomes for shareholders, not the number of past failures. No ranking changes.", "src": "manual"}, {"d": "2026-10-06", "t": "news", "co": "Antimony Res.", "ks": ["antimony"], "x": "The C$5.0M flow-through announced 29 Sep closed on 5 Oct (10.64M shares at C$0.47, broker Castlewood Capital: C$245k fee and 0.52M broker warrants at C$0.75). Shares up ~8.7% to ~132.9M, so the market value is ~US$38M at the unchanged price; net cash rises by about the same amount. Expected and exploration-only money: odds stay at 7%."}, {"d": "2026-10-06", "t": "method", "co": "All names", "ks": ["centaurus", "atha", "ucore", "antimony", "stallion"], "x": "Financials tab rolled out to every company and a reporting Calendar tab added to the rankings. Antimony Resources flagged on the management review: share-based pay C$11.5M in nine months (76% of the loss), marketing C$2.3M, only one original filing readable. Odds unchanged.", "src": "manual"}, {"d": "2026-10-08", "t": "news", "co": "ATHA", "ks": ["atha"], "x": "Final Rib North holes: the mineralized trend at Angilak now runs 3.4 km (was 1.45 km) with a higher-grade sub-zone. Gamma readings only, assays pending with no date, so odds unchanged."}], "first": {"centaurus": "2026-10-02", "atha": "2026-10-02", "ucore": "2026-10-02", "antimony": "2026-10-02", "stallion": "2026-10-06"}, "since": "2026-10-02"};
+var HISTURL = "hist.html#cm";
+
+(function(){
+  var esc = function(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); };
+  var BASE = CFG.base, NA = CFG.aName, NB = CFG.bName;
+  var MAXO = Math.max(30, Math.ceil(Math.max.apply(null, D.map(function(d){ return d.p3 || 0; })) / 5) * 5);
+  var hasCC = D.some(function(d){ return d.cc; });
+  function ord(n){ var v = n % 100; if(v >= 11 && v <= 13) return n + "th"; return n + ({1:"st",2:"nd",3:"rd"}[n % 10] || "th"); }
+  function mb(d){ return d.m && MB[d.m] ? "<span class='mb' style='color:" + (CFG.mbcol[d.m] || "var(--mute)") + "' title='" + esc(CFG.MBT[d.m] || "") + "'>" + esc(MB[d.m]) + "</span>" : ""; }
+  function pk(d){ return d.pick ? "<span class='pk' title='My pick: entry plan in the tracker (does not affect the ranking)'>&#x1F4B8;</span>" : ""; }
+  function tgx(d){ return d.tagx ? "<span class='tgx' title='" + esc(d.tagx.tip || "") + "'>" + esc(d.tagx.t) + "</span>" : ""; }
+  function late(d){ return d.late ? "<sup class='dg' title='Key trigger may fall at or beyond the 3–5 year horizon'>†</sup>" : ""; }
+  var RWL = {long:"Yes", medium:"Partly", short:"Little"};
+  function mon(d){ return d.rw === "long" && d.p3 < BASE; }
+  function rwb(d, sm){ if(!d.rw) return ""; return "<span class='rwb " + d.rw + "' title='" + esc("Room for a 2nd 3×? After a first 3× (years 1–5), is there room for another 3× by about year 10? Not about cash — cash runway is on the Financials tab of the card. " + RWL[d.rw] + ": " + (d.rwWhy || "")) + "'>" + (sm ? RWL[d.rw].charAt(0) : RWL[d.rw]) + "</span>" + (mon(d) ? "<span class='mwt' title='Monster watch: room for a 2nd 3×, but the big catalysts sit beyond 3–5 years'>watch</span>" : ""); }
+  function bkc(d){ return CFG.bkcol[d.bk] || "var(--mute)"; }
+  var MGL = {A:"tier 1 — proven at this job, candid, invested", B:"solid, or unproven but clean (the default)", C:"real weaknesses: slipped dates, thin fit or thin candour", D:"a pattern of failing shareholders"};
+  function mgTip(m){ return "Management " + m.g + " — " + MGL[m.g] + ". Track record " + m.t + "/5 · fit " + m.f + "/5 · candour " + m.c + "/5" + (m.s ? " · skin in the game " + m.s + "/5 (signal only: never moves the odds, breaks near-ties in list B)" : "") + (m.conf === "low" ? " · low confidence" : "") + ". " + (m.why || "") + (m.odds && m.odds !== "no odds change" ? " Odds: " + m.odds + "." : ""); }
+  function mgb(d, sm){ var m = d.mg; if(!m) return ""; return "<span class='mgb g" + m.g + (m.conf === "low" ? " lc" : "") + "' title='" + esc(mgTip(m)) + "'>" + m.g + (m.g === "A" ? "<span class='mgst'>★</span>" : "") + "</span>"; }
+  function low(d, key){ return d[key] >= LOW_FROM[key]; }
+  function ob(p){ var below = p < BASE; return "<span class='ob" + (below ? " below" : "") + "' aria-hidden='true'><i style='width:" + Math.min(100, p / MAXO * 100) + "%'></i><s style='left:" + (BASE / MAXO * 100) + "%'></s></span>"; }
+  function split1(t){ t = String(t || ""); var m = t.match(/^([\s\S]{40,}?[.!?])\s+(?=[A-Z0-9"'‘“(~])/); return m ? [m[1], t.slice(m[0].length)] : [t, ""]; }
+  function capNum(s){ var m = /([\d.,]+)\s*([MB])/.exec(s || ""); return m ? parseFloat(m[1].replace(/,/g, "")) * (m[2] === "B" ? 1000 : 1) : 0; }
+  function lowNum(s){ var m = /(\d+(?:\.\d+)?)/.exec(String(s || "")); return m ? parseFloat(m[1]) : -1; }
+  // cost curve
+  var CCN = {gold:"primary gold mines", silver:"primary silver mines"};
+  function ccCls(c){ return c.p < 50 ? "lo" : (c.p < 75 ? "q3" : "q4"); }
+  function ccMini(c, sm){
+    var t = "Cost curve: " + ord(c.p) + " percentile of " + CCN[c.curve] + ", " + (c.p < 50 ? "lower" : "upper") + " half" + (c.p0 != null ? "; 2025 position " + c.p0t : "");
+    var inner = "";
+    if(c.p0 != null && Math.abs(c.p - c.p0) >= 5){ var a = Math.min(c.p, c.p0), b = Math.max(c.p, c.p0); inner += "<i class='t' style='--a:" + a + ";--b:" + b + "'></i><i class='o' style='--p:" + c.p0 + "'></i>"; }
+    return "<span class='ccm" + (sm ? " sm" : "") + "' style='--p:" + c.p + "' role='img' aria-label='" + esc(t) + "' title='" + esc(t) + "'>" + inner + "<i class='d'></i></span>";
+  }
+  function ccLine(c){
+    var x = c.x || ("~" + ord(c.p) + " percentile" + (c.est ? " (est.)" : "") + " · " + c.curve + " mines");
+    var h = "<div class='ccl'><span>Cost curve</span>" + ccMini(c) + "<span class='ccb " + ccCls(c) + "'>" + (c.p < 50 ? "Lower half" : "Upper half") + "</span><span class='ccx'>" + esc(x) + "</span>";
+    if(c.p0 != null && Math.abs(c.p - c.p0) >= 8) h += "<span class='cct " + (c.p > c.p0 ? "up" : "dn") + "'>was " + esc(c.p0t) + " in 2025</span>";
+    if(c.w) h += "<span class='ccw" + (c.w.indexOf("Sell") === 0 ? " hot" : "") + "'>" + esc(c.w) + "</span>";
+    return h + "</div>";
+  }
+
+  /* ---------- what changed (rolling window over HIST snapshots) ---------- */
+  var SN = HIST.snaps, LAST = SN[SN.length - 1], EV = HIST.events;
+  var MO = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  function dn(s){ return Date.parse(s + "T00:00:00Z") / 864e5; }
+  function fd(s){ var p = s.split("-"); return (+p[2]) + " " + MO[+p[1] - 1]; }
+  var TAGS = {hot:"Sell-trigger watch", watch:"Watch", news:"News", fix:"Correction", "new":"Added", method:"Method", mgmt:"Management"};
+  var REL = {a:{}, b:{}}, NEWN = [], PREV_LOW = LOW_FROM, BASE_S = null, WIN = "u";
+  function baseFor(w){
+    if(SN.length < 2) return null;
+    if(w === "u") return SN[SN.length - 2];
+    var cut = dn(LAST.d) - (+w), b = SN[0];
+    SN.forEach(function(s){ if(dn(s.d) <= cut) b = s; });
+    return b === LAST ? SN[SN.length - 2] : b;
+  }
+  function setWindow(w){
+    WIN = w; BASE_S = baseFor(w);
+    PREV_LOW = BASE_S ? BASE_S.low : LOW_FROM;
+    D.forEach(function(d){ d.pv = BASE_S && BASE_S.rows[d.k] ? BASE_S.rows[d.k] : null; });
+    REL = {a:{}, b:{}};
+    ["a","b"].forEach(function(key){ D.filter(function(d){ return d.pv; }).sort(function(x,y){ return x[key] - y[key]; }).forEach(function(d, i){ REL[key][d.k] = i + 1; }); });
+    NEWN = BASE_S ? D.filter(function(d){ return !d.pv; }) : [];
+  }
+  function nw(d){ return !BASE_S || d.pv ? "" : "<span class='nwb' title='Added on " + esc(fd(HIST.first[d.k] || LAST.d)) + "'>NEW</span>"; }
+  function mv(d, key){ if(!BASE_S) return ""; if(!d.pv || d.pv[key] == null) return nw(d); var x = d.pv[key] - REL[key][d.k]; if(!x) return ""; return "<span class='mv " + (x > 0 ? "up" : "dn") + "' title='Was " + d.pv[key] + " on " + fd(BASE_S.d) + "'>" + (x > 0 ? "▲" : "▼") + Math.abs(x) + "</span>"; }
+  function paintArrows(){
+    Array.prototype.forEach.call(document.querySelectorAll(".rkm[data-mv]"), function(el){
+      var p = el.getAttribute("data-mv").split(":"), d = D.filter(function(x){ return x.k === p[1]; })[0];
+      var h = d ? mv(d, p[0]) : ""; el.innerHTML = h; el.hidden = !h;
+    });
+  }
+  function flagLi(e, dated){ return "<li class='fl " + (e.t === "method" ? "mth" : e.t) + "'><span class='ft'>" + TAGS[e.t] + "</span>" + (dated ? "<span class='fdt'>" + fd(e.d) + "</span>" : "") + "<b>" + esc(e.co) + "</b> " + esc(e.x) + "</li>"; }
+  function renderChanges(){
+    var big = [], small = {a:[], b:[]}, risk = [], odds = [], ccm = [], mgm = [];
+    D.forEach(function(d){
+      if(!d.pv) return;
+      var movedB = false;
+      ["a","b"].forEach(function(key){
+        var f = d.pv[key], t = REL[key][d.k]; if(f == null || f === t) return;
+        if(key === "b") movedB = true;
+        var cross = (f >= PREV_LOW[key]) !== (t >= LOW_FROM[key]);
+        var dp = key === "b" && d.pv.p3 != null ? d.p3 - d.pv.p3 : 0;
+        if(D.length <= 12 || Math.abs(f - t) >= 2 || cross || Math.abs(dp) >= 2) big.push({d:d, key:key, f:f, t:t, cross:cross, dp:dp});
+        else small[key].push(d.short);
+      });
+      if(!movedB && d.pv.p3 != null && Math.abs(d.p3 - d.pv.p3) >= 3) odds.push(d);
+      if(d.pv.rs != null && d.pv.rs !== d.rs) risk.push(d);
+      if(d.cc && d.pv.cc != null && Math.abs(d.cc.p - d.pv.cc) >= 5) ccm.push(d);
+      if(d.mg && d.pv.mg && d.pv.mg !== d.mg.g) mgm.push(d);
+    });
+    function sc(m){ return Math.abs(m.f - m.t) + (m.cross ? 3 : 0) + (Math.min(m.f, m.t) <= 3 ? 3 : 0); }
+    big.sort(function(x, y){ return sc(y) - sc(x) || x.t - y.t; });
+    var nsmall = small.a.length + small.b.length;
+    var h = "<span class='mvl'>Ranking moves</span>";
+    NEWN.forEach(function(d){ h += "<button type='button' class='mvc nwc' data-go='a' data-k='" + d.k + "' title='" + esc(d.name + ": new — A #" + d.a + ", B #" + d.b) + "'><span class='nwb'>NEW</span><b>" + esc(d.short) + "</b><span class='num'>A" + d.a + " · B" + d.b + "</span></button>"; });
+    if(!BASE_S) h += "<span class='none'>History starts with this update</span>";
+    else if(!big.length && !risk.length && !nsmall && !NEWN.length && !odds.length && !ccm.length && !mgm.length) h += "<span class='none'>No ranking changes</span>";
+    big.forEach(function(m){
+      var up = m.t < m.f;
+      var note = m.cross ? (up ? "above the line" : "below the line") : "";
+      var tip = esc((m.key === "a" ? NA : NB) + ": " + m.d.short + " " + m.f + " → " + m.t + (m.key === "b" && m.dp ? " · odds " + m.d.pv.p3 + "% → " + m.d.p3 + "%" : "") + (note ? " · " + note : ""));
+      h += "<button type='button' class='mvc' data-go='" + m.key + "' data-k='" + m.d.k + "' title='" + tip + "'><span class='tag " + m.key + "'>" + m.key.toUpperCase() + "</span><b>" + esc(m.d.short) + "</b><span class='num'>" + m.f + "→" + m.t + "</span><span class='mv " + (up ? "up" : "dn") + "'>" + (up ? "▲" : "▼") + Math.abs(m.f - m.t) + "</span>" + (note ? "<span class='nt'>" + note + "</span>" : "") + "</button>";
+    });
+    odds.forEach(function(d){ var up = d.p3 > d.pv.p3; h += "<button type='button' class='mvc' data-go='b' data-k='" + d.k + "' title='Odds of a 3× " + d.pv.p3 + "% → " + d.p3 + "% (rank unchanged)'><b>" + esc(d.short) + "</b><span class='nt'>odds</span><span class='num'>" + d.pv.p3 + "→" + d.p3 + "%</span><span class='mv " + (up ? "up" : "dn") + "'>" + (up ? "▲" : "▼") + "</span></button>"; });
+    risk.forEach(function(d){ h += "<button type='button' class='mvc' data-go='a' data-k='" + d.k + "' title='Risk score " + d.pv.rs + " → " + d.rs + "'><b>" + esc(d.short) + "</b><span class='nt'>risk</span><span class='rsb r" + d.pv.rs + "'>" + d.pv.rs + "</span><span class='num'>→</span><span class='rsb r" + d.rs + "'>" + d.rs + "</span></button>"; });
+    ccm.forEach(function(d){ var f = d.pv.cc, t = d.cc.p, cross = (f < 50) !== (t < 50); h += "<button type='button' class='mvc' data-go='a' data-k='" + d.k + "' title='Cost-curve percentile " + f + " → " + t + (cross ? " · crossed the middle" : "") + "'><b>" + esc(d.short) + "</b><span class='nt'>cost curve</span><span class='num'>" + ord(f) + "→" + ord(t) + "</span><span class='mv " + (t < f ? "up" : "dn") + "'>" + (t < f ? "▼" : "▲") + "</span>" + (cross ? "<span class='nt'>" + (t >= 50 ? "into upper half" : "into lower half") + "</span>" : "") + "</button>"; });
+    mgm.forEach(function(d){ h += "<button type='button' class='mvc' data-go='a' data-k='" + d.k + "' title='" + esc("Management grade " + d.pv.mg + " → " + d.mg.g + ". " + d.mg.why) + "'><b>" + esc(d.short) + "</b><span class='nt'>management</span><span class='mgb g" + d.pv.mg + "'>" + d.pv.mg + "</span><span class='num'>→</span>" + mgb(d) + "</button>"; });
+    if(nsmall) h += "<span class='more1' title='" + esc(small.a.concat(small.b).join(", ")) + "'>+ " + nsmall + " one-place shifts</span>";
+    if(NEWN.length) h += "<span class='more1'>Other names move down only because of the additions; arrows compare order among the names already listed.</span>";
+    var el = document.getElementById("moves"); el.innerHTML = h;
+    Array.prototype.forEach.call(el.querySelectorAll(".mvc"), function(li){ li.addEventListener("click", function(){ openRow(li.getAttribute("data-go"), li.getAttribute("data-k")); }); });
+    // flags & news inside the window, newest first
+    var from = BASE_S ? BASE_S.d : "";
+    var ev = EV.map(function(e, i){ return [e, i]; }).filter(function(p){ return p[0].d > from && p[0].d <= LAST.d; }).sort(function(x, y){ return x[0].d < y[0].d ? 1 : x[0].d > y[0].d ? -1 : x[1] - y[1]; }).map(function(p){ return p[0]; });
+    var runs = SN.filter(function(s){ return s.d > from; });
+    var dated = runs.length > 1;
+    var fl = ev.map(function(e){ return flagLi(e, dated); });
+    var fh = fl.length ? "<ul class='flags'>" + fl.slice(0, 4).join("") + "</ul>" + (fl.length > 4 ? "<details class='earlier mfl'><summary>" + (fl.length - 4) + " more</summary><ul class='flags'>" + fl.slice(4).join("") + "</ul></details>" : "") : "<p class='none'>No flags or news in this period.</p>";
+    document.getElementById("flags").innerHTML = fh;
+    document.getElementById("chwhen").textContent = BASE_S ? fd(BASE_S.d) + " → " + fd(LAST.d) : fd(LAST.d);
+    document.getElementById("chwhen").title = BASE_S ? "Compared with the update of " + fd(BASE_S.d) + (BASE_S === SN[0] && WIN !== "u" && dn(LAST.d) - dn(BASE_S.d) < +WIN ? " — the start of the history" : "") : "";
+    document.getElementById("chd").textContent = dated ? fd(LAST.d) + " · " : "";
+    // day by day
+    var dl = runs.slice().reverse().map(function(s){
+      var es = EV.filter(function(e){ return e.d === s.d; });
+      return "<div class='dli'><div class='dlh'><span class='fdt'>" + fd(s.d) + "</span>" + esc(s.headline) + "</div>" + (es.length ? "<ul class='flags'>" + es.map(function(e){ return flagLi(e, false); }).join("") + "</ul>" : "") + "</div>";
+    }).join("");
+    document.getElementById("daylog-b").innerHTML = (dl || "<p class='none'>No updates in this period.</p>") + "<p class='dlmore'><a href='#' data-goto='hist'>Full history: rank, odds and cost-curve paths →</a></p>";
+    var sm = document.querySelector("#daylog > summary"); sm.textContent = "Day by day (" + runs.length + (runs.length === 1 ? " update)" : " updates)");
+    Array.prototype.forEach.call(document.querySelectorAll(".wseg button"), function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-w") === WIN ? "true" : "false"); });
+  }
+  function applyWindow(w){ setWindow(w); renderChanges(); renderTables(); paintArrows(); if(window.__convTips) window.__convTips(); try { localStorage.setItem("rk-win", w); } catch(e){} }
+  Array.prototype.forEach.call(document.querySelectorAll(".wseg button"), function(b){ b.addEventListener("click", function(){ applyWindow(b.getAttribute("data-w")); }); });
+
+  /* ---------- the two tables ---------- */
+  function rankCell(d, key){ return "<td class='c-n'><span class='rkn " + key + (low(d,key) ? " lo" : "") + "'>" + d[key] + "</span>" + mv(d, key) + "<span class='nmw'><b>" + esc(d.short) + "</b>" + mb(d) + pk(d) + late(d) + tgx(d) + "<span class='tk'>" + esc(d.tick) + "</span></span></td>"; }
+  function scHead(s, i){ var pr = s.split(" / "); return pr.length === 2 ? "Au " + pr[0] + "<span class='s'>Ag " + pr[1] + "</span>" : esc(s) + "<span class='s'>" + (i === 0 ? "own study deck" : "&nbsp;") + "</span>"; }
+  function renderTables(){
+    ["a", "b"].forEach(function(key){
+      var other = key === "a" ? "b" : "a";
+      var rows = D.slice().sort(function(x,y){ return x[key] - y[key]; });
+      function th(label, sub, tip, cls){ return "<th" + (cls ? " class='" + cls + "'" : "") + " data-tip='" + esc(tip) + "'>" + label + (sub ? "<span class='s'>" + sub + "</span>" : "") + "</th>"; }
+      var TIP = {
+        coA: "Rank in list A (most likely to deliver), metal and ticker. Small arrows = move since the compared update. Tap a row for the full write-up.",
+        coB: "Rank in list B (best odds of tripling in 3–5 years), metal and ticker. Small arrows = move since the compared update. Tap a row for the full write-up.",
+        key: "The main fact behind the A rank.",
+        cc: "Where the company's all-in sustaining cost sits among the industry's mines: 0 = cheapest, 100 = costliest. Below 50 (lower half) is good; the ring shows 2025.",
+        cap: "Market value today (in US$ unless noted).",
+        risk: "Risk 1–5: chance of a permanent loss or no re-rating within 3–5 years. 1 = lowest, 5 = highest.",
+        inB: "Where this company ranks in list B (odds of a 3×). Outlined = below that list's line.",
+        inA: "Where this company ranks in list A (most likely to deliver). Outlined = below that list's line.",
+        odds: "Odds that the share price triples within 3–5 years: chance it works × the share of the 'if it works' range at 3× or more, plus a small luck component. The tick on the bar is the luck line (~" + BASE + "%).",
+        works: "Chance the plan works within 3–5 years — the key milestones (study, permit, financing, production) actually happen.",
+        ifw: "Multiple of today's share price if it works, after the expected new shares (dilution).",
+        mg: "Management grade A–D from the people's track record, fit to this exact job and candour (promises vs delivery). B is the default; A★ = tier 1; odds are moved only with evidence. A fourth score, skin in the game (1–5), shows how much of their own money the team has at risk: it never moves the odds, but breaks near-ties in list B. Hover a grade for the sub-scores and the reason; the tracker card has the full review.",
+        rw: "Room for a 2nd 3×: after a first 3× in years 1–5, is there room for another 3× by about year 10? Yes · Partly (capped or metal-price dependent) · Little (the first re-rating is most of the value). This is about size and structure, not cash: months of cash are on the Financials tab of the card.",
+        sc0: "Multiple of today's market value if the company reaches its next stage at its own study's metal price.",
+        sc: "Multiple of today's market value if the market adopts this metal price (includes the growth step)."
+      };
+      var head = key === "a"
+        ? [th("Company", "", TIP.coA, "c-n"), th("Key point", "", TIP.key)].concat(hasCC ? [th("Cost curve", "percentile", TIP.cc)] : []).concat([th("Mkt cap", "", TIP.cap, "r"), th("Mgmt", "A–D", TIP.mg), th("Risk", "1–5", TIP.risk, "r"), th("In B", "", TIP.inB, "r")])
+        : [th("Company", "", TIP.coB, "c-n"), th("3×+ odds", "line ~" + BASE + "%", TIP.odds, "r"), th("Works", "", TIP.works, "r"), th("If it works", "", TIP.ifw, "r"), th("2nd 3×?", "room after the first", TIP.rw), th("Mgmt", "A–D", TIP.mg)].concat(SC.map(function(s, i){ var pr = s.split(" / "); return "<th class='r scg-h' data-tip='" + esc(i === 0 && pr.length !== 2 ? TIP.sc0 : TIP.sc) + "'>" + scHead(s, i) + "</th>"; })).concat([th("Risk", "1–5", TIP.risk, "r"), th("In A", "", TIP.inA, "r")]);
+      var n = head.length;
+      var h = "<thead><tr>" + head.join("") + "</tr></thead><tbody>";
+      rows.forEach(function(d){
+        if(d[key] === LOW_FROM[key]) h += "<tr class='line'><td colspan='" + n + "'><span><b>▼ Below this line:</b> " + esc(DIV[key]) + "</span></td></tr>";
+        var cells = [rankCell(d, key)];
+        if(key === "a"){
+          cells.push("<td class='c-k'>" + esc(d.aKey) + "</td>");
+          if(hasCC) cells.push("<td>" + (d.cc ? ccMini(d.cc, true) + "<span class='ccn " + ccCls(d.cc) + "'>" + ord(d.cc.p) + (d.cc.est ? "*" : "") + "</span>" : (d.ccna ? "<span class='ccna' title='Royalty and streaming companies pay a fixed price per ounce, so the mine cost curve does not apply'>" + esc(d.ccna) + "</span>" : "")) + "</td>");
+          cells.push("<td class='r num'>" + esc(d.cap) + "</td>");
+        } else {
+          cells.push("<td class='r'><span class='oc'>" + ob(d.p3) + "<span class='v" + (d.p3 < BASE ? " lo" : "") + "'>~" + d.p3 + "%</span></span></td>");
+          cells.push("<td class='r num'>~" + d.pw + "%</td>");
+          cells.push("<td class='r num'>" + esc(d.mw) + "</td>");
+          cells.push("<td>" + rwb(d) + "</td>");
+          cells.push("<td>" + mgb(d) + "</td>");
+          d.sc.forEach(function(v){ var wide = v.length > 16; cells.push("<td class='sc" + (v.charAt(0) === "~" ? " est" : "") + (wide ? " wide" : "") + "'>" + esc(v) + "</td>"); });
+        }
+        if(key === "a") cells.push("<td>" + mgb(d) + "</td>");
+        cells.push("<td class='r'><span class='rsb r" + d.rs + "' title='Risk " + d.rs + " of 5'>" + d.rs + "</span></td>");
+        cells.push("<td class='r'><span class='pill " + other + (low(d, other) ? " lo" : "") + "' data-tip='" + esc((other === "a" ? "Rank in list A (most likely to deliver): #" : "Rank in list B (odds of a 3×): #") + d[other] + (low(d, other) ? " — below that list's line" : "")) + "'>" + d[other] + "</span></td>");
+        h += "<tr data-k='" + d.k + "' tabindex='0' aria-label='" + esc(d.name) + ", rank " + d[key] + ": open details'>" + cells.join("") + "</tr>";
+      });
+      var t = document.getElementById("t" + key); t.innerHTML = h + "</tbody>";
+      Array.prototype.forEach.call(t.querySelectorAll("tbody tr[data-k]"), function(tr){
+        var k = tr.getAttribute("data-k");
+        tr.addEventListener("click", function(){ openRow(key, k); });
+        tr.addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); openRow(key, k); } });
+        if(hover){ tr.addEventListener("mouseenter", function(){ hl(k); }); tr.addEventListener("mouseleave", function(){ hl(null); }); }
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll(".tscroll"), function(ts){
+      function fade(){ ts.style.setProperty("--sl", ts.scrollLeft + "px"); ts.classList.toggle("fade-r", ts.scrollWidth - ts.clientWidth - ts.scrollLeft > 4); ts.classList.toggle("scrolled", ts.scrollLeft > 2); }
+      ts.addEventListener("scroll", fade, {passive:true}); window.addEventListener("resize", fade); fade();
+    });
+  }
+
+  /* ---------- ranked lists ---------- */
+  function renderList(key){
+    var rows = D.slice().sort(function(x,y){ return x[key] - y[key]; });
+    var h = "";
+    rows.forEach(function(d){
+      var r = d[key], lo = low(d, key);
+      if(r === LOW_FROM[key]) h += "<div class='divider' role='separator'><b>▼ Below this line:</b> " + esc(DIV[key]) + "</div>";
+      var why = split1(d[key + "Why"]);
+      var head = "<div class='l1'><span class='nm'>" + esc(d.name) + "</span>" + mb(d) + pk(d) + tgx(d) + "<span class='tk'>" + esc(d.tick) + "</span>" +
+        (key === "b" ? "<span class='hm'>" + ob(d.p3) + "<span class='o3'>~" + d.p3 + "%<small>3×+</small></span></span>" : "<span class='hm'><span class='rsb r" + d.rs + "' title='Risk " + d.rs + " of 5'>" + d.rs + "</span></span>") + "</div>";
+      var l2 = "<div class='l2'>" + esc(d[key + "Key"]) + "</div>";
+      var facts = key === "b"
+        ? "<div class='facts'><span>Works <b>~" + d.pw + "%</b></span><span>If it works <b>" + esc(d.mw) + "</b></span><span>Risk <b>" + d.rs + "/5</b></span><span>2nd 3× " + rwb(d) + "</span>" + (d.mg ? "<span>Mgmt " + mgb(d) + "</span>" : "") + "<span>" + esc(d.cap) + "</span></div>"
+        : "<div class='facts'><span class='bkt' style='--bkc:" + bkc(d) + "'>" + esc(BK[d.bk] || "") + "</span><span>" + esc(d.cap) + "</span><span>In list B <b>#" + d.b + "</b> · ~" + d.p3 + "%</span>" + (d.mg ? "<span>Mgmt " + mgb(d) + "</span>" : "") + "</div>" + (d.cc ? ccLine(d.cc) : (d.ccna ? "<div class='ccl'><span>Cost curve</span><span class='ccb na'>Not applicable</span><span class='ccx'>" + esc(d.ccna.replace(/^n\/a · /, "")) + " — no mining costs</span></div>" : ""));
+      var sum = "<summary><div class='rk'>" + r + "<div class='rkm' data-mv='" + key + ":" + d.k + "' hidden></div></div><div class='rm'>" + head + l2 + facts + "<p class='gist'>" + esc(why[0]) + "</p><span class='mo'><span class='t1'>More</span><span class='t2'>Less</span></span></div></summary>";
+      var more = "<div class='more'>" + (why[1] ? "<p>" + esc(why[1]) + "</p>" : "") +
+        (key === "b" ? "<p class='wif'><b>Works if:</b> " + esc(d.wi) + "</p>" : "") +
+        "<div class='kv'>" +
+          "<div class='k'>Risk</div><div class='v'><span class='rsb r" + d.rs + "'>" + d.rs + "</span>" + esc(d.rsWhy) + "</div>" +
+          (key === "b" && d.rw ? "<div class='k'>Room for a 2nd 3×</div><div class='v'>" + rwb(d) + " " + esc(d.rwWhy) + (mon(d) ? " <b>Monster watch:</b> re-checked every Saturday; re-scored when a big catalyst moves inside the 3–5 year window." : "") + "</div>" : "") +
+          (d.mg ? "<div class='k'>Management</div><div class='v'>" + mgb(d) + "<b>Track " + d.mg.t + " · fit " + d.mg.f + " · candour " + d.mg.c + (d.mg.s ? " · skin " + d.mg.s : "") + "</b>" + (d.mg.conf === "low" ? " · low confidence" : "") + " — " + esc(d.mg.why) + (d.mg.odds && d.mg.odds !== "no odds change" ? " <i>Odds: " + esc(d.mg.odds) + ".</i>" : "") + " <a href='" + CFG.T + d.slug + "' target='_blank' rel='noopener'>Full review on the card ↗</a></div>" : "") +
+          "<div class='k'>Timing</div><div class='v'>" + esc(d.tm) + (d.late ? " <span class='dg' title='Key trigger may fall at or beyond the horizon'>†</span>" : "") + "</div>" +
+          (d[key + "Risk"] ? "<div class='k'>Main risk</div><div class='v'>" + esc(d[key + "Risk"]) + "</div>" : "") +
+          "<div class='k'>Exploration</div><div class='v'><span class='ntag n-" + d.exC + "'>" + esc(d.exN) + "</span>" + esc(d.ex) + "</div>" +
+        "</div>" +
+        (key === "b" ? "<p class='drv'><b>Price scenarios</b> · driver: " + esc(d.pm || "") + "</p><div class='scg'>" + d.sc.map(function(v, i){ return "<div><span class='sk'>" + esc(SC[i]) + "</span><span class='sv" + (v.charAt(0) === "~" ? " est" : "") + "'>" + esc(v) + "</span></div>"; }).join("") + "</div>" : "") +
+        "<a class='trk' href='" + CFG.T + d.slug + "' target='_blank' rel='noopener'>Open " + esc(d.short) + " in the tracker ↗</a></div>";
+      h += "<details class='row" + (lo ? " low" : "") + "' id='" + key + "-" + d.k + "' data-k='" + d.k + "'>" + sum + more + "</details>";
+    });
+    document.getElementById("list-" + key).innerHTML = h;
+  }
+
+
+  /* ---------- hover info: one floating tip for headers and labels ---------- */
+  (function(){
+    var tip = document.createElement("div"); tip.className = "htip"; tip.setAttribute("role", "tooltip"); tip.hidden = true; document.body.appendChild(tip);
+    function conv(root){ Array.prototype.forEach.call((root || document).querySelectorAll("[title]"), function(el){ if(el.tagName === "A" || el.tagName === "IFRAME") return; el.setAttribute("data-tip", el.getAttribute("title")); el.removeAttribute("title"); }); }
+    window.__convTips = conv; conv();
+    var cur = null;
+    function show(el){
+      var t = el.getAttribute("data-tip"); if(!t) return;
+      cur = el; tip.textContent = t; tip.hidden = false;
+      var r = el.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
+      var x = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), window.innerWidth - w - 8);
+      var y = r.top - h - 8; if(y < 8) y = r.bottom + 8;
+      tip.style.left = x + "px"; tip.style.top = y + "px";
+    }
+    function hide(){ cur = null; tip.hidden = true; }
+    document.addEventListener("mouseover", function(e){ var el = e.target.closest && e.target.closest("[data-tip]"); if(el && el !== cur) show(el); else if(!el && cur) hide(); });
+    document.addEventListener("scroll", hide, true);
+    document.addEventListener("click", function(e){ var el = e.target.closest && e.target.closest("th[data-tip]"); if(el){ if(cur === el) hide(); else show(el); } else if(!(e.target.closest && e.target.closest("[data-tip]"))) hide(); });
+  })();
+  /* ---------- cross-highlight + navigation ---------- */
+  var hover = window.matchMedia("(hover: hover)").matches;
+  function hl(k){ Array.prototype.forEach.call(document.querySelectorAll("[data-k]"), function(el){ if(el.tagName === "TH") return; el.classList.toggle("hl", !!k && el.getAttribute("data-k") === k && !el.matches("li")); }); }
+  function openRow(key, k){
+    var el = document.getElementById(key + "-" + k); if(!el) return;
+    el.open = true; el.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"});
+    el.classList.add("flash"); setTimeout(function(){ el.classList.remove("flash"); }, 1400);
+  }
+  var w0 = "u"; try { w0 = localStorage.getItem("rk-win") || "u"; } catch(e){}
+  if(["u","7","30"].indexOf(w0) === -1) w0 = "u";
+  renderList("a"); renderList("b"); applyWindow(w0);
+  if(hover){ Array.prototype.forEach.call(document.querySelectorAll("details.row"), function(r){ var k = r.getAttribute("data-k"); r.addEventListener("mouseenter", function(){ hl(k); }); r.addEventListener("mouseleave", function(){ hl(null); }); }); }
+  var hsh = (location.hash || "").slice(1); if(/^[ab]-/.test(hsh)) openRow(hsh.charAt(0), hsh.slice(2));
+  window.addEventListener("hashchange", function(){ var x = (location.hash || "").slice(1); if(/^[ab]-/.test(x)) openRow(x.charAt(0), x.slice(2)); });
+})();
+document.addEventListener("click", function(e){ var a = e.target.closest && e.target.closest("a[data-goto]"); if(!a) return; e.preventDefault(); try { parent.showRanking(a.getAttribute("data-goto")); } catch(x){} });
+
+</script>
+<div class="cw-disc" role="contentinfo">
+<style>
+.cw-disc { max-width:1180px; margin:56px auto 0; padding:18px 20px 28px; border-top:1px solid var(--line,#262E32);
+  font:12.5px/1.55 "IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--mute,#8D999E); }
+.cw-disc p { margin:0 0 4px; max-width:72ch; }
+.cw-disc strong { color:var(--ink,#E8EBEC); font-weight:500; }
+.cw-disc a { color:inherit; text-decoration:none; border:0; border-bottom:1px solid var(--line,#262E32); padding:0; margin:0; background:none; border-radius:0; display:inline; font:inherit; }
+.cw-disc a:hover { color:var(--ink,#E8EBEC); }
+.cw-disc .cw-meta { font-variant-numeric:tabular-nums; }
+</style>
+<p><strong>Not investment advice.</strong> Personal research notes by Chung Huynh — views, rankings and estimates may be wrong or out of date. Do your own research.</p>
+<p class="cw-meta">Synced 9 Oct 2026 · <a href="/" target="_top">chungwin.com</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Metals Research Trackers · Chung Huynh</title>
+<meta name="description" content="Chung Huynh's personal equity research on metals developers and producers — rankings and company trackers. Not investment advice.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: one fixed tab strip at the top; the active tracker fills the rest of the viewport in its own frame.
+   Single dark look by choice — both embedded trackers are dark-only, and the strip has to sit flush against them. */
+:root {
+  --bg:#111517; --panel:#181D20; --ink:#E8EBEC; --mute:#8D999E; --line:#262E32;
+  --pm:#D9A94A;   /* gold — precious metals tracker accent */
+  --cu:#4FB3A3;   /* teal — copper tracker accent */
+  --cm:#A99BF0;   /* violet — critical minerals tracker accent */
+  --font:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color-scheme:dark;
+}
+* { box-sizing:border-box; }
+html, body { height:100%; }
+body { margin:0; background:var(--bg); color:var(--ink); font-family:var(--font); font-size:16px; line-height:1.4; display:flex; flex-direction:column; overflow:hidden; }
+header.strip { flex:none; background:var(--panel); border-bottom:1px solid var(--line); padding:0 16px; display:flex; align-items:stretch; justify-content:space-between; gap:12px; }
+.tabs { display:flex; gap:4px; min-width:0; }
+.tab { font:inherit; font-size:15px; font-weight:500; color:var(--mute); background:none; border:none; border-bottom:3px solid transparent; padding:14px 14px 11px; cursor:pointer; display:flex; align-items:baseline; gap:10px; white-space:nowrap; letter-spacing:-0.005em; }
+.tab .meta { font-size:12px; font-weight:400; color:var(--mute); font-variant-numeric:tabular-nums; }
+.tab:hover { color:var(--ink); }
+.tab[aria-selected="true"] { color:var(--ink); font-weight:600; }
+.tab[data-tab="pm"][aria-selected="true"] { border-bottom-color:var(--pm); }
+.tab[data-tab="cu"][aria-selected="true"] { border-bottom-color:var(--cu); }
+.tab[data-tab="cm"][aria-selected="true"] { border-bottom-color:var(--cm); }
+.tab[data-tab="cm"] .dot { background:var(--cm); }
+.tabs { overflow-x:auto; scrollbar-width:none; }
+.tabs::-webkit-scrollbar { display:none; }
+.tab[data-tab="pm"] .dot { background:var(--pm); }
+.tab[data-tab="cu"] .dot { background:var(--cu); }
+.dot { width:9px; height:9px; border-radius:50%; align-self:center; flex:none; }
+.tab:focus-visible { outline:2px solid var(--ink); outline-offset:-4px; border-radius:4px; }
+.side a { color:var(--mute); text-decoration:none; border-bottom:1px solid var(--line); }
+.side a:hover { color:var(--ink); }
+.side { display:flex; align-items:center; font-size:12.5px; color:var(--mute); white-space:nowrap; }
+main { flex:1; min-height:0; position:relative; }
+iframe { position:absolute; inset:0; width:100%; height:100%; border:0; background:var(--bg); }
+iframe[hidden] { display:none; }
+@media (max-width:900px) { .tab .meta { display:none; } }
+@media (max-width:520px) {
+  header.strip { padding:0 8px; }
+  .tab { padding:12px 10px 9px; font-size:14px; gap:7px; }
+  .tab .meta { display:none; }
+  .side { display:none; }
+}
+@media (prefers-reduced-motion: no-preference) { .tab { transition:color .12s, border-color .12s; } }
+</style>
+</head>
+<body>
+<header class="strip">
+  <div class="tabs" role="tablist" aria-label="Research trackers">
+    <button class="tab" role="tab" id="tab-pm" data-tab="pm" aria-selected="true" aria-controls="frame-pm" type="button"><span class="dot" aria-hidden="true"></span>Precious metals<span class="meta">25 names</span></button>
+    <button class="tab" role="tab" id="tab-cu" data-tab="cu" aria-selected="false" aria-controls="frame-cu" tabindex="-1" type="button"><span class="dot" aria-hidden="true"></span>Copper<span class="meta">24 names</span></button>
+    <button class="tab" role="tab" id="tab-cm" data-tab="cm" aria-selected="false" aria-controls="frame-cm" tabindex="-1" type="button"><span class="dot" aria-hidden="true"></span>Critical minerals<span class="meta">5 names</span></button>
+  </div>
+  <div class="side"><a href="/equities/" target="_blank" rel="noopener">Rankings ↗</a></div>
+</header>
+<main>
+  <iframe id="frame-pm" title="Precious metals research tracker" role="tabpanel" aria-labelledby="tab-pm"></iframe>
+  <iframe id="frame-cu" title="Copper research tracker" role="tabpanel" aria-labelledby="tab-cu" hidden></iframe>
+  <iframe id="frame-cm" title="Critical minerals research tracker" role="tabpanel" aria-labelledby="tab-cm" hidden></iframe>
+</main>
+
+<script>
+(function(){
+  var KEYS = ['pm','cu','cm'];
+  var SRC = { pm:'pm.html', cu:'cu.html', cm:'cm.html' };
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var frames = {}; KEYS.forEach(function(k){ frames[k] = document.getElementById('frame-' + k); });
+  var current = null;
+
+  // Hash forms: #pm, #cu, #cm, #<tab>.<card-id>  (the dot separates tracker from card)
+  function parseHash(){
+    var h = (location.hash || '').slice(1);
+    if(!h) return null;
+    var i = h.indexOf('.');
+    var key = i === -1 ? h : h.slice(0, i);
+    var slug = i === -1 ? '' : h.slice(i + 1);
+    if(KEYS.indexOf(key) === -1) return null;
+    return { key:key, slug:slug };
+  }
+  function remember(key){ try { localStorage.setItem('tracker-tab', key); } catch(e){} }
+  function recall(){ try { return localStorage.getItem('tracker-tab'); } catch(e){ return null; } }
+
+  function load(key, slug){
+    var f = frames[key];
+    var want = SRC[key] + (slug ? '#' + slug : '');
+    if(!f.getAttribute('src')){ f.setAttribute('src', want); return; }
+    if(slug){
+      try { f.contentWindow.location.hash = slug; } catch(e){ f.setAttribute('src', want); }
+    }
+  }
+
+  function show(key, slug, fromHash){
+    if(KEYS.indexOf(key) === -1) key = 'pm';
+    tabs.forEach(function(t){
+      var on = t.getAttribute('data-tab') === key;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    KEYS.forEach(function(k){ frames[k].hidden = k !== key; });
+    load(key, slug);
+    current = key;
+    remember(key);
+    if(!fromHash){
+      var h = '#' + key + (slug ? '.' + slug : '');
+      if(location.hash !== h) history.replaceState(null, '', h);
+    }
+  }
+
+  tabs.forEach(function(t, i){
+    t.addEventListener('click', function(){ show(t.getAttribute('data-tab')); });
+    t.addEventListener('keydown', function(e){
+      if(e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      e.preventDefault();
+      var n = (i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+      var next = tabs[n].getAttribute('data-tab');
+      show(next);
+      tabs[n].focus();
+    });
+  });
+
+  // keep the parent hash in step with jump links used inside the active tracker
+  function syncHash(){
+    if(!current) return;
+    try {
+      var inner = frames[current].contentWindow.location.hash.slice(1);
+      var h = '#' + current + (inner ? '.' + inner : '');
+      if(location.hash !== h) history.replaceState(null, '', h);
+    } catch(e){}
+  }
+  KEYS.forEach(function(k){
+    frames[k].addEventListener('load', function(){
+      try { frames[k].contentWindow.addEventListener('hashchange', syncHash); } catch(e){}
+    });
+  });
+
+  window.addEventListener('hashchange', function(){
+    var p = parseHash();
+    if(p) show(p.key, p.slug, true);
+  });
+
+  var start = parseHash();
+  if(start) show(start.key, start.slug, true);
+  else { var r = recall(); show(KEYS.indexOf(r) !== -1 ? r : 'pm'); }
+})();
+</script>
+<script data-goatcounter="https://chungwin.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

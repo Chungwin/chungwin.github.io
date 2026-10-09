@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Metals Rankings · Chung Huynh</title>
+<meta name="description" content="Chung Huynh's personal equity research on metals developers and producers — rankings and company trackers. Not investment advice.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: one fixed tab strip at the top; the active tracker fills the rest of the viewport in its own frame.
+   Single dark look by choice — both embedded trackers are dark-only, and the strip has to sit flush against them. */
+:root {
+  --bg:#111517; --panel:#181D20; --ink:#E8EBEC; --mute:#8D999E; --line:#262E32;
+  --pm:#D9A94A;   /* gold — precious metals tracker accent */
+  --cm:#A99BF0;
+  --cu:#4FB3A3;   /* teal — copper tracker accent */
+  --hs:#C2C9CC;   /* history — neutral, spans all groups */
+  --cl:#89A8DC;   /* calendar */
+  --font:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color-scheme:dark;
+}
+* { box-sizing:border-box; }
+html, body { height:100%; }
+body { margin:0; background:var(--bg); color:var(--ink); font-family:var(--font); font-size:16px; line-height:1.4; display:flex; flex-direction:column; overflow:hidden; }
+header.strip { flex:none; background:var(--panel); border-bottom:1px solid var(--line); padding:0 16px; display:flex; align-items:stretch; justify-content:space-between; gap:12px; }
+.tabs { display:flex; gap:4px; min-width:0; }
+.tab { font:inherit; font-size:15px; font-weight:500; color:var(--mute); background:none; border:none; border-bottom:3px solid transparent; padding:14px 14px 11px; cursor:pointer; display:flex; align-items:baseline; gap:10px; white-space:nowrap; letter-spacing:-0.005em; }
+.tab .meta { font-size:12px; font-weight:400; color:var(--mute); font-variant-numeric:tabular-nums; }
+.tab:hover { color:var(--ink); }
+.tab[aria-selected="true"] { color:var(--ink); font-weight:600; }
+.tab[data-tab^="pm"][aria-selected="true"] { border-bottom-color:var(--pm); }
+.tab[data-tab="cu"][aria-selected="true"] { border-bottom-color:var(--cu); }
+.tab[data-tab="cm"][aria-selected="true"] { border-bottom-color:var(--cm); }
+.tab[data-tab="hist"][aria-selected="true"] { border-bottom-color:var(--hs); }
+.tab[data-tab="cal"][aria-selected="true"] { border-bottom-color:var(--cl); }
+.tab.hist { margin-left:6px; border-left:1px solid var(--line); padding-left:16px; }
+.hico { width:13px; height:13px; align-self:center; flex:none; color:var(--mute); }
+.tab[aria-selected="true"] .hico { color:var(--ink); }
+.dot.pm { background:var(--pm); }
+.dot.cu { background:var(--cu); }
+.dot.cm { background:var(--cm); }
+.side a { color:var(--mute); text-decoration:none; border-bottom:1px solid var(--line); }
+.side a:hover { color:var(--ink); }
+.tabs { overflow-x:auto; scrollbar-width:none; }
+.tabs::-webkit-scrollbar { display:none; }
+.dot { width:9px; height:9px; border-radius:50%; align-self:center; flex:none; }
+.tab:focus-visible { outline:2px solid var(--ink); outline-offset:-4px; border-radius:4px; }
+.side { display:flex; align-items:center; font-size:12.5px; color:var(--mute); white-space:nowrap; }
+main { flex:1; min-height:0; position:relative; }
+iframe { position:absolute; inset:0; width:100%; height:100%; border:0; background:var(--bg); }
+iframe[hidden] { display:none; }
+@media (max-width:1499px) { .tab .meta { display:none; } }
+@media (max-width:1150px) { .tab .grp { display:none; } }
+.tabwrap { position:relative; display:flex; min-width:0; }
+.more { display:none; position:absolute; right:0; top:0; bottom:0; width:44px; border:0; padding:0 4px 0 18px; cursor:pointer; color:var(--ink); font:inherit; font-size:20px; line-height:1;
+  background:linear-gradient(to right, rgba(24,29,32,0), var(--panel) 45%); text-align:right; }
+.tabwrap.more-r .more { display:block; }
+@media (max-width:520px) {
+  .tab .grp { display:none; }
+  header.strip { padding:0 8px; }
+  .tab { padding:12px 10px 9px; font-size:14px; gap:7px; }
+  .tab .meta { display:none; }
+  .side { display:none; }
+}
+@media (prefers-reduced-motion: no-preference) { .tab { transition:color .12s, border-color .12s; } }
+</style>
+</head>
+<body>
+<header class="strip">
+  <div class="tabwrap"><div class="tabs" role="tablist" aria-label="Rankings">
+    <button class="tab" role="tab" id="tab-pmd" data-tab="pmd" aria-selected="true" aria-controls="frame-pmd" type="button"><span class="dot pm" aria-hidden="true"></span><span class="lbl"><span class="grp">Gold &amp; silver · </span>Developers</span><span class="meta">12 names</span></button>
+    <button class="tab" role="tab" id="tab-pmp" data-tab="pmp" aria-selected="false" aria-controls="frame-pmp" tabindex="-1" type="button"><span class="dot pm" aria-hidden="true"></span><span class="lbl"><span class="grp">Gold &amp; silver · </span>Producers</span><span class="meta">13 names</span></button>
+    <button class="tab" role="tab" id="tab-cu" data-tab="cu" aria-selected="false" aria-controls="frame-cu" tabindex="-1" type="button"><span class="dot cu" aria-hidden="true"></span>Copper<span class="meta">24 names</span></button>
+    <button class="tab" role="tab" id="tab-cm" data-tab="cm" aria-selected="false" aria-controls="frame-cm" tabindex="-1" type="button"><span class="dot cm" aria-hidden="true"></span>Critical minerals<span class="meta">5 names</span></button>
+    <button class="tab hist" role="tab" id="tab-hist" title="How ranks, odds and costs moved over time" data-tab="hist" aria-selected="false" aria-controls="frame-hist" tabindex="-1" type="button"><svg class="hico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13h12M3.5 10.5l3-3.5 2.5 2 3.5-4.5"/></svg>History</button>
+    <button class="tab" role="tab" id="tab-cal" title="Results, production releases and AGMs" data-tab="cal" aria-selected="false" aria-controls="frame-cal" tabindex="-1" type="button"><svg class="hico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="1.5"/><path d="M2 7h12M5 1.5v3M11 1.5v3"/></svg>Calendar</button>
+  </div><button class="more" type="button" aria-label="More tabs" tabindex="-1">›</button></div>
+  <div class="side"><a href="/equities/trackers/" target="_blank" rel="noopener">Research trackers ↗</a></div>
+</header>
+<main>
+  <iframe id="frame-pmd" title="Gold and silver developer rankings" role="tabpanel" aria-labelledby="tab-pmd"></iframe>
+  <iframe id="frame-pmp" title="Gold and silver producer rankings" role="tabpanel" aria-labelledby="tab-pmp" hidden></iframe>
+  <iframe id="frame-cu" title="Copper rankings" role="tabpanel" aria-labelledby="tab-cu" hidden></iframe>
+  <iframe id="frame-cm" title="Critical minerals rankings" role="tabpanel" aria-labelledby="tab-cm" hidden></iframe>
+  <iframe id="frame-hist" title="Rankings history" role="tabpanel" aria-labelledby="tab-hist" hidden></iframe>
+  <iframe id="frame-cal" title="Reporting calendar" role="tabpanel" aria-labelledby="tab-cal" hidden></iframe>
+</main>
+
+<script>
+(function(){
+  var KEYS = ['pmd','pmp','cu','cm','hist','cal'];
+  var SRC = { pmd:'pmd.html', pmp:'pmp.html', cu:'cu.html', cm:'cm.html', hist:'hist.html', cal:'cal.html' };
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var frames = {}; KEYS.forEach(function(k){ frames[k] = document.getElementById('frame-' + k); });
+  var current = null;
+
+  // Hash forms: #pmd, #pmp, #cu, and #<tab>.<section> e.g. #cu.rank-b
+  function parseHash(){
+    var h = (location.hash || '').slice(1);
+    if(!h) return null;
+    var i = h.indexOf('.');
+    var key = i === -1 ? h : h.slice(0, i);
+    var slug = i === -1 ? '' : h.slice(i + 1);
+    if(KEYS.indexOf(key) === -1) return null;
+    return { key:key, slug:slug };
+  }
+  function remember(key){ try { localStorage.setItem('rankings-tab', key); } catch(e){} }
+  function recall(){ try { return localStorage.getItem('rankings-tab'); } catch(e){ return null; } }
+
+  function load(key, slug){
+    var f = frames[key];
+    var want = SRC[key] + (slug ? '#' + slug : '');
+    if(!f.getAttribute('src')){ f.setAttribute('src', want); return; }
+    if(slug){ try { f.contentWindow.location.hash = slug; } catch(e){ f.setAttribute('src', want); } }
+  }
+
+  function show(key, slug, fromHash){
+    if(KEYS.indexOf(key) === -1) key = 'pmd';
+    tabs.forEach(function(t){
+      var on = t.getAttribute('data-tab') === key;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    KEYS.forEach(function(k){ frames[k].hidden = k !== key; });
+    load(key, slug);
+    current = key;
+    remember(key);
+    if(!fromHash){
+      var h = '#' + key + (slug ? '.' + slug : '');
+      if(location.hash !== h) history.replaceState(null, '', h);
+    }
+  }
+  // called from inside the frames ("Producer rankings" / "Developer rankings" links)
+  window.showRanking = function(key, slug){
+    // from a ranking tab, "History" opens the history on that tab's group
+    if(key === 'hist' && !slug && current && current !== 'hist') slug = current;
+    show(key, slug); var t = document.getElementById('tab-' + key); if(t) t.focus();
+  };
+
+  tabs.forEach(function(t, i){
+    t.addEventListener('click', function(){ show(t.getAttribute('data-tab')); });
+    t.addEventListener('keydown', function(e){
+      if(e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      e.preventDefault();
+      var n = (i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+      var key = tabs[n].getAttribute('data-tab');
+      show(key); tabs[n].focus();
+    });
+  });
+
+  function syncHash(){
+    if(!current) return;
+    try {
+      var inner = frames[current].contentWindow.location.hash.slice(1);
+      var h = '#' + current + (inner ? '.' + inner : '');
+      if(location.hash !== h) history.replaceState(null, '', h);
+    } catch(e){}
+  }
+  KEYS.forEach(function(k){
+    frames[k].addEventListener('load', function(){
+      try { frames[k].contentWindow.addEventListener('hashchange', syncHash); } catch(e){}
+    });
+  });
+
+  window.addEventListener('hashchange', function(){ var p = parseHash(); if(p) show(p.key, p.slug, true); });
+
+  var strip = document.querySelector('.tabs'), wrap = document.querySelector('.tabwrap');
+  function hint(){ wrap.classList.toggle('more-r', strip.scrollWidth - strip.clientWidth - strip.scrollLeft > 4); }
+  strip.addEventListener('scroll', hint, {passive:true}); window.addEventListener('resize', hint);
+  document.querySelector('.more').addEventListener('click', function(){ strip.scrollBy({left: strip.clientWidth * 0.7, behavior:'smooth'}); });
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ t.scrollIntoView({block:'nearest', inline:'nearest', behavior:'smooth'}); }); });
+
+  var start = parseHash();
+  if(start) show(start.key, start.slug, true);
+  else { var r = recall(); show(KEYS.indexOf(r) !== -1 ? r : 'pmd'); }
+  hint(); setTimeout(hint, 400);
+  var act = document.getElementById('tab-' + current); if(act && act.offsetLeft + act.offsetWidth > strip.clientWidth) strip.scrollLeft = act.offsetLeft - 40;
+})();
+</script>
+<script data-goatcounter="https://chungwin.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

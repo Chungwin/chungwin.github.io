@@ -16,12 +16,28 @@
   <header class="site-head">
     <div class="wrap head-inner">
       <a class="mark" href="{{ '/' | relative_url }}">Chung&nbsp;Huynh</a>
-      <nav class="nav" aria-label="Primary">
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Menu">
+        <svg class="i-open" viewBox="0 0 20 14" width="20" height="14" aria-hidden="true"><path d="M0 1h20M0 7h20M0 13h20" stroke="currentColor" stroke-width="1.5"/></svg>
+        <svg class="i-close" viewBox="0 0 20 14" width="20" height="14" aria-hidden="true"><path d="M4 0l12 14M4 14l12-14" stroke="currentColor" stroke-width="1.5"/></svg>
+      </button>
+      <nav class="nav" id="primary-nav" aria-label="Primary">
         <a href="{{ '/#writing' | relative_url }}">writing</a>
         <a href="{{ '/poker/' | relative_url }}">poker</a>
+        <a href="{{ '/equities/' | relative_url }}">equity research</a>
       </nav>
     </div>
   </header>
+
+  <script>
+  (function(){
+    var btn = document.querySelector('.menu-btn'), head = document.querySelector('.head-inner');
+    if (!btn || !head) return;
+    function set(open){ head.classList.toggle('open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+    btn.addEventListener('click', function(){ set(!head.classList.contains('open')); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && head.classList.contains('open')) { set(false); btn.focus(); } });
+    document.addEventListener('click', function(e){ if (!head.contains(e.target)) set(false); });
+  })();
+  </script>
 
   <main class="wrap">
     {{ content }}
