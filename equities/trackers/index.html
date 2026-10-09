@@ -155,5 +155,58 @@ iframe[hidden] { display:none; }
 </script>
 <script data-goatcounter="https://chungwin.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
+<script>
+(function(){
+  var AREA = 'trackers', q = [], seen = {};
+  function flush(){ var gc = window.goatcounter; if(!gc || !gc.count) return; while(q.length){ try { gc.count(q.shift()); } catch(e){} } }
+  function ev(path, title){
+    path = 'equities/' + path;
+    if(seen[path]) return; seen[path] = 1;
+    if(window.__eqTest) window.__eqTest.push({ path:path, title:title });
+    q.push({ path:path, title:title || path, event:true }); flush();
+  }
+  var gcs = document.querySelector('script[data-goatcounter]');
+  if(gcs) gcs.addEventListener('load', flush);
+  window.addEventListener('load', flush);
+
+  function txt(el){ return el ? (el.textContent || '').replace(/\s+/g, ' ').trim() : ''; }
+  function tab(){
+    var t = document.querySelector('.tab[aria-selected="true"]'); if(!t) return;
+    var lbl = t.cloneNode(true); Array.prototype.forEach.call(lbl.querySelectorAll('.meta'), function(m){ m.remove(); });
+    ev(AREA + '/' + t.getAttribute('data-tab'), (AREA === 'rankings' ? 'Rankings: ' : 'Trackers: ') + txt(lbl));
+  }
+  new MutationObserver(tab).observe(document.querySelector('.tabs'), { subtree:true, attributes:true, attributeFilter:['aria-selected'] });
+  tab();
+
+  function hook(f){
+    var d; try { d = f.contentDocument; } catch(e){ return; }
+    if(!d || d.__eqHooked || !d.body) return; d.__eqHooked = true;
+    function opened(el){
+      if(!el || !el.open) return;
+      if(el.classList.contains('card') && el.id) ev('company/' + el.id, el.getAttribute('data-name') || el.id);
+      else if(el.classList.contains('row') && el.getAttribute('data-k')){
+        var nm = txt(el.querySelector('.rm b, .rm strong, .rm .nm, .rm .co')) || el.getAttribute('data-k');
+        // use the tracker card's slug when the row links to it, so a company counts under one name
+        var a = el.querySelector('a[href*="/equities/trackers/#"]'), m = a && a.getAttribute('href').match(/#[a-z]+\.([a-z0-9-]+)/);
+        ev('company/' + (m ? m[1] : el.getAttribute('data-k')), nm);
+      }
+    }
+    d.addEventListener('toggle', function(e){ opened(e.target); }, true);
+    // a company reached by link (e.g. rankings -> tracker card) may open before this hook is attached
+    function fromHash(){ var h = ''; try { h = decodeURIComponent((f.contentWindow.location.hash || '').slice(1)); } catch(e){} if(h) opened(d.getElementById(h)); }
+    fromHash(); setTimeout(fromHash, 800);
+    d.addEventListener('click', function(e){
+      if(!e.isTrusted) return;   // the page clicks some tabs itself; count only real clicks
+      var b = e.target.closest && e.target.closest('.card .tabs button[data-tab]'); if(!b) return;
+      ev('card-tab/' + b.getAttribute('data-tab'), 'Card tab: ' + txt(b));
+    }, true);
+    var s = d.getElementById('q');
+    if(s) s.addEventListener('input', function(){ ev(AREA + '/search', (AREA === 'rankings' ? 'Rankings' : 'Trackers') + ': search used'); });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('main iframe'), function(f){
+    f.addEventListener('load', function(){ hook(f); }); hook(f);
+  });
+})();
+</script>
 </body>
 </html>
