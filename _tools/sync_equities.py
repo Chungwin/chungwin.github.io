@@ -10,6 +10,8 @@ pages into the site and adapts them:
   * the landing and hub pages get a proper <head>, the coin favicon and GoatCounter;
     the hubs also send anonymous usage events, the landing counts clicks on its doors
   * old links to /equities/#pmd etc. (rankings used to live there) are forwarded
+  * the landing page gets a small 'Updated after every US trading day · latest <date>' line,
+    the date taken from the rankings tabs
 
 Usage:
   python3 _tools/sync_equities.py LANDING_DIR RANKINGS_DIR TRACKERS_DIR [--synced "10 Oct 2026"]
@@ -134,6 +136,20 @@ LEGACY_REDIRECT = """<script>
   if(['pmd','pmp','cu','cm','hist','cal'].indexOf(k) !== -1) location.replace('/equities/rankings/' + h); })();
 </script>"""
 LANDING_CSS = ".small a { color:inherit; text-decoration:none; border-bottom:1px solid var(--line2,#323B40); } .small a:hover { color:var(--ink,#E8EBEC); }"
+LANDING_CSS += " .cw-fresh { margin:0; font-size:12.5px; color:var(--mute,#8D999E); display:flex; align-items:center; gap:7px; font-variant-numeric:tabular-nums; } .cw-fresh i { width:7px; height:7px; border-radius:50%; background:#7DC383; box-shadow:0 0 0 3px rgba(125,195,131,.15); flex:none; } .cw-fresh b { color:var(--ink2,#C2C9CC); font-weight:500; }"
+
+# Set in main() from the rankings pages: the newest "Updated <b>9 Oct 2026</b>" date.
+LATEST = None
+
+
+def latest_update(pages) -> str | None:
+    """Newest 'Updated <b>D Mon YYYY</b>' date across the ranking tabs, as written there."""
+    found = []
+    for html in pages:
+        m = re.search(r"Updated <b>(\d{1,2} [A-Z][a-z]{2} \d{4})</b>", html)
+        if m:
+            found.append((dt.datetime.strptime(m.group(1), "%d %b %Y"), m.group(1)))
+    return max(found)[1] if found else None
 
 
 def same_tab(html: str) -> str:
@@ -148,6 +164,9 @@ def landing_extras(html: str) -> str:
         return f'{m.group(1)} data-goatcounter-click="equities/landing/{name}" data-goatcounter-title="Landing: {name}"'
     html = re.sub(r'(<a class="door[^"]*" href="([^"]+)")', door, html)
     html = re.sub(r'(<p class="small">.*?)</p>', r'\1 · <a href="/">chungwin.com</a></p>', html, count=1, flags=re.S)
+    note = ('<p class="cw-fresh"><i aria-hidden="true"></i>Updated after every US trading day'
+            + (f' · latest <b>{LATEST}</b>' if LATEST else '') + '</p>\n    ')
+    html = html.replace('<p class="small">', note + '<p class="small">', 1)
     return html
 
 
@@ -206,6 +225,9 @@ def main() -> int:
         i = html.rindex("</body>")
         footer = DISCLAIMER.replace("{synced}", a.synced).strip()
         dst.write_text(html[:i] + footer + "\n" + html[i:], encoding="utf-8")
+
+    global LATEST
+    LATEST = latest_update((a.rankings_dir / p).read_text(encoding="utf-8") for p in ["pmd.html", "pmp.html", "cu.html", "cm.html"])
 
     hubs = [
         (a.landing_dir / "index.html", OUT / "index.html", "Metals Research", "landing"),
