@@ -56,6 +56,23 @@ h1{ font-family:var(--display); font-weight:600; font-size:clamp(28px,7.6vw,40px
 .small{ margin:0; font-size:12.5px; color:var(--mute); line-height:1.5; }
 @media (max-height:860px){ .wrap{ padding-block:16px 10px; gap:12px; } h1{ font-size:26px; } .lede{ font-size:14px; margin-top:6px; } .door{ padding:10px 13px 10px 12px; } .door p{ font-size:13.5px; } .door h2{ font-size:17px; } .small{ font-size:12px; } .foot{ padding-top:10px; gap:6px; } }
 @media (max-height:700px){ .eyebrow{ display:none; } .door p{ display:none; } .door .k{ margin-top:2px; } }
+/* Phones and tablets (<960px wide): keep the footer at the bottom, but let type, cards and spacing grow with the
+   screen height so the content fills the screen instead of leaving a gap above the footer. Never scrolls
+   on 375×667 (iPhone SE) up to 430×932 (Pro Max). Overrides the compact max-height rules above. */
+@media (max-width:959px){
+  .wrap{ padding-block:clamp(20px,4vh,44px) clamp(12px,2vh,20px); gap:clamp(12px,2.3vh,30px); }
+  .eyebrow{ display:block; margin-top:clamp(10px,1.6vh,16px); }
+  h1{ font-size:clamp(27px,3.9vh,38px); margin-top:6px; }
+  .lede{ font-size:clamp(14px,1.85vh,17px); margin-top:clamp(6px,1.1vh,12px); }
+  .doors{ gap:clamp(9px,1.4vh,15px); }
+  .door{ padding:clamp(10px,1.75vh,20px) 16px clamp(10px,1.75vh,20px) 15px; }
+  .door h2{ font-size:clamp(16.5px,2.15vh,20px); }
+  .door p{ font-size:clamp(13px,1.7vh,15.5px); }
+  .door .k{ margin-top:clamp(3px,.6vh,7px); }
+  .foot{ gap:clamp(6px,1vh,9px); padding-top:clamp(10px,1.4vh,13px); }
+}
+@media (max-width:959px) and (min-height:600px){ .door p{ display:block; } }
+@media (max-width:959px) and (max-height:700px){ .eyebrow{ display:none; } .lede{ font-size:13.5px; } .door{ padding:9px 14px 9px 13px; } .door p{ font-size:12.5px; } .door h2{ font-size:16px; } .wrap{ gap:11px; } }
 /* Desktop (≥960px wide): two columns, so the page fills the width instead of leaving a gap under the doors.
    Left: header with the footer facts under it. Right: the three doors. The phone layout above is unchanged. */
 @media (min-width:960px){
