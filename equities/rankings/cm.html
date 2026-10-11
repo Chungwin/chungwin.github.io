@@ -240,6 +240,13 @@ ul.flags{ display:grid; grid-template-columns:1fr; column-gap:28px; margin:0; }
 
 /* the two tables */
 .tables{ display:grid; grid-template-columns:1fr; gap:18px; }
+.signpost{ grid-column:1 / -1; margin:0 0 -4px; font-size:14.5px; line-height:1.55; color:var(--ink2); }
+.signpost b{ font-weight:600; } .signpost b.ta{ color:var(--a); } .signpost b.tb{ color:var(--b); }
+.sp-go{ grid-column:1 / -1; margin:-6px 0 2px; padding:2px 0 2px 12px; border-left:3px solid var(--b); font-size:17px; font-weight:600; line-height:1.4; color:var(--ink); letter-spacing:-.005em; }
+.sp-go a{ color:var(--b); text-decoration:none; border-bottom:2px solid color-mix(in srgb, var(--b) 50%, transparent); white-space:nowrap; }
+.sp-go a:hover{ border-bottom-color:var(--b); }
+.tin a.jump-b{ color:var(--b); text-decoration:none; border-bottom:1px solid color-mix(in srgb, var(--b) 45%, transparent); }
+.tin a.jump-b:hover{ color:var(--ink); }
 .tp{ overflow:hidden; }
 .tp.ta{ border-top:3px solid var(--a); } .tp.tb{ border-top:3px solid var(--b); }
 .tph{ display:flex; align-items:center; gap:10px; padding:14px 16px 2px; }
@@ -460,16 +467,18 @@ details.row[open] .mo .t1, details.row:not([open]) .mo .t2{ display:none; }
   </section>
 
   <section class="blk tables" id="tables">
+    <p class="signpost"><span>Two rankings of the same 8 companies. <b class="ta">Table A – Certainty alpha</b> asks who is most likely to deliver. <b class="tb">Table B – Multi-bagger</b> asks who has the best odds of a 3× and more.</span> </p>
+    <p class="sp-go">If you came for multibaggers, <a href="#tables-b">start with Table&nbsp;B&nbsp;↓</a></p>
     <div class="card tp ta">
-      <div class="tph"><span class="tag a">A</span><h2>Certainty alpha — most likely to deliver</h2><span class="hint">tap a company for details</span></div>
-      <p class="tin"><b>Ranked by how far along each company is:</b> permits in hand, money raised, a finished study, a team that has done it before. For the investor who would rather be right than rich: a higher chance of a decent gain, a smaller chance of a huge one. The safest names are usually already priced for success, so the top of this list tends to sit low on list B. Below the line, each company depends on one big yes-or-no event.</p>
+      <div class="tph"><span class="tag a">A</span><h2>Certainty alpha — safest, not biggest</h2><span class="hint">tap a company for details</span></div>
+      <p class="tin"><b>Not the multi-bagger list.</b> The same companies ranked by how far along they are: permits in hand, money raised, a finished study, a team that has done it before. For the investor who would rather be right than rich: a higher chance of a decent gain, a smaller chance of a huge one. The safest names are usually already priced for success, which is why the top of this list often sits low on <a class="jump-b" href="#tables-b">list B</a>, the one that ranks by upside. Below the line, each company depends on one big yes-or-no event.</p>
       <ul class="keys" aria-label="How to read a row"><li><b>Key point</b> the one fact that earns the rank</li><li><b>Mgmt</b> the people, graded A to D</li><li><b>Risk</b> 1 (low) to 5 (high): the chance of a permanent loss</li><li><b>In B</b> the same company's place on the odds list</li></ul>
       <div class="tscroll"><table class="ct" id="ta" aria-label="Ranking A, Certainty alpha"></table></div>
       <div class="legend"><span><b>In B</b> the same company's rank in list B; outlined = below that list's line</span><span><b>Risk 1–5</b> chance of permanent loss or no re-rate (1 lowest)</span><span class="lg-mg"><b>Mgmt</b> — the people, graded on track record, fit to this exact job and candour (promises vs delivery): <span class="mgb gA">A<span class="mgst">★</span></span> tier 1 · <span class="mgb gB">B</span> solid, or unproven but clean (the default) · <span class="mgb gC">C</span> real weaknesses · <span class="mgb gD">D</span> a pattern of failing shareholders. Odds move only with evidence; hover a grade for the reason, the tracker card has the full review. <b>Skin in the game</b> (1–5, in the hover) is the team's own money at risk, a conviction signal that never moves the odds but breaks near-ties in list B.</span><span><b>†</b> key trigger may fall at or beyond the 3–5 year horizon</span></div>
       
     </div>
-    <div class="card tp tb">
-      <div class="tph"><span class="tag b">B</span><h2>Multi-bagger — best odds of a triple</h2><span class="hint">tap a company for details</span></div>
+    <div class="card tp tb" id="tables-b">
+      <div class="tph"><span class="tag b">B</span><h2>Multi-bagger — biggest upside</h2><span class="hint">tap a company for details</span></div>
       <p class="tin"><b>One number per company: the chance its share price at least triples within 3–5 years.</b> 20% means roughly a 1-in-5 chance. The tick on each bar marks ~10%, the odds any small mining stock has by luck alone: above the line beats luck, below it does not. Ordered by those odds, not by the size of the dream. A 3× here is the first step toward a 5–10×.</p>
       <ul class="keys" aria-label="How to read a row"><li><b>Works</b> the chance the company's plan succeeds</li><li><b>If it works</b> how far the share could rise if it does</li><li><b>3×+</b> both together: the odds of at least a triple</li><li><b>2nd 3×</b> room to triple again by about year 10</li><li><b>Mgmt</b> the people, graded A to D</li><li><b>Price columns</b> what today's market value could become if the metal settles at that price (arithmetic, not a forecast)</li></ul>
       <div class="tscroll"><table class="ct" id="tb" aria-label="Ranking B, Multi-bagger"></table></div>
