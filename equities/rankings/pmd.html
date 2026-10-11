@@ -246,6 +246,10 @@ ul.flags{ display:grid; grid-template-columns:1fr; column-gap:28px; margin:0; }
 .tph h2{ font-size:18px; }
 .tph .hint{ margin-left:auto; font-size:12.5px; color:var(--mute); }
 .tin{ margin:0; padding:4px 16px 12px; font-size:14px; line-height:1.55; color:var(--ink2); max-width:90ch; }
+.tin b{ color:var(--ink); }
+.keys{ list-style:none; margin:0 0 12px; padding:0 16px; display:flex; flex-wrap:wrap; gap:6px 18px; font-size:12.5px; line-height:1.5; color:var(--mute); }
+.keys b{ color:var(--ink2); font-weight:600; margin-right:4px; }
+.tph h2{ min-width:0; }
 .tp .tscroll{ border-top:1px solid var(--line); }
 .tin b{ color:var(--ink); font-weight:600; }
 .ct .rkn{ display:inline-block; width:24px; margin-right:10px; text-align:right; font-family:var(--mono); font-size:15px; vertical-align:top; }
@@ -431,10 +435,10 @@ details.row[open] .mo .t1, details.row:not([open]) .mo .t2{ display:none; }
 <body>
 <div class="wrap">
   <header class="hd">
-    <div class="eyebrow"><span class="dot"></span>Gold &amp; silver · Developers · 12 names · 3–5 year horizon</div>
+    <div class="eyebrow"><span class="dot"></span>Gold &amp; silver · Developers · 15 names · 3–5 year horizon</div>
     <h1>Gold &amp; silver developers: safest bets vs. biggest upside</h1>
-    <p class="lede"><b class="ta">List A · Certainty alpha</b> ranks who is most likely to deliver. <b class="tb">List B · Multi-bagger</b> ranks who has the best odds of tripling your money in 3–5 years.</p>
-    <div class="meta"><span class="upd">Updated <b>9 Oct 2026</b> · prices to the 9 Oct close</span><span><a href="/equities/trackers/#pm" rel="noopener" target="_blank">Open the tracker ↗</a></span> <span><a data-goto="pmp" href="#">Producer rankings</a></span> <span><a href="/scarce-inputs-thesis/" target="_blank" rel="noopener">Investment thesis ↗</a></span></div>
+    <p class="lede"><b class="ta">List A · Certainty alpha</b> ranks who is most likely to deliver, for the cautious investor. <b class="tb">List B · Multi-bagger</b> ranks the same companies by their odds of tripling your money within 3–5 years, the first step toward a 5–10×.</p>
+    <div class="meta"><span class="upd">Updated <b>10 Oct 2026</b> · prices to the 9 Oct close</span><span><a href="/equities/trackers/#pm" rel="noopener" target="_blank">Open the tracker ↗</a></span> <span><a data-goto="pmp" href="#">Producer rankings</a></span> <span><a href="/scarce-inputs-thesis/" target="_blank" rel="noopener">Investment thesis ↗</a></span></div>
   </header>
   <nav class="sec" aria-label="Sections"><a href="#latest">Latest</a><a href="#tables">Tables</a><a class="a" href="#rank-a">A · details</a><a class="b" href="#rank-b">B · details</a><a href="#method">Method</a><a class="hs" href="#" data-goto="hist">History ↗</a></nav>
 
@@ -443,31 +447,33 @@ details.row[open] .mo .t1, details.row:not([open]) .mo .t2{ display:none; }
       <div class="chh"><span class="eyebrow">What changed</span>
         <div class="seg wseg" role="group" aria-label="Period"><button type="button" data-w="u">Last update</button><button type="button" data-w="7">7 days</button><button type="button" data-w="30">30 days</button></div>
         <span class="when" id="chwhen"></span></div>
-      <p class="chl"><span class="chd" id="chd"></span>No material developer news. Prices kept at the 8 Oct close (quote pages lagging); no ranking or odds changes.</p>
+      <p class="chl"><span class="chd" id="chd"></span>Quiet week for developers: three names added today (Dryden, Outcrop, Walhalla); no release changed a score. Prices to the 9 Oct close; odds and ranks unchanged.</p>
       <div class="mvs" id="moves"></div>
       <div class="chcol" id="flags"></div>
-      <p class="px">Gold ~US$4,200 · silver ~US$61 (9 Oct close)</p>
+      <p class="px">Gold ~US$4,216 · silver ~US$61.0 (9 Oct close)</p>
       <div class="chfoot">
         <details class="earlier" id="daylog"><summary>Day by day</summary><div class="eb" id="daylog-b"></div></details>
-        <details class="earlier"><summary>Full note</summary><div class="eb"><p><strong>3 Oct refresh.</strong> Prices to the 2 Oct close. Troilus moves to first (~24%) only because its shares fell 13% with no news after the credit-approved US$850M debt commitment (28 Sep) — the same outcomes at a lower price. Denarius fell 15% with no news and rises to ~10%, onto the line. NexGold's feasibility study has now slipped twice (Q1 → end-Q3 → Q4) and first gold is ~Q2 2029 — a sell-trigger watch on your rules, not yet a change in the odds. GoGold's build budget is now ~US$260–265M (CEO, 29 Sep), offset by its lower share price.</p></div></details>
-        <details class="earlier"><summary>Earlier notes (6)</summary><div class="eb"><p><strong>2 October audit — the multi-bagger list now ranks on odds.</strong> Each row on list B shows three numbers: the chance its thesis works inside the horizon, the multiple per share if it does (after the dilution the plan needs; low end at US$3,500 gold / US$54 silver, high end at today's spot), and the resulting odds of a 3×. A volatile junior with no edge has roughly a one-in-ten chance of tripling in four to five years, so the line sits at ~10%.</p><p><strong>What moved on 2 Oct.</strong> Troilus and NexGold lead — the only names with a deep discount and a trigger inside six months. Argenta (~15%) is the silver-torque long shot. AbraSilver drops from second to fourth (~13%): once its funding package is netted out, tripling needs ~US$85–90 silver. Aftermath, Vizsla, Triumph and GoGold sit below the line — priced for quality, undated, or a 3× that needs metal well above spot. The certainty list is unchanged.</p><p><strong>Arithmetic fixes.</strong> One P/NAV band per stage: 0.5–0.7× for studies whose permits are in hand or dated and financing is the next step (NexGold's Goldboro, AbraSilver, Troilus, Vizsla, Rua), 0.8–1.0× for funded builders (GoGold, Denarius). That cuts AbraSilver's and Vizsla's Progress figures, lifts Troilus's by ~20%, and shows that Rua's value sits in Glamorgan, not in its PEA (~0.3× on NAV). Names with no NAV (Emperor, Banyan, Triumph) now have a US$3,500 column below their Progress figure, as they must while spot is above it; Emperor's columns had been about twice too high.</p><p><strong>Today's prices.</strong> Gold ~US$4,160 and silver ~US$60.7 (2 Oct) sit between the first and second price columns; Q2 realised prices were near the middle one.</p><p><strong>Still true.</strong> GoGold tops the certainty list and sits last on list B — safe because everything is done, and hard to multiply for the same reason. Rupert Resources, screened for this page, was taken out by Agnico Eagle in June at a 67% premium: quality developers in tier-one belts often get bought at ~0.6× NAV rather than trading up to it.</p><p><strong>Read with care.</strong> None of these companies has reached commercial production; Vizsla's site has been suspended since January and Denarius's revenue is a pilot. The odds are judgement, the columns are arithmetic, and neither is a prediction.</p></div></details>
+        <details class="earlier"><summary>Full note</summary><div class="eb"><p><strong>10 Oct 2026 (later): Outcrop Silver &amp; Gold added</strong> (TSX: OCG, ~US$97M): Santa Ana in Tolima, Colombia, 57.8 Moz AgEq in an updated September resource (29.9 Moz indicated at 519 g/t AgEq) with no economic study yet; a first PEA is guided for early 2027. The stock trades at ~US$1.7 per ounce because of a municipal food-protection decree and a community blockade since May that the company does not mention, two quarters of cash, and a management team that sold near the top. Below the certainty line; odds ~12%. No existing score changed.</p><p><strong>10 Oct 2026: two companies added.</strong> Dryden Gold (TSXV: DRY, ~US$41M): Gold Rock in northwestern Ontario, 34,000 m drilled with high-grade narrow-vein hits and no resource by choice, Alamos and Centerra each near 10%, cash into mid-2027. Walhalla Gold (CSE: WAU, ~US$18M): the Great Pacific Gold spin-out holding the historic Walhalla goldfield in Victoria (1.5 Moz mined at ~33 g/t), not yet drilled; the first programme has been "ready" since 2024 and two 2026 dates passed quietly. Both sit below the certainty line; Dryden lands just above the luck line (~13%), Walhalla just under it (~9%). No existing score changed.</p></div></details>
+        <details class="earlier"><summary>Earlier notes (7)</summary><div class="eb"><p><strong>2 October audit — the multi-bagger list now ranks on odds.</strong> Each row on list B shows three numbers: the chance its thesis works inside the horizon, the multiple per share if it does (after the dilution the plan needs; low end at US$3,500 gold / US$54 silver, high end at today's spot), and the resulting odds of a 3×. A volatile junior with no edge has roughly a one-in-ten chance of tripling in four to five years, so the line sits at ~10%.</p><p><strong>3 Oct refresh.</strong> Prices to the 2 Oct close. Troilus moves to first (~24%) only because its shares fell 13% with no news after the credit-approved US$850M debt commitment (28 Sep) — the same outcomes at a lower price. Denarius fell 15% with no news and rises to ~10%, onto the line. NexGold's feasibility study has now slipped twice (Q1 → end-Q3 → Q4) and first gold is ~Q2 2029 — a sell-trigger watch on your rules, not yet a change in the odds. GoGold's build budget is now ~US$260–265M (CEO, 29 Sep), offset by its lower share price.</p><p><strong>What moved on 2 Oct.</strong> Troilus and NexGold lead — the only names with a deep discount and a trigger inside six months. Argenta (~15%) is the silver-torque long shot. AbraSilver drops from second to fourth (~13%): once its funding package is netted out, tripling needs ~US$85–90 silver. Aftermath, Vizsla, Triumph and GoGold sit below the line — priced for quality, undated, or a 3× that needs metal well above spot. The certainty list is unchanged.</p><p><strong>Arithmetic fixes.</strong> One P/NAV band per stage: 0.5–0.7× for studies whose permits are in hand or dated and financing is the next step (NexGold's Goldboro, AbraSilver, Troilus, Vizsla, Rua), 0.8–1.0× for funded builders (GoGold, Denarius). That cuts AbraSilver's and Vizsla's Progress figures, lifts Troilus's by ~20%, and shows that Rua's value sits in Glamorgan, not in its PEA (~0.3× on NAV). Names with no NAV (Emperor, Banyan, Triumph) now have a US$3,500 column below their Progress figure, as they must while spot is above it; Emperor's columns had been about twice too high.</p><p><strong>Today's prices.</strong> Gold ~US$4,160 and silver ~US$60.7 (2 Oct) sit between the first and second price columns; Q2 realised prices were near the middle one.</p><p><strong>Still true.</strong> GoGold tops the certainty list and sits last on list B — safe because everything is done, and hard to multiply for the same reason. Rupert Resources, screened for this page, was taken out by Agnico Eagle in June at a 67% premium: quality developers in tier-one belts often get bought at ~0.6× NAV rather than trading up to it.</p><p><strong>Read with care.</strong> None of these companies has reached commercial production; Vizsla's site has been suspended since January and Denarius's revenue is a pilot. The odds are judgement, the columns are arithmetic, and neither is a prediction.</p></div></details>
       </div>
     </div>
   </section>
 
   <section class="blk tables" id="tables">
     <div class="card tp ta">
-      <div class="tph"><span class="tag a">A</span><h2>Certainty alpha</h2><span class="hint">tap a company for details</span></div>
-      <p class="tin">Beat the index with higher odds, accept a capped upside, over <b>3–5 years</b> (to ~2030). Ranks on <b>de-risking</b>, <b>funded runway</b>, <b>room left to re-rate</b>, <b>local licence</b> and <b>execution</b>.</p>
+      <div class="tph"><span class="tag a">A</span><h2>Certainty alpha — most likely to deliver</h2><span class="hint">tap a company for details</span></div>
+      <p class="tin"><b>Ranked by how far along each company is:</b> permits in hand, money raised, a finished study, a team that has done it before. For the investor who would rather be right than rich: a higher chance of a decent gain, a smaller chance of a huge one. The safest names are usually already priced for success, so the top of this list tends to sit low on list B. Below the line, each company depends on one big yes-or-no event.</p>
+      <ul class="keys" aria-label="How to read a row"><li><b>Key point</b> the one fact that earns the rank</li><li><b>Mgmt</b> the people, graded A to D</li><li><b>Risk</b> 1 (low) to 5 (high): the chance of a permanent loss</li><li><b>In B</b> the same company's place on the odds list</li></ul>
       <div class="tscroll"><table class="ct" id="ta" aria-label="Ranking A, Certainty alpha"></table></div>
       <div class="legend"><span><b>In B</b> the same company's rank in list B; outlined = below that list's line</span><span><b>Risk 1–5</b> chance of permanent loss or no re-rate (1 lowest)</span><span class="lg-mg"><b>Mgmt</b> — the people, graded on track record, fit to this exact job and candour (promises vs delivery): <span class="mgb gA">A<span class="mgst">★</span></span> tier 1 · <span class="mgb gB">B</span> solid, or unproven but clean (the default) · <span class="mgb gC">C</span> real weaknesses · <span class="mgb gD">D</span> a pattern of failing shareholders. Odds move only with evidence; hover a grade for the reason, the tracker card has the full review. <b>Skin in the game</b> (1–5, in the hover) is the team's own money at risk, a conviction signal that never moves the odds but breaks near-ties in list B.</span><span><b>†</b> key trigger may fall at or beyond the 3–5 year horizon</span><span>&#x1F4B8; my pick (doesn't affect the ranking)</span></div>
       
     </div>
     <div class="card tp tb">
-      <div class="tph"><span class="tag b">B</span><h2>Multi-bagger</h2><span class="hint">tap a company for details</span></div>
-      <p class="tin">Ranked on the odds of a 3× per share within <b>3–5 years</b> (to ~2030): the chance the thesis <b>works</b> × the share of its <b>if-it-works</b> range at or above 3×, plus a small chance of a 3× without it.</p>
-      <p class="tin tin2">A 3× in 3–5 years is the first leg of a 10× in 10 years: the same pace, ~26–32% a year. <b>2nd 3×</b> asks about the second leg: after that first 3×, is there room for another 3× by about year 10 (yes / partly / little — not a cash question)? When two companies' odds are within 2 points, the one with more room for a 2nd 3× ranks first; if that is the same, the team with more skin in the game ranks first.</p>
+      <div class="tph"><span class="tag b">B</span><h2>Multi-bagger — best odds of a triple</h2><span class="hint">tap a company for details</span></div>
+      <p class="tin"><b>One number per company: the chance its share price at least triples within 3–5 years.</b> 20% means roughly a 1-in-5 chance. The tick on each bar marks ~10%, the odds any small mining stock has by luck alone: above the line beats luck, below it does not. Ordered by those odds, not by the size of the dream. A 3× here is the first step toward a 5–10×.</p>
+      <ul class="keys" aria-label="How to read a row"><li><b>Works</b> the chance the company's plan succeeds</li><li><b>If it works</b> how far the share could rise if it does</li><li><b>3×+</b> both together: the odds of at least a triple</li><li><b>2nd 3×</b> room to triple again by about year 10</li><li><b>Mgmt</b> the people, graded A to D</li><li><b>Price columns</b> what today's market value could become if the metal settles at that price (arithmetic, not a forecast)</li></ul>
       <div class="tscroll"><table class="ct" id="tb" aria-label="Ranking B, Multi-bagger"></table></div>
+      <p class="tin tin2">A 3× in 3–5 years is the first step toward a 10× in 10 years. <b>2nd 3×</b> asks whether there is room for a second step after it (yes / partly / little; not a question of cash). When two companies' odds are within 2 points, the one with more room for a second step ranks first; if that is equal, the team with more of its own money at stake ranks first.</p>
       <div class="legend"><span><span class="ob"><i style="width:60%"></i><s style="left:33%"></s></span> odds of a 3×; the tick is the ~10% luck line</span><span class="lg-rw"><b>2nd 3×?</b> — after a first 3× in years 1–5, is there room for <b>another 3× by about year 10</b>? Not about cash (that is on the card's Financials tab). <span class="rwb long">Yes</span> a believable path (big or growing resource, several assets, growth paid from cash flow) · <span class="rwb medium">Partly</span> capped or dependent on the metal price · <span class="rwb short">Little</span> the first re-rating is most of the value · <span class="mwt">watch</span> room for a 2nd 3×, but the big catalysts fall after year 5</span><span><b>Price columns</b> multiple of today's market cap if the market adopts that metal price</span><span><b>In A</b> rank in list A</span><span><b>Risk 1–5</b> chance of permanent loss or no re-rate (1 lowest)</span><span class="lg-mg"><b>Mgmt</b> — the people, graded on track record, fit to this exact job and candour (promises vs delivery): <span class="mgb gA">A<span class="mgst">★</span></span> tier 1 · <span class="mgb gB">B</span> solid, or unproven but clean (the default) · <span class="mgb gC">C</span> real weaknesses · <span class="mgb gD">D</span> a pattern of failing shareholders. Odds move only with evidence; hover a grade for the reason, the tracker card has the full review. <b>Skin in the game</b> (1–5, in the hover) is the team's own money at risk, a conviction signal that never moves the odds but breaks near-ties in list B.</span><span><b>†</b> key trigger may fall at or beyond the 3–5 year horizon</span><span>&#x1F4B8; my pick (doesn't affect the ranking)</span></div>
       <div class="xs"><details class="x"><summary>How to read the odds — in plain words</summary><div class="xb"><p><b>Example: NexGold</b> — 3×+ <b>22%</b> · Works <b>50%</b> · If it works <b>~2–3.5×</b></p>
 <ul>
@@ -502,7 +508,7 @@ details.row[open] .mo .t1, details.row:not([open]) .mo .t2{ display:none; }
 
   <div class="lists">
     <section class="list la" id="rank-a">
-      <div class="lhd"><div class="eyebrow">Ranking A</div><h2>Alpha with more certainty</h2><p class="q">For the investor who wants to beat the index with a higher probability of success, and accepts a capped upside to get it.</p></div>
+      <div class="lhd"><div class="eyebrow">Ranking A · most likely to deliver</div><h2>Alpha with more certainty</h2><p class="q">For the investor who wants to beat the index with a higher probability of success, and accepts a capped upside to get it.</p></div>
       <details class="x crit"><summary>What it ranks on</summary><div class="xb"><ol><li><b>De-risking</b> — reserves, permits, financing line of sight</li>
 <li><b>Funded runway</b> — can it sit through a gold slump without raising at the bottom</li>
 <li><b>Remaining mispricing</b> — room to re-rate from developer (~0.3–0.5× NAV) toward producer (~0.8–1.0×) inside 3–5 years</li>
@@ -511,7 +517,7 @@ details.row[open] .mo .t1, details.row:not([open]) .mo .t2{ display:none; }
       <div id="list-a"></div>
     </section>
     <section class="list lb" id="rank-b">
-      <div class="lhd"><div class="eyebrow">Ranking B</div><h2>Multi-bagger — best odds of a 3×</h2><p class="q">For the investor who wants a realistic path to 3×+ and accepts high risk — ranked by the odds of a 3× per share inside 3–5 years, not by the size of the dream.</p></div>
+      <div class="lhd"><div class="eyebrow">Ranking B · the odds of a 3×</div><h2>Multi-bagger — best odds of a 3×</h2><p class="q">For the investor who wants a realistic path to 3×+ and accepts high risk — ranked by the odds of a 3× per share inside 3–5 years, not by the size of the dream.</p></div>
       <details class="x crit"><summary>How the odds are built</summary><div class="xb"><ol><li><b>Works if</b> — the one thing that has to happen inside the horizon, and the chance it does (trigger dates, funding, track record)</li>
 <li><b>If it works</b> — the multiple per share after the dilution the plan needs; low end at US$3,500 gold / US$54 silver, high end at today's spot</li>
 <li><b>3×+ odds</b> — the chance it works × the share of that range at or above 3× (metal moves included), plus a small chance of a 3× without it</li>
@@ -551,9 +557,9 @@ var D = [
   "short": "Triumph",
   "tick": "TSXV: TIG",
   "bk": "grade",
-  "cap": "US$35M",
-  "a": 12,
-  "b": 12,
+  "cap": "US$37M",
+  "a": 14,
+  "b": 15,
   "slug": "triumph-gold",
   "pm": "Au",
   "aKey": "2 Moz AuEq (2020) · undrilled since 2021 · risk 5",
@@ -601,9 +607,9 @@ var D = [
   "short": "AbraSilver",
   "tick": "TSX: ABRA",
   "bk": "scale",
-  "cap": "US$1.33B",
+  "cap": "US$1.35B",
   "a": 2,
-  "b": 6,
+  "b": 7,
   "slug": "abrasilver",
   "pm": "Au·Ag (43/57 LOM; ~68% Ag yrs 1–5)",
   "aKey": "DFS · both DIAs · RIGI · 0.5× NAV · unfunded",
@@ -651,9 +657,9 @@ var D = [
   "short": "Vizsla",
   "tick": "TSX/NYSE-A: VZLA",
   "bk": "value",
-  "cap": "US$1.23B",
+  "cap": "US$1.26B",
   "a": 4,
-  "b": 10,
+  "b": 12,
   "slug": "vizsla-silver",
   "pm": "Ag (58% at deck, ~65% at spot)",
   "aKey": "FS · 111% IRR · fully funded · site closed",
@@ -701,7 +707,7 @@ var D = [
   "short": "Argenta",
   "tick": "TSXV: AGAG",
   "bk": "grade",
-  "cap": "US$83M",
+  "cap": "US$86M",
   "a": 8,
   "b": 3,
   "slug": "argenta-silver",
@@ -751,9 +757,9 @@ var D = [
   "short": "Aftermath",
   "tick": "TSXV: AAG",
   "bk": "grade",
-  "cap": "US$140M",
-  "a": 10,
-  "b": 11,
+  "cap": "US$145M",
+  "a": 11,
+  "b": 14,
   "slug": "aftermath-silver",
   "pm": "Mn / PFS — Ag columns ~flat",
   "aKey": "M&I 122 Moz Ag · no study · Mn ~75% of value",
@@ -801,9 +807,9 @@ var D = [
   "short": "Denarius",
   "tick": "Cboe CA: DMET",
   "bk": "grade",
-  "cap": "US$195M",
+  "cap": "US$199M",
   "a": 7,
-  "b": 7,
+  "b": 8,
   "slug": "denarius-metals",
   "pm": "Au",
   "aKey": "PEA · plant built · 79% Inferred · Titiribí",
@@ -856,7 +862,7 @@ var D = [
   "short": "NexGold",
   "tick": "TSXV: NEXG",
   "bk": "value",
-  "cap": "US$248M",
+  "cap": "US$257M",
   "a": 3,
   "b": 2,
   "slug": "nexgold-mining",
@@ -906,9 +912,9 @@ var D = [
   "short": "GoGold",
   "tick": "TSX: GGD",
   "bk": "quality",
-  "cap": "US$1.16B",
+  "cap": "US$1.20B",
   "a": 1,
-  "b": 9,
+  "b": 11,
   "slug": "gogold-resources",
   "pm": "Au·Ag (52/46 at deck; ~58% Ag at spot)",
   "aKey": "Permitted · funded · building · ~0.8× spot NAV",
@@ -956,7 +962,7 @@ var D = [
   "short": "Troilus",
   "tick": "TSX: TLG",
   "bk": "scale",
-  "cap": "US$685M",
+  "cap": "US$697M",
   "a": 5,
   "b": 1,
   "slug": "troilus-mining",
@@ -1056,7 +1062,7 @@ var D = [
   "short": "Rua",
   "tick": "TSX: RUA",
   "bk": "grade",
-  "cap": "US$116M",
+  "cap": "US$112M",
   "a": 9,
   "b": 4,
   "slug": "rua-gold",
@@ -1106,9 +1112,9 @@ var D = [
   "short": "Emperor",
   "tick": "CSE: AUOZ",
   "bk": "grade",
-  "cap": "US$59M",
-  "a": 11,
-  "b": 8,
+  "cap": "US$60M",
+  "a": 12,
+  "b": 9,
   "slug": "emperor-metals",
   "pm": "Au",
   "aKey": "100% Inferred · earn-in unfinished · Québec",
@@ -1133,14 +1139,164 @@ var D = [
    "odds": "no odds change",
    "s": 2
   }
+ },
+ {
+  "k": "dryden",
+  "m": "au",
+  "pm": "Au",
+  "sc": [
+   "~1.5–3×",
+   "~1–2×",
+   "~1.5–3×",
+   "~1.8–3.5×",
+   "~2–4×",
+   "~2.2–4.5×"
+  ],
+  "rs": 4,
+  "rsWhy": "No resource after >34,000 m, every intercept a core length with true width unknown, bonanza grades confined to sub-metre sections, a US$41M micro-cap at the bottom of its range that must raise again by mid-2027. Not a 5 because Ontario, C$12.9M cash with no debt, two majors with top-up rights who have paid up to C$0.452, and a geology team that has met its field dates. Not a 3 because there is nothing to fall back on if assays go quiet: no NAV, no study, and an exit strategy ('sell to a major') that depends on someone else's appetite.",
+  "tm": "Gold Rock two-rig assays through Q4 2026 · Mud Lake North first assays (3 holes pending) and ~2,000 m more · Hyndman fall 2026 drilling (permitting under way, start not yet reported) · HMC/regional model integration fall 2026 · Lost Lake first option payment mid-2027 · no resource scheduled (deferred by choice) · financing likely H1 2027",
+  "late": 0,
+  "ex": "Gold Rock has grown to ~1 km x 750 m of stacked structures with two plunges controlling high-grade shoots; the September 2026 hole (7.88 g/t over 12.70 m at 65 m) is the first that reads like open-pit material, and management now talks about evaluating open-pit potential. Beyond Gold Rock there are Mud Lake North (visible gold, assays pending), Hyndman (12 km till corridor, drilling guided for fall 2026), Sherridon and Lost Lake. The 2026 programme is 45,000 m across two rigs, the largest the company has run.",
+  "exN": "High",
+  "exC": "high",
+  "name": "Dryden Gold Corp",
+  "short": "Dryden",
+  "tick": "TSXV: DRY",
+  "bk": "grade",
+  "cap": "US$41M",
+  "a": 10,
+  "b": 6,
+  "slug": "dryden-gold",
+  "aKey": "No resource · two majors at 10% · Ontario",
+  "aWhy": "Ontario, a clean balance sheet and Alamos plus Centerra on the register are real de-risking, but with no resource, unknown true widths and a deliberate refusal to publish ounces, there is nothing a cautious investor can underwrite; it is a drill lottery with a good syndicate.",
+  "aRisk": "Assays go narrow or quiet; a raise below C$0.25; majors stay passive; the resource deferral starts to look like avoidance.",
+  "bKey": "~US$41M · no NAV · two-rig assays Q4 2026",
+  "bWhy": "Works ~25%: the system is clearly real and growing, the funding syndicate is unusually good for the size, and gold at ~US$4,180 pays for high-grade Ontario stories; but three seasons have produced intercepts, not tonnage, and the 2026 deeper holes are mostly 1-5 m at 1-3 g/t with sub-metre bonanzas. A 3× from US$41M is ~US$120M, roughly where a major-backed Ontario explorer trades once it has a 1-2 Moz estimate or a bid - reachable in the works case even after dilution, so p3 ~13%, a few points above the 10% base rate on the strength of the register and the gold price.",
+  "bRisk": "Narrow veins defeat tonnage; dilution at the bottom of the range; the majors never move; a cold tape for flow-through in 2027.",
+  "pw": 25,
+  "mw": "~1.5–4×",
+  "p3": 13,
+  "wi": "Two more seasons show the high-grade zones repeat along >1 km with wide lower-grade halos, a maiden resource or an Alamos/Centerra deal arrives by 2028, and the raises stay at or above today's price",
+  "rw": "medium",
+  "rwWhy": "A 90,000 ha district with Mud Lake, Hyndman, Sherridon and Lost Lake behind Gold Rock gives a second leg if the first works; but the company's own plan is a sale to a major, which caps it, and insiders say they will not build a mine.",
+  "mg": {
+   "g": "B",
+   "t": 3,
+   "f": 3,
+   "c": 3,
+   "why": "One real exit (Ely Gold, 2021) and a clean, well-backed financing record; field dates mostly met; but no resource after three seasons by choice, a thin board, heavy marketing and several corrections. Solid and unproven at this exact job.",
+   "conf": "medium",
+   "odds": "no odds change",
+   "s": 3
+  }
+ },
+ {
+  "k": "walhalla",
+  "m": "au",
+  "pm": "Au",
+  "sc": [
+   "no NAV · ~0.5–3×",
+   "~1–2.5×",
+   "~1.2–2.8×",
+   "~1.5–3×",
+   "~1.5–3.2×",
+   "~1.5–3.5×"
+  ],
+  "rs": 4,
+  "rsWhy": "Pre-drill, no resource, ~US$18M CSE micro-cap below its C$0.20 issue price, insiders under 1%, and two missed drill dates already. Not a 5 because the treasury (C$5.9M, no debt) covers a year and a first program, the ground is genuinely good and Pinnacles is permitted. Not a 3 because nothing has been drilled and the first raise after this one will be priced by one program's assays.",
+  "tm": "Target ranking + field program definition (said 'near term', Sep 2026) · maiden drilling at Pinnacles (deck said Q2 2026, then H2 2026 — both missed, now undated) · first assays plausibly H1 2027 · 7,500 m phase 2 (undated, needs a raise) · RSU vesting Jul 2027/Jan 2028/Jul 2028",
+  "late": 0,
+  "ex": "~1,230 km² with 420+ historic workings and 54 producing mines; nine licences; Pinnacles permitted and the only target with a modern surface dataset. Cohens Reef splays and repeat structures along the shear are the high-grade idea; dyke-hosted targets along the Woods Point corridor (Morning Star-style) are the bulk-tonnage idea. Any decent intercept from a US$18M base would be a large move; the risk is that the first holes test a 1 g/t dyke rather than a reef.",
+  "exN": "High",
+  "exC": "high",
+  "name": "Walhalla Gold Corp.",
+  "short": "Walhalla",
+  "tick": "CSE: WAU",
+  "bk": "grade",
+  "cap": "US$17M",
+  "a": 15,
+  "b": 13,
+  "slug": "walhalla-gold",
+  "aKey": "Pre-drill · insiders <1% · dates slipped",
+  "aWhy": "Good ground in a stable country with a permitted first target and a year of cash, but no drilling, no resource, a thin board stake and a parent that never drilled it — nothing here a cautious investor can underwrite yet.",
+  "aRisk": "Overhead eats the treasury before a meaningful program; first holes test a low-grade dyke; a raise well below C$0.20.",
+  "bKey": "~US$13M EV · first drill program undated",
+  "bWhy": "Odds rest on one event: a first drill program that has not been scheduled, on ground two owners have sat on. From US$18M a real high-grade hit is easily a 3× (Victorian discovery stories re-rate hard), which keeps the multiple-if-works high, but the chance of that hit inside the window is low — call it ~12% works, and most of the works case clears 3× because the base is so small. A luck component from micro-cap volatility is already in the 9%.",
+  "bRisk": "No drilling by mid-2027; the Pinnacles dyke grades ~1 g/t; a down-round financing dilutes the option.",
+  "pw": 12,
+  "mw": "~3–8×",
+  "p3": 9,
+  "wi": "A rig turns in H1 2027 and the first Pinnacles or Cohens-repeat holes return a headline high-grade intercept that lets the company raise C$10M+ at a multiple of today's price",
+  "rw": "medium",
+  "rwWhy": "1,230 km² of a 2 Moz historic field is district-scale on paper, so a second leg exists if the first discovery is real; but nothing is proven and Cohens Reef may have been a one-shoot field, so 'long' is not yet earned.",
+  "mg": {
+   "g": "C",
+   "t": 2,
+   "f": 3,
+   "c": 2,
+   "why": "A Vancouver spin-out shell whose first CEO lasted three months, with a drill-ready target it has promised for two years and not drilled, insiders under 1%, and inconsistent disclosure. The Sep 2026 Victorian hires (Greenberger, Gibbons) are genuinely good and keep this from a D; a dated program and a rig would move it to B.",
+   "conf": "medium",
+   "odds": "no odds change",
+   "s": 1
+  }
+ },
+ {
+  "k": "outcrop",
+  "m": "ag",
+  "pm": "Ag",
+  "sc": [
+   "~1.5–3× if the PEA lands and is believed · no NAV yet",
+   "~1–2×",
+   "~1.7–2.7×",
+   "~2.2–3.5×",
+   "~2.7–4.3×",
+   "~3–4.7×"
+  ],
+  "rs": 4,
+  "rsWhy": "Not a 5: 29.9 Moz AgEq Indicated on 130,000 m of drilling, clean metallurgy, no debt, and two holders with deep pockets (Sprott 18.6%, Jupiter 8.7%) limit the wipe-out case. Not a 3: Tolima with an active campesino blockade and an APPA designation over Falán, no economic study, exploration-stage permits only, ~2 quarters of cash at the current burn, narrow 0.9 m veins, and a stock that fell 57% in a silver bull market — the market is telling you something about the address.",
+  "tm": "NI 43-101 report by ~29 Oct 2026 · remaining 2026 assays Q4 · FY2026 results ~Dec 2026 · PEA results early 2027 (started end-Sep 2026) · pilot plant permitting ~12 months (media) · raise likely H1 2027 · 100 Moz target undated",
+  "late": 0,
+  "ex": "The 2026 programme (35,000 m, four rigs) keeps finding new shoots by structural prediction (Shoot 7 at Santa Ana, no surface expression) and new veins (Morena, Aguilar N). But the 2023–26 yield was ~283 oz AgEq per metre and the Indicated grade fell; the company's 100 Moz goal needs ~95,000 more metres (~C$40M, 2–3 years) by its own arithmetic. Growth is believable; it is also expensive and has already been partly priced into a US$97M cap.",
+  "exN": "Medium",
+  "exC": "med",
+  "name": "Outcrop Silver & Gold",
+  "short": "Outcrop",
+  "tick": "TSX: OCG",
+  "bk": "grade",
+  "cap": "US$97M",
+  "a": 13,
+  "b": 10,
+  "slug": "outcrop-silver-gold",
+  "aKey": "57.8 Moz @ 519/369 g/t · Colombia · blockade",
+  "aWhy": "The ounces and grade are real and well drilled, but no study, exploration-stage permits, a live local conflict the company does not discuss, and insiders selling at the top make it a speculation, not a hold.",
+  "aRisk": "Falán APPA/blockade turns into a licensing block; PEA mined grade disappoints; a raise well below C$0.28.",
+  "bKey": "~US$97M · ~US$1.7/oz AgEq · PEA early 2027",
+  "bWhy": "At ~US$1.7/oz with silver at US$61 a believed PEA alone could re-rate this 2–3×, which is why the odds sit above the luck line despite Colombia. But 'works' needs the social problem in Falán to stop being news, a raise first, and the market to trust a company whose MRE slipped six months and whose directors sold at C$0.50–0.60. Base rate 10%; I put the chance it works at ~22% and the odds of a 3× at ~13%.",
+  "bRisk": "Permitting/community failure in Tolima; dilution before the PEA; a Sprott exit.",
+  "pw": 22,
+  "mw": "~1–2.5×",
+  "p3": 12,
+  "wi": "The PEA (early 2027) shows a small underground mine making money at US$45–50 silver, the Falán blockade is settled and a licensing path (PTO + CORTOLIMA/ANLA) is visible, and the next raise is done at or above today's price",
+  "rw": "medium",
+  "rwWhy": "The district can grow (12 undrilled veins, 100 Moz goal, a 1,000 tpd start that could double), so a second leg exists on paper; but it runs through a build in Falán, more dilution and a permitting process not yet started, and much of it depends on the silver price. Call it long only once a licence path is visible.",
+  "mg": {
+   "g": "C",
+   "t": 3,
+   "f": 3,
+   "c": 2,
+   "why": "A new CEO with a real re-rate behind him (AbraSilver) and a Chair who knows Colombia, but the record at this company is a slipped and softer resource, directors selling at the top, a large grant package on the day of the CEO change, related-party fees, a protest vote at the AGM, and a local conflict that is in the Colombian press and not in the company's releases. Real weaknesses, not yet a pattern of failing shareholders; Bruggeman gets a clean sheet for the PEA.",
+   "conf": "medium",
+   "odds": "no odds change",
+   "s": 1
+  }
  }
 ];
-var LOW_FROM = {a:8, b:9};
+var LOW_FROM = {a:8, b:11};
 var SC = ["Progress", "3,500 / 54", "4,500 / 69", "5,500 / 85", "6,500 / 100", "7,000 / 108"];
 var BK = {"value": "Cheap defined ounces", "grade": "Grade / discovery", "quality": "Quality / jurisdiction", "scale": "Scale & financing", "producer": "Producer / cash flow"};
 var DIV = {"a": "too uncertain for a cautious investor. Each of these depends on one big yes-or-no event — a permit, a financing or a discovery — that could go either way.", "b": "no better than luck. Any small mining stock has roughly a 1-in-10 (~10%) chance of tripling in 4–5 years; these names don't beat that — usually because they are already priced for success, have no dated trigger, or need much higher metal prices."};
 var MB = {"au": "Au", "ag": "Ag", "mixed": "Au·Ag", "other": "Mn"};
-var HIST = {"snaps": [{"d": "2026-10-02", "headline": "Starting point for the history: the page was audited and list B now ranks on the odds of a 3×.", "px": "", "low": {"a": 8, "b": 8}, "rows": {"triumph": {"a": 12, "b": 11, "p3": 7, "rs": 5}, "abrasilver": {"a": 2, "b": 4, "p3": 13, "rs": 3}, "vizsla": {"a": 4, "b": 9, "p3": 8, "rs": 3}, "argenta": {"a": 8, "b": 3, "p3": 15, "rs": 4}, "aftermath": {"a": 10, "b": 8, "p3": 9, "rs": 4}, "denarius": {"a": 7, "b": 10, "p3": 8, "rs": 4}, "nexgold": {"a": 3, "b": 1, "p3": 22, "rs": 3}, "gogold": {"a": 1, "b": 12, "p3": 7, "rs": 2}, "troilus": {"a": 5, "b": 2, "p3": 21, "rs": 3}, "banyan": {"a": 6, "b": 5, "p3": 12, "rs": 3}, "rua": {"a": 9, "b": 6, "p3": 11, "rs": 4}, "emperor": {"a": 11, "b": 7, "p3": 10, "rs": 4}}}, {"d": "2026-10-03", "headline": "Troilus takes first place on the multi-bagger list and Denarius climbs onto the line. Both moves come from falling share prices, not news. NexGold's study has slipped again.", "px": "Gold ~US$4,160 · silver ~US$60.7 (2 Oct close)", "low": {"a": 8, "b": 9}, "rows": {"triumph": {"a": 12, "b": 11, "p3": 7, "rs": 5}, "abrasilver": {"a": 2, "b": 4, "p3": 13, "rs": 3}, "vizsla": {"a": 4, "b": 10, "p3": 8, "rs": 3}, "argenta": {"a": 8, "b": 3, "p3": 15, "rs": 4}, "aftermath": {"a": 10, "b": 9, "p3": 9, "rs": 4}, "denarius": {"a": 7, "b": 8, "p3": 10, "rs": 4}, "nexgold": {"a": 3, "b": 2, "p3": 22, "rs": 3}, "gogold": {"a": 1, "b": 12, "p3": 7, "rs": 2}, "troilus": {"a": 5, "b": 1, "p3": 24, "rs": 3}, "banyan": {"a": 6, "b": 5, "p3": 12, "rs": 3}, "rua": {"a": 9, "b": 6, "p3": 11, "rs": 4}, "emperor": {"a": 11, "b": 7, "p3": 10, "rs": 4}}}, {"d": "2026-10-04", "headline": "Runway labels added (is there a second leg after a 3×?). List B now breaks near-ties by runway: Banyan and Rua move above AbraSilver; GoGold and Triumph go on monster watch. No odds changed; prices to the 2 Oct close.", "px": "Gold ~US$4,160 · silver ~US$60.7 (2 Oct close)", "low": {"a": 8, "b": 9}, "rows": {"triumph": {"a": 12, "b": 9, "p3": 7, "rs": 5}, "abrasilver": {"a": 2, "b": 6, "p3": 13, "rs": 3}, "vizsla": {"a": 4, "b": 11, "p3": 8, "rs": 3}, "argenta": {"a": 8, "b": 3, "p3": 15, "rs": 4}, "aftermath": {"a": 10, "b": 12, "p3": 9, "rs": 4}, "denarius": {"a": 7, "b": 8, "p3": 10, "rs": 4}, "nexgold": {"a": 3, "b": 2, "p3": 22, "rs": 3}, "gogold": {"a": 1, "b": 10, "p3": 7, "rs": 2}, "troilus": {"a": 5, "b": 1, "p3": 24, "rs": 3}, "banyan": {"a": 6, "b": 4, "p3": 12, "rs": 3}, "rua": {"a": 9, "b": 5, "p3": 11, "rs": 4}, "emperor": {"a": 11, "b": 7, "p3": 10, "rs": 4}}}, {"d": "2026-10-05", "headline": "Two drill releases (Argenta, Rua) and no thesis changes. On watch: legal pressure on Vizsla (class-action notice, families' demands) and Peru's 120-day ministry reorganisation for Aftermath. Rua's price now at its 2 Oct close; no ranking changes.", "px": "Gold ~US$4,140 · silver ~US$60.3 (2 Oct close)", "low": {"a": 8, "b": 9}, "rows": {"triumph": {"a": 12, "b": 9, "p3": 7, "rs": 5}, "abrasilver": {"a": 2, "b": 6, "p3": 13, "rs": 3}, "vizsla": {"a": 4, "b": 11, "p3": 8, "rs": 3}, "argenta": {"a": 8, "b": 3, "p3": 15, "rs": 4}, "aftermath": {"a": 10, "b": 12, "p3": 9, "rs": 4}, "denarius": {"a": 7, "b": 8, "p3": 10, "rs": 4}, "nexgold": {"a": 3, "b": 2, "p3": 22, "rs": 3}, "gogold": {"a": 1, "b": 10, "p3": 7, "rs": 2}, "troilus": {"a": 5, "b": 1, "p3": 24, "rs": 3}, "banyan": {"a": 6, "b": 4, "p3": 12, "rs": 3}, "rua": {"a": 9, "b": 5, "p3": 11, "rs": 4}, "emperor": {"a": 11, "b": 7, "p3": 10, "rs": 4}}}, {"d": "2026-10-06", "headline": "No material news: one drill release (Banyan) and follow-ups on Vizsla and Peru. Prices to the 6 Oct close (7 names kept at earlier closes); no ranking or odds changes.", "px": "Gold ~US$4,166 · silver ~US$61.2 (6 Oct close)", "low": {"a": 8, "b": 9}, "rows": {"triumph": {"a": 12, "b": 12, "p3": 6, "rs": 5}, "abrasilver": {"a": 2, "b": 6, "p3": 13, "rs": 3}, "vizsla": {"a": 4, "b": 10, "p3": 8, "rs": 3}, "argenta": {"a": 8, "b": 3, "p3": 15, "rs": 4}, "aftermath": {"a": 10, "b": 11, "p3": 9, "rs": 4}, "denarius": {"a": 7, "b": 7, "p3": 10, "rs": 4}, "nexgold": {"a": 3, "b": 2, "p3": 22, "rs": 3}, "gogold": {"a": 1, "b": 9, "p3": 7, "rs": 2}, "troilus": {"a": 5, "b": 1, "p3": 24, "rs": 3}, "banyan": {"a": 6, "b": 5, "p3": 12, "rs": 3}, "rua": {"a": 9, "b": 4, "p3": 11, "rs": 4}, "emperor": {"a": 11, "b": 8, "p3": 10, "rs": 4}}}, {"d": "2026-10-07", "headline": "No material news. Prices to the 7 Oct close (Argenta and Denarius kept at earlier closes); no ranking or odds changes.", "px": "Gold ~US$4,110 · silver ~US$59.7 (7 Oct close)", "low": {"a": 8, "b": 9}, "rows": {"triumph": {"a": 12, "b": 12, "p3": 6, "rs": 5}, "abrasilver": {"a": 2, "b": 6, "p3": 13, "rs": 3}, "vizsla": {"a": 4, "b": 10, "p3": 8, "rs": 3}, "argenta": {"a": 8, "b": 3, "p3": 15, "rs": 4}, "aftermath": {"a": 10, "b": 11, "p3": 9, "rs": 4}, "denarius": {"a": 7, "b": 7, "p3": 10, "rs": 4}, "nexgold": {"a": 3, "b": 2, "p3": 22, "rs": 3}, "gogold": {"a": 1, "b": 9, "p3": 7, "rs": 2}, "troilus": {"a": 5, "b": 1, "p3": 24, "rs": 3}, "banyan": {"a": 6, "b": 5, "p3": 12, "rs": 3}, "rua": {"a": 9, "b": 4, "p3": 11, "rs": 4}, "emperor": {"a": 11, "b": 8, "p3": 10, "rs": 4}}}, {"d": "2026-10-08", "headline": "No material news. Prices to the 8 Oct close (Triumph, Aftermath and AbraSilver kept at 7 Oct); no ranking or odds changes.", "px": "Gold ~US$4,130 · silver ~US$59.2 (8 Oct close)", "low": {"a": 8, "b": 9}, "rows": {"triumph": {"a": 12, "b": 12, "p3": 6, "rs": 5}, "abrasilver": {"a": 2, "b": 6, "p3": 13, "rs": 3}, "vizsla": {"a": 4, "b": 10, "p3": 8, "rs": 3}, "argenta": {"a": 8, "b": 3, "p3": 15, "rs": 4}, "aftermath": {"a": 10, "b": 11, "p3": 9, "rs": 4}, "denarius": {"a": 7, "b": 7, "p3": 10, "rs": 4}, "nexgold": {"a": 3, "b": 2, "p3": 22, "rs": 3}, "gogold": {"a": 1, "b": 9, "p3": 7, "rs": 2}, "troilus": {"a": 5, "b": 1, "p3": 24, "rs": 3}, "banyan": {"a": 6, "b": 5, "p3": 12, "rs": 3}, "rua": {"a": 9, "b": 4, "p3": 11, "rs": 4}, "emperor": {"a": 11, "b": 8, "p3": 10, "rs": 4}}}, {"d": "2026-10-09", "headline": "No material developer news. Prices kept at the 8 Oct close (quote pages lagging); no ranking or odds changes.", "px": "Gold ~US$4,200 · silver ~US$61 (9 Oct close)", "low": {"a": 8, "b": 9}, "rows": {"triumph": {"a": 12, "b": 12, "p3": 6, "rs": 5}, "abrasilver": {"a": 2, "b": 6, "p3": 13, "rs": 3}, "vizsla": {"a": 4, "b": 10, "p3": 8, "rs": 3}, "argenta": {"a": 8, "b": 3, "p3": 15, "rs": 4}, "aftermath": {"a": 10, "b": 11, "p3": 9, "rs": 4}, "denarius": {"a": 7, "b": 7, "p3": 10, "rs": 4}, "nexgold": {"a": 3, "b": 2, "p3": 22, "rs": 3}, "gogold": {"a": 1, "b": 9, "p3": 7, "rs": 2}, "troilus": {"a": 5, "b": 1, "p3": 24, "rs": 3}, "banyan": {"a": 6, "b": 5, "p3": 12, "rs": 3}, "rua": {"a": 9, "b": 4, "p3": 11, "rs": 4}, "emperor": {"a": 11, "b": 8, "p3": 10, "rs": 4}}}], "events": [{"d": "2026-10-03", "t": "hot", "co": "NexGold", "ks": ["nexgold"], "x": "Feasibility study slipped a second time (Q1 → end-Q3 → Q4); first gold now ~Q2 2029. A repeated schedule slip is a sell trigger — watch, odds not yet changed."}, {"d": "2026-10-03", "t": "news", "co": "Troilus", "ks": ["troilus"], "x": "Shares −13% with no news after the credit-approved US$850M debt commitment (28 Sep): same outcome at a lower price, so odds rise to ~24%."}, {"d": "2026-10-03", "t": "news", "co": "Denarius", "ks": ["denarius"], "x": "Shares −15% with no news; odds rise to ~10%, onto the line."}, {"d": "2026-10-03", "t": "news", "co": "GoGold", "ks": ["gogold"], "x": "Build budget now ~US$260–265M (CEO, 29 Sep), offset by its lower share price."}, {"d": "2026-10-04", "t": "method", "co": "Banyan · Rua · Triumph · GoGold", "ks": ["banyan", "rua", "triumph", "gogold"], "x": "List B tie-break by runway (odds unchanged): Banyan 5→4, Rua 6→5, AbraSilver 4→6, Triumph 11→9, GoGold 12→10, Vizsla 10→11, Aftermath 9→12."}, {"d": "2026-10-04", "t": "watch", "co": "Triumph · GoGold", "ks": ["triumph", "gogold"], "x": "Monster watch: long runway, but the big catalysts sit beyond 3–5 years, so the odds stay below the luck line. Re-checked every Saturday."}, {"d": "2026-10-05", "t": "watch", "co": "Vizsla", "ks": ["vizsla"], "x": "Unconfirmed report: a plaintiff law firm (Portnoy) announced a class action tied to the January abduction disclosure, lead-plaintiff deadline 10 Nov. Not a company release and no court filing seen; likely the case other firms have advertised since February. Separately, the kidnapped workers' families ask the Sinaloa prosecutor to require Vizsla's security records and may go to a judge (SDP Noticias, Los Noticieristas); a planned RCMP complaint is unconfirmed. Legal and reputational overhang; odds unchanged at 8%."}, {"d": "2026-10-05", "t": "watch", "co": "Aftermath", "ks": ["aftermath"], "x": "Peru put its mines ministry and the concession registry (INGEMMET) under a 120-day reorganisation (Supreme Decree 018-2026-EM, 2 Oct). No permit freeze, but approvals could slow while Berenguela still needs its permits. Odds unchanged at 9%."}, {"d": "2026-10-05", "t": "news", "co": "Argenta", "ks": ["argenta"], "x": "Drill results: 1,599 g/t Ag over 4.0 m at a Yaxtché step-out and a first gold-copper hit at Carmen; updated resource due Q1 2027. Grade, not yet tonnage, so odds unchanged at 15%."}, {"d": "2026-10-05", "t": "news", "co": "Rua", "ks": ["rua"], "x": "More high-grade Auld Creek holes (best 6.6 m at 24.9 g/t AuEq); fast-track application still due in October and PFS in December. Routine drilling, odds unchanged at 11%. Price now set to the 2 Oct TSX close (C$1.23, −7.5% from 30 Sep): below the 10% re-assessment mark."}, {"d": "2026-10-06", "t": "mgmt", "co": "Triumph", "ks": ["triumph"], "x": "Management C: chance it works 25% → 20%, 3×+ odds 7% → 6%. Fifteen years on one property under an interim CEO, serial small placements and no stage advance: a pattern of capital consumed without progress.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "All names", "ks": ["triumph", "abrasilver", "vizsla", "argenta", "aftermath", "denarius", "nexgold", "gogold", "troilus", "banyan", "rua", "emperor"], "x": "Management graded A–D (track record, fit to the task, candour; neutral by default, odds moved only with evidence). B: Denarius, AbraSilver, Vizsla, Argenta, Aftermath, NexGold, GoGold, Troilus, Banyan, Rua, Emperor · C: Triumph.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "Denarius", "ks": ["denarius"], "x": "Management C → B after the owner's review: the team has already built and run a mine, which outweighs the slipped dates. Odds restored (works 45% → 50%, 3×+ odds 9% → 10%). Candour stays 2 on the card.", "src": "manual"}, {"d": "2026-10-06", "t": "watch", "co": "Vizsla", "ks": ["vizsla"], "x": "More pressure from the kidnapped workers' families (Semanario ZETA, 5 Oct; also Noroeste, Revista Espejo): they say Vizsla has not filed a formal criminal complaint and cite twelve earlier security incidents. Unconfirmed report: a ~MXN 190,000 settlement offer the families reject (Sinaloahoy only). No company response; odds unchanged at 8%."}, {"d": "2026-10-06", "t": "watch", "co": "Aftermath", "ks": ["aftermath"], "x": "Peru's 4 Oct regional elections: Puno (Berenguela) looks headed for a runoff, tentatively 29 Nov (exit poll: ASI–Juntos por el Perú ~29%). Provisional; permits are national, so social licence only. Odds unchanged at 9%."}, {"d": "2026-10-06", "t": "method", "co": "Denarius", "ks": ["denarius"], "src": "manual", "x": "Tagged 'early ore sales' (owner's request): Denarius already sells Zancudo ore (~US$8.6M H1 2026 revenue) but stays a developer while its value depends on the plant and Aguablanca. Rule: it moves to the producer list once the plant runs near design capacity and covers its operating costs for two quarters in a row. Checked every Saturday; odds unchanged."}, {"d": "2026-10-06", "t": "method", "co": "All names", "ks": ["triumph", "abrasilver", "vizsla", "argenta", "aftermath", "denarius", "nexgold", "gogold", "troilus", "banyan", "rua", "emperor"], "x": "Skin-in-the-game score (1–5) added for every team: the management's own money at risk. It never moves the odds; it breaks near-ties in list B after runway. Track record now counts outcomes for shareholders, not the number of past failures. List B near-ties re-broken by skin: Rua 5→4, Banyan 4→5, Denarius 8→7, Emperor 7→8.", "src": "manual"}, {"d": "2026-10-06", "t": "watch", "co": "Vizsla", "ks": ["vizsla"], "x": "Follow-up on the Portnoy class-action notice: it reads as a solicitation, not a filed case. No court or case number is given, its class period (May–Aug 2025) ends months before the Jan 2026 disclosure it cites, and no other firm has announced a filing. Still unconfirmed; odds unchanged."}, {"d": "2026-10-06", "t": "watch", "co": "Aftermath", "ks": ["aftermath"], "x": "Peru's 120-day reorganisation of the mines ministry and concession registry (from 3 Oct) is now confirmed by Gestión and Rumbo Minero; no permit freeze announced. Puno's governor race goes to a runoff (29 Nov; a move to 6 Dec is requested). Odds unchanged."}, {"d": "2026-10-06", "t": "news", "co": "Banyan", "ks": ["banyan"], "x": "AurMac drill results (best 1.88 g/t over 17.9 m) fit the existing resource; first PEA still targeted for Q4 2026. Not material; odds unchanged."}, {"d": "2026-10-06", "t": "method", "co": "Denarius · Troilus", "ks": ["denarius", "troilus"], "x": "Financial statements tab added (pilot: Denarius, Troilus, Aya, Kodiak): the last 8 quarters and 3 fiscal years read from the original filings on each company's website, with what changed and where the money went. Nothing net new for these two: Denarius's dilution (63M → 213M shares, ~429M after the debenture redemption) and Troilus's costly bridge loan were already on the cards. Odds unchanged.", "src": "manual"}, {"d": "2026-10-06", "t": "method", "co": "All names", "ks": ["triumph", "abrasilver", "vizsla", "argenta", "aftermath", "denarius", "nexgold", "gogold", "troilus", "banyan", "rua", "emperor"], "x": "Financials tab rolled out to every company (8 quarters + 3 years from the original filings, where the money went, dilution, months of cash) and a reporting Calendar tab added to the rankings. Net-new findings flagged on the management review: Emperor (promotion the largest expense line), Aftermath (overhead up to ~39% of spend, related-party fees). Odds unchanged.", "src": "manual"}, {"d": "2026-10-09", "t": "watch", "co": "Vizsla", "ks": ["vizsla"], "x": "CBC (1 Oct): the kidnapped workers' families plan complaints to the RCMP and US authorities; nothing filed yet. The Portnoy class-action notice still names no court or case. Reputational pressure only; odds unchanged."}], "first": {"triumph": "2026-10-02", "abrasilver": "2026-10-02", "vizsla": "2026-10-02", "argenta": "2026-10-02", "aftermath": "2026-10-02", "denarius": "2026-10-02", "nexgold": "2026-10-02", "gogold": "2026-10-02", "troilus": "2026-10-02", "banyan": "2026-10-02", "rua": "2026-10-02", "emperor": "2026-10-02"}, "since": "2026-10-02"};
+var HIST = {"snaps": [{"d": "2026-10-02", "headline": "Starting point for the history: the page was audited and list B now ranks on the odds of a 3×.", "px": "", "low": {"a": 8, "b": 8}, "rows": {"triumph": {"a": 12, "b": 11, "p3": 7, "rs": 5}, "abrasilver": {"a": 2, "b": 4, "p3": 13, "rs": 3}, "vizsla": {"a": 4, "b": 9, "p3": 8, "rs": 3}, "argenta": {"a": 8, "b": 3, "p3": 15, "rs": 4}, "aftermath": {"a": 10, "b": 8, "p3": 9, "rs": 4}, "denarius": {"a": 7, "b": 10, "p3": 8, "rs": 4}, "nexgold": {"a": 3, "b": 1, "p3": 22, "rs": 3}, "gogold": {"a": 1, "b": 12, "p3": 7, "rs": 2}, "troilus": {"a": 5, "b": 2, "p3": 21, "rs": 3}, "banyan": {"a": 6, "b": 5, "p3": 12, "rs": 3}, "rua": {"a": 9, "b": 6, "p3": 11, "rs": 4}, "emperor": {"a": 11, "b": 7, "p3": 10, "rs": 4}}}, {"d": "2026-10-03", "headline": "Troilus takes first place on the multi-bagger list and Denarius climbs onto the line. Both moves come from falling share prices, not news. NexGold's study has slipped again.", "px": "Gold ~US$4,160 · silver ~US$60.7 (2 Oct close)", "low": {"a": 8, "b": 9}, "rows": {"triumph": {"a": 12, "b": 11, "p3": 7, "rs": 5}, "abrasilver": {"a": 2, "b": 4, "p3": 13, "rs": 3}, "vizsla": {"a": 4, "b": 10, "p3": 8, "rs": 3}, "argenta": {"a": 8, "b": 3, "p3": 15, "rs": 4}, "aftermath": {"a": 10, "b": 9, "p3": 9, "rs": 4}, "denarius": {"a": 7, "b": 8, "p3": 10, "rs": 4}, "nexgold": {"a": 3, "b": 2, "p3": 22, "rs": 3}, "gogold": {"a": 1, "b": 12, "p3": 7, "rs": 2}, "troilus": {"a": 5, "b": 1, "p3": 24, "rs": 3}, "banyan": {"a": 6, "b": 5, "p3": 12, "rs": 3}, "rua": {"a": 9, "b": 6, "p3": 11, "rs": 4}, "emperor": {"a": 11, "b": 7, "p3": 10, "rs": 4}}}, {"d": "2026-10-04", "headline": "Runway labels added (is there a second leg after a 3×?). List B now breaks near-ties by runway: Banyan and Rua move above AbraSilver; GoGold and Triumph go on monster watch. No odds changed; prices to the 2 Oct close.", "px": "Gold ~US$4,160 · silver ~US$60.7 (2 Oct close)", "low": {"a": 8, "b": 9}, "rows": {"triumph": {"a": 12, "b": 9, "p3": 7, "rs": 5}, "abrasilver": {"a": 2, "b": 6, "p3": 13, "rs": 3}, "vizsla": {"a": 4, "b": 11, "p3": 8, "rs": 3}, "argenta": {"a": 8, "b": 3, "p3": 15, "rs": 4}, "aftermath": {"a": 10, "b": 12, "p3": 9, "rs": 4}, "denarius": {"a": 7, "b": 8, "p3": 10, "rs": 4}, "nexgold": {"a": 3, "b": 2, "p3": 22, "rs": 3}, "gogold": {"a": 1, "b": 10, "p3": 7, "rs": 2}, "troilus": {"a": 5, "b": 1, "p3": 24, "rs": 3}, "banyan": {"a": 6, "b": 4, "p3": 12, "rs": 3}, "rua": {"a": 9, "b": 5, "p3": 11, "rs": 4}, "emperor": {"a": 11, "b": 7, "p3": 10, "rs": 4}}}, {"d": "2026-10-05", "headline": "Two drill releases (Argenta, Rua) and no thesis changes. On watch: legal pressure on Vizsla (class-action notice, families' demands) and Peru's 120-day ministry reorganisation for Aftermath. Rua's price now at its 2 Oct close; no ranking changes.", "px": "Gold ~US$4,140 · silver ~US$60.3 (2 Oct close)", "low": {"a": 8, "b": 9}, "rows": {"triumph": {"a": 12, "b": 9, "p3": 7, "rs": 5}, "abrasilver": {"a": 2, "b": 6, "p3": 13, "rs": 3}, "vizsla": {"a": 4, "b": 11, "p3": 8, "rs": 3}, "argenta": {"a": 8, "b": 3, "p3": 15, "rs": 4}, "aftermath": {"a": 10, "b": 12, "p3": 9, "rs": 4}, "denarius": {"a": 7, "b": 8, "p3": 10, "rs": 4}, "nexgold": {"a": 3, "b": 2, "p3": 22, "rs": 3}, "gogold": {"a": 1, "b": 10, "p3": 7, "rs": 2}, "troilus": {"a": 5, "b": 1, "p3": 24, "rs": 3}, "banyan": {"a": 6, "b": 4, "p3": 12, "rs": 3}, "rua": {"a": 9, "b": 5, "p3": 11, "rs": 4}, "emperor": {"a": 11, "b": 7, "p3": 10, "rs": 4}}}, {"d": "2026-10-06", "headline": "No material news: one drill release (Banyan) and follow-ups on Vizsla and Peru. Prices to the 6 Oct close (7 names kept at earlier closes); no ranking or odds changes.", "px": "Gold ~US$4,166 · silver ~US$61.2 (6 Oct close)", "low": {"a": 8, "b": 9}, "rows": {"triumph": {"a": 12, "b": 12, "p3": 6, "rs": 5}, "abrasilver": {"a": 2, "b": 6, "p3": 13, "rs": 3}, "vizsla": {"a": 4, "b": 10, "p3": 8, "rs": 3}, "argenta": {"a": 8, "b": 3, "p3": 15, "rs": 4}, "aftermath": {"a": 10, "b": 11, "p3": 9, "rs": 4}, "denarius": {"a": 7, "b": 7, "p3": 10, "rs": 4}, "nexgold": {"a": 3, "b": 2, "p3": 22, "rs": 3}, "gogold": {"a": 1, "b": 9, "p3": 7, "rs": 2}, "troilus": {"a": 5, "b": 1, "p3": 24, "rs": 3}, "banyan": {"a": 6, "b": 5, "p3": 12, "rs": 3}, "rua": {"a": 9, "b": 4, "p3": 11, "rs": 4}, "emperor": {"a": 11, "b": 8, "p3": 10, "rs": 4}}}, {"d": "2026-10-07", "headline": "No material news. Prices to the 7 Oct close (Argenta and Denarius kept at earlier closes); no ranking or odds changes.", "px": "Gold ~US$4,110 · silver ~US$59.7 (7 Oct close)", "low": {"a": 8, "b": 9}, "rows": {"triumph": {"a": 12, "b": 12, "p3": 6, "rs": 5}, "abrasilver": {"a": 2, "b": 6, "p3": 13, "rs": 3}, "vizsla": {"a": 4, "b": 10, "p3": 8, "rs": 3}, "argenta": {"a": 8, "b": 3, "p3": 15, "rs": 4}, "aftermath": {"a": 10, "b": 11, "p3": 9, "rs": 4}, "denarius": {"a": 7, "b": 7, "p3": 10, "rs": 4}, "nexgold": {"a": 3, "b": 2, "p3": 22, "rs": 3}, "gogold": {"a": 1, "b": 9, "p3": 7, "rs": 2}, "troilus": {"a": 5, "b": 1, "p3": 24, "rs": 3}, "banyan": {"a": 6, "b": 5, "p3": 12, "rs": 3}, "rua": {"a": 9, "b": 4, "p3": 11, "rs": 4}, "emperor": {"a": 11, "b": 8, "p3": 10, "rs": 4}}}, {"d": "2026-10-08", "headline": "No material news. Prices to the 8 Oct close (Triumph, Aftermath and AbraSilver kept at 7 Oct); no ranking or odds changes.", "px": "Gold ~US$4,130 · silver ~US$59.2 (8 Oct close)", "low": {"a": 8, "b": 9}, "rows": {"triumph": {"a": 12, "b": 12, "p3": 6, "rs": 5}, "abrasilver": {"a": 2, "b": 6, "p3": 13, "rs": 3}, "vizsla": {"a": 4, "b": 10, "p3": 8, "rs": 3}, "argenta": {"a": 8, "b": 3, "p3": 15, "rs": 4}, "aftermath": {"a": 10, "b": 11, "p3": 9, "rs": 4}, "denarius": {"a": 7, "b": 7, "p3": 10, "rs": 4}, "nexgold": {"a": 3, "b": 2, "p3": 22, "rs": 3}, "gogold": {"a": 1, "b": 9, "p3": 7, "rs": 2}, "troilus": {"a": 5, "b": 1, "p3": 24, "rs": 3}, "banyan": {"a": 6, "b": 5, "p3": 12, "rs": 3}, "rua": {"a": 9, "b": 4, "p3": 11, "rs": 4}, "emperor": {"a": 11, "b": 8, "p3": 10, "rs": 4}}}, {"d": "2026-10-09", "headline": "No material developer news. Prices kept at the 8 Oct close (quote pages lagging); no ranking or odds changes.", "px": "Gold ~US$4,200 · silver ~US$61 (9 Oct close)", "low": {"a": 8, "b": 9}, "rows": {"triumph": {"a": 12, "b": 12, "p3": 6, "rs": 5}, "abrasilver": {"a": 2, "b": 6, "p3": 13, "rs": 3}, "vizsla": {"a": 4, "b": 10, "p3": 8, "rs": 3}, "argenta": {"a": 8, "b": 3, "p3": 15, "rs": 4}, "aftermath": {"a": 10, "b": 11, "p3": 9, "rs": 4}, "denarius": {"a": 7, "b": 7, "p3": 10, "rs": 4}, "nexgold": {"a": 3, "b": 2, "p3": 22, "rs": 3}, "gogold": {"a": 1, "b": 9, "p3": 7, "rs": 2}, "troilus": {"a": 5, "b": 1, "p3": 24, "rs": 3}, "banyan": {"a": 6, "b": 5, "p3": 12, "rs": 3}, "rua": {"a": 9, "b": 4, "p3": 11, "rs": 4}, "emperor": {"a": 11, "b": 8, "p3": 10, "rs": 4}}}, {"d": "2026-10-10", "headline": "Quiet week for developers: three names added today (Dryden, Outcrop, Walhalla); no release changed a score. Prices to the 9 Oct close; odds and ranks unchanged.", "px": "Gold ~US$4,216 · silver ~US$61.0 (9 Oct close)", "low": {"a": 8, "b": 11}, "rows": {"triumph": {"a": 14, "b": 15, "p3": 6, "rs": 5}, "abrasilver": {"a": 2, "b": 7, "p3": 13, "rs": 3}, "vizsla": {"a": 4, "b": 12, "p3": 8, "rs": 3}, "argenta": {"a": 8, "b": 3, "p3": 15, "rs": 4}, "aftermath": {"a": 11, "b": 14, "p3": 9, "rs": 4}, "denarius": {"a": 7, "b": 8, "p3": 10, "rs": 4}, "nexgold": {"a": 3, "b": 2, "p3": 22, "rs": 3}, "gogold": {"a": 1, "b": 11, "p3": 7, "rs": 2}, "troilus": {"a": 5, "b": 1, "p3": 24, "rs": 3}, "banyan": {"a": 6, "b": 5, "p3": 12, "rs": 3}, "rua": {"a": 9, "b": 4, "p3": 11, "rs": 4}, "emperor": {"a": 12, "b": 9, "p3": 10, "rs": 4}, "dryden": {"a": 10, "b": 6, "p3": 13, "rs": 4}, "walhalla": {"a": 15, "b": 13, "p3": 9, "rs": 4}, "outcrop": {"a": 13, "b": 10, "p3": 12, "rs": 4}}}], "events": [{"d": "2026-10-03", "t": "hot", "co": "NexGold", "ks": ["nexgold"], "x": "Feasibility study slipped a second time (Q1 → end-Q3 → Q4); first gold now ~Q2 2029. A repeated schedule slip is a sell trigger — watch, odds not yet changed."}, {"d": "2026-10-03", "t": "news", "co": "Troilus", "ks": ["troilus"], "x": "Shares −13% with no news after the credit-approved US$850M debt commitment (28 Sep): same outcome at a lower price, so odds rise to ~24%."}, {"d": "2026-10-03", "t": "news", "co": "Denarius", "ks": ["denarius"], "x": "Shares −15% with no news; odds rise to ~10%, onto the line."}, {"d": "2026-10-03", "t": "news", "co": "GoGold", "ks": ["gogold"], "x": "Build budget now ~US$260–265M (CEO, 29 Sep), offset by its lower share price."}, {"d": "2026-10-04", "t": "method", "co": "Banyan · Rua · Triumph · GoGold", "ks": ["banyan", "rua", "triumph", "gogold"], "x": "List B tie-break by runway (odds unchanged): Banyan 5→4, Rua 6→5, AbraSilver 4→6, Triumph 11→9, GoGold 12→10, Vizsla 10→11, Aftermath 9→12."}, {"d": "2026-10-04", "t": "watch", "co": "Triumph · GoGold", "ks": ["triumph", "gogold"], "x": "Monster watch: long runway, but the big catalysts sit beyond 3–5 years, so the odds stay below the luck line. Re-checked every Saturday."}, {"d": "2026-10-05", "t": "watch", "co": "Vizsla", "ks": ["vizsla"], "x": "Unconfirmed report: a plaintiff law firm (Portnoy) announced a class action tied to the January abduction disclosure, lead-plaintiff deadline 10 Nov. Not a company release and no court filing seen; likely the case other firms have advertised since February. Separately, the kidnapped workers' families ask the Sinaloa prosecutor to require Vizsla's security records and may go to a judge (SDP Noticias, Los Noticieristas); a planned RCMP complaint is unconfirmed. Legal and reputational overhang; odds unchanged at 8%."}, {"d": "2026-10-05", "t": "watch", "co": "Aftermath", "ks": ["aftermath"], "x": "Peru put its mines ministry and the concession registry (INGEMMET) under a 120-day reorganisation (Supreme Decree 018-2026-EM, 2 Oct). No permit freeze, but approvals could slow while Berenguela still needs its permits. Odds unchanged at 9%."}, {"d": "2026-10-05", "t": "news", "co": "Argenta", "ks": ["argenta"], "x": "Drill results: 1,599 g/t Ag over 4.0 m at a Yaxtché step-out and a first gold-copper hit at Carmen; updated resource due Q1 2027. Grade, not yet tonnage, so odds unchanged at 15%."}, {"d": "2026-10-05", "t": "news", "co": "Rua", "ks": ["rua"], "x": "More high-grade Auld Creek holes (best 6.6 m at 24.9 g/t AuEq); fast-track application still due in October and PFS in December. Routine drilling, odds unchanged at 11%. Price now set to the 2 Oct TSX close (C$1.23, −7.5% from 30 Sep): below the 10% re-assessment mark."}, {"d": "2026-10-06", "t": "mgmt", "co": "Triumph", "ks": ["triumph"], "x": "Management C: chance it works 25% → 20%, 3×+ odds 7% → 6%. Fifteen years on one property under an interim CEO, serial small placements and no stage advance: a pattern of capital consumed without progress.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "All names", "ks": ["triumph", "abrasilver", "vizsla", "argenta", "aftermath", "denarius", "nexgold", "gogold", "troilus", "banyan", "rua", "emperor"], "x": "Management graded A–D (track record, fit to the task, candour; neutral by default, odds moved only with evidence). B: Denarius, AbraSilver, Vizsla, Argenta, Aftermath, NexGold, GoGold, Troilus, Banyan, Rua, Emperor · C: Triumph.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "Denarius", "ks": ["denarius"], "x": "Management C → B after the owner's review: the team has already built and run a mine, which outweighs the slipped dates. Odds restored (works 45% → 50%, 3×+ odds 9% → 10%). Candour stays 2 on the card.", "src": "manual"}, {"d": "2026-10-06", "t": "watch", "co": "Vizsla", "ks": ["vizsla"], "x": "More pressure from the kidnapped workers' families (Semanario ZETA, 5 Oct; also Noroeste, Revista Espejo): they say Vizsla has not filed a formal criminal complaint and cite twelve earlier security incidents. Unconfirmed report: a ~MXN 190,000 settlement offer the families reject (Sinaloahoy only). No company response; odds unchanged at 8%."}, {"d": "2026-10-06", "t": "watch", "co": "Aftermath", "ks": ["aftermath"], "x": "Peru's 4 Oct regional elections: Puno (Berenguela) looks headed for a runoff, tentatively 29 Nov (exit poll: ASI–Juntos por el Perú ~29%). Provisional; permits are national, so social licence only. Odds unchanged at 9%."}, {"d": "2026-10-06", "t": "method", "co": "Denarius", "ks": ["denarius"], "src": "manual", "x": "Tagged 'early ore sales' (owner's request): Denarius already sells Zancudo ore (~US$8.6M H1 2026 revenue) but stays a developer while its value depends on the plant and Aguablanca. Rule: it moves to the producer list once the plant runs near design capacity and covers its operating costs for two quarters in a row. Checked every Saturday; odds unchanged."}, {"d": "2026-10-06", "t": "method", "co": "All names", "ks": ["triumph", "abrasilver", "vizsla", "argenta", "aftermath", "denarius", "nexgold", "gogold", "troilus", "banyan", "rua", "emperor"], "x": "Skin-in-the-game score (1–5) added for every team: the management's own money at risk. It never moves the odds; it breaks near-ties in list B after runway. Track record now counts outcomes for shareholders, not the number of past failures. List B near-ties re-broken by skin: Rua 5→4, Banyan 4→5, Denarius 8→7, Emperor 7→8.", "src": "manual"}, {"d": "2026-10-06", "t": "watch", "co": "Vizsla", "ks": ["vizsla"], "x": "Follow-up on the Portnoy class-action notice: it reads as a solicitation, not a filed case. No court or case number is given, its class period (May–Aug 2025) ends months before the Jan 2026 disclosure it cites, and no other firm has announced a filing. Still unconfirmed; odds unchanged."}, {"d": "2026-10-06", "t": "watch", "co": "Aftermath", "ks": ["aftermath"], "x": "Peru's 120-day reorganisation of the mines ministry and concession registry (from 3 Oct) is now confirmed by Gestión and Rumbo Minero; no permit freeze announced. Puno's governor race goes to a runoff (29 Nov; a move to 6 Dec is requested). Odds unchanged."}, {"d": "2026-10-06", "t": "news", "co": "Banyan", "ks": ["banyan"], "x": "AurMac drill results (best 1.88 g/t over 17.9 m) fit the existing resource; first PEA still targeted for Q4 2026. Not material; odds unchanged."}, {"d": "2026-10-06", "t": "method", "co": "Denarius · Troilus", "ks": ["denarius", "troilus"], "x": "Financial statements tab added (pilot: Denarius, Troilus, Aya, Kodiak): the last 8 quarters and 3 fiscal years read from the original filings on each company's website, with what changed and where the money went. Nothing net new for these two: Denarius's dilution (63M → 213M shares, ~429M after the debenture redemption) and Troilus's costly bridge loan were already on the cards. Odds unchanged.", "src": "manual"}, {"d": "2026-10-06", "t": "method", "co": "All names", "ks": ["triumph", "abrasilver", "vizsla", "argenta", "aftermath", "denarius", "nexgold", "gogold", "troilus", "banyan", "rua", "emperor"], "x": "Financials tab rolled out to every company (8 quarters + 3 years from the original filings, where the money went, dilution, months of cash) and a reporting Calendar tab added to the rankings. Net-new findings flagged on the management review: Emperor (promotion the largest expense line), Aftermath (overhead up to ~39% of spend, related-party fees). Odds unchanged.", "src": "manual"}, {"d": "2026-10-09", "t": "watch", "co": "Vizsla", "ks": ["vizsla"], "x": "CBC (1 Oct): the kidnapped workers' families plan complaints to the RCMP and US authorities; nothing filed yet. The Portnoy class-action notice still names no court or case. Reputational pressure only; odds unchanged."}, {"d": "2026-10-10", "t": "new", "co": "Dryden", "ks": ["dryden"], "x": "Dryden Gold added (TSXV: DRY, ~US$41M): 90,000 ha around Dryden in northwestern Ontario, more than 34,000 m drilled at Gold Rock with repeatable high-grade narrow-vein hits (7.88 g/t over 12.7 m, Sep 2026) and no resource by choice. Alamos 10.3% and Centerra 9.9% both topped up in 2026; C$12.9M cash at end-August funds the 45,000 m programme, a raise is likely in H1 2027. The stock sits at the bottom of its range despite record gold. Works ~25%, 3×+ odds ~13%, risk 4, management B.", "src": "manual"}, {"d": "2026-10-10", "t": "new", "co": "Walhalla", "ks": ["walhalla"], "x": "Walhalla Gold added (CSE: WAU, ~US$18M): the April 2026 spin-out of Great Pacific Gold holding ~1,230 km² over the Walhalla–Woods Point goldfield in Victoria, where Cohens Reef produced ~1.5 Moz at ~32 g/t. No modern drilling yet: the first programme has been 'ready' since 2024 and two 2026 dates passed without comment; C$5.9M cash, C$35k spent on exploration in six months against C$1.5M of share-based pay, insiders under 1%. Cheap enough that a real hit is a 3×, but the hit is a long shot. Works ~12%, 3×+ odds ~9%, risk 4, management C.", "src": "manual"}, {"d": "2026-10-10", "t": "method", "co": "All names", "ks": ["triumph", "abrasilver", "vizsla", "argenta", "aftermath", "denarius", "nexgold", "gogold", "troilus", "banyan", "rua", "emperor", "dryden", "walhalla"], "x": "Developer list grows from 12 to 14 names. No existing score, rank or line changed; list B re-ordered automatically from the odds.", "src": "manual"}, {"d": "2026-10-10", "t": "new", "co": "Outcrop", "ks": ["outcrop"], "x": "Outcrop Silver & Gold added (TSX: OCG, ~US$97M): Santa Ana in Tolima, Colombia — 57.8 Moz AgEq in the September resource update (29.9 Moz indicated at 519 g/t AgEq, 13 narrow veins), no economic study; a first PEA is guided for early 2027 in interviews only. Eric Sprott holds 18.6%. The discount (~US$1.7/oz) comes from a municipal food-protection decree and a community blockade since May that the company's releases do not mention, about two quarters of cash, and insiders who sold near the top. Works ~22%, 3×+ odds ~12%, risk 4, management C.", "src": "manual"}, {"d": "2026-10-10", "t": "news", "co": "AbraSilver", "ks": ["abrasilver"], "x": "CEO interview (Kitco, 7 Oct) repeats FID in Q2 2027 and first production before end-2029, and adds a resource update in Q2 2027 from a 15,000 m programme. Logged as dated promises; no financing signed, so odds stay at 13%."}, {"d": "2026-10-10", "t": "news", "co": "Argenta", "ks": ["argenta"], "x": "CEO interview (Kitco, 6 Oct) gives the first dated target: a resource update aiming for 70–75 Moz at Yaxtché by March 2027 (from ~50 Moz). Logged as a promise; odds stay at 15% until it is delivered."}], "first": {"triumph": "2026-10-02", "abrasilver": "2026-10-02", "vizsla": "2026-10-02", "argenta": "2026-10-02", "aftermath": "2026-10-02", "denarius": "2026-10-02", "nexgold": "2026-10-02", "gogold": "2026-10-02", "troilus": "2026-10-02", "banyan": "2026-10-02", "rua": "2026-10-02", "emperor": "2026-10-02", "dryden": "2026-10-10", "walhalla": "2026-10-10", "outcrop": "2026-10-10"}, "since": "2026-10-02"};
 var HISTURL = "hist.html#pmd";
 
 (function(){
@@ -1420,7 +1576,7 @@ document.addEventListener("click", function(e){ var a = e.target.closest && e.ta
 .cw-disc .cw-meta { font-variant-numeric:tabular-nums; }
 </style>
 <p><strong>Not investment advice.</strong> Personal research notes by Chung Huynh — views, rankings and estimates may be wrong or out of date. Do your own research.</p>
-<p class="cw-meta">Synced 10 Oct 2026 · Visits and anonymous usage are counted with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>: no cookies, nothing that identifies you. · <a href="/" target="_top">chungwin.com</a></p>
+<p class="cw-meta">Synced 11 Oct 2026 · Visits and anonymous usage are counted with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>: no cookies, nothing that identifies you. · <a href="/" target="_top">chungwin.com</a></p>
 </div>
 </body>
 </html>

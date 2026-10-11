@@ -246,6 +246,10 @@ ul.flags{ display:grid; grid-template-columns:1fr; column-gap:28px; margin:0; }
 .tph h2{ font-size:18px; }
 .tph .hint{ margin-left:auto; font-size:12.5px; color:var(--mute); }
 .tin{ margin:0; padding:4px 16px 12px; font-size:14px; line-height:1.55; color:var(--ink2); max-width:90ch; }
+.tin b{ color:var(--ink); }
+.keys{ list-style:none; margin:0 0 12px; padding:0 16px; display:flex; flex-wrap:wrap; gap:6px 18px; font-size:12.5px; line-height:1.5; color:var(--mute); }
+.keys b{ color:var(--ink2); font-weight:600; margin-right:4px; }
+.tph h2{ min-width:0; }
 .tp .tscroll{ border-top:1px solid var(--line); }
 .tin b{ color:var(--ink); font-weight:600; }
 .ct .rkn{ display:inline-block; width:24px; margin-right:10px; text-align:right; font-family:var(--mono); font-size:15px; vertical-align:top; }
@@ -431,10 +435,10 @@ details.row[open] .mo .t1, details.row:not([open]) .mo .t2{ display:none; }
 <body>
 <div class="wrap">
   <header class="hd">
-    <div class="eyebrow"><span class="dot"></span>Critical minerals · 5 names · 3–5 year horizon</div>
+    <div class="eyebrow"><span class="dot"></span>Critical minerals · 8 names · 3–5 year horizon</div>
     <h1>Critical minerals: safest bets vs. biggest upside</h1>
-    <p class="lede"><b class="ta">List A · Certainty alpha</b> ranks who is most likely to deliver. <b class="tb">List B · Multi-bagger</b> ranks who has the best odds of tripling your money in 3–5 years.</p>
-    <div class="meta"><span class="upd">Updated <b>9 Oct 2026</b> · prices to the 9 Oct close</span><span><a href="/equities/trackers/#cm" rel="noopener" target="_blank">Open the tracker ↗</a></span> <span><a href="/scarce-inputs-thesis/" target="_blank" rel="noopener">Investment thesis ↗</a></span></div>
+    <p class="lede"><b class="ta">List A · Certainty alpha</b> ranks who is most likely to deliver, for the cautious investor. <b class="tb">List B · Multi-bagger</b> ranks the same companies by their odds of tripling your money within 3–5 years, the first step toward a 5–10×.</p>
+    <div class="meta"><span class="upd">Updated <b>10 Oct 2026</b> · prices to the 9 Oct close</span><span><a href="/equities/trackers/#cm" rel="noopener" target="_blank">Open the tracker ↗</a></span> <span><a href="/scarce-inputs-thesis/" target="_blank" rel="noopener">Investment thesis ↗</a></span></div>
   </header>
   <nav class="sec" aria-label="Sections"><a href="#latest">Latest</a><a href="#tables">Tables</a><a class="a" href="#rank-a">A · details</a><a class="b" href="#rank-b">B · details</a><a href="#method">Method</a><a class="hs" href="#" data-goto="hist">History ↗</a></nav>
 
@@ -443,31 +447,33 @@ details.row[open] .mo .t1, details.row:not([open]) .mo .t2{ display:none; }
       <div class="chh"><span class="eyebrow">What changed</span>
         <div class="seg wseg" role="group" aria-label="Period"><button type="button" data-w="u">Last update</button><button type="button" data-w="7">7 days</button><button type="button" data-w="30">30 days</button></div>
         <span class="when" id="chwhen"></span></div>
-      <p class="chl"><span class="chd" id="chd"></span>No new releases or outside news. Prices to the 9 Oct close for all five; Antimony Res. odds 7% → 8% after a 12% fall, Centaurus re-checked after an 11% fall and left at 9%.</p>
+      <p class="chl"><span class="chd" id="chd"></span>Week: Arafura, Viridis and Element 25 added; a quiet news week otherwise. One unconfirmed report of a court bid against Viridis&#x27;s licensing is on watch. No odds or rank changes for existing names.</p>
       <div class="mvs" id="moves"></div>
       <div class="chcol" id="flags"></div>
       <p class="px">Nickel ~US$15,415/t (8 Oct LME cash) · ex-China NdPr ~US$106.5/kg (Sep)</p>
       <div class="chfoot">
         <details class="earlier" id="daylog"><summary>Day by day</summary><div class="eb" id="daylog-b"></div></details>
-        <details class="earlier"><summary>Full note</summary><div class="eb"><p><strong>3 Oct refresh — no ranking changes.</strong> China extended the suspension of its Oct-2025 rare-earth controls to 10 Jan 2027 with the US–China truce, and heavy rare-earth prices outside China widened further (Dy oxide in Europe ~US$3,500/kg, ~16× China; ex-China NdPr ~US$106.5/kg in September) — supportive for Ucore, offset by its factory-acceptance results, now about a month overdue. ATHA's cash is thinner than the page assumed (C$47.6M at 30 Jun, ~C$34M est. at 30 Sep). Nickel fell to ~US$15,435/t, the lowest since December, which keeps Centaurus's case a nickel call.</p></div></details>
-        <details class="earlier"><summary>Earlier notes (4)</summary><div class="eb"><p><strong>2 October audit — list B now ranks on the odds of a 3×.</strong> Each row shows the chance its thesis works, the multiple per share if it does (after the dilution the plan needs), and the resulting odds of a 3×. A volatile junior with no edge has about a one-in-ten chance of tripling in four to five years, so the line sits at ~10%.</p><p><strong>Netting out dilution moved this tab more than any other.</strong> Centaurus's 0.25× NAV is measured at the US$19,800 study deck; at today's ~US$15,800 nickel the project's NAV is ~US$300–360M, so a funded FID with a US$110–230M equity slice is worth roughly today's price per share — the 3× case is a nickel call (~10%). ATHA's market cap already pays ~US$3 per conceptual pound, so a Nunavut resource re-rates it ~1.3–2.5×, not ~5× (~8%). Ucore (~18%) moves to first: if Machine A works, it would be valued as a scarce strategic asset rather than on plant cash flow. Antimony Resources (~8%) keeps the fattest tail and the only path to zero. Earlier odds on this tab (Centaurus ~30–35%, ATHA ~20–25%) did not net out dilution; these replace them.</p><p><strong>None of the four is an anchor.</strong> All sit at the risky end of their group (risk 3, 4, 4 and 5), and the certainty list is unchanged. The copper tab still holds better-odds multi-bagger candidates than this one.</p><p><strong>Read with care.</strong> Nickel, uranium, antimony and rare-earth prices are set by Indonesian quotas, utility contracting and Chinese export policy — the price cases are scenarios, not forecasts, and the price columns ignore the dilution the odds now include.</p></div></details>
+        <details class="earlier"><summary>Full note</summary><div class="eb"><p><strong>10 Oct 2026: three companies added.</strong> Arafura Rare Earths (Nolans NdPr, funded and in construction since October, ~US$710M), Viridis Mining and Minerals (Colossus ionic-clay NdPr in Brazil, DFS done and equity committed, FID targeted Q4 2026) and Element 25 (Butcherbird manganese restart for Q1 2027; the Louisiana battery-manganese refinery is under open-ended review). Arafura and Viridis go above the certainty line with Centaurus and ATHA, so the line moves from 3 to 5; Element 25 sits below it. On the odds all three land at ~10–12%, at or just above the luck line: finished plants are worth about today's price per share unless the rare-earth or manganese price moves. No existing score changed.</p></div></details>
+        <details class="earlier"><summary>Earlier notes (5)</summary><div class="eb"><p><strong>3 Oct refresh — no ranking changes.</strong> China extended the suspension of its Oct-2025 rare-earth controls to 10 Jan 2027 with the US–China truce, and heavy rare-earth prices outside China widened further (Dy oxide in Europe ~US$3,500/kg, ~16× China; ex-China NdPr ~US$106.5/kg in September) — supportive for Ucore, offset by its factory-acceptance results, now about a month overdue. ATHA's cash is thinner than the page assumed (C$47.6M at 30 Jun, ~C$34M est. at 30 Sep). Nickel fell to ~US$15,435/t, the lowest since December, which keeps Centaurus's case a nickel call.</p><p><strong>2 October audit — list B now ranks on the odds of a 3×.</strong> Each row shows the chance its thesis works, the multiple per share if it does (after the dilution the plan needs), and the resulting odds of a 3×. A volatile junior with no edge has about a one-in-ten chance of tripling in four to five years, so the line sits at ~10%.</p><p><strong>Netting out dilution moved this tab more than any other.</strong> Centaurus's 0.25× NAV is measured at the US$19,800 study deck; at today's ~US$15,800 nickel the project's NAV is ~US$300–360M, so a funded FID with a US$110–230M equity slice is worth roughly today's price per share — the 3× case is a nickel call (~10%). ATHA's market cap already pays ~US$3 per conceptual pound, so a Nunavut resource re-rates it ~1.3–2.5×, not ~5× (~8%). Ucore (~18%) moves to first: if Machine A works, it would be valued as a scarce strategic asset rather than on plant cash flow. Antimony Resources (~8%) keeps the fattest tail and the only path to zero. Earlier odds on this tab (Centaurus ~30–35%, ATHA ~20–25%) did not net out dilution; these replace them.</p><p><strong>None of the four is an anchor.</strong> All sit at the risky end of their group (risk 3, 4, 4 and 5), and the certainty list is unchanged. The copper tab still holds better-odds multi-bagger candidates than this one.</p><p><strong>Read with care.</strong> Nickel, uranium, antimony and rare-earth prices are set by Indonesian quotas, utility contracting and Chinese export policy — the price cases are scenarios, not forecasts, and the price columns ignore the dilution the odds now include.</p></div></details>
       </div>
     </div>
   </section>
 
   <section class="blk tables" id="tables">
     <div class="card tp ta">
-      <div class="tph"><span class="tag a">A</span><h2>Certainty alpha</h2><span class="hint">tap a company for details</span></div>
-      <p class="tin">Beat the index with higher odds, accept a capped upside, over <b>3–5 years</b> (to ~2030). Ranks on <b>de-risking</b>, <b>funded runway</b>, <b>room left to re-rate</b>, <b>local licence</b> and <b>execution</b>.</p>
+      <div class="tph"><span class="tag a">A</span><h2>Certainty alpha — most likely to deliver</h2><span class="hint">tap a company for details</span></div>
+      <p class="tin"><b>Ranked by how far along each company is:</b> permits in hand, money raised, a finished study, a team that has done it before. For the investor who would rather be right than rich: a higher chance of a decent gain, a smaller chance of a huge one. The safest names are usually already priced for success, so the top of this list tends to sit low on list B. Below the line, each company depends on one big yes-or-no event.</p>
+      <ul class="keys" aria-label="How to read a row"><li><b>Key point</b> the one fact that earns the rank</li><li><b>Mgmt</b> the people, graded A to D</li><li><b>Risk</b> 1 (low) to 5 (high): the chance of a permanent loss</li><li><b>In B</b> the same company's place on the odds list</li></ul>
       <div class="tscroll"><table class="ct" id="ta" aria-label="Ranking A, Certainty alpha"></table></div>
       <div class="legend"><span><b>In B</b> the same company's rank in list B; outlined = below that list's line</span><span><b>Risk 1–5</b> chance of permanent loss or no re-rate (1 lowest)</span><span class="lg-mg"><b>Mgmt</b> — the people, graded on track record, fit to this exact job and candour (promises vs delivery): <span class="mgb gA">A<span class="mgst">★</span></span> tier 1 · <span class="mgb gB">B</span> solid, or unproven but clean (the default) · <span class="mgb gC">C</span> real weaknesses · <span class="mgb gD">D</span> a pattern of failing shareholders. Odds move only with evidence; hover a grade for the reason, the tracker card has the full review. <b>Skin in the game</b> (1–5, in the hover) is the team's own money at risk, a conviction signal that never moves the odds but breaks near-ties in list B.</span><span><b>†</b> key trigger may fall at or beyond the 3–5 year horizon</span></div>
       
     </div>
     <div class="card tp tb">
-      <div class="tph"><span class="tag b">B</span><h2>Multi-bagger</h2><span class="hint">tap a company for details</span></div>
-      <p class="tin">Ranked on the odds of a 3× per share within <b>3–5 years</b> (to ~2030): the chance the thesis <b>works</b> × the share of its <b>if-it-works</b> range at or above 3×, plus a small chance of a 3× without it.</p>
-      <p class="tin tin2">A 3× in 3–5 years is the first leg of a 10× in 10 years: the same pace, ~26–32% a year. <b>2nd 3×</b> asks about the second leg: after that first 3×, is there room for another 3× by about year 10 (yes / partly / little — not a cash question)? When two companies' odds are within 2 points, the one with more room for a 2nd 3× ranks first; if that is the same, the team with more skin in the game ranks first.</p>
+      <div class="tph"><span class="tag b">B</span><h2>Multi-bagger — best odds of a triple</h2><span class="hint">tap a company for details</span></div>
+      <p class="tin"><b>One number per company: the chance its share price at least triples within 3–5 years.</b> 20% means roughly a 1-in-5 chance. The tick on each bar marks ~10%, the odds any small mining stock has by luck alone: above the line beats luck, below it does not. Ordered by those odds, not by the size of the dream. A 3× here is the first step toward a 5–10×.</p>
+      <ul class="keys" aria-label="How to read a row"><li><b>Works</b> the chance the company's plan succeeds</li><li><b>If it works</b> how far the share could rise if it does</li><li><b>3×+</b> both together: the odds of at least a triple</li><li><b>2nd 3×</b> room to triple again by about year 10</li><li><b>Mgmt</b> the people, graded A to D</li><li><b>Price columns</b> what today's market value could become if the metal settles at that price (arithmetic, not a forecast)</li></ul>
       <div class="tscroll"><table class="ct" id="tb" aria-label="Ranking B, Multi-bagger"></table></div>
+      <p class="tin tin2">A 3× in 3–5 years is the first step toward a 10× in 10 years. <b>2nd 3×</b> asks whether there is room for a second step after it (yes / partly / little; not a question of cash). When two companies' odds are within 2 points, the one with more room for a second step ranks first; if that is equal, the team with more of its own money at stake ranks first.</p>
       <div class="legend"><span><span class="ob"><i style="width:60%"></i><s style="left:33%"></s></span> odds of a 3×; the tick is the ~10% luck line</span><span class="lg-rw"><b>2nd 3×?</b> — after a first 3× in years 1–5, is there room for <b>another 3× by about year 10</b>? Not about cash (that is on the card's Financials tab). <span class="rwb long">Yes</span> a believable path (big or growing resource, several assets, growth paid from cash flow) · <span class="rwb medium">Partly</span> capped or dependent on the metal price · <span class="rwb short">Little</span> the first re-rating is most of the value · <span class="mwt">watch</span> room for a 2nd 3×, but the big catalysts fall after year 5</span><span><b>Price columns</b> multiple of today's market cap if the market adopts that metal price</span><span><b>In A</b> rank in list A</span><span><b>Risk 1–5</b> chance of permanent loss or no re-rate (1 lowest)</span><span class="lg-mg"><b>Mgmt</b> — the people, graded on track record, fit to this exact job and candour (promises vs delivery): <span class="mgb gA">A<span class="mgst">★</span></span> tier 1 · <span class="mgb gB">B</span> solid, or unproven but clean (the default) · <span class="mgb gC">C</span> real weaknesses · <span class="mgb gD">D</span> a pattern of failing shareholders. Odds move only with evidence; hover a grade for the reason, the tracker card has the full review. <b>Skin in the game</b> (1–5, in the hover) is the team's own money at risk, a conviction signal that never moves the odds but breaks near-ties in list B.</span><span><b>†</b> key trigger may fall at or beyond the 3–5 year horizon</span></div>
       <div class="xs"><details class="x"><summary>How to read the odds — in plain words</summary><div class="xb"><p><b>Example: Ucore</b> — 3×+ <b>18%</b> · Works <b>35%</b> · If it works <b>~2–4×</b></p>
 <ul>
@@ -499,7 +505,7 @@ details.row[open] .mo .t1, details.row:not([open]) .mo .t2{ display:none; }
 
   <div class="lists">
     <section class="list la" id="rank-a">
-      <div class="lhd"><div class="eyebrow">Ranking A</div><h2>Alpha with more certainty</h2><p class="q">For the investor who wants to beat the index with a higher probability of success, and accepts a capped upside to get it.</p></div>
+      <div class="lhd"><div class="eyebrow">Ranking A · most likely to deliver</div><h2>Alpha with more certainty</h2><p class="q">For the investor who wants to beat the index with a higher probability of success, and accepts a capped upside to get it.</p></div>
       <details class="x crit"><summary>What it ranks on</summary><div class="xb"><ol><li><b>De-risking</b> — reserves, permits, financing line of sight</li>
 <li><b>Funded runway</b> — can it sit through a price slump in its mineral without raising at the bottom</li>
 <li><b>Remaining mispricing</b> — room to re-rate from developer (~0.3–0.5× NAV) toward producer (~0.8–1.0×) inside 3–5 years</li>
@@ -508,7 +514,7 @@ details.row[open] .mo .t1, details.row:not([open]) .mo .t2{ display:none; }
       <div id="list-a"></div>
     </section>
     <section class="list lb" id="rank-b">
-      <div class="lhd"><div class="eyebrow">Ranking B</div><h2>Multi-bagger — best odds of a 3×</h2><p class="q">For the investor who wants a realistic path to 3×+ and accepts high risk — ranked by the odds of a 3× per share inside 3–5 years, not by the size of the dream.</p></div>
+      <div class="lhd"><div class="eyebrow">Ranking B · the odds of a 3×</div><h2>Multi-bagger — best odds of a 3×</h2><p class="q">For the investor who wants a realistic path to 3×+ and accepts high risk — ranked by the odds of a 3× per share inside 3–5 years, not by the size of the dream.</p></div>
       <details class="x crit"><summary>How the odds are built</summary><div class="xb"><ol><li><b>Works if</b> — the one thing that has to happen inside the horizon, and the chance it does (trigger dates, funding, track record)</li>
 <li><b>If it works</b> — the multiple per share after the dilution the plan needs; low end at the long-term case (for Centaurus, today's nickel — spot sits below its study deck), high end at today's spot</li>
 <li><b>3×+ odds</b> — the chance it works × the share of that range at or above 3× (metal moves included), plus a small chance of a 3× without it</li>
@@ -520,11 +526,11 @@ details.row[open] .mo .t1, details.row:not([open]) .mo .t2{ display:none; }
 
   <footer class="method" id="method">
     <div><h3>Read with care</h3><p>Every figure is approximate and mixed-date; NPVs and IRRs sit on each study's own price deck; two of the three names have no study at all. Multiples are illustrative re-rating arithmetic from current discounts, not forecasts or targets.</p><p>This is research shorthand to structure thinking, not investment advice — it does not account for position sizing, existing exposure, liquidity or currency.</p></div>
-    <div><h3>Page history</h3><p>Same four companies, ranked for two different risk appetites — three miners/explorers and one processor so far; the lists grow as names are added. Started and audited 2 October 2026 (list B ranks on the odds of a 3×); refreshed 3 October (prices to the 2 Oct close).</p><p>Each list explains its own criteria above its first row; the explainers under the table cover the odds and the price columns.</p></div>
+    <div><h3>Page history</h3><p>Same eight companies, ranked for two different risk appetites — seven miners, developers and explorers and one processor so far; the lists grow as names are added. Started and audited 2 October 2026 (list B ranks on the odds of a 3×); refreshed 3 October (prices to the 2 Oct close).</p><p>Each list explains its own criteria above its first row; the explainers under the table cover the odds and the price columns.</p></div>
   </footer>
 </div>
 <script>
-var CFG = {"base": 10, "aName": "Certainty alpha", "bName": "Multi-bagger", "T": "/equities/trackers/#cm.", "MBT": {"battery": "Battery metals", "strategic": "Defence / strategic", "uranium": "Uranium", "ree": "Defence / strategic — rare earths"}, "mbcol": {"battery": "#5FC49A", "strategic": "#E0875A", "uranium": "#C8D44C", "ree": "#E0875A"}, "bkcol": {"value": "#A99BF0", "grade": "#D4A24C", "quality": "#7C9BD0", "scale": "#B57AA8", "producer": "#5FC49A", "processor": "#5BB8C9"}};
+var CFG = {"base": 10, "aName": "Certainty alpha", "bName": "Multi-bagger", "T": "/equities/trackers/#cm.", "MBT": {"battery": "Battery metals", "strategic": "Defence / strategic", "uranium": "Uranium", "ree": "Defence / strategic — rare earths", "mn": "Battery metals — manganese"}, "mbcol": {"battery": "#5FC49A", "strategic": "#E0875A", "uranium": "#C8D44C", "ree": "#E0875A", "mn": "#5FC49A"}, "bkcol": {"value": "#A99BF0", "grade": "#D4A24C", "quality": "#7C9BD0", "scale": "#B57AA8", "producer": "#5FC49A", "processor": "#5BB8C9"}};
 var D = [
  {
   "k": "centaurus",
@@ -549,11 +555,11 @@ var D = [
   "tick": "ASX: CTM",
   "bk": "scale",
   "cap": "US$164M",
-  "a": 1,
-  "b": 3,
+  "a": 3,
+  "b": 6,
   "slug": "centaurus-metals",
   "aKey": "FS · fully permitted · Glencore offtake · equity gap ≈ mcap",
-  "aWhy": "The most de-risked name on the tab by a distance — feasibility, reserve, every permit, grid contract, tax incentives, a binding offtake for 30% of output, ten lender proposals and a state-bank letter. First because everything a developer can do has been done; not higher than a 3 on risk because the one thing left is the cheque, and the cheque is the size of the company. Runway is the weak criterion: A$17.5M against A$3–4M a quarter and a going-concern note.",
+  "aWhy": "The most de-risked of the names still looking for their money — feasibility, reserve, every permit, grid contract, tax incentives, a binding offtake for 30% of output, ten lender proposals and a state-bank letter. First because everything a developer can do has been done; not higher than a 3 on risk because the one thing left is the cheque, and the cheque is the size of the company. Runway is the weak criterion: A$17.5M against A$3–4M a quarter and a going-concern note.",
   "aRisk": "A discounted rights issue of A$200M+; another FID slip into 2027; nickel below US$15,000 making the equity prohibitively dilutive; Glencore walking.",
   "bKey": "~0.22× NAV at deck · ~0.45× at spot · dated trigger: FID",
   "bWhy": "A funded FID with a strategic partner is roughly a coin flip in the next few quarters — but at today's ~US$15,800 nickel the project's NAV is only ~US$300–360M, so even a clean FID with a US$110–230M equity slice is worth roughly today's price per share. ~2.5× needs nickel back at the US$19,800 study deck, and 3× needs ~US$23,000+. The multi-bagger case is a nickel call with a financing binary attached, not a discount waiting to close.",
@@ -597,8 +603,8 @@ var D = [
   "tick": "TSXV: SASK",
   "bk": "grade",
   "cap": "US$244M",
-  "a": 2,
-  "b": 2,
+  "a": 4,
+  "b": 5,
   "slug": "atha-energy",
   "aKey": "no current resource · funded to end-2027 · Nunavut",
   "aWhy": "Second on the strength of one criterion — funded runway, the best of any pre-resource uranium explorer (C$63M raised in February and guided to fund it to end-2027, though cash was C$47.6M at 30 June, ~C$34M est. at 30 Sep) — and the weakness of the others: no compliant resource, 2026 results that are counts not assays, a historical deposit that has sat undeveloped since 2013, and the only Canadian uranium jurisdiction with a rejected project as its precedent. The market already pays a developer's price (~US$3 per conceptual pound) for an explorer.",
@@ -645,7 +651,7 @@ var D = [
   "tick": "TSXV: UCU",
   "bk": "processor",
   "cap": "US$265M",
-  "a": 3,
+  "a": 5,
   "b": 1,
   "slug": "ucore-rare-metals",
   "aKey": "demo-scale · 0% contracted · cash, no debt · US co-funded",
@@ -693,8 +699,8 @@ var D = [
   "tick": "CSE: ATMY",
   "bk": "grade",
   "cap": "US$33M",
-  "a": 4,
-  "b": 5,
+  "a": 7,
+  "b": 8,
   "slug": "antimony-resources",
   "aKey": "pre-resource · MRE two quarters late · <1 yr cash",
   "aWhy": "Last on every criterion a cautious investor uses: no resource, no metallurgy, no study, no offtake, under a year of cash with a flow-through raise that cannot pay for G&A or permitting, a three-person board whose CEO is also the sole QP, a founder-level holder who sold 84% near the top, and an own MRE timetable missed twice. Below the line: not one binary but three (tonnes, continuity, price), none resolved.",
@@ -741,8 +747,8 @@ var D = [
   "tick": "TSXV: STUD",
   "bk": "value",
   "cap": "US$15M",
-  "a": 5,
-  "b": 4,
+  "a": 8,
+  "b": 7,
   "slug": "stallion-uranium",
   "aKey": "no discovery · cash ~60% of cap · Saskatchewan",
   "aWhy": "Low on this list because the thing it has to deliver is a discovery, and six holes have delivered alteration and weak gamma. What it has going for it: the cheapest entry in the tracker (EV ~C$10M for 1,700 km² on the Patterson Lake trend), a CEO from the Arrow discovery team, three years of layered geophysics behind the targets, cash for the rest of 2026, and the world's best uranium jurisdiction. What it lacks: a single assay, a single intercept in the thousands of cps, a financing path that is not a down-round, and clarity on whether the ATHA 70% will be earned.",
@@ -765,14 +771,161 @@ var D = [
    "odds": "works 12% → 10%, 3×+ odds 9% → 8%",
    "s": 1
   }
+ },
+ {
+  "k": "arafura",
+  "m": "ree",
+  "pm": "NdPr oxide · Downside US$70 / Base US$95 (≈ today) / Upside US$120 (≈ study deck) / Super US$150 (≈ incentive deck) per kg · China ~US$97/kg (SMM, 30 Sep 2026), ex-China ~US$95/kg CIF (Benchmark, 21 Aug 2026) · target P/NAV 0.5–0.7× for a funded project in construction, 0.8–1.0× once producing",
+  "sc": [
+   "~1.3–1.9×",
+   "~0–0.2×",
+   "~0.5–1.0×",
+   "~1.0–2.0×",
+   "~2.5–4×"
+  ],
+  "rs": 3,
+  "rsWhy": "Fully funded at FID with sovereign lenders, sovereign equity, a Hancock anchor, ~75% of nameplate under binding offtake and A$723M in the bank — the project will be built, so permanent loss needs a cost blow-out beyond US$462M of overrun cover or NdPr stuck near US$70. Not a 2 because it is a first-of-kind Australian ore-to-oxide chemical plant on a remote site with a 37-month build, contingency trimmed to US$87M, a price deck US$20–40/kg above the market, the debt not yet contractually closed, and the chair and CFO both gone in the first quarter of construction. Not a 4 because there is no forced raise in sight, no drawn debt, and the Commonwealth is lender, shareholder and customer. Loss path: an overrun in 2028 → equity top-up at A$0.10–0.15 → slow ramp into a US$80–90 NdPr market → the stock trades at 0.3–0.5× a lower NAV for years.",
+  "tm": "Debt contractual close + EFA/GRMF settlement Oct 2026 · AGM 22 Oct 2026 · bulk earthworks Dec qtr 2026 · earthworks complete mid-2027 · practical completion / first production late 2029 · nameplate late 2031–early 2032",
+  "late": 0,
+  "ex": "The reserve (29.5 Mt) is about half the resource (56 Mt) and the mine life is already 38 years, so more ore adds nothing to NPV at 8%. The real option is a Phase 2 expansion or an SEG/HRE separation step once the plant runs — neither costed. Exploration spend was A$0.7M in the June quarter.",
+  "exN": "Low",
+  "exC": "low",
+  "name": "Arafura Rare Earths",
+  "short": "Arafura",
+  "tick": "ASX: ARU · OTCQX: ARAFF",
+  "bk": "scale",
+  "cap": "US$712M",
+  "a": 1,
+  "b": 4,
+  "slug": "arafura-rare-earths",
+  "aKey": "FID · fully funded · 75% offtake · in construction",
+  "aWhy": "The most de-risked name in the group on paper — money, permits, offtake and a contractor are all in place and ground has been broken — but a 3-year first-of-kind build and a study deck above the market keep it at risk 3, not 2.",
+  "aRisk": "Capex overrun beyond US$462M; NdPr below US$90 into 2030; ramp-up slips like Lynas's early years; chair vacancy.",
+  "bKey": "~0.37× base NAV · ~1.0× NAV at US$95 NdPr · dated trigger: first oxide late 2029",
+  "bWhy": "The build is more likely than not to finish (~45% on time and budget, more if you allow a late finish), but a 3× from A$0.165 needs ~A$0.50, a ~A$3.5B market cap on ~7B shares — that is ~0.9× the incentive-case NPV, so it needs NdPr at US$130+ as production nears, not just a completed plant. At today's US$95 a finished Nolans is worth roughly today's price per share. The multi-bagger case is a NdPr call with a construction binary attached; the floor is better than most juniors because the money is already raised.",
+  "bRisk": "Capex overrun beyond US$462M; NdPr below US$90 into 2030; ramp-up slips like Lynas's early years; chair vacancy.",
+  "pw": 45,
+  "mw": "~1–3×",
+  "p3": 12,
+  "wi": "Nolans is built within the overrun cover, first oxide ships in 2029–30, and NdPr is back above ~US$120/kg when the index-linked contracts start billing",
+  "rw": "medium",
+  "rwWhy": "One asset with a 38-year life; the second leg is an uncosted Phase 2 or heavy-rare-earth separation, and NdPr sets the value either way.",
+  "mg": {
+   "g": "B",
+   "t": 3,
+   "f": 3,
+   "c": 3,
+   "why": "A team that has done the hard part — a A$1.07B equity stack, US$1B of sovereign debt and ~75% offtake — but has never built or run a rare-earth plant, slipped FID by ~18 months with the slips disclosed, and lost its chair and CFO at the start of construction. Default B; watch the chair appointment and the first capex update.",
+   "conf": "medium",
+   "odds": "no odds change",
+   "s": 2
+  }
+ },
+ {
+  "k": "viridis",
+  "m": "ree",
+  "pm": "NdPr oxide · cases US$70 / 90 / 110 / 150 per kg (DFS spot deck US$129 FOB Asian Metal 23 Jul 2026; China domestic ~¥730–750/kg ≈ US$103–106 on 9 Oct 2026; Western floor US$110 is MP's; Dy ex-China ~US$3,250, Tb ~US$7,500 vs floors of 575/2,050) · target P/NAV 0.3–0.5× at DFS stage, 0.6–0.9× once producing",
+  "sc": [
+   "~0.8–1.4×",
+   "~0.5–0.9×",
+   "~1.2–1.8×",
+   "~1.6–2.5×",
+   "~2.5–3.5×"
+  ],
+  "rs": 3,
+  "rsWhy": "A DFS with a reserve, a Preliminary Licence, a demo plant running above design recoveries, US$118M of equity banked at A$3.79 from investors who did three months of diligence, BNDES approval and no debt — this is a project that gets sold or re-financed, not abandoned. Not a 2 because the US$280M debt, the binding offtake and the Installation Licence are all unsigned, the two dated September targets have already passed in silence, FID has slipped twice, federal prosecutors are on record against the licensing, NdPr pricing is opaque and the DFS deck (US$129) sits above China's price, and nobody has built an ammonium-sulphate ionic-clay plant at 5 Mtpa in Brazil before. Not a 4 because the equity is in, the stock is 0.36× NAV, and the next twelve months are funded. Loss path: term sheets slip into 2027 → OneIM tranche 2 conditions fail or the debt comes in at 50% → an equity top-up of US$80–100M at A$2.50–3.00 (+15–20% shares) → MPF action on the IL → stock at ~A$1.80–2.20 (−45–55%).",
+  "tm": "Lender term sheets (overdue, was end-Sep 2026) · binding Solvay offtake (overdue, was Q3 2026) · Sep quarterly late Oct · AGM 4 Nov 2026 (OneIM T2) · Installation Licence pending · FID / financial close Q4 2026 · construction 2027 · grid Dec 2027 · first production H2 2028",
+  "late": 0,
+  "ex": "The reserve already runs 41 years at 5 Mtpa and the DFS values only 25; the Southern Complex (separate approvals) and the 168 Mt Inferred are outside the plan. Drilling adjacent to the resource is in the use of proceeds, but tonnes are not the constraint — permits, debt and price are. The second leg is more likely downstream: Viridion (50/50 with Ionic Rare Earths) is planning a Brazilian separation/magnet-recycling centre (CRITR) with a FINEP application of up to R$40M, no economics published.",
+  "exN": "Low–medium",
+  "exC": "med",
+  "name": "Viridis Mining and Minerals",
+  "short": "Viridis",
+  "tick": "ASX: VMM",
+  "bk": "grade",
+  "cap": "US$397M",
+  "a": 2,
+  "b": 3,
+  "slug": "viridis-mining",
+  "aKey": "DFS · LP granted · equity committed · debt unsigned",
+  "aWhy": "The most advanced ex-China ionic-clay developer with a credible financing syndicate — but 'bankable' is still a claim until a lender signs, the Installation Licence is pending with prosecutors watching, and the company has let two dated promises pass without comment.",
+  "aRisk": "Debt below 70% forcing a second equity raise; MPF challenge to the licences; a build overrun on a first-of-kind flowsheet; NdPr back to US$80.",
+  "bKey": "~0.36× NAV at DFS deck · ~0.5× at today's China NdPr · dated trigger: FID Q4 2026",
+  "bWhy": "A funded FID inside six months is roughly a coin flip, and the build-and-ramp after that is better than even but not safe — call it one in three that Colossus is producing MREC in 2029 as designed. From US$426M a 3× needs ~US$1.3B, which a producing asset at 0.6–0.9× NAV only reaches with NdPr at ~US$140–150 plus the Dy/Tb floors — about a quarter of the works case. Milestones along the way (term sheets, offtake, FID, first production) each pay 20–40%, so the 'works' case is more likely a 1.5–2.5× than a 3×.",
+  "bRisk": "Silence on the September debt and offtake targets; dilution from OneIM T2, ORE/Régia T3–4 and performance rights; the Installation Licence.",
+  "pw": 35,
+  "mw": "~1.2–2.5×",
+  "p3": 10,
+  "wi": "Debt and offtake sign and FID is taken by Q1 2027 on the DFS capex, the plant produces saleable MREC in 2028, and NdPr holds at or above ~US$110/kg",
+  "rw": "medium",
+  "rwWhy": "One project; the 41-year reserve and the Southern Complex leave room for a second phase, and Viridion gives a downstream option, but after a first 3× the company would be a single-asset NdPr producer whose next leg is the NdPr price.",
+  "mg": {
+   "g": "B",
+   "t": 3,
+   "f": 3,
+   "c": 3,
+   "why": "Fast, competent delivery of studies, licence and equity by a team that has not built a mine; dates slip in small steps and the two most recent targets passed in silence; pay is rising ahead of delivery. Solid but unproven at the job that starts now.",
+   "conf": "medium",
+   "odds": "no odds change",
+   "s": 3
+  }
+ },
+ {
+  "k": "element25",
+  "m": "mn",
+  "pm": "Manganese ore, 37% CIF Tianjin equivalent · cases US$3.5 / 4.5 / 5.5 / 7.0 per dmtu (today: SA 37% ~US$4.4–5.0/dmtu, Australian 46% ~US$6.0/dmtu, 28–30 Sep 2026) · battery-grade MnSO4 China ~US$1,130/t (SMM, 30 Sep 2026) · target P/NAV 0.3–0.5× study stage, 5–6× cash flow once producing",
+  "sc": [
+   "~2.2–3.7× (no tax, no dilution)",
+   "~0.2×",
+   "~1.0–1.5×",
+   "~3–4.5×",
+   "~7–10×"
+  ],
+  "rs": 4,
+  "rsWhy": "A single low-grade manganese asset that was already shut once on price, now a construction project with A$18M of cash against a A$65M+ build, a NAIF facility that cannot be drawn until the completion funding is committed, and a main construction contract still in tender three months late; the second leg (Louisiana HPMSM) has lost its OEM timing conditions and sits in an undated review while US EV demand has weakened. Not a 3 because the money is not all in and the price that makes Butcherbird worth ~A$70M a year is above today's. Not a 5 because the reserve, permits, NAIF close, binding take-or-pay offtake, a revised DoE grant and no drawn debt give it a floor and a buyer for the asset. Loss path: construction slips into H2 2027 and costs more → equity at ~A$0.15–0.20 or ATM drip → manganese stays ~US$4.4 → thin margin on 31.6% lump → stock at cash plus option value, −40–60%.",
+  "tm": "Sep quarterly ~27 Oct 2026 · construction contract award (was Q2 2026) · NAIF drawdown after CPs · HPMSM review outcome (undated) · Butcherbird mechanical completion & commissioning Q1 2027 · first OM shipments 2027 · Louisiana FID undated (was 'supply from 2026' in 2023)",
+  "late": 0,
+  "ex": "274 Mt of resource against a 101 Mt reserve and an 18-year plan — more ore is not the constraint. Lake Johnston lithium has found nothing economic. The upside levers are a Train 1 FID in Louisiana, the Japan refinery, or a second Butcherbird expansion once the first runs — none of which a drill rig delivers.",
+  "exN": "Low",
+  "exC": "low",
+  "name": "Element 25",
+  "short": "Element 25",
+  "tick": "ASX: E25 · OTC: ELMTF",
+  "bk": "value",
+  "cap": "US$56M",
+  "a": 6,
+  "b": 2,
+  "slug": "element-25",
+  "aKey": "Reserve · permits · NAIF A$50M · take-or-pay offtake · build gap",
+  "aWhy": "More de-risked than it looks — reserve, every permit, senior debt closed, a binding buyer for all output — but everything hangs on a construction contract not yet awarded and a subordinated tranche not yet found, with a two-year record of shut mine and slipped refinery.",
+  "aRisk": "Capex re-estimate above A$64.8M; construction award slipping into Q4 2026; manganese ore below US$4/dmtu; GM walking from the HPMSM loan.",
+  "bKey": "~US$52M · 7× below FS NPV · next: Sep quarterly, construction award",
+  "bWhy": "If Butcherbird commissions on time (~35%), the stock at today's manganese price is worth roughly 1–1.5× after a top-up raise; the 3× needs the 37% index back to ~US$5.5 (the FS cash-flow level) or a Louisiana FID with GM and DoE money — each maybe a one-in-three on top of the restart working. 35% × ~30% ≈ 10%, plus a little for a takeover of a permitted, financed manganese mine by Jupiter/OM-type buyers → ~12%.",
+  "bRisk": "Dilutive raise before NAIF drawdown; HPMSM review ends with a site change or a scope cut; Stellantis sells its stake.",
+  "pw": 35,
+  "mw": "~1–3×",
+  "p3": 11,
+  "wi": "Butcherbird is commissioned in Q1 2027 within the FS capex, ships ~1.1 Mtpa to OM at an index ≥US$5/dmtu, and either GM or the DoE re-signs for Louisiana",
+  "rw": "medium",
+  "rwWhy": "Butcherbird is capped at 1.1 Mtpa for 18 years and prices off Chinese steel; the second leg is the HPMSM refinery, real but dependent on OEM and government money and on the LMR cathode shift arriving.",
+  "mg": {
+   "g": "C",
+   "t": 3,
+   "f": 3,
+   "c": 2,
+   "why": "A twenty-year MD who built a small mine, shut it, and signed OEM and DoE deals that are real — but the refinery date has gone from 2026 to nothing, the Japan FID vanished, and construction awards slip while the commissioning date is repeated. Dates are not held and slips are not named.",
+   "conf": "medium",
+   "odds": "no odds change",
+   "s": 3
+  }
  }
 ];
-var LOW_FROM = {a:3, b:2};
+var LOW_FROM = {a:5, b:5};
 var SC = ["Progress", "Downside", "Base", "Upside", "Super"];
 var BK = {"value": "Cheap defined resources", "grade": "Grade / discovery", "quality": "Quality / jurisdiction", "scale": "Scale & financing", "producer": "Producer / cash flow", "processor": "Processor / midstream"};
 var DIV = {"a": "too uncertain for a cautious investor. Each of these depends on one big yes-or-no event — a permit, a financing or a discovery — that could go either way.", "b": "no better than luck. Any small mining stock has roughly a 1-in-10 (~10%) chance of tripling in 4–5 years; these names don't beat that. They can still go up — they just aren't better-than-chance bets on a triple."};
-var MB = {"battery": "Ni", "strategic": "Sb", "uranium": "U₃O₈", "ree": "REE"};
-var HIST = {"snaps": [{"d": "2026-10-02", "headline": "Starting point for the history: the page was audited and list B now ranks on the odds of a 3×.", "px": "", "low": {"a": 3, "b": 3}, "rows": {"centaurus": {"a": 1, "b": 2, "p3": 10, "rs": 3}, "atha": {"a": 2, "b": 3, "p3": 8, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 18, "rs": 4}, "antimony": {"a": 4, "b": 4, "p3": 8, "rs": 5}}}, {"d": "2026-10-03", "headline": "No ranking changes. The rare-earth backdrop strengthened for Ucore, ATHA has less cash than assumed, and nickel is at a ten-month low.", "px": "Nickel ~US$15,435/t · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 3}, "rows": {"centaurus": {"a": 1, "b": 2, "p3": 10, "rs": 3}, "atha": {"a": 2, "b": 3, "p3": 8, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 18, "rs": 4}, "antimony": {"a": 4, "b": 4, "p3": 8, "rs": 5}}}, {"d": "2026-10-04", "headline": "Runway labels added: Ucore and ATHA long, Centaurus and Antimony Resources medium; ATHA goes on monster watch. No ranking or odds changes.", "px": "Nickel ~US$15,435/t · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 3}, "rows": {"centaurus": {"a": 1, "b": 2, "p3": 10, "rs": 3}, "atha": {"a": 2, "b": 3, "p3": 8, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 18, "rs": 4}, "antimony": {"a": 4, "b": 4, "p3": 8, "rs": 5}}}, {"d": "2026-10-05", "headline": "No material news: no new releases from the four companies and nothing relevant in outside or theme coverage. Centaurus corrected to the 5 Oct ASX close of A$0.46 (unchanged on the day); the others stay at the 2 Oct close. No ranking or odds changes.", "px": "Nickel ~US$15,600/t (5 Oct) · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 3}, "rows": {"centaurus": {"a": 1, "b": 2, "p3": 10, "rs": 3}, "atha": {"a": 2, "b": 3, "p3": 8, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 18, "rs": 4}, "antimony": {"a": 4, "b": 4, "p3": 8, "rs": 5}}}, {"d": "2026-10-06", "headline": "No material news: no new releases and nothing relevant in outside or theme coverage. Prices unchanged (no 6 Oct closes found); no ranking or odds changes. Management grades and Stallion were added earlier today.", "px": "Nickel ~US$15,670/t (6 Oct) · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 2}, "rows": {"centaurus": {"a": 1, "b": 3, "p3": 9, "rs": 3}, "atha": {"a": 2, "b": 2, "p3": 7, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 16, "rs": 4}, "antimony": {"a": 4, "b": 5, "p3": 7, "rs": 5}, "stallion": {"a": 5, "b": 4, "p3": 8, "rs": 4}}}, {"d": "2026-10-07", "headline": "No material news: no new releases and nothing relevant in outside or theme coverage. Prices unchanged (no 7 Oct closes found); no ranking or odds changes.", "px": "Nickel ~US$15,720/t (7 Oct) · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 2}, "rows": {"centaurus": {"a": 1, "b": 3, "p3": 9, "rs": 3}, "atha": {"a": 2, "b": 2, "p3": 7, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 16, "rs": 4}, "antimony": {"a": 4, "b": 5, "p3": 7, "rs": 5}, "stallion": {"a": 5, "b": 4, "p3": 8, "rs": 4}}}, {"d": "2026-10-08", "headline": "One new release (ATHA drill results, not material yet). Prices unchanged (no 8 Oct closes found); no ranking or odds changes.", "px": "Nickel ~US$15,550/t (8 Oct) · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 2}, "rows": {"centaurus": {"a": 1, "b": 3, "p3": 9, "rs": 3}, "atha": {"a": 2, "b": 2, "p3": 7, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 16, "rs": 4}, "antimony": {"a": 4, "b": 5, "p3": 7, "rs": 5}, "stallion": {"a": 5, "b": 4, "p3": 8, "rs": 4}}}, {"d": "2026-10-09", "headline": "No new releases or outside news. Prices to the 9 Oct close for all five; Antimony Res. odds 7% → 8% after a 12% fall, Centaurus re-checked after an 11% fall and left at 9%.", "px": "Nickel ~US$15,415/t (8 Oct LME cash) · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 2}, "rows": {"centaurus": {"a": 1, "b": 3, "p3": 9, "rs": 3}, "atha": {"a": 2, "b": 2, "p3": 7, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 16, "rs": 4}, "antimony": {"a": 4, "b": 5, "p3": 8, "rs": 5}, "stallion": {"a": 5, "b": 4, "p3": 8, "rs": 4}}}], "events": [{"d": "2026-10-03", "t": "watch", "co": "Ucore", "ks": ["ucore"], "x": "Factory-acceptance results are now about a month overdue."}, {"d": "2026-10-03", "t": "watch", "co": "ATHA", "ks": ["atha"], "x": "Cash C$47.6M at 30 Jun, ~C$34M estimated at 30 Sep — thinner than the page assumed."}, {"d": "2026-10-03", "t": "news", "co": "Ucore", "ks": ["ucore"], "x": "China extended its rare-earth control suspension to 10 Jan 2027; heavy rare earths outside China widened further (Dy oxide in Europe ~US$3,500/kg, ~16× China)."}, {"d": "2026-10-03", "t": "news", "co": "Centaurus", "ks": ["centaurus"], "x": "Nickel ~US$15,435/t, the lowest since December: the case stays a nickel call."}, {"d": "2026-10-04", "t": "watch", "co": "ATHA", "ks": ["atha"], "x": "Monster watch: long runway, but the big catalysts sit beyond 3–5 years, so the odds stay below the luck line. Re-checked every Saturday."}, {"d": "2026-10-05", "t": "fix", "co": "Centaurus", "ks": ["centaurus"], "x": "Price corrected: the ASX's own data shows the 5 Oct close at A$0.46, unchanged on the day (bid A$0.46 / ask A$0.49). The A$0.475 used in this morning's run was the bid-ask midpoint, not a trade. Market value back to ~US$184M; odds unchanged."}, {"d": "2026-10-06", "t": "mgmt", "co": "Centaurus", "ks": ["centaurus"], "x": "Management C: chance it works 45% → 42%, 3×+ odds 10% → 9%. Seventeen-year team that got Jaguar to licence and offtake but has never built a mine; the DFS slipped three times and the FID four times, openly disclosed but still a pattern.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "ATHA", "ks": ["atha"], "x": "Management C: chance it works 30% → 25%, 3×+ odds 8% → 7%. A first-time CEO sold ~1M shares while raising a 12% convertible, insiders own under 1%, and the regulator forced a resource retraction in 2025.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "Ucore", "ks": ["ucore"], "x": "Management C: chance it works 35% → 30%, 3×+ odds 18% → 16%. Nineteen years listed, three plant plans, none delivered; the Louisiana timeline was re-set again in May 2026 and framed as an upgrade. Real DoW backing noted.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "Antimony Res.", "ks": ["antimony"], "x": "Management C: chance it works 25% → 22%, 3×+ odds 8% → 7%. Renamed CSE shell: the former CEO sold ~C$5.9M into the promotion, 118% dilution in a year, a three-person board with the CFO on it. Low confidence — re-check Saturday.", "src": "manual"}, {"d": "2026-10-06", "t": "new", "co": "Stallion", "ks": ["stallion"], "x": "Stallion Uranium added (TSXV: STUD, US$16M): ~1,700 km² in the western Athabasca next to Arrow and Triple R, cash ~60% of the market cap, six reconnaissance holes with the right rocks but no assayed uranium yet; the Q4 holes at Coyote are the first targeted test. Works ~10%, 3×+ odds ~8%, risk 4.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "All names", "ks": ["centaurus", "atha", "ucore", "antimony", "stallion"], "x": "Management graded A–D (track record, fit to the task, candour; neutral by default, odds moved only with evidence). C: Centaurus, Stallion, ATHA, Ucore, Antimony Res..", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "Stallion", "ks": ["stallion"], "x": "Management C: chance it works 12% → 10%, 3×+ odds 9% → 8%. The CEO and VP Exploration fit the job (NexGen Arrow team), but a 2025 cease-trade order for late filings, a marketing deal disclosed 17 months late and nine months of drilling with no assay are shareholder-candour facts.", "src": "manual"}, {"d": "2026-10-06", "t": "method", "co": "All names", "ks": ["centaurus", "atha", "ucore", "antimony", "stallion"], "x": "Skin-in-the-game score (1–5) added for every team: the management's own money at risk. It never moves the odds; it breaks near-ties in list B after runway. Track record now counts outcomes for shareholders, not the number of past failures. No ranking changes.", "src": "manual"}, {"d": "2026-10-06", "t": "news", "co": "Antimony Res.", "ks": ["antimony"], "x": "The C$5.0M flow-through announced 29 Sep closed on 5 Oct (10.64M shares at C$0.47, broker Castlewood Capital: C$245k fee and 0.52M broker warrants at C$0.75). Shares up ~8.7% to ~132.9M, so the market value is ~US$38M at the unchanged price; net cash rises by about the same amount. Expected and exploration-only money: odds stay at 7%."}, {"d": "2026-10-06", "t": "method", "co": "All names", "ks": ["centaurus", "atha", "ucore", "antimony", "stallion"], "x": "Financials tab rolled out to every company and a reporting Calendar tab added to the rankings. Antimony Resources flagged on the management review: share-based pay C$11.5M in nine months (76% of the loss), marketing C$2.3M, only one original filing readable. Odds unchanged.", "src": "manual"}, {"d": "2026-10-08", "t": "news", "co": "ATHA", "ks": ["atha"], "x": "Final Rib North holes: the mineralized trend at Angilak now runs 3.4 km (was 1.45 km) with a higher-grade sub-zone. Gamma readings only, assays pending with no date, so odds unchanged."}, {"d": "2026-10-09", "t": "news", "co": "Antimony Res.", "ks": ["antimony"], "x": "Shares −12% since the last assessment (C$0.405 → C$0.355, 9 Oct close) with no news: the same outcome at a lower price, so the works multiple rises to ~1.3–2.8× and odds of a 3× go 7% → 8%. Chance it works unchanged at 22%; EV-to-in-situ columns scaled to the new price."}, {"d": "2026-10-09", "t": "news", "co": "Centaurus", "ks": ["centaurus"], "x": "Shares −11% since the last assessment (A$0.46 → A$0.41, 9 Oct close) with no news and nickel flat (~US$15.4k/t). Re-checked: the equity cheque (US$110–230M) is now larger than the market value, so a lower price also means more new shares; the works multiple rises only ~6%, not 12%. Odds stay 9%."}], "first": {"centaurus": "2026-10-02", "atha": "2026-10-02", "ucore": "2026-10-02", "antimony": "2026-10-02", "stallion": "2026-10-06"}, "since": "2026-10-02"};
+var MB = {"battery": "Ni", "strategic": "Sb", "uranium": "U₃O₈", "ree": "REE", "mn": "Mn"};
+var HIST = {"snaps": [{"d": "2026-10-02", "headline": "Starting point for the history: the page was audited and list B now ranks on the odds of a 3×.", "px": "", "low": {"a": 3, "b": 3}, "rows": {"centaurus": {"a": 1, "b": 2, "p3": 10, "rs": 3}, "atha": {"a": 2, "b": 3, "p3": 8, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 18, "rs": 4}, "antimony": {"a": 4, "b": 4, "p3": 8, "rs": 5}}}, {"d": "2026-10-03", "headline": "No ranking changes. The rare-earth backdrop strengthened for Ucore, ATHA has less cash than assumed, and nickel is at a ten-month low.", "px": "Nickel ~US$15,435/t · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 3}, "rows": {"centaurus": {"a": 1, "b": 2, "p3": 10, "rs": 3}, "atha": {"a": 2, "b": 3, "p3": 8, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 18, "rs": 4}, "antimony": {"a": 4, "b": 4, "p3": 8, "rs": 5}}}, {"d": "2026-10-04", "headline": "Runway labels added: Ucore and ATHA long, Centaurus and Antimony Resources medium; ATHA goes on monster watch. No ranking or odds changes.", "px": "Nickel ~US$15,435/t · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 3}, "rows": {"centaurus": {"a": 1, "b": 2, "p3": 10, "rs": 3}, "atha": {"a": 2, "b": 3, "p3": 8, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 18, "rs": 4}, "antimony": {"a": 4, "b": 4, "p3": 8, "rs": 5}}}, {"d": "2026-10-05", "headline": "No material news: no new releases from the four companies and nothing relevant in outside or theme coverage. Centaurus corrected to the 5 Oct ASX close of A$0.46 (unchanged on the day); the others stay at the 2 Oct close. No ranking or odds changes.", "px": "Nickel ~US$15,600/t (5 Oct) · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 3}, "rows": {"centaurus": {"a": 1, "b": 2, "p3": 10, "rs": 3}, "atha": {"a": 2, "b": 3, "p3": 8, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 18, "rs": 4}, "antimony": {"a": 4, "b": 4, "p3": 8, "rs": 5}}}, {"d": "2026-10-06", "headline": "No material news: no new releases and nothing relevant in outside or theme coverage. Prices unchanged (no 6 Oct closes found); no ranking or odds changes. Management grades and Stallion were added earlier today.", "px": "Nickel ~US$15,670/t (6 Oct) · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 2}, "rows": {"centaurus": {"a": 1, "b": 3, "p3": 9, "rs": 3}, "atha": {"a": 2, "b": 2, "p3": 7, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 16, "rs": 4}, "antimony": {"a": 4, "b": 5, "p3": 7, "rs": 5}, "stallion": {"a": 5, "b": 4, "p3": 8, "rs": 4}}}, {"d": "2026-10-07", "headline": "No material news: no new releases and nothing relevant in outside or theme coverage. Prices unchanged (no 7 Oct closes found); no ranking or odds changes.", "px": "Nickel ~US$15,720/t (7 Oct) · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 2}, "rows": {"centaurus": {"a": 1, "b": 3, "p3": 9, "rs": 3}, "atha": {"a": 2, "b": 2, "p3": 7, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 16, "rs": 4}, "antimony": {"a": 4, "b": 5, "p3": 7, "rs": 5}, "stallion": {"a": 5, "b": 4, "p3": 8, "rs": 4}}}, {"d": "2026-10-08", "headline": "One new release (ATHA drill results, not material yet). Prices unchanged (no 8 Oct closes found); no ranking or odds changes.", "px": "Nickel ~US$15,550/t (8 Oct) · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 2}, "rows": {"centaurus": {"a": 1, "b": 3, "p3": 9, "rs": 3}, "atha": {"a": 2, "b": 2, "p3": 7, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 16, "rs": 4}, "antimony": {"a": 4, "b": 5, "p3": 7, "rs": 5}, "stallion": {"a": 5, "b": 4, "p3": 8, "rs": 4}}}, {"d": "2026-10-09", "headline": "No new releases or outside news. Prices to the 9 Oct close for all five; Antimony Res. odds 7% → 8% after a 12% fall, Centaurus re-checked after an 11% fall and left at 9%.", "px": "Nickel ~US$15,415/t (8 Oct LME cash) · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 3, "b": 2}, "rows": {"centaurus": {"a": 1, "b": 3, "p3": 9, "rs": 3}, "atha": {"a": 2, "b": 2, "p3": 7, "rs": 4}, "ucore": {"a": 3, "b": 1, "p3": 16, "rs": 4}, "antimony": {"a": 4, "b": 5, "p3": 8, "rs": 5}, "stallion": {"a": 5, "b": 4, "p3": 8, "rs": 4}}}, {"d": "2026-10-10", "headline": "Week: Arafura, Viridis and Element 25 added; a quiet news week otherwise. One unconfirmed report of a court bid against Viridis's licensing is on watch. No odds or rank changes for existing names.", "px": "Nickel ~US$15,415/t (8 Oct LME cash) · ex-China NdPr ~US$106.5/kg (Sep)", "low": {"a": 5, "b": 5}, "rows": {"centaurus": {"a": 3, "b": 6, "p3": 9, "rs": 3}, "atha": {"a": 4, "b": 5, "p3": 7, "rs": 4}, "ucore": {"a": 5, "b": 1, "p3": 16, "rs": 4}, "antimony": {"a": 7, "b": 8, "p3": 8, "rs": 5}, "stallion": {"a": 8, "b": 7, "p3": 8, "rs": 4}, "arafura": {"a": 1, "b": 4, "p3": 12, "rs": 3}, "viridis": {"a": 2, "b": 3, "p3": 10, "rs": 3}, "element25": {"a": 6, "b": 2, "p3": 11, "rs": 4}}}], "events": [{"d": "2026-10-03", "t": "watch", "co": "Ucore", "ks": ["ucore"], "x": "Factory-acceptance results are now about a month overdue."}, {"d": "2026-10-03", "t": "watch", "co": "ATHA", "ks": ["atha"], "x": "Cash C$47.6M at 30 Jun, ~C$34M estimated at 30 Sep — thinner than the page assumed."}, {"d": "2026-10-03", "t": "news", "co": "Ucore", "ks": ["ucore"], "x": "China extended its rare-earth control suspension to 10 Jan 2027; heavy rare earths outside China widened further (Dy oxide in Europe ~US$3,500/kg, ~16× China)."}, {"d": "2026-10-03", "t": "news", "co": "Centaurus", "ks": ["centaurus"], "x": "Nickel ~US$15,435/t, the lowest since December: the case stays a nickel call."}, {"d": "2026-10-04", "t": "watch", "co": "ATHA", "ks": ["atha"], "x": "Monster watch: long runway, but the big catalysts sit beyond 3–5 years, so the odds stay below the luck line. Re-checked every Saturday."}, {"d": "2026-10-05", "t": "fix", "co": "Centaurus", "ks": ["centaurus"], "x": "Price corrected: the ASX's own data shows the 5 Oct close at A$0.46, unchanged on the day (bid A$0.46 / ask A$0.49). The A$0.475 used in this morning's run was the bid-ask midpoint, not a trade. Market value back to ~US$184M; odds unchanged."}, {"d": "2026-10-06", "t": "mgmt", "co": "Centaurus", "ks": ["centaurus"], "x": "Management C: chance it works 45% → 42%, 3×+ odds 10% → 9%. Seventeen-year team that got Jaguar to licence and offtake but has never built a mine; the DFS slipped three times and the FID four times, openly disclosed but still a pattern.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "ATHA", "ks": ["atha"], "x": "Management C: chance it works 30% → 25%, 3×+ odds 8% → 7%. A first-time CEO sold ~1M shares while raising a 12% convertible, insiders own under 1%, and the regulator forced a resource retraction in 2025.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "Ucore", "ks": ["ucore"], "x": "Management C: chance it works 35% → 30%, 3×+ odds 18% → 16%. Nineteen years listed, three plant plans, none delivered; the Louisiana timeline was re-set again in May 2026 and framed as an upgrade. Real DoW backing noted.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "Antimony Res.", "ks": ["antimony"], "x": "Management C: chance it works 25% → 22%, 3×+ odds 8% → 7%. Renamed CSE shell: the former CEO sold ~C$5.9M into the promotion, 118% dilution in a year, a three-person board with the CFO on it. Low confidence — re-check Saturday.", "src": "manual"}, {"d": "2026-10-06", "t": "new", "co": "Stallion", "ks": ["stallion"], "x": "Stallion Uranium added (TSXV: STUD, US$16M): ~1,700 km² in the western Athabasca next to Arrow and Triple R, cash ~60% of the market cap, six reconnaissance holes with the right rocks but no assayed uranium yet; the Q4 holes at Coyote are the first targeted test. Works ~10%, 3×+ odds ~8%, risk 4.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "All names", "ks": ["centaurus", "atha", "ucore", "antimony", "stallion"], "x": "Management graded A–D (track record, fit to the task, candour; neutral by default, odds moved only with evidence). C: Centaurus, Stallion, ATHA, Ucore, Antimony Res..", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "Stallion", "ks": ["stallion"], "x": "Management C: chance it works 12% → 10%, 3×+ odds 9% → 8%. The CEO and VP Exploration fit the job (NexGen Arrow team), but a 2025 cease-trade order for late filings, a marketing deal disclosed 17 months late and nine months of drilling with no assay are shareholder-candour facts.", "src": "manual"}, {"d": "2026-10-06", "t": "method", "co": "All names", "ks": ["centaurus", "atha", "ucore", "antimony", "stallion"], "x": "Skin-in-the-game score (1–5) added for every team: the management's own money at risk. It never moves the odds; it breaks near-ties in list B after runway. Track record now counts outcomes for shareholders, not the number of past failures. No ranking changes.", "src": "manual"}, {"d": "2026-10-06", "t": "news", "co": "Antimony Res.", "ks": ["antimony"], "x": "The C$5.0M flow-through announced 29 Sep closed on 5 Oct (10.64M shares at C$0.47, broker Castlewood Capital: C$245k fee and 0.52M broker warrants at C$0.75). Shares up ~8.7% to ~132.9M, so the market value is ~US$38M at the unchanged price; net cash rises by about the same amount. Expected and exploration-only money: odds stay at 7%."}, {"d": "2026-10-06", "t": "method", "co": "All names", "ks": ["centaurus", "atha", "ucore", "antimony", "stallion"], "x": "Financials tab rolled out to every company and a reporting Calendar tab added to the rankings. Antimony Resources flagged on the management review: share-based pay C$11.5M in nine months (76% of the loss), marketing C$2.3M, only one original filing readable. Odds unchanged.", "src": "manual"}, {"d": "2026-10-08", "t": "news", "co": "ATHA", "ks": ["atha"], "x": "Final Rib North holes: the mineralized trend at Angilak now runs 3.4 km (was 1.45 km) with a higher-grade sub-zone. Gamma readings only, assays pending with no date, so odds unchanged."}, {"d": "2026-10-09", "t": "news", "co": "Antimony Res.", "ks": ["antimony"], "x": "Shares −12% since the last assessment (C$0.405 → C$0.355, 9 Oct close) with no news: the same outcome at a lower price, so the works multiple rises to ~1.3–2.8× and odds of a 3× go 7% → 8%. Chance it works unchanged at 22%; EV-to-in-situ columns scaled to the new price."}, {"d": "2026-10-09", "t": "news", "co": "Centaurus", "ks": ["centaurus"], "x": "Shares −11% since the last assessment (A$0.46 → A$0.41, 9 Oct close) with no news and nickel flat (~US$15.4k/t). Re-checked: the equity cheque (US$110–230M) is now larger than the market value, so a lower price also means more new shares; the works multiple rises only ~6%, not 12%. Odds stay 9%."}, {"d": "2026-10-10", "t": "new", "co": "Arafura", "ks": ["arafura"], "x": "Arafura Rare Earths added (ASX: ARU, ~US$710M): Nolans in the Northern Territory, Australia's first ore-to-NdPr-oxide project, FID in May, ground broken 8 Oct, ~A$1.07B of equity raised or committed (Hancock 17.5%) and a US$775M government-led debt package guided to close in October; 75% of NdPr under offtake. At today's ~US$95/kg NdPr a finished plant is worth about today's price per share; the study deck is US$117–136. Works ~45%, 3×+ odds ~12%, risk 3, management B.", "src": "manual"}, {"d": "2026-10-10", "t": "new", "co": "Viridis", "ks": ["viridis"], "x": "Viridis Mining and Minerals added (ASX: VMM, ~US$400M): Colossus ionic-clay NdPr in Brazil, DFS in August (NPV8 US$1.2B at US$129/kg NdPr, capex US$449M), US$120M of equity committed (OneIM, Brazilian funds) and a BNDES loan approved. Before the Q4 2026 FID it still needs ~US$280M of debt, a binding offtake and the Installation Licence; two September targets passed in silence. Works ~35%, 3×+ odds ~10%, risk 3, management B.", "src": "manual"}, {"d": "2026-10-10", "t": "new", "co": "Element 25", "ks": ["element25"], "x": "Element 25 added (ASX: E25, ~US$56M): Butcherbird manganese in WA has been on care and maintenance since early 2024; the 1.1 Mtpa restart (A$64.8M capex, take-or-pay offtake with OM Materials, NAIF A$50M at contractual close) is being built for Q1 2027 but the main construction contract is not yet awarded. The Louisiana battery-manganese refinery (US$166M DoE grant) is under open-ended review after GM's conditions lapsed. Works ~35%, 3×+ odds ~11%, risk 4, management C.", "src": "manual"}, {"d": "2026-10-10", "t": "method", "co": "All names", "ks": ["centaurus", "atha", "ucore", "antimony", "stallion", "arafura", "viridis", "element25"], "x": "Critical-minerals list grows from 5 to 8 names and now covers rare earths and manganese. Arafura and Viridis go above the certainty line with Centaurus and ATHA, so the line moves from 3 to 5. No existing score or odds changed; list B re-ordered automatically.", "src": "manual"}, {"d": "2026-10-10", "t": "watch", "co": "Viridis", "ks": ["viridis"], "x": "Unconfirmed report: Metrópoles (13 Sep) says federal prosecutors asked the Federal Court to suspend Colossus licensing, including the Installation Licence decision, until the nuclear authority gives a radioactivity opinion. No ruling and no second source found; odds unchanged (works 35%, 3×+ 10%)."}, {"d": "2026-10-10", "t": "news", "co": "Viridis", "ks": ["viridis"], "x": "The 9 Oct 'proposed issue of securities' is 3.45M director performance rights to be voted on at the 4 Nov AGM, not a capital raise. No change."}, {"d": "2026-10-10", "t": "news", "co": "All names", "ks": ["centaurus", "atha", "ucore", "antimony", "stallion", "arafura", "viridis", "element25"], "x": "Weekly review: no new company releases this week beyond those already recorded, no insider trades, no trading halts (Market Index 'halted' badges on ASX names are a page glitch). Odds re-checked at the 9 Oct close; none changed."}], "first": {"centaurus": "2026-10-02", "atha": "2026-10-02", "ucore": "2026-10-02", "antimony": "2026-10-02", "stallion": "2026-10-06", "arafura": "2026-10-10", "viridis": "2026-10-10", "element25": "2026-10-10"}, "since": "2026-10-02"};
 var HISTURL = "hist.html#cm";
 
 (function(){
@@ -1052,7 +1205,7 @@ document.addEventListener("click", function(e){ var a = e.target.closest && e.ta
 .cw-disc .cw-meta { font-variant-numeric:tabular-nums; }
 </style>
 <p><strong>Not investment advice.</strong> Personal research notes by Chung Huynh — views, rankings and estimates may be wrong or out of date. Do your own research.</p>
-<p class="cw-meta">Synced 10 Oct 2026 · Visits and anonymous usage are counted with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>: no cookies, nothing that identifies you. · <a href="/" target="_top">chungwin.com</a></p>
+<p class="cw-meta">Synced 11 Oct 2026 · Visits and anonymous usage are counted with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>: no cookies, nothing that identifies you. · <a href="/" target="_top">chungwin.com</a></p>
 </div>
 </body>
 </html>
