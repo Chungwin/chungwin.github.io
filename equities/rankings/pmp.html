@@ -143,6 +143,12 @@ table.ct{ width:100%; border-collapse:collapse; font-size:13.5px; font-variant-n
 .rsb.r1{ background:#4FB3A3; } .rsb.r2{ background:#8CC9A0; } .rsb.r3{ background:#D4A24C; } .rsb.r4{ background:#E0875A; } .rsb.r5{ background:#D46A5E; }
 
 /* metal badge + pick */
+.tieb{ display:inline-block; margin-left:6px; padding:0 5px; border-radius:4px; font-size:10.5px; font-weight:600; line-height:1.5; letter-spacing:.01em; white-space:nowrap; cursor:help; color:var(--ink2); background:rgba(194,201,204,.10); border:1px dashed rgba(194,201,204,.45); vertical-align:1px; }
+.vw{ position:relative; }
+.vw .tieb{ position:absolute; top:100%; right:0; margin:3px 0 0; }
+.tieb.up{ color:#E6A867; border-color:rgba(230,168,103,.55); background:rgba(230,168,103,.08); }
+.tiep{ font-size:13.5px; line-height:1.55; color:var(--ink2); margin:6px 0 10px; }
+.dvb{ display:inline-block; vertical-align:1px; margin-left:6px; font-size:10.5px; font-weight:600; letter-spacing:.01em; padding:0 5px; border-radius:4px; color:#72C9A9; border:1.5px solid rgba(114,201,169,.55); line-height:1.4; cursor:help; white-space:nowrap; }
 .mb{ display:inline-block; vertical-align:1px; margin-left:6px; font-size:10.5px; font-weight:700; letter-spacing:.02em; padding:0 5px; border-radius:4px; border:1.5px solid currentColor; line-height:1.4; }
 .pk{ margin-left:5px; font-size:13px; }
 .dg{ color:var(--b); font-weight:600; margin-left:2px; font-size:.85em; }
@@ -445,7 +451,7 @@ details.row[open] .mo .t1, details.row:not([open]) .mo .t2{ display:none; }
     <div class="eyebrow"><span class="dot"></span>Gold &amp; silver · Producers &amp; royalties · 13 names · 3–5 year horizon</div>
     <h1>Gold &amp; silver producers: safest bets vs. biggest upside</h1>
     <p class="lede"><b class="ta">List A · Quality compounder</b> ranks who is most likely to deliver, for the cautious investor. <b class="tb">List B · Leverage &amp; re-rate</b> ranks the same companies by their odds of tripling your money within 3–5 years, the first step toward a 5–10×.</p>
-    <div class="meta"><span class="upd">Updated <b>10 Oct 2026</b> · prices to the 9 Oct close</span><span><a href="/equities/trackers/#pm" rel="noopener" target="_blank">Open the tracker ↗</a></span> <span><a data-goto="pmd" href="#">Developer rankings</a></span> <span><a href="/scarce-inputs-thesis/" target="_blank" rel="noopener">Investment thesis ↗</a></span></div>
+    <div class="meta"><span class="upd">Updated <b>12 Oct 2026</b> · prices to the 12 Oct close</span><span><a href="/equities/trackers/#pm" rel="noopener" target="_blank">Open the tracker ↗</a></span> <span><a data-goto="pmd" href="#">Developer rankings</a></span> <span><a href="/scarce-inputs-thesis/" target="_blank" rel="noopener">Investment thesis ↗</a></span></div>
   </header>
   <nav class="sec" aria-label="Sections"><a href="#latest">Latest</a><a href="#tables">Tables</a><a class="a" href="#rank-a">A · details</a><a class="b" href="#rank-b">B · details</a><a href="#method">Method</a><a class="hs" href="#" data-goto="hist">History ↗</a></nav>
 
@@ -454,10 +460,10 @@ details.row[open] .mo .t1, details.row:not([open]) .mo .t2{ display:none; }
       <div class="chh"><span class="eyebrow">What changed</span>
         <div class="seg wseg" role="group" aria-label="Period"><button type="button" data-w="u">Last update</button><button type="button" data-w="7">7 days</button><button type="button" data-w="30">30 days</button></div>
         <span class="when" id="chwhen"></span></div>
-      <p class="chl"><span class="chd" id="chd"></span>Quiet week for producers: First Majestic&#x27;s San Dimas strike continues and Cobre Panamá is still undecided (both on watch). Prices to the 9 Oct close; odds and ranks unchanged.</p>
+      <p class="chl"><span class="chd" id="chd"></span>No new producer releases. San Dimas strike continues (watch); prices to the 12 Oct close for US and London listings. No ranking or odds changes.</p>
       <div class="mvs" id="moves"></div>
       <div class="chcol" id="flags"></div>
-      <p class="px">Gold ~US$4,216 · silver ~US$61.0 (9 Oct close)</p>
+      <p class="px">Gold ~US$4,191 · silver ~US$60.3 (12 Oct close)</p>
       <div class="chfoot">
         <details class="earlier" id="daylog"><summary>Day by day</summary><div class="eb" id="daylog-b"></div></details>
         <details class="earlier"><summary>Full note</summary><div class="eb"><p><strong>3 Oct — three seniors added.</strong> <b>Agnico Eagle</b> goes straight to first on the compounder list: lower-half costs (~31st percentile), US$3.3B net cash with an A rating, ~85% Canadian ounces — at ~8.9× EBITDA, the bottom of its own range. <b>Franco-Nevada</b> (2nd) and <b>Wheaton</b> (3rd) open a new <b>Royalty &amp; streaming</b> bucket: the best cost position possible (~87–92% margins, no capex), priced at ~22–24× EBITDA; Franco-Nevada ranks ahead on its zero debt and diversification, Wheaton carries US$1.9B of debt after Antamina and a third of revenue from Salobo. The miners below move down three places but keep their order. On list B all three sit near the bottom by design (~2–3%): a 3× would make them US$140–280B companies.</p><p><strong>3 Oct — cost-curve position added.</strong> Each producer now shows where its 2026 all-in sustaining cost sits among the world's primary gold or silver mines. Only Hecla (~41st percentile) and Fresnillo (~39th) are in the cheaper half. Pan American (~59th), First Majestic (~60th), Coeur (~63rd, estimated), Aya (~64th) and Equinox (~66th) sit just above the middle; IAMGOLD (~74th), Avino (~83rd) and B2Gold (~89th) are the costliest. One ranking change follows: <b>B2Gold drops below the compounder line</b> (8th → 9th) — top decile and up from ~57th in 2025 — and <b>Aya moves up to 8th</b> (cheaper and improving, net cash, longer reserves). Avino has gone from ~26th to ~83rd on Q2 costs: the lower-to-upper-half move that is a sell trigger, with its fix still unproven (Q3 results, November). Pan American's silver segment is ~61st — Juanicipio is first-quartile, the segment is not.</p><p><strong>3 Oct refresh — prices moved no ranks.</strong> Prices are within ~7% of the audit (gold ~US$4,160, silver ~US$60.7 on 2 Oct). Avino's management now describes a bigger, later plan — a standalone 2,500–3,000 tpd La Preciosa mill producing from ~2030 (spoken on 29 Sep, not yet in a release) — so the chance its plan works drops to ~20% while the multiple if it works rises to ~1.5–2.3×; its odds stay ~11%. Coeur's debt breakdown is corrected (no note before Feb 2029).</p></div></details>
@@ -474,7 +480,7 @@ details.row[open] .mo .t1, details.row:not([open]) .mo .t2{ display:none; }
       <p class="tin"><b>Not the multi-bagger list.</b> The same companies ranked by how far along they are: permits in hand, money raised, a finished study, a team that has done it before. For the investor who would rather be right than rich: a higher chance of a decent gain, a smaller chance of a huge one. The safest names are usually already priced for success, which is why the top of this list often sits low on <a class="jump-b" href="#tables-b">list B</a>, the one that ranks by upside. Below the line, each company depends on one big yes-or-no event.</p>
       <ul class="keys" aria-label="How to read a row"><li><b>Key point</b> the one fact that earns the rank</li><li><b>Mgmt</b> the people, graded A to D</li><li><b>Risk</b> 1 (low) to 5 (high): the chance of a permanent loss</li><li><b>In B</b> the same company's place on the odds list</li></ul>
       <div class="tscroll"><table class="ct" id="ta" aria-label="Ranking A, Quality compounder"></table></div>
-      <div class="legend"><span><b>In B</b> the same company's rank in list B; outlined = below that list's line</span><span><b>Risk 1–5</b> chance of permanent loss or no re-rate (1 lowest)</span><span class="lg-mg"><b>Mgmt</b> — the people, graded on track record, fit to this exact job and candour (promises vs delivery): <span class="mgb gA">A<span class="mgst">★</span></span> tier 1 · <span class="mgb gB">B</span> solid, or unproven but clean (the default) · <span class="mgb gC">C</span> real weaknesses · <span class="mgb gD">D</span> a pattern of failing shareholders. Odds move only with evidence; hover a grade for the reason, the tracker card has the full review. <b>Skin in the game</b> (1–5, in the hover) is the team's own money at risk, a conviction signal that never moves the odds but breaks near-ties in list B.</span><span><b>†</b> key trigger may fall at or beyond the 3–5 year horizon</span><span><b>*</b> estimate</span></div>
+      <div class="legend"><span><b>In B</b> the same company's rank in list B; outlined = below that list's line</span><span><b>Risk 1–5</b> chance of permanent loss or no re-rate (1 lowest)</span><span class="lg-mg"><b>Mgmt</b> — the people, graded on track record, fit to this exact job and candour (promises vs delivery): <span class="mgb gA">A<span class="mgst">★</span></span> tier 1 · <span class="mgb gB">B</span> solid, or unproven but clean (the default) · <span class="mgb gC">C</span> real weaknesses · <span class="mgb gD">D</span> a pattern of failing shareholders. Odds move only with evidence; hover a grade for the reason, the tracker card has the full review. <b>Skin in the game</b> (1–5, in the hover) is the team's own money at risk, a conviction signal that never moves the odds but breaks near-ties in list B.</span><span><b>Div</b> dividend yield at the latest price — shown for information, it does not affect either ranking; hover for the policy</span><span><b>†</b> key trigger may fall at or beyond the 3–5 year horizon</span><span><b>*</b> estimate</span></div>
       <div class="xs"><details class="x"><summary>How to read the cost-curve bar</summary><div class="xb"><div aria-hidden="true" class="ccdemo">
 <div class="cdl"><span style="--p:26">2025</span><span style="--p:50">halfway</span><span style="--p:83">today</span></div>
 <span class="ccm big" style="--p:83"><i class="t" style="--a:26;--b:83"></i><i class="o" style="--p:26"></i><i class="d"></i></span>
@@ -495,8 +501,8 @@ details.row[open] .mo .t1, details.row:not([open]) .mo .t2{ display:none; }
       <p class="tin"><b>One number per company: the chance its share price at least triples within 3–5 years.</b> 20% means roughly a 1-in-5 chance. The tick on each bar marks ~5%, the odds any small mining stock has by luck alone: above the line beats luck, below it does not. Ordered by those odds, not by the size of the dream. A 3× here is the first step toward a 5–10×.</p>
       <ul class="keys" aria-label="How to read a row"><li><b>Works</b> the chance the company's plan succeeds</li><li><b>If it works</b> how far the share could rise if it does</li><li><b>3×+</b> both together: the odds of at least a triple</li><li><b>2nd 3×</b> room to triple again by about year 10</li><li><b>Mgmt</b> the people, graded A to D</li><li><b>Price columns</b> what today's market value could become if the metal settles at that price (arithmetic, not a forecast)</li></ul>
       <div class="tscroll"><table class="ct" id="tb" aria-label="Ranking B, Leverage &amp; re-rate"></table></div>
-      <p class="tin tin2">A 3× in 3–5 years is the first step toward a 10× in 10 years. <b>2nd 3×</b> asks whether there is room for a second step after it (yes / partly / little; not a question of cash). When two companies' odds are within 2 points, the one with more room for a second step ranks first; if that is equal, the team with more of its own money at stake ranks first.</p>
-      <div class="legend"><span><span class="ob"><i style="width:60%"></i><s style="left:33%"></s></span> odds of a 3×; the tick is the ~5% luck line</span><span class="lg-rw"><b>2nd 3×?</b> — after a first 3× in years 1–5, is there room for <b>another 3× by about year 10</b>? Not about cash (that is on the card's Financials tab). <span class="rwb long">Yes</span> a believable path (big or growing resource, several assets, growth paid from cash flow) · <span class="rwb medium">Partly</span> capped or dependent on the metal price · <span class="rwb short">Little</span> the first re-rating is most of the value · <span class="mwt">watch</span> room for a 2nd 3×, but the big catalysts fall after year 5</span><span><b>Price columns</b> multiple of today's market cap if the market adopts that metal price</span><span><b>In A</b> rank in list A</span><span><b>Risk 1–5</b> chance of permanent loss or no re-rate (1 lowest)</span><span class="lg-mg"><b>Mgmt</b> — the people, graded on track record, fit to this exact job and candour (promises vs delivery): <span class="mgb gA">A<span class="mgst">★</span></span> tier 1 · <span class="mgb gB">B</span> solid, or unproven but clean (the default) · <span class="mgb gC">C</span> real weaknesses · <span class="mgb gD">D</span> a pattern of failing shareholders. Odds move only with evidence; hover a grade for the reason, the tracker card has the full review. <b>Skin in the game</b> (1–5, in the hover) is the team's own money at risk, a conviction signal that never moves the odds but breaks near-ties in list B.</span><span><b>†</b> key trigger may fall at or beyond the 3–5 year horizon</span></div>
+      <p class="tin tin2">A 3× in 3–5 years is the first step toward a 10× in 10 years. <b>2nd 3×</b> asks whether there is room for a second step after it (yes / partly / little; not a question of cash). When two companies' odds are within 2 points, they count as a tie: the one with more room for a second step ranks first; if that is equal, the team with more of its own money at stake ranks first. Rows moved this way are marked <span class="tieb up">tie ↑</span> (ranked above higher odds) or <span class="tieb down">tie ↓</span> (ranked below lower odds); hover the mark for who and why.</p>
+      <div class="legend"><span><span class="ob"><i style="width:60%"></i><s style="left:33%"></s></span> odds of a 3×; the tick is the ~5% luck line</span><span class="lg-rw"><b>2nd 3×?</b> — after a first 3× in years 1–5, is there room for <b>another 3× by about year 10</b>? Not about cash (that is on the card's Financials tab). <span class="rwb long">Yes</span> a believable path (big or growing resource, several assets, growth paid from cash flow) · <span class="rwb medium">Partly</span> capped or dependent on the metal price · <span class="rwb short">Little</span> the first re-rating is most of the value · <span class="mwt">watch</span> room for a 2nd 3×, but the big catalysts fall after year 5</span><span><span class="tieb up">tie ↑</span> <span class="tieb down">tie ↓</span> moved by the tie-break: odds within 2 points count as a tie, then room for a 2nd 3×, then skin in the game decide the order</span><span><b>Price columns</b> multiple of today's market cap if the market adopts that metal price</span><span><b>In A</b> rank in list A</span><span><b>Risk 1–5</b> chance of permanent loss or no re-rate (1 lowest)</span><span class="lg-mg"><b>Mgmt</b> — the people, graded on track record, fit to this exact job and candour (promises vs delivery): <span class="mgb gA">A<span class="mgst">★</span></span> tier 1 · <span class="mgb gB">B</span> solid, or unproven but clean (the default) · <span class="mgb gC">C</span> real weaknesses · <span class="mgb gD">D</span> a pattern of failing shareholders. Odds move only with evidence; hover a grade for the reason, the tracker card has the full review. <b>Skin in the game</b> (1–5, in the hover) is the team's own money at risk, a conviction signal that never moves the odds but breaks near-ties in list B.</span><span><b>Div</b> dividend yield at the latest price — shown for information, it does not affect either ranking; hover for the policy</span><span><b>†</b> key trigger may fall at or beyond the 3–5 year horizon</span></div>
       <div class="xs"><details class="x"><summary>How to read the odds — in plain words</summary><div class="xb"><p><b>Example: Aya</b> — 3×+ <b>13%</b> · Works <b>42%</b> · If it works <b>~1.2–2×</b></p>
 <ul>
 <li><b>Works</b> — the chance the company's plan succeeds. Here: Aya turns its new Boumadine project into a funded mine. 42% = a bit less than a coin flip.</li>
@@ -580,7 +586,7 @@ var D = [
   "short": "First Majestic",
   "tick": "NYSE/TSX: AG",
   "bk": "producer",
-  "cap": "US$8.52B",
+  "cap": "US$8.41B",
   "a": 10,
   "b": 3,
   "slug": "first-majestic-silver",
@@ -614,7 +620,25 @@ var D = [
    "conf": "medium",
    "odds": "no odds change",
    "s": 2
-  }
+  },
+  "dv": {
+   "dps": 0.0608,
+   "ccy": "US$",
+   "freq": "quarterly",
+   "last": "US$0.0152 declared 30 Jul 2026 (Q2 2026 results), record 14 Aug, paid ~31 Aug 2026",
+   "change": "policy rate doubled from 1% to 2% of net quarterly revenue, effective for revenue from 1 Jan 2026 (first paid May 2026 for Q1 2026); per-share amount varies each quarter with revenue",
+   "special": "Entire dividend is variable: ~2% of net quarterly revenue (only 70% of Los Gatos revenue counted) divided by shares outstanding; the 0.0608 annualised figure simply extrapolates Q2",
+   "buyback": "active share repurchase programme (NCIB); 1.2m shares bought and cancelled in Q2 2026 for US$22.7m (avg C$26.18)",
+   "payout": "Formula = 2% of net revenue; Q2 2026: ~US$7.4m dividend vs revenue US$415.5m and FCF US$194.6m = ~4% of FCF (estimate)",
+   "policy": "Quarterly dividend targeted at ~2% of net quarterly revenues (Los Gatos at 70%), paid out per share outstanding",
+   "src": [
+    "https://www.sec.gov/Archives/edgar/data/0001308648/000162828026050781/ag-2026q2financialnrxex995.htm",
+    "https://in.marketscreener.com/news/first-majestic-silver-corp-reviews-its-dividend-policy-ce7e58d9d08cf225"
+   ],
+   "asof": "2026-10-11"
+  },
+  "dy": 0.4,
+  "dvtip": "Dividend yield ~0.4% at US$17.05: US$0.0608 a share a year, paid quarterly. Policy: Quarterly dividend targeted at ~2% of net quarterly revenues (Los Gatos at 70%), paid out per share outstanding Last change: policy rate doubled from 1% to 2% of net quarterly revenue, effective for revenue from 1 Jan 2026 (first paid May 2026 for Q1 2026); per-share amount varies each quarter with revenue Special: Entire dividend is variable: ~2% of net quarterly revenue (only 70% of Los Gatos revenue counted) divided by shares outstanding; the 0.0608 annualised figure simply extrapolates Q2. Buyback: active share repurchase programme (NCIB); 1.2m shares bought and cancelled in Q2 2026 for US$22.7m (avg C$26.18). Shown for information only; it does not affect the ranking."
  },
  {
   "k": "iamgold",
@@ -638,7 +662,7 @@ var D = [
   "short": "IAMGOLD",
   "tick": "NYSE: IAG · TSX: IMG",
   "bk": "producer",
-  "cap": "US$10.8B",
+  "cap": "US$10.7B",
   "a": 9,
   "b": 4,
   "slug": "iamgold",
@@ -671,6 +695,10 @@ var D = [
    "conf": "medium",
    "odds": "no odds change",
    "s": 2
+  },
+  "tie": {
+   "dir": "up",
+   "tip": "Tie-break: ranked above B2Gold (9%) with ~7%. Odds within 2 points count as a tie; then the company with more room for a 2nd 3× goes first, then the team with more skin in the game. Here IAMGOLD has more skin in the game (B2Gold: 2 vs 1)."
   }
  },
  {
@@ -695,7 +723,7 @@ var D = [
   "short": "Hecla",
   "tick": "NYSE: HL",
   "bk": "producer",
-  "cap": "US$11.5B",
+  "cap": "US$11.4B",
   "a": 5,
   "b": 7,
   "slug": "hecla-mining",
@@ -728,7 +756,27 @@ var D = [
    "conf": "medium",
    "odds": "no odds change",
    "s": 1
-  }
+  },
+  "dv": {
+   "dps": 0.015,
+   "ccy": "US$",
+   "freq": "quarterly",
+   "last": "US$0.00375 declared 4 Aug 2026 (Q2 2026 results), record 26 Aug, paid ~10 Sep 2026",
+   "change": "unchanged base since Sep 2020 (raised then from US$0.0025 to US$0.00375/qtr). Silver-linked component ELIMINATED Feb 2025 (Q4 2024 results) - base no longer tied to silver price",
+   "special": "none now. The former silver-linked top-up (+US$0.01/yr per US$5 of realised silver above US$25) was removed in Feb 2025 to prioritise Keno Hill growth and balance sheet; despite US$35-50+ silver in 2026 only the US$0.00375 base is paid. Series B preferred pays US$0.875/qtr",
+   "buyback": "none (no authorised programme; only ~US$4.5m treasury share purchases in H1 2026 for tax withholding)",
+   "payout": "Estimate: US$0.015 x ~635m shares = ~US$9.5m/yr, ~2% of H1 2026 annualised FCF (H1 FCF US$279.4m, Q2 US$135.8m)",
+   "policy": "Minimum annual common dividend US$0.015/sh (US$0.00375/qtr) at board discretion; capital priorities are growth (Keno Hill), balance sheet, then disciplined returns",
+   "src": [
+    "https://www.businesswire.com/news/home/20260804948485/en/",
+    "https://www.marketscreener.com/quote/stock/HECLA-MINING-COMPANY-12936/news/Hecla-Mining-Company-Declares-Quarterly-Cash-Dividend-Payable-on-or-About-March-24-2025-and-Revise-49069297/",
+    "https://ir.hecla.com/Investors/Shareholder-Information/default.aspx",
+    "https://www.businesswire.com/news/home/20210506005198/en"
+   ],
+   "asof": "2026-10-11"
+  },
+  "dy": 0.1,
+  "dvtip": "Dividend yield ~0.1% at US$16.85: US$0.015 a share a year, paid quarterly. Policy: Minimum annual common dividend US$0.015/sh (US$0.00375/qtr) at board discretion; capital priorities are growth (Keno Hill), balance sheet, then disciplined returns Last change: unchanged base since Sep 2020 (raised then from US$0.0025 to US$0.00375/qtr). Silver-linked component ELIMINATED Feb 2025 (Q4 2024 results) - base no longer tied to silver price Special: none now. The former silver-linked top-up (+US$0.01/yr per US$5 of realised silver above US$25) was removed in Feb 2025 to prioritise Keno Hill growth and balance sheet; despite US$35-50+ silver in 2026 only the US$0.00375 base is paid. Series B preferred pays US$0.875/qtr. Buyback: none (no authorised programme; only ~US$4.5m treasury share purchases in H1 2026 for tax withholding). Shown for information only; it does not affect the ranking."
  },
  {
   "k": "equinox",
@@ -752,7 +800,7 @@ var D = [
   "short": "Equinox",
   "tick": "TSX/NYSE-A: EQX",
   "bk": "producer",
-  "cap": "US$13.4B",
+  "cap": "US$13.1B",
   "a": 8,
   "b": 6,
   "slug": "equinox-gold",
@@ -785,7 +833,27 @@ var D = [
    "conf": "medium",
    "odds": "works 35% → 32%, 3×+ odds stay 7%",
    "s": 4
-  }
+  },
+  "dv": {
+   "dps": 0.09,
+   "ccy": "US$",
+   "freq": "quarterly",
+   "last": "US$0.0225 declared 5 Aug 2026 (Q2 2026 results), record 19 Aug, paid 2 Sep 2026",
+   "change": "started: inaugural US$0.015/qtr announced 18 Feb 2026 (paid 26 Mar and Jun 2026); raised 50% to US$0.0225 on 5 Aug 2026 (US$0.06 -> US$0.09 annualised)",
+   "special": "none",
+   "buyback": "NCIB for up to 39.4m shares (~5%) from 2 Mar 2026 to 1 Mar 2027; lightly used so far - 307,100 shares for US$4.7m in H1 2026",
+   "payout": "No stated ratio. Estimate: US$0.09 x ~789m shares = ~US$71m/yr vs H1 2026 mine-site FCF US$459.8m after working capital (~8% of annualised); H1 dividends paid US$23.7m",
+   "policy": "Regular quarterly dividend subject to quarterly board approval, policy reviewable at any time; plus NCIB",
+   "src": [
+    "https://www.equinoxgold.com/wp-content/uploads/2026/08/20260805-EQX-Q2-Financial-Results-News-Release-final.pdf",
+    "https://www.sec.gov/Archives/edgar/data/1756607/000117184326000902/exh_991.htm",
+    "https://www.equinoxgold.com/wp-content/uploads/2026/02/20260226-EQX-NCIB-News-Release-Final.pdf",
+    "https://www.sec.gov/Archives/edgar/data/0001756607/000175660726000004/eqx-20260630financialstate.htm"
+   ],
+   "asof": "2026-10-11"
+  },
+  "dy": 0.8,
+  "dvtip": "Dividend yield ~0.8% at US$11.2: US$0.09 a share a year, paid quarterly. Policy: Regular quarterly dividend subject to quarterly board approval, policy reviewable at any time; plus NCIB Last change: started: inaugural US$0.015/qtr announced 18 Feb 2026 (paid 26 Mar and Jun 2026); raised 50% to US$0.0225 on 5 Aug 2026 (US$0.06 -> US$0.09 annualised) Buyback: NCIB for up to 39.4m shares (~5%) from 2 Mar 2026 to 1 Mar 2027; lightly used so far - 307,100 shares for US$4.7m in H1 2026. Shown for information only; it does not affect the ranking."
  },
  {
   "k": "fresnillo",
@@ -841,7 +909,26 @@ var D = [
    "conf": "medium",
    "odds": "no odds change",
    "s": 1
-  }
+  },
+  "dv": {
+   "dps": 1.5152,
+   "ccy": "US$",
+   "freq": "semi-annual",
+   "last": "Interim 43.4 US cents declared 29 Jul 2026 (H1 2026 results), record 14 Aug, paid 18 Sep 2026 in GBP unless US$ elected (US$319.8m); prior: final 108.12 US cents for FY2025 declared 3 Mar 2026, paid 29 May 2026",
+   "change": "interim more than doubled (+108.7%) from 20.8c (H1 2025) to 43.4c; FY2025 ordinary total 128.92c (US$950m) vs 2024 - record. dps above = trailing 12m regular (43.4 + 108.12 = 151.52c, ~US$1.52)",
+   "special": "Special dividends paid ad hoc: one-off 41.8 US cents (US$308m) paid May 2025 alongside the FY2024 final. No special declared with FY2025 final or H1 2026 interim. Declared in US cents, paid in pence (sterling conversion at payment); 10% Mexican withholding",
+   "buyback": "none",
+   "payout": "Stated policy 33-50% of profit after tax. FY2025 ordinary US$950m = ~69% of attributable profit US$1,384m (above policy range); H1 2026 interim US$319.8m = ~25% of H1 attributable profit US$1,290m (estimate)",
+   "policy": "Pay out 33-50% of profit after tax each year as interim + final; one-off specials at board discretion in strong years",
+   "src": [
+    "https://www.investegate.co.uk/announcement/rns/fresnillo--fres/interim-results-for-the-six-months-to-30-june-2026/9702443",
+    "https://www.investegate.co.uk/announcement/rns/fresnillo--fres/preliminary-results/9454730",
+    "https://www.miningweekly.com/article/miner-fresnillo-posts-annual-profit-surge-sets-record-dividend-2026-03-03"
+   ],
+   "asof": "2026-10-11"
+  },
+  "dy": 4.1,
+  "dvtip": "Dividend yield ~4.1% at GBp2756: US$1.5152 a share a year, paid semi-annual. Policy: Pay out 33-50% of profit after tax each year as interim + final; one-off specials at board discretion in strong years Last change: interim more than doubled (+108.7%) from 20.8c (H1 2025) to 43.4c; FY2025 ordinary total 128.92c (US$950m) vs 2024 - record. dps above = trailing 12m regular (43.4 + 108.12 = 151.52c, ~US$1.52) Special: Special dividends paid ad hoc: one-off 41.8 US cents (US$308m) paid May 2025 alongside the FY2024 final. No special declared with FY2025 final or H1 2026 interim. Declared in US cents, paid in pence (sterling conversion at payment); 10% Mexican withholding. Shown for information only; it does not affect the ranking."
  },
  {
   "k": "b2gold",
@@ -865,7 +952,7 @@ var D = [
   "short": "B2Gold",
   "tick": "TSX/NYSE-A: BTO/BTG",
   "bk": "producer",
-  "cap": "US$6.92B",
+  "cap": "US$6.91B",
   "a": 12,
   "b": 5,
   "slug": "b2gold",
@@ -898,6 +985,28 @@ var D = [
    "conf": "medium",
    "odds": "works 35% → 32%, 3×+ odds 10% → 9%",
    "s": 1
+  },
+  "dv": {
+   "dps": 0.08,
+   "ccy": "US$",
+   "freq": "quarterly",
+   "last": "US$0.02 declared 6 Aug 2026 (Q3 2026 dividend), record 10 Sep, paid 23 Sep 2026",
+   "change": "cut 50% from US$0.04 to US$0.02/qtr in Nov 2024 (US$0.16 -> US$0.08 annualised) to fund Goose; unchanged since - no restoration announced as of Oct 2026",
+   "special": "none",
+   "buyback": "NCIB renewed 3 Apr 2026 to 2 Apr 2027 for up to 132.7m shares (10% of float); 35m shares bought for US$172m in H1 2026 (Q2: 19m sh, US$92m)",
+   "payout": "Estimate: ~US$0.08 x ~1.3bn shares = ~US$105m/yr; H1 2026 dividends ~US$53m = ~50% of H1 FCF (US$104m ex. US$325m Finland sale proceeds); dividends + buybacks exceeded H1 FCF",
+   "policy": "Pays a dividend at a yield 'consistent with its peer group'; expects to maintain US$0.02/qtr; board discretion, no formula",
+   "src": [
+    "https://s204.q4cdn.com/324791784/files/doc_financials/2026/q2/08-06-2026-Q2-2026-Earnings-News-Release-6-30-26-FINAL.pdf",
+    "https://www.sec.gov/Archives/edgar/data/0001429937/000142993726000010/exhibit992-63026.htm"
+   ],
+   "asof": "2026-10-11"
+  },
+  "dy": 1.5,
+  "dvtip": "Dividend yield ~1.5% at US$5.24: US$0.08 a share a year, paid quarterly. Policy: Pays a dividend at a yield 'consistent with its peer group'; expects to maintain US$0.02/qtr; board discretion, no formula Last change: cut 50% from US$0.04 to US$0.02/qtr in Nov 2024 (US$0.16 -> US$0.08 annualised) to fund Goose; unchanged since - no restoration announced as of Oct 2026 Buyback: NCIB renewed 3 Apr 2026 to 2 Apr 2027 for up to 132.7m shares (10% of float); 35m shares bought for US$172m in H1 2026 (Q2: 19m sh, US$92m). Shown for information only; it does not affect the ranking.",
+  "tie": {
+   "dir": "down",
+   "tip": "Tie-break: ranked below IAMGOLD (7%) despite ~9%. Odds within 2 points count as a tie; then the company with more room for a 2nd 3× goes first, then the team with more skin in the game. Here IAMGOLD has more skin in the game (2 vs 1)."
   }
  },
  {
@@ -922,7 +1031,7 @@ var D = [
   "short": "Pan American",
   "tick": "NYSE/TSX: PAAS",
   "bk": "producer",
-  "cap": "US$19.1B",
+  "cap": "US$18.9B",
   "a": 4,
   "b": 13,
   "slug": "pan-american-silver",
@@ -955,7 +1064,26 @@ var D = [
    "conf": "medium",
    "odds": "no odds change",
    "s": 1
-  }
+  },
+  "dv": {
+   "dps": 0.736,
+   "ccy": "US$",
+   "freq": "quarterly",
+   "last": "US$0.184 declared 12 Aug 2026 (Q2 2026), record 24 Aug, paid ~4 Sep 2026 (~US$76m aggregate)",
+   "change": "raised four times since mid-2025: US$0.10 -> 0.12 (Aug 2025) -> 0.14 (Nov 2025) -> 0.18 (18 Feb 2026, +29%) -> 0.184 (Aug 2026, as buybacks shrink the share count against a fixed ~US$305m annual pool)",
+   "special": "Variable element: the old base US$0.10 + net-cash-linked top-up was replaced on 5 May 2026 by a fixed ~US$305m/yr dividend pool; per-share amount rises as shares are cancelled. Excess attributable FCF goes to buybacks.",
+   "buyback": "NCIB active since 6 Mar 2026; 7.3m shares bought for US$358m YTD to 11 Aug 2026 (Q2: 4.4m sh, US$224m). Up to ~US$1bn total returns targeted in 2026 (implies ~US$695m buybacks)",
+   "payout": "Stated: 35-40% of annual Attributable FCF via dividends + buybacks. Dividends alone ~US$305m = ~26% of FY2025 attributable FCF (US$1,151m) (estimate)",
+   "policy": "Enhanced Shareholder Return Framework (May 2026): return 35-40% of annual attributable FCF; ~US$305m in equal quarterly dividends (currently US$0.184/sh) plus NCIB buybacks for the balance",
+   "src": [
+    "https://panamericansilver.com/?p=20781",
+    "https://www.nasdaq.com/press-release/pan-american-silver-targets-1-billion-shareholder-returns-2026-through-enhanced",
+    "https://www.sec.gov/Archives/edgar/data/771992/000077199226000020/paasq42025newsrelease.htm"
+   ],
+   "asof": "2026-10-11"
+  },
+  "dy": 1.6,
+  "dvtip": "Dividend yield ~1.6% at US$45.71: US$0.736 a share a year, paid quarterly. Policy: Enhanced Shareholder Return Framework (May 2026): return 35-40% of annual attributable FCF; ~US$305m in equal quarterly dividends (currently US$0.184/sh) plus NCIB buybacks for the balance Last change: raised four times since mid-2025: US$0.10 -> 0.12 (Aug 2025) -> 0.14 (Nov 2025) -> 0.18 (18 Feb 2026, +29%) -> 0.184 (Aug 2026, as buybacks shrink the share count against a fixed ~US$305m annual pool) Special: Variable element: the old base US$0.10 + net-cash-linked top-up was replaced on 5 May 2026 by a fixed ~US$305m/yr dividend pool; per-share amount rises as shares are cancelled. Excess attributable FCF goes to buybacks.. Buyback: NCIB active since 6 Mar 2026; 7.3m shares bought for US$358m YTD to 11 Aug 2026 (Q2: 4.4m sh, US$224m). Up to ~US$1bn total returns targeted in 2026 (implies ~US$695m buybacks). Shown for information only; it does not affect the ranking."
  },
  {
   "k": "coeur",
@@ -979,7 +1107,7 @@ var D = [
   "short": "Coeur",
   "tick": "NYSE/TSX: CDE",
   "bk": "producer",
-  "cap": "US$17.7B",
+  "cap": "US$17.3B",
   "a": 7,
   "b": 9,
   "slug": "coeur-mining",
@@ -1010,6 +1138,28 @@ var D = [
    "conf": "medium",
    "odds": "no odds change",
    "s": 2
+  },
+  "dv": {
+   "dps": 0.04,
+   "ccy": "US$",
+   "freq": "semi-annual",
+   "last": "Inaugural US$0.02 paid June 2026 (US$20.6m), announced 23 Mar 2026 with the post-New Gold capital return programme; next US$0.02 expected Dec 2026",
+   "change": "started 2026: first-ever dividend US$0.02 semi-annually (US$0.04/yr), announced 23 Mar 2026, first paid Jun 2026",
+   "special": "none",
+   "buyback": "US$750m share repurchase authorisation (Mar 2026, superseding a US$75m programme), opportunistic + programmatic; US$121m / 6.7m shares bought from mid-May to 31 Jul 2026 (Q2: US$110.4m)",
+   "payout": "No stated ratio. Estimate: ~US$41m/yr dividends = ~3% of H1 2026 annualised FCF (Q2 FCF US$387.5m, Q1 US$266.8m); buybacks dominate returns",
+   "policy": "Enhanced capital return programme: return excess capital via a US$750m buyback plus a 'sustainable' US$0.02 semi-annual cash dividend (June/December)",
+   "src": [
+    "https://www.sec.gov/Archives/edgar/data/0000215466/000021546626000038/a2q26earningsreleaseex-991.htm",
+    "https://goldsilver.ai/news/260323-coeur-provides-company-update-post-new-gold-closin"
+   ],
+   "asof": "2026-10-11"
+  },
+  "dy": 0.2,
+  "dvtip": "Dividend yield ~0.2% at US$16.76: US$0.04 a share a year, paid semi-annual. Policy: Enhanced capital return programme: return excess capital via a US$750m buyback plus a 'sustainable' US$0.02 semi-annual cash dividend (June/December) Last change: started 2026: first-ever dividend US$0.02 semi-annually (US$0.04/yr), announced 23 Mar 2026, first paid Jun 2026 Buyback: US$750m share repurchase authorisation (Mar 2026, superseding a US$75m programme), opportunistic + programmatic; US$121m / 6.7m shares bought from mid-May to 31 Jul 2026 (Q2: US$110.4m). Shown for information only; it does not affect the ranking.",
+  "tie": {
+   "dir": "down",
+   "tip": "Tie-break: ranked below Franco-Nevada (2%) despite ~3%. Odds within 2 points count as a tie; then the company with more room for a 2nd 3× goes first, then the team with more skin in the game. Here Franco-Nevada has more skin in the game (3 vs 2)."
   }
  },
  {
@@ -1090,7 +1240,7 @@ var D = [
   "short": "Avino",
   "tick": "NYSE-A/TSX: ASM",
   "bk": "producer",
-  "cap": "US$943M",
+  "cap": "US$919M",
   "a": 13,
   "b": 2,
   "slug": "avino-silver-gold",
@@ -1147,7 +1297,7 @@ var D = [
   "short": "Agnico",
   "tick": "NYSE/TSX: AEM",
   "bk": "producer",
-  "cap": "US$95.7B",
+  "cap": "US$95.3B",
   "slug": "agnico-eagle-mines",
   "pm": "Au (~98.5% of revenue)",
   "aKey": "~8.9× EBITDA · AISC ~31st pct · net cash US$3.3B · ~85% Canada",
@@ -1180,7 +1330,25 @@ var D = [
    "conf": "medium",
    "odds": "works 60% → 63%, 3×+ odds stay 3%",
    "s": 2
-  }
+  },
+  "dv": {
+   "dps": 1.8,
+   "ccy": "US$",
+   "freq": "quarterly",
+   "last": "US$0.45 declared 29 Jul 2026 (Q2 2026 results), record 1 Sep, paid 15 Sep 2026",
+   "change": "unchanged at US$0.45/qtr through 2026 (US$0.40 in 2024-25; raised to US$0.45 with Q4 2025 results, Feb 2026)",
+   "special": "none; returns beyond the fixed dividend come via NCIB buybacks",
+   "buyback": "NCIB renewed May 2026 for up to 5% of shares, internal cap raised to US$2bn (from US$1bn); US$400m bought in Q2 2026 (2.24m sh @ US$178.86), US$550m in H1 2026",
+   "payout": "Stated target: ~40% of annual free cash flow returned via dividend + buybacks. Estimate: H1 2026 dividends ~US$450m + buybacks US$550m = ~48% of H1 FCF US$2,067m; dividend alone ~17% of Q2 FCF (US$1,335m).",
+   "policy": "Fixed quarterly dividend (paid every year since 1983) plus NCIB, together targeting ~40% of annual FCF at current gold prices, subject to operational needs",
+   "src": [
+    "https://s205.q4cdn.com/243646470/files/doc_news/2026/_AEM-News-Release-Q2-2026-FINAL.pdf",
+    "https://www.stockwatch.com/News/Item/Z-C!AEM-3813308/C/AEM"
+   ],
+   "asof": "2026-10-11"
+  },
+  "dy": 1.0,
+  "dvtip": "Dividend yield ~1.0% at US$188.18: US$1.8 a share a year, paid quarterly. Policy: Fixed quarterly dividend (paid every year since 1983) plus NCIB, together targeting ~40% of annual FCF at current gold prices, subject to operational needs Last change: unchanged at US$0.45/qtr through 2026 (US$0.40 in 2024-25; raised to US$0.45 with Q4 2025 results, Feb 2026) Special: none; returns beyond the fixed dividend come via NCIB buybacks. Buyback: NCIB renewed May 2026 for up to 5% of shares, internal cap raised to US$2bn (from US$1bn); US$400m bought in Q2 2026 (2.24m sh @ US$178.86), US$550m in H1 2026. Shown for information only; it does not affect the ranking."
  },
  {
   "k": "wheaton",
@@ -1204,7 +1372,7 @@ var D = [
   "short": "Wheaton",
   "tick": "NYSE/TSX: WPM",
   "bk": "royalty",
-  "cap": "US$63.0B",
+  "cap": "US$62.8B",
   "slug": "wheaton-precious-metals",
   "pm": "Au·Ag (~49% / 49% of H1 revenue)",
   "aKey": "Streamer · ~87% margin · ~24× EBITDA · net debt US$1.9B",
@@ -1231,7 +1399,26 @@ var D = [
    "conf": "medium",
    "odds": "no odds change",
    "s": 2
-  }
+  },
+  "dv": {
+   "dps": 0.78,
+   "ccy": "US$",
+   "freq": "quarterly",
+   "last": "US$0.195 declared 6 Aug 2026 (3rd quarterly dividend 2026), record/ex 20 Aug, paid ~3 Sep 2026",
+   "change": "raised 18% from US$0.165 (Q4 2025) to US$0.195 with the Q1 2026 dividend declared 12 Mar 2026; held at US$0.195 since. 2025 total was US$0.66",
+   "special": "none",
+   "buyback": "none active (no NCIB mentioned in 2026 dividend releases)",
+   "payout": "Estimate: ~US$0.78 x ~454m shares = ~US$355m/yr, roughly 18-20% of trailing operating cash flow; no ratio stated by company",
+   "policy": "Progressive dividend policy since Mar 2024 (replaced the former 30%-of-trailing-four-quarter operating cash flow formula); amount at board discretion each quarter",
+   "src": [
+    "https://s203.q4cdn.com/976005377/files/doc_news/2026/Aug/06/26-08-06-Third-Dividend-Payment.pdf",
+    "https://www.sec.gov/Archives/edgar/data/1323404/000127956926000213/ex991.htm",
+    "https://www.lse.co.uk/rns/WPM/wheaton-announces-increase-to-quarterly-2a5fpazuqxgk88c.html"
+   ],
+   "asof": "2026-10-11"
+  },
+  "dy": 0.6,
+  "dvtip": "Dividend yield ~0.6% at US$138.11: US$0.78 a share a year, paid quarterly. Policy: Progressive dividend policy since Mar 2024 (replaced the former 30%-of-trailing-four-quarter operating cash flow formula); amount at board discretion each quarter Last change: raised 18% from US$0.165 (Q4 2025) to US$0.195 with the Q1 2026 dividend declared 12 Mar 2026; held at US$0.195 since. 2025 total was US$0.66 Buyback: none active (no NCIB mentioned in 2026 dividend releases). Shown for information only; it does not affect the ranking."
  },
  {
   "k": "franco",
@@ -1255,7 +1442,7 @@ var D = [
   "short": "Franco-Nevada",
   "tick": "NYSE/TSX: FNV",
   "bk": "royalty",
-  "cap": "US$47.2B",
+  "cap": "US$47.4B",
   "slug": "franco-nevada",
   "pm": "Au 68% · Ag 16% · energy ~10% of H1 revenue",
   "aKey": "Royalties · zero debt · ~91% margin · 435 assets · ~22× EBITDA",
@@ -1282,6 +1469,28 @@ var D = [
    "conf": "medium",
    "odds": "no odds change",
    "s": 3
+  },
+  "dv": {
+   "dps": 1.76,
+   "ccy": "US$",
+   "freq": "quarterly",
+   "last": "US$0.44 declared 12 May 2026 (Q1 2026 results), record 11 Jun, paid 25 Jun 2026 (Q2 declaration in Aug 2026 also US$0.44; rate applies to all four 2026 quarters)",
+   "change": "raised ~16% from US$0.38 to US$0.44 on 26 Jan 2026 - 19th consecutive annual increase",
+   "special": "none",
+   "buyback": "none (debt-free; FCF used for portfolio additions and dividends; DRIP issues treasury shares at 1% discount)",
+   "payout": "Estimate: ~US$1.76 x ~193m shares = ~US$340m/yr; Q1 2026 dividend ~US$85m = ~18% of Q1 net income (US$468.6m, US$2.43/sh) and ~16% of operating cash flow (US$520.4m)",
+   "policy": "Annually increased quarterly dividend, set each January for the full year; no formula, no buyback",
+   "src": [
+    "https://www.newswire.ca/en/releases/archive/January2026/26/c8117.html",
+    "https://wwww.stockwatch.com/News/Item/Z-C!FNV-3819415/C/FNV"
+   ],
+   "asof": "2026-10-11"
+  },
+  "dy": 0.7,
+  "dvtip": "Dividend yield ~0.7% at US$245.75: US$1.76 a share a year, paid quarterly. Policy: Annually increased quarterly dividend, set each January for the full year; no formula, no buyback Last change: raised ~16% from US$0.38 to US$0.44 on 26 Jan 2026 - 19th consecutive annual increase Buyback: none (debt-free; FCF used for portfolio additions and dividends; DRIP issues treasury shares at 1% discount). Shown for information only; it does not affect the ranking.",
+  "tie": {
+   "dir": "up",
+   "tip": "Tie-break: ranked above Coeur (3%), Agnico (3%), Wheaton (3%) with ~2%. Odds within 2 points count as a tie; then the company with more room for a 2nd 3× goes first, then the team with more skin in the game. Here Franco-Nevada has more skin in the game (Coeur: 3 vs 2, Agnico: 3 vs 2, Wheaton: 3 vs 2)."
   }
  }
 ];
@@ -1290,7 +1499,7 @@ var SC = ["Progress", "3,500 / 54", "4,500 / 69", "5,500 / 85", "6,500 / 100", "
 var BK = {"value": "Cheap defined ounces", "grade": "Grade / discovery", "quality": "Quality / jurisdiction", "scale": "Scale & financing", "producer": "Producer / cash flow", "royalty": "Royalty & streaming"};
 var DIV = {"a": "not yet a compounder. Costs are too high, or rising too fast, for these companies to keep earning well if metal prices fall.", "b": "no better than luck. A typical mid-size producer has roughly a 1-in-20 (~5%) chance of tripling in 4–5 years; these don't beat that. Good businesses to own — just not bets on a triple."};
 var MB = {"au": "Au", "ag": "Ag", "mixed": "Au·Ag", "other": "Mn"};
-var HIST = {"snaps": [{"d": "2026-10-02", "headline": "Starting point for the history: the page was audited and list B now ranks on the odds of a 3×.", "px": "", "low": {"a": 10, "b": 7}, "rows": {"firstmajestic": {"a": 7, "b": 4, "p3": 9, "rs": 3}, "iamgold": {"a": 6, "b": 6, "p3": 7, "rs": 3}, "hecla": {"a": 2, "b": 8, "p3": 3, "rs": 2}, "equinox": {"a": 5, "b": 5, "p3": 7, "rs": 3}, "fresnillo": {"a": 3, "b": 9, "p3": 2, "rs": 2}, "b2gold": {"a": 8, "b": 3, "p3": 10, "rs": 3}, "paas": {"a": 1, "b": 10, "p3": 2, "rs": 2}, "coeur": {"a": 4, "b": 7, "p3": 3, "rs": 3}, "aya": {"a": 9, "b": 1, "p3": 13, "rs": 3}, "avino": {"a": 10, "b": 2, "p3": 11, "rs": 3}}}, {"d": "2026-10-03", "headline": "Three seniors added: Agnico Eagle goes straight to first on the compounder list, with Franco-Nevada and Wheaton second and third in a new royalty & streaming bucket. Cost-curve positions added; B2Gold drops below the line and Avino is flagged for its cost climb.", "px": "Gold ~US$4,160 · silver ~US$60.7 (2 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 4, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 6, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 8, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 5, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 11, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 3, "p3": 10, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 12, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 7, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 9, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 10, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 13, "p3": 2, "rs": 2}}}, {"d": "2026-10-04", "headline": "Runway labels added: only Aya has a long runway; the seniors and royalty companies compound rather than multiply. Two near-ties in list B swap (IAMGOLD above Equinox, Hecla above Coeur). No odds changed.", "px": "Gold ~US$4,160 · silver ~US$60.7 (2 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 4, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 5, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 11, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 3, "p3": 10, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 12, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 8, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 9, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 10, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 13, "p3": 2, "rs": 2}}}, {"d": "2026-10-05", "headline": "No new releases or outside news for the producers and royalty companies. Prices stay at the 2 Oct close; no ranking changes.", "px": "Gold ~US$4,140 · silver ~US$60.3 (2 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 4, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 5, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 11, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 3, "p3": 10, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 12, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 8, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 9, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 10, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 13, "p3": 2, "rs": 2}}}, {"d": "2026-10-06", "headline": "No material news for the producers and royalty companies. Prices to the 6 Oct close (B2Gold kept at 5 Oct); no ranking or odds changes.", "px": "Gold ~US$4,166 · silver ~US$61.2 (6 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 3, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 4, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 12, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 5, "p3": 9, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 13, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 9, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 10, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 11, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 8, "p3": 2, "rs": 2}}}, {"d": "2026-10-07", "headline": "No material news: a Wheaton results-date notice and no Cobre Panamá decision yet. Prices to the 7 Oct close; no ranking or odds changes.", "px": "Gold ~US$4,110 · silver ~US$59.7 (7 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 3, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 4, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 12, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 5, "p3": 9, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 13, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 9, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 10, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 11, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 8, "p3": 2, "rs": 2}}}, {"d": "2026-10-08", "headline": "Quiet day: First Majestic's Q3 output fell on a San Dimas labour dispute (watch) and Pan American set its results date. Prices to the 8 Oct close (Fresnillo at 7 Oct); no ranking or odds changes.", "px": "Gold ~US$4,130 · silver ~US$59.2 (8 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 3, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 4, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 12, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 5, "p3": 9, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 13, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 9, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 10, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 11, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 8, "p3": 2, "rs": 2}}}, {"d": "2026-10-09", "headline": "First Majestic's San Dimas dispute became a formal strike (watch). Prices to the 9 Oct close for four names, others kept at 8 Oct; no ranking or odds changes.", "px": "Gold ~US$4,200 · silver ~US$61 (9 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 3, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 4, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 12, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 5, "p3": 9, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 13, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 9, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 10, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 11, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 8, "p3": 2, "rs": 2}}}, {"d": "2026-10-10", "headline": "Quiet week for producers: First Majestic's San Dimas strike continues and Cobre Panamá is still undecided (both on watch). Prices to the 9 Oct close; odds and ranks unchanged.", "px": "Gold ~US$4,216 · silver ~US$61.0 (9 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 3, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 4, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 12, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 5, "p3": 9, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 13, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 9, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 10, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 11, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 8, "p3": 2, "rs": 2}}}], "events": [{"d": "2026-10-03", "t": "new", "co": "Agnico Eagle", "ks": ["agnico"], "x": "US$93B · lower-half costs (~31st percentile), US$3.3B net cash, ~85% Canada, ~8.9× EBITDA — 1st on the compounder list. Barnat wall failure costs up to ~150 koz a year in 2027–28."}, {"d": "2026-10-03", "t": "new", "co": "Franco-Nevada · Wheaton", "ks": ["franco", "wheaton"], "x": "Royalty & streaming: ~87–92% margins and no capex, at ~22–24× EBITDA. Franco-Nevada 2nd (zero debt, 435 assets); Wheaton 3rd (US$1.9B debt after Antamina, Salobo 34% of revenue)."}, {"d": "2026-10-03", "t": "hot", "co": "Avino", "ks": ["avino"], "x": "Cost curve: from ~26th percentile (2025) to ~83rd on Q2 costs — the lower-to-upper-half move. Fix (long-hole stoping) unproven; Q3 results in November are the test."}, {"d": "2026-10-03", "t": "watch", "co": "B2Gold", "ks": ["b2gold"], "x": "Top decile of the cost curve (~89th), up from ~57th in 2025 — the reason it drops below the compounder line."}, {"d": "2026-10-03", "t": "watch", "co": "First Majestic", "ks": ["firstmajestic"], "x": "Crossed the middle of the cost curve (~49th → ~60th): borderline."}, {"d": "2026-10-03", "t": "news", "co": "Avino", "ks": ["avino"], "x": "Management now describes a standalone 2,500–3,000 tpd La Preciosa mill producing from ~2030 (spoken 29 Sep). Chance it works ~20%, multiple if it works ~1.5–2.3×; odds stay ~11%."}, {"d": "2026-10-03", "t": "news", "co": "Pan American", "ks": ["paas"], "x": "Silver segment sits ~61st on the cost curve: Juanicipio is first-quartile, the segment as a whole is not."}, {"d": "2026-10-03", "t": "fix", "co": "Coeur", "ks": ["coeur"], "x": "Debt breakdown corrected: no note matures before Feb 2029."}, {"d": "2026-10-04", "t": "method", "co": "IAMGOLD · Hecla", "ks": ["iamgold", "hecla"], "x": "List B tie-break by runway (odds unchanged): IAMGOLD 6→5, Equinox 5→6, Hecla 8→7, Coeur 7→8."}, {"d": "2026-10-05", "t": "watch", "co": "Avino", "ks": ["avino"], "src": "manual", "x": "Management candour review: the cause of the Q2 cost jump was disclosed early, but its size was played down (guidance kept, cost per tonne cited instead of per ounce, the results release silent on it), and the 500 t/day timeline turned into a later standalone-mill plan announced only on stage. Yellow flag on the promotional-management trigger; the Q3 reports are the test."}, {"d": "2026-10-06", "t": "mgmt", "co": "Equinox", "ks": ["equinox"], "x": "Management C: chance it works 35% → 32%, 3×+ odds stay 7%. Original guidance missed three years running and three CEOs in 15 months; Beaty's money and plain disclosure keep it off D.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "B2Gold", "ks": ["b2gold"], "x": "Management C: chance it works 35% → 32%, 3×+ odds 10% → 9%. Founder retired; a career CFO is CEO. Goose capex went C$800M → C$1.54B and guidance was cut twice, with the misses buried under neutral headlines.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "Agnico", "ks": ["agnico"], "x": "Management A: chance it works 60% → 63%, 3×+ odds stay 3%. Has hit production guidance every year since the Kirkland merger, returned record cash and quantified the Malartic ounce loss by year in the headline release.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "All names", "ks": ["firstmajestic", "iamgold", "hecla", "equinox", "fresnillo", "b2gold", "paas", "coeur", "aya", "avino", "agnico", "wheaton", "franco"], "x": "Management graded A–D (track record, fit to the task, candour; neutral by default, odds moved only with evidence). A: Agnico, Wheaton · B: Aya, First Majestic, IAMGOLD, Hecla, Fresnillo, Pan American, Coeur, Avino, Franco-Nevada · C: Equinox, B2Gold.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "Aya", "ks": ["aya"], "x": "Management C → B after the owner's review: the team has already built and run a mine, which outweighs the slipped dates. Odds restored (works 39% → 42%, 3×+ odds 12% → 13%). Candour stays 2 on the card.", "src": "manual"}, {"d": "2026-10-06", "t": "watch", "co": "Franco-Nevada", "ks": ["franco"], "x": "Cobre Panamá: Panama's Chamber of Commerce backs talks with First Quantum on the commission's operate-then-close idea (Forbes Centroamérica, EFE), but President Mulino has left for Asia with no decision or deadline. No change to the card or odds."}, {"d": "2026-10-06", "t": "method", "co": "All names", "ks": ["firstmajestic", "iamgold", "hecla", "equinox", "fresnillo", "b2gold", "paas", "coeur", "aya", "avino", "agnico", "wheaton", "franco"], "x": "Skin-in-the-game score (1–5) added for every team: the management's own money at risk. It never moves the odds; it breaks near-ties in list B after runway. Track record now counts outcomes for shareholders, not the number of past failures. List B near-ties re-broken by skin: First Majestic 4→3, IAMGOLD 5→4, B2Gold 3→5, Franco-Nevada 13→8, Coeur 8→9, Agnico 9→10, Wheaton 10→11, Fresnillo 11→12, Pan American 12→13.", "src": "manual"}, {"d": "2026-10-06", "t": "news", "co": "Franco-Nevada", "ks": ["franco"], "x": "Bought 12.42% of explorer Kenorland (C$22M, from two existing holders) for investment: small next to a ~US$47B company. Cobre Panamá: still no government decision. Odds unchanged."}, {"d": "2026-10-06", "t": "news", "co": "IAMGOLD", "ks": ["iamgold"], "x": "Q3 2026 results set for 5 Nov (call 6 Nov). Calendar item only."}, {"d": "2026-10-06", "t": "watch", "co": "Aya", "ks": ["aya"], "x": "Financial statements (new tab): G&A jumped to US$7.9M in Q2 2026 from ~US$3M a quarter, while H1 2026 brought ~US$80M of free cash flow and EBRD debt fell from US$112M to US$84M. Overhead added to the management red flags; odds unchanged.", "src": "manual"}, {"d": "2026-10-06", "t": "method", "co": "All names", "ks": ["firstmajestic", "iamgold", "hecla", "equinox", "fresnillo", "b2gold", "paas", "coeur", "aya", "avino", "agnico", "wheaton", "franco"], "x": "Financials tab rolled out to every producer (revenue, margin, free cash flow, debt, dividends and buybacks) and a reporting Calendar tab added to the rankings with production and results dates. Nothing net new for this group beyond what the cards already said. Odds unchanged.", "src": "manual"}, {"d": "2026-10-07", "t": "watch", "co": "Franco-Nevada", "ks": ["franco"], "x": "Cobre Panamá: still no government decision (President Mulino abroad). A J.P. Morgan note sees a renegotiated restart as the base case, possibly not before 2027; environmental groups reject the operate-then-close idea (EFE, 7 Oct). Odds unchanged."}, {"d": "2026-10-08", "t": "watch", "co": "First Majestic", "ks": ["firstmajestic"], "x": "Q3 production: silver 3.44 Moz (−11% y/y), gold 29.6 koz (−17%), after a 12-day labour dispute at San Dimas that is not yet resolved. Guidance kept and buyback renewed; a longer stoppage would put silver guidance and AISC at risk. Odds unchanged at 9%."}, {"d": "2026-10-08", "t": "news", "co": "Pan American", "ks": ["paas"], "x": "Q3 results set for 4 Nov (call 5 Nov); director Chuck Jeannes leaves the board on 31 Oct to focus on chairing Equinox Gold. Not material; odds unchanged."}, {"d": "2026-10-09", "t": "watch", "co": "First Majestic", "ks": ["firstmajestic"], "x": "The San Dimas stoppage became a formal strike on 8 Oct (Sindicato Minero sections 21 and 22; El Siglo de Durango, La Jornada). Mining there has been stopped since 18 Sep, so Q4 output and full-year silver guidance are at risk. Odds unchanged at 9%: one bad quarter does not change the 3–5 year case; a strike into 2027 or a guidance cut would."}, {"d": "2026-10-10", "t": "watch", "co": "First Majestic", "ks": ["firstmajestic"], "x": "San Dimas strike continues (La Jornada, El Siglo de Durango, 9 Oct): the company acknowledges the production hit but gives no restart date. Mining there has been stopped since 18 Sep; odds stay at 9%, but a stoppage deep into Q4 puts 2026 silver guidance at risk."}, {"d": "2026-10-10", "t": "watch", "co": "Franco-Nevada", "ks": ["franco"], "x": "Cobre Panamá: talks with First Quantum still wait for President Mulino's go-ahead (Metro Libre, 9 Oct). No decision this week; odds unchanged at 2%."}], "first": {"firstmajestic": "2026-10-02", "iamgold": "2026-10-02", "hecla": "2026-10-02", "equinox": "2026-10-02", "fresnillo": "2026-10-02", "b2gold": "2026-10-02", "paas": "2026-10-02", "coeur": "2026-10-02", "aya": "2026-10-02", "avino": "2026-10-02", "agnico": "2026-10-03", "wheaton": "2026-10-03", "franco": "2026-10-03"}, "since": "2026-10-02"};
+var HIST = {"snaps": [{"d": "2026-10-02", "headline": "Starting point for the history: the page was audited and list B now ranks on the odds of a 3×.", "px": "", "low": {"a": 10, "b": 7}, "rows": {"firstmajestic": {"a": 7, "b": 4, "p3": 9, "rs": 3}, "iamgold": {"a": 6, "b": 6, "p3": 7, "rs": 3}, "hecla": {"a": 2, "b": 8, "p3": 3, "rs": 2}, "equinox": {"a": 5, "b": 5, "p3": 7, "rs": 3}, "fresnillo": {"a": 3, "b": 9, "p3": 2, "rs": 2}, "b2gold": {"a": 8, "b": 3, "p3": 10, "rs": 3}, "paas": {"a": 1, "b": 10, "p3": 2, "rs": 2}, "coeur": {"a": 4, "b": 7, "p3": 3, "rs": 3}, "aya": {"a": 9, "b": 1, "p3": 13, "rs": 3}, "avino": {"a": 10, "b": 2, "p3": 11, "rs": 3}}}, {"d": "2026-10-03", "headline": "Three seniors added: Agnico Eagle goes straight to first on the compounder list, with Franco-Nevada and Wheaton second and third in a new royalty & streaming bucket. Cost-curve positions added; B2Gold drops below the line and Avino is flagged for its cost climb.", "px": "Gold ~US$4,160 · silver ~US$60.7 (2 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 4, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 6, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 8, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 5, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 11, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 3, "p3": 10, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 12, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 7, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 9, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 10, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 13, "p3": 2, "rs": 2}}}, {"d": "2026-10-04", "headline": "Runway labels added: only Aya has a long runway; the seniors and royalty companies compound rather than multiply. Two near-ties in list B swap (IAMGOLD above Equinox, Hecla above Coeur). No odds changed.", "px": "Gold ~US$4,160 · silver ~US$60.7 (2 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 4, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 5, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 11, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 3, "p3": 10, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 12, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 8, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 9, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 10, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 13, "p3": 2, "rs": 2}}}, {"d": "2026-10-05", "headline": "No new releases or outside news for the producers and royalty companies. Prices stay at the 2 Oct close; no ranking changes.", "px": "Gold ~US$4,140 · silver ~US$60.3 (2 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 4, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 5, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 11, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 3, "p3": 10, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 12, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 8, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 9, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 10, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 13, "p3": 2, "rs": 2}}}, {"d": "2026-10-06", "headline": "No material news for the producers and royalty companies. Prices to the 6 Oct close (B2Gold kept at 5 Oct); no ranking or odds changes.", "px": "Gold ~US$4,166 · silver ~US$61.2 (6 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 3, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 4, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 12, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 5, "p3": 9, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 13, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 9, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 10, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 11, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 8, "p3": 2, "rs": 2}}}, {"d": "2026-10-07", "headline": "No material news: a Wheaton results-date notice and no Cobre Panamá decision yet. Prices to the 7 Oct close; no ranking or odds changes.", "px": "Gold ~US$4,110 · silver ~US$59.7 (7 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 3, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 4, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 12, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 5, "p3": 9, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 13, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 9, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 10, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 11, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 8, "p3": 2, "rs": 2}}}, {"d": "2026-10-08", "headline": "Quiet day: First Majestic's Q3 output fell on a San Dimas labour dispute (watch) and Pan American set its results date. Prices to the 8 Oct close (Fresnillo at 7 Oct); no ranking or odds changes.", "px": "Gold ~US$4,130 · silver ~US$59.2 (8 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 3, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 4, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 12, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 5, "p3": 9, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 13, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 9, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 10, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 11, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 8, "p3": 2, "rs": 2}}}, {"d": "2026-10-09", "headline": "First Majestic's San Dimas dispute became a formal strike (watch). Prices to the 9 Oct close for four names, others kept at 8 Oct; no ranking or odds changes.", "px": "Gold ~US$4,200 · silver ~US$61 (9 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 3, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 4, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 12, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 5, "p3": 9, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 13, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 9, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 10, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 11, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 8, "p3": 2, "rs": 2}}}, {"d": "2026-10-10", "headline": "Quiet week for producers: First Majestic's San Dimas strike continues and Cobre Panamá is still undecided (both on watch). Prices to the 9 Oct close; odds and ranks unchanged.", "px": "Gold ~US$4,216 · silver ~US$61.0 (9 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 3, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 4, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 12, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 5, "p3": 9, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 13, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 9, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 10, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 11, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 8, "p3": 2, "rs": 2}}}, {"d": "2026-10-12", "headline": "No new producer releases. San Dimas strike continues (watch); prices to the 12 Oct close for US and London listings. No ranking or odds changes.", "px": "Gold ~US$4,191 · silver ~US$60.3 (12 Oct close)", "low": {"a": 12, "b": 7}, "rows": {"firstmajestic": {"a": 10, "b": 3, "p3": 9, "rs": 3, "cc": 60}, "iamgold": {"a": 9, "b": 4, "p3": 7, "rs": 3, "cc": 74}, "hecla": {"a": 5, "b": 7, "p3": 3, "rs": 2, "cc": 41}, "equinox": {"a": 8, "b": 6, "p3": 7, "rs": 3, "cc": 66}, "fresnillo": {"a": 6, "b": 12, "p3": 2, "rs": 2, "cc": 39}, "b2gold": {"a": 12, "b": 5, "p3": 9, "rs": 3, "cc": 89}, "paas": {"a": 4, "b": 13, "p3": 2, "rs": 2, "cc": 59}, "coeur": {"a": 7, "b": 9, "p3": 3, "rs": 3, "cc": 63}, "aya": {"a": 11, "b": 1, "p3": 13, "rs": 3, "cc": 64}, "avino": {"a": 13, "b": 2, "p3": 11, "rs": 3, "cc": 83}, "agnico": {"a": 1, "b": 10, "p3": 3, "rs": 1, "cc": 31}, "wheaton": {"a": 3, "b": 11, "p3": 3, "rs": 2}, "franco": {"a": 2, "b": 8, "p3": 2, "rs": 2}}}], "events": [{"d": "2026-10-03", "t": "new", "co": "Agnico Eagle", "ks": ["agnico"], "x": "US$93B · lower-half costs (~31st percentile), US$3.3B net cash, ~85% Canada, ~8.9× EBITDA — 1st on the compounder list. Barnat wall failure costs up to ~150 koz a year in 2027–28."}, {"d": "2026-10-03", "t": "new", "co": "Franco-Nevada · Wheaton", "ks": ["franco", "wheaton"], "x": "Royalty & streaming: ~87–92% margins and no capex, at ~22–24× EBITDA. Franco-Nevada 2nd (zero debt, 435 assets); Wheaton 3rd (US$1.9B debt after Antamina, Salobo 34% of revenue)."}, {"d": "2026-10-03", "t": "hot", "co": "Avino", "ks": ["avino"], "x": "Cost curve: from ~26th percentile (2025) to ~83rd on Q2 costs — the lower-to-upper-half move. Fix (long-hole stoping) unproven; Q3 results in November are the test."}, {"d": "2026-10-03", "t": "watch", "co": "B2Gold", "ks": ["b2gold"], "x": "Top decile of the cost curve (~89th), up from ~57th in 2025 — the reason it drops below the compounder line."}, {"d": "2026-10-03", "t": "watch", "co": "First Majestic", "ks": ["firstmajestic"], "x": "Crossed the middle of the cost curve (~49th → ~60th): borderline."}, {"d": "2026-10-03", "t": "news", "co": "Avino", "ks": ["avino"], "x": "Management now describes a standalone 2,500–3,000 tpd La Preciosa mill producing from ~2030 (spoken 29 Sep). Chance it works ~20%, multiple if it works ~1.5–2.3×; odds stay ~11%."}, {"d": "2026-10-03", "t": "news", "co": "Pan American", "ks": ["paas"], "x": "Silver segment sits ~61st on the cost curve: Juanicipio is first-quartile, the segment as a whole is not."}, {"d": "2026-10-03", "t": "fix", "co": "Coeur", "ks": ["coeur"], "x": "Debt breakdown corrected: no note matures before Feb 2029."}, {"d": "2026-10-04", "t": "method", "co": "IAMGOLD · Hecla", "ks": ["iamgold", "hecla"], "x": "List B tie-break by runway (odds unchanged): IAMGOLD 6→5, Equinox 5→6, Hecla 8→7, Coeur 7→8."}, {"d": "2026-10-05", "t": "watch", "co": "Avino", "ks": ["avino"], "src": "manual", "x": "Management candour review: the cause of the Q2 cost jump was disclosed early, but its size was played down (guidance kept, cost per tonne cited instead of per ounce, the results release silent on it), and the 500 t/day timeline turned into a later standalone-mill plan announced only on stage. Yellow flag on the promotional-management trigger; the Q3 reports are the test."}, {"d": "2026-10-06", "t": "mgmt", "co": "Equinox", "ks": ["equinox"], "x": "Management C: chance it works 35% → 32%, 3×+ odds stay 7%. Original guidance missed three years running and three CEOs in 15 months; Beaty's money and plain disclosure keep it off D.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "B2Gold", "ks": ["b2gold"], "x": "Management C: chance it works 35% → 32%, 3×+ odds 10% → 9%. Founder retired; a career CFO is CEO. Goose capex went C$800M → C$1.54B and guidance was cut twice, with the misses buried under neutral headlines.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "Agnico", "ks": ["agnico"], "x": "Management A: chance it works 60% → 63%, 3×+ odds stay 3%. Has hit production guidance every year since the Kirkland merger, returned record cash and quantified the Malartic ounce loss by year in the headline release.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "All names", "ks": ["firstmajestic", "iamgold", "hecla", "equinox", "fresnillo", "b2gold", "paas", "coeur", "aya", "avino", "agnico", "wheaton", "franco"], "x": "Management graded A–D (track record, fit to the task, candour; neutral by default, odds moved only with evidence). A: Agnico, Wheaton · B: Aya, First Majestic, IAMGOLD, Hecla, Fresnillo, Pan American, Coeur, Avino, Franco-Nevada · C: Equinox, B2Gold.", "src": "manual"}, {"d": "2026-10-06", "t": "mgmt", "co": "Aya", "ks": ["aya"], "x": "Management C → B after the owner's review: the team has already built and run a mine, which outweighs the slipped dates. Odds restored (works 39% → 42%, 3×+ odds 12% → 13%). Candour stays 2 on the card.", "src": "manual"}, {"d": "2026-10-06", "t": "watch", "co": "Franco-Nevada", "ks": ["franco"], "x": "Cobre Panamá: Panama's Chamber of Commerce backs talks with First Quantum on the commission's operate-then-close idea (Forbes Centroamérica, EFE), but President Mulino has left for Asia with no decision or deadline. No change to the card or odds."}, {"d": "2026-10-06", "t": "method", "co": "All names", "ks": ["firstmajestic", "iamgold", "hecla", "equinox", "fresnillo", "b2gold", "paas", "coeur", "aya", "avino", "agnico", "wheaton", "franco"], "x": "Skin-in-the-game score (1–5) added for every team: the management's own money at risk. It never moves the odds; it breaks near-ties in list B after runway. Track record now counts outcomes for shareholders, not the number of past failures. List B near-ties re-broken by skin: First Majestic 4→3, IAMGOLD 5→4, B2Gold 3→5, Franco-Nevada 13→8, Coeur 8→9, Agnico 9→10, Wheaton 10→11, Fresnillo 11→12, Pan American 12→13.", "src": "manual"}, {"d": "2026-10-06", "t": "news", "co": "Franco-Nevada", "ks": ["franco"], "x": "Bought 12.42% of explorer Kenorland (C$22M, from two existing holders) for investment: small next to a ~US$47B company. Cobre Panamá: still no government decision. Odds unchanged."}, {"d": "2026-10-06", "t": "news", "co": "IAMGOLD", "ks": ["iamgold"], "x": "Q3 2026 results set for 5 Nov (call 6 Nov). Calendar item only."}, {"d": "2026-10-06", "t": "watch", "co": "Aya", "ks": ["aya"], "x": "Financial statements (new tab): G&A jumped to US$7.9M in Q2 2026 from ~US$3M a quarter, while H1 2026 brought ~US$80M of free cash flow and EBRD debt fell from US$112M to US$84M. Overhead added to the management red flags; odds unchanged.", "src": "manual"}, {"d": "2026-10-06", "t": "method", "co": "All names", "ks": ["firstmajestic", "iamgold", "hecla", "equinox", "fresnillo", "b2gold", "paas", "coeur", "aya", "avino", "agnico", "wheaton", "franco"], "x": "Financials tab rolled out to every producer (revenue, margin, free cash flow, debt, dividends and buybacks) and a reporting Calendar tab added to the rankings with production and results dates. Nothing net new for this group beyond what the cards already said. Odds unchanged.", "src": "manual"}, {"d": "2026-10-07", "t": "watch", "co": "Franco-Nevada", "ks": ["franco"], "x": "Cobre Panamá: still no government decision (President Mulino abroad). A J.P. Morgan note sees a renegotiated restart as the base case, possibly not before 2027; environmental groups reject the operate-then-close idea (EFE, 7 Oct). Odds unchanged."}, {"d": "2026-10-08", "t": "watch", "co": "First Majestic", "ks": ["firstmajestic"], "x": "Q3 production: silver 3.44 Moz (−11% y/y), gold 29.6 koz (−17%), after a 12-day labour dispute at San Dimas that is not yet resolved. Guidance kept and buyback renewed; a longer stoppage would put silver guidance and AISC at risk. Odds unchanged at 9%."}, {"d": "2026-10-08", "t": "news", "co": "Pan American", "ks": ["paas"], "x": "Q3 results set for 4 Nov (call 5 Nov); director Chuck Jeannes leaves the board on 31 Oct to focus on chairing Equinox Gold. Not material; odds unchanged."}, {"d": "2026-10-09", "t": "watch", "co": "First Majestic", "ks": ["firstmajestic"], "x": "The San Dimas stoppage became a formal strike on 8 Oct (Sindicato Minero sections 21 and 22; El Siglo de Durango, La Jornada). Mining there has been stopped since 18 Sep, so Q4 output and full-year silver guidance are at risk. Odds unchanged at 9%: one bad quarter does not change the 3–5 year case; a strike into 2027 or a guidance cut would."}, {"d": "2026-10-10", "t": "watch", "co": "First Majestic", "ks": ["firstmajestic"], "x": "San Dimas strike continues (La Jornada, El Siglo de Durango, 9 Oct): the company acknowledges the production hit but gives no restart date. Mining there has been stopped since 18 Sep; odds stay at 9%, but a stoppage deep into Q4 puts 2026 silver guidance at risk."}, {"d": "2026-10-10", "t": "watch", "co": "Franco-Nevada", "ks": ["franco"], "x": "Cobre Panamá: talks with First Quantum still wait for President Mulino's go-ahead (Metro Libre, 9 Oct). No decision this week; odds unchanged at 2%."}, {"d": "2026-10-12", "t": "watch", "co": "First Majestic", "ks": ["firstmajestic"], "x": "San Dimas strike still on as of 12 Oct (Construnoticias; La Jornada and Radar Laboral on 9 Oct): no talks, agreement or restart reported. Odds unchanged."}, {"d": "2026-10-12", "t": "watch", "co": "Franco-Nevada", "ks": ["franco"], "x": "Unconfirmed report: after the Mw 7.7 Panama earthquake on 9 Oct (epicentre in Herrera, far from Colón), SMM citing Xinhua says Cobre Panamá's facilities are stable. No restart decision yet; odds unchanged."}], "first": {"firstmajestic": "2026-10-02", "iamgold": "2026-10-02", "hecla": "2026-10-02", "equinox": "2026-10-02", "fresnillo": "2026-10-02", "b2gold": "2026-10-02", "paas": "2026-10-02", "coeur": "2026-10-02", "aya": "2026-10-02", "avino": "2026-10-02", "agnico": "2026-10-03", "wheaton": "2026-10-03", "franco": "2026-10-03"}, "since": "2026-10-02"};
 var HISTURL = "hist.html#pmp";
 
 (function(){
@@ -1300,6 +1509,8 @@ var HISTURL = "hist.html#pmp";
   var hasCC = D.some(function(d){ return d.cc; });
   function ord(n){ var v = n % 100; if(v >= 11 && v <= 13) return n + "th"; return n + ({1:"st",2:"nd",3:"rd"}[n % 10] || "th"); }
   function mb(d){ return d.m && MB[d.m] ? "<span class='mb' style='color:" + (CFG.mbcol[d.m] || "var(--mute)") + "' title='" + esc(CFG.MBT[d.m] || "") + "'>" + esc(MB[d.m]) + "</span>" : ""; }
+  function tieb(d){ return d.tie ? "<span class='tieb " + d.tie.dir + "' title='" + esc(d.tie.tip) + "'>tie " + (d.tie.dir === "up" ? "↑" : "↓") + "</span>" : ""; }
+  function dvb(d){ return d.dy != null ? "<span class='dvb' title='" + esc(d.dvtip || "") + "'>Div " + d.dy.toFixed(1) + "%</span>" : ""; }
   function pk(d){ return d.pick ? "<span class='pk' title='My pick: entry plan in the tracker (does not affect the ranking)'>&#x1F4B8;</span>" : ""; }
   function tgx(d){ return d.tagx ? "<span class='tgx' title='" + esc(d.tagx.tip || "") + "'>" + esc(d.tagx.t) + "</span>" : ""; }
   function late(d){ return d.late ? "<sup class='dg' title='Key trigger may fall at or beyond the 3–5 year horizon'>†</sup>" : ""; }
@@ -1426,7 +1637,7 @@ var HISTURL = "hist.html#pmp";
   Array.prototype.forEach.call(document.querySelectorAll(".wseg button"), function(b){ b.addEventListener("click", function(){ applyWindow(b.getAttribute("data-w")); }); });
 
   /* ---------- the two tables ---------- */
-  function rankCell(d, key){ return "<td class='c-n'><span class='rkn " + key + (low(d,key) ? " lo" : "") + "'>" + d[key] + "</span>" + mv(d, key) + "<span class='nmw'><b>" + esc(d.short) + "</b>" + mb(d) + pk(d) + late(d) + tgx(d) + "<span class='tk'>" + esc(d.tick) + "</span></span></td>"; }
+  function rankCell(d, key){ return "<td class='c-n'><span class='rkn " + key + (low(d,key) ? " lo" : "") + "'>" + d[key] + "</span>" + mv(d, key) + "<span class='nmw'><b>" + esc(d.short) + "</b>" + mb(d) + dvb(d) + pk(d) + late(d) + tgx(d) + "<span class='tk'>" + esc(d.tick) + "</span></span></td>"; }
   function scHead(s, i){ var pr = s.split(" / "); return pr.length === 2 ? "Au " + pr[0] + "<span class='s'>Ag " + pr[1] + "</span>" : esc(s) + "<span class='s'>" + (i === 0 ? "own study deck" : "&nbsp;") + "</span>"; }
   function renderTables(){
     ["a", "b"].forEach(function(key){
@@ -1463,7 +1674,7 @@ var HISTURL = "hist.html#pmp";
           if(hasCC) cells.push("<td>" + (d.cc ? ccMini(d.cc, true) + "<span class='ccn " + ccCls(d.cc) + "'>" + ord(d.cc.p) + (d.cc.est ? "*" : "") + "</span>" : (d.ccna ? "<span class='ccna' title='Royalty and streaming companies pay a fixed price per ounce, so the mine cost curve does not apply'>" + esc(d.ccna) + "</span>" : "")) + "</td>");
           cells.push("<td class='r num'>" + esc(d.cap) + "</td>");
         } else {
-          cells.push("<td class='r'><span class='oc'>" + ob(d.p3) + "<span class='v" + (d.p3 < BASE ? " lo" : "") + "'>~" + d.p3 + "%</span></span></td>");
+          cells.push("<td class='r'><span class='oc'>" + ob(d.p3) + "<span class='vw'><span class='v" + (d.p3 < BASE ? " lo" : "") + "'>~" + d.p3 + "%</span>" + tieb(d) + "</span></span></td>");
           cells.push("<td class='r num'>~" + d.pw + "%</td>");
           cells.push("<td class='r num'>" + esc(d.mw) + "</td>");
           cells.push("<td>" + rwb(d) + "</td>");
@@ -1497,7 +1708,7 @@ var HISTURL = "hist.html#pmp";
       var r = d[key], lo = low(d, key);
       if(r === LOW_FROM[key]) h += "<div class='divider' role='separator'><b>▼ Below this line:</b> " + esc(DIV[key]) + "</div>";
       var why = split1(d[key + "Why"]);
-      var head = "<div class='l1'><span class='nm'>" + esc(d.name) + "</span>" + mb(d) + pk(d) + tgx(d) + "<span class='tk'>" + esc(d.tick) + "</span>" +
+      var head = "<div class='l1'><span class='nm'>" + esc(d.name) + "</span>" + mb(d) + dvb(d) + pk(d) + tgx(d) + "<span class='tk'>" + esc(d.tick) + "</span>" + (key === "b" ? tieb(d) : "") +
         (key === "b" ? "<span class='hm'>" + ob(d.p3) + "<span class='o3'>~" + d.p3 + "%<small>3×+</small></span></span>" : "<span class='hm'><span class='rsb r" + d.rs + "' title='Risk " + d.rs + " of 5'>" + d.rs + "</span></span>") + "</div>";
       var l2 = "<div class='l2'>" + esc(d[key + "Key"]) + "</div>";
       var facts = key === "b"
@@ -1506,6 +1717,7 @@ var HISTURL = "hist.html#pmp";
       var sum = "<summary><div class='rk'>" + r + "<div class='rkm' data-mv='" + key + ":" + d.k + "' hidden></div></div><div class='rm'>" + head + l2 + facts + "<p class='gist'>" + esc(why[0]) + "</p><span class='mo'><span class='t1'>More</span><span class='t2'>Less</span></span></div></summary>";
       var more = "<div class='more'>" + (why[1] ? "<p>" + esc(why[1]) + "</p>" : "") +
         (key === "b" ? "<p class='wif'><b>Works if:</b> " + esc(d.wi) + "</p>" : "") +
+        (key === "b" && d.tie ? "<p class='tiep'><span class='tieb " + d.tie.dir + "'>tie " + (d.tie.dir === "up" ? "↑" : "↓") + "</span> " + esc(d.tie.tip) + "</p>" : "") +
         "<div class='kv'>" +
           "<div class='k'>Risk</div><div class='v'><span class='rsb r" + d.rs + "'>" + d.rs + "</span>" + esc(d.rsWhy) + "</div>" +
           (key === "b" && d.rw ? "<div class='k'>Room for a 2nd 3×</div><div class='v'>" + rwb(d) + " " + esc(d.rwWhy) + (mon(d) ? " <b>Monster watch:</b> re-checked every Saturday; re-scored when a big catalyst moves inside the 3–5 year window." : "") + "</div>" : "") +
@@ -1571,7 +1783,7 @@ document.addEventListener("click", function(e){ var a = e.target.closest && e.ta
 .cw-disc .cw-meta { font-variant-numeric:tabular-nums; }
 </style>
 <p><strong>Not investment advice.</strong> Personal research notes by Chung Huynh — views, rankings and estimates may be wrong or out of date. Do your own research.</p>
-<p class="cw-meta">Synced 11 Oct 2026 · Visits and anonymous usage are counted with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>: no cookies, nothing that identifies you. · <a href="/" target="_top">chungwin.com</a></p>
+<p class="cw-meta">Synced 13 Oct 2026 · Visits and anonymous usage are counted with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>: no cookies, nothing that identifies you. · <a href="/" target="_top">chungwin.com</a></p>
 </div>
 </body>
 </html>

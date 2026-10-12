@@ -143,6 +143,12 @@ table.ct{ width:100%; border-collapse:collapse; font-size:13.5px; font-variant-n
 .rsb.r1{ background:#4FB3A3; } .rsb.r2{ background:#8CC9A0; } .rsb.r3{ background:#D4A24C; } .rsb.r4{ background:#E0875A; } .rsb.r5{ background:#D46A5E; }
 
 /* metal badge + pick */
+.tieb{ display:inline-block; margin-left:6px; padding:0 5px; border-radius:4px; font-size:10.5px; font-weight:600; line-height:1.5; letter-spacing:.01em; white-space:nowrap; cursor:help; color:var(--ink2); background:rgba(194,201,204,.10); border:1px dashed rgba(194,201,204,.45); vertical-align:1px; }
+.vw{ position:relative; }
+.vw .tieb{ position:absolute; top:100%; right:0; margin:3px 0 0; }
+.tieb.up{ color:#E6A867; border-color:rgba(230,168,103,.55); background:rgba(230,168,103,.08); }
+.tiep{ font-size:13.5px; line-height:1.55; color:var(--ink2); margin:6px 0 10px; }
+.dvb{ display:inline-block; vertical-align:1px; margin-left:6px; font-size:10.5px; font-weight:600; letter-spacing:.01em; padding:0 5px; border-radius:4px; color:#72C9A9; border:1.5px solid rgba(114,201,169,.55); line-height:1.4; cursor:help; white-space:nowrap; }
 .mb{ display:inline-block; vertical-align:1px; margin-left:6px; font-size:10.5px; font-weight:700; letter-spacing:.02em; padding:0 5px; border-radius:4px; border:1.5px solid currentColor; line-height:1.4; }
 .pk{ margin-left:5px; font-size:13px; }
 .dg{ color:var(--b); font-weight:600; margin-left:2px; font-size:.85em; }
@@ -482,8 +488,8 @@ details.row[open] .mo .t1, details.row:not([open]) .mo .t2{ display:none; }
       <p class="tin"><b>One number per company: the chance its share price at least triples within 3–5 years.</b> 20% means roughly a 1-in-5 chance. The tick on each bar marks ~10%, the odds any small mining stock has by luck alone: above the line beats luck, below it does not. Ordered by those odds, not by the size of the dream. A 3× here is the first step toward a 5–10×.</p>
       <ul class="keys" aria-label="How to read a row"><li><b>Works</b> the chance the company's plan succeeds</li><li><b>If it works</b> how far the share could rise if it does</li><li><b>3×+</b> both together: the odds of at least a triple</li><li><b>2nd 3×</b> room to triple again by about year 10</li><li><b>Mgmt</b> the people, graded A to D</li><li><b>Price columns</b> what today's market value could become if the metal settles at that price (arithmetic, not a forecast)</li></ul>
       <div class="tscroll"><table class="ct" id="tb" aria-label="Ranking B, Multi-bagger"></table></div>
-      <p class="tin tin2">A 3× in 3–5 years is the first step toward a 10× in 10 years. <b>2nd 3×</b> asks whether there is room for a second step after it (yes / partly / little; not a question of cash). When two companies' odds are within 2 points, the one with more room for a second step ranks first; if that is equal, the team with more of its own money at stake ranks first.</p>
-      <div class="legend"><span><span class="ob"><i style="width:60%"></i><s style="left:33%"></s></span> odds of a 3×; the tick is the ~10% luck line</span><span class="lg-rw"><b>2nd 3×?</b> — after a first 3× in years 1–5, is there room for <b>another 3× by about year 10</b>? Not about cash (that is on the card's Financials tab). <span class="rwb long">Yes</span> a believable path (big or growing resource, several assets, growth paid from cash flow) · <span class="rwb medium">Partly</span> capped or dependent on the metal price · <span class="rwb short">Little</span> the first re-rating is most of the value · <span class="mwt">watch</span> room for a 2nd 3×, but the big catalysts fall after year 5</span><span><b>Price columns</b> multiple of today's market cap if the market adopts that metal price</span><span><b>In A</b> rank in list A</span><span><b>Risk 1–5</b> chance of permanent loss or no re-rate (1 lowest)</span><span class="lg-mg"><b>Mgmt</b> — the people, graded on track record, fit to this exact job and candour (promises vs delivery): <span class="mgb gA">A<span class="mgst">★</span></span> tier 1 · <span class="mgb gB">B</span> solid, or unproven but clean (the default) · <span class="mgb gC">C</span> real weaknesses · <span class="mgb gD">D</span> a pattern of failing shareholders. Odds move only with evidence; hover a grade for the reason, the tracker card has the full review. <b>Skin in the game</b> (1–5, in the hover) is the team's own money at risk, a conviction signal that never moves the odds but breaks near-ties in list B.</span><span><b>†</b> key trigger may fall at or beyond the 3–5 year horizon</span><span>&#x1F4B8; my pick (doesn't affect the ranking)</span></div>
+      <p class="tin tin2">A 3× in 3–5 years is the first step toward a 10× in 10 years. <b>2nd 3×</b> asks whether there is room for a second step after it (yes / partly / little; not a question of cash). When two companies' odds are within 2 points, they count as a tie: the one with more room for a second step ranks first; if that is equal, the team with more of its own money at stake ranks first. Rows moved this way are marked <span class="tieb up">tie ↑</span> (ranked above higher odds) or <span class="tieb down">tie ↓</span> (ranked below lower odds); hover the mark for who and why.</p>
+      <div class="legend"><span><span class="ob"><i style="width:60%"></i><s style="left:33%"></s></span> odds of a 3×; the tick is the ~10% luck line</span><span class="lg-rw"><b>2nd 3×?</b> — after a first 3× in years 1–5, is there room for <b>another 3× by about year 10</b>? Not about cash (that is on the card's Financials tab). <span class="rwb long">Yes</span> a believable path (big or growing resource, several assets, growth paid from cash flow) · <span class="rwb medium">Partly</span> capped or dependent on the metal price · <span class="rwb short">Little</span> the first re-rating is most of the value · <span class="mwt">watch</span> room for a 2nd 3×, but the big catalysts fall after year 5</span><span><span class="tieb up">tie ↑</span> <span class="tieb down">tie ↓</span> moved by the tie-break: odds within 2 points count as a tie, then room for a 2nd 3×, then skin in the game decide the order</span><span><b>Price columns</b> multiple of today's market cap if the market adopts that metal price</span><span><b>In A</b> rank in list A</span><span><b>Risk 1–5</b> chance of permanent loss or no re-rate (1 lowest)</span><span class="lg-mg"><b>Mgmt</b> — the people, graded on track record, fit to this exact job and candour (promises vs delivery): <span class="mgb gA">A<span class="mgst">★</span></span> tier 1 · <span class="mgb gB">B</span> solid, or unproven but clean (the default) · <span class="mgb gC">C</span> real weaknesses · <span class="mgb gD">D</span> a pattern of failing shareholders. Odds move only with evidence; hover a grade for the reason, the tracker card has the full review. <b>Skin in the game</b> (1–5, in the hover) is the team's own money at risk, a conviction signal that never moves the odds but breaks near-ties in list B.</span><span><b>†</b> key trigger may fall at or beyond the 3–5 year horizon</span><span>&#x1F4B8; my pick (doesn't affect the ranking)</span></div>
       <div class="xs"><details class="x"><summary>How to read the odds — in plain words</summary><div class="xb"><p><b>Example: Hot Chili</b> — 3×+ <b>21%</b> · Works <b>41%</b> · If it works <b>2–5.5×</b></p>
 <ul>
 <li><b>Works</b> — the chance the company's plan succeeds. Here: Hot Chili finds a partner and the money to build its mine. 41% = a bit less than a coin flip.</li>
@@ -590,6 +596,10 @@ var D = [
    "conf": "medium",
    "odds": "no odds change",
    "s": 1
+  },
+  "tie": {
+   "dir": "down",
+   "tip": "Tie-break: ranked below Solaris (11%), Vizsla (11%), American Eagle (11%), Atex (11%) despite ~12%. Odds within 2 points count as a tie; then the company with more room for a 2nd 3× goes first, then the team with more skin in the game. Here Solaris has more room for a 2nd 3× (Yes vs Partly); more skin in the game: Vizsla (3 vs 1), American Eagle (3 vs 1), Atex (2 vs 1)."
   }
  },
  {
@@ -736,6 +746,10 @@ var D = [
    "conf": "medium",
    "odds": "no odds change",
    "s": 4
+  },
+  "tie": {
+   "dir": "down",
+   "tip": "Tie-break: ranked below Osisko (7%), Hercules (7%), Ivanhoe (7%), Coppernico (8%), Pecoy (7%) despite ~9%. Odds within 2 points count as a tie; then the company with more room for a 2nd 3× goes first, then the team with more skin in the game. Here more room for a 2nd 3×: Osisko (Yes vs Little), Hercules (Yes vs Little), Ivanhoe (Yes vs Little), Coppernico (Partly vs Little), Pecoy (Partly vs Little)."
   }
  },
  {
@@ -785,6 +799,10 @@ var D = [
    "conf": "medium",
    "odds": "no odds change",
    "s": 4
+  },
+  "tie": {
+   "dir": "down",
+   "tip": "Tie-break: ranked below Copper Giant (14%), Aldebaran (15%), Western (15%), Surge (14%) despite ~16%. Odds within 2 points count as a tie; then the company with more room for a 2nd 3× goes first, then the team with more skin in the game. Here Copper Giant, Aldebaran, Western, Surge have more room for a 2nd 3× (Yes vs Partly each)."
   }
  },
  {
@@ -932,6 +950,10 @@ var D = [
    "conf": "medium",
    "odds": "works 28% → 23%, 3×+ odds 18% → 15%",
    "s": 1
+  },
+  "tie": {
+   "dir": "down",
+   "tip": "Tie-break: ranked below Copper Giant (14%), Surge (14%), Andina (13%), Los Andes (13%), Prospect (13%), Highland (13%), Gunnison (13%) despite ~15%. Odds within 2 points count as a tie; then the company with more room for a 2nd 3× goes first, then the team with more skin in the game. Here more room for a 2nd 3×: Copper Giant (Yes vs Little), Surge (Yes vs Little), Andina (Yes vs Little), Los Andes (Yes vs Little), Prospect (Partly vs Little), Highland (Partly vs Little); Gunnison has more skin in the game (2 vs 1)."
   }
  },
  {
@@ -1030,6 +1052,10 @@ var D = [
    "conf": "medium",
    "odds": "no odds change",
    "s": 2
+  },
+  "tie": {
+   "dir": "up",
+   "tip": "Tie-break: ranked above Latin Metals (9%), Gladiator (9%), Amarc (8%) with ~7%. Odds within 2 points count as a tie; then the company with more room for a 2nd 3× goes first, then the team with more skin in the game. Here Pecoy has more room for a 2nd 3× (Latin Metals: Partly vs Little, Gladiator: Partly vs Little, Amarc: Partly vs Little)."
   }
  },
  {
@@ -1079,6 +1105,10 @@ var D = [
    "conf": "medium",
    "odds": "no odds change",
    "s": 2
+  },
+  "tie": {
+   "dir": "up",
+   "tip": "Tie-break: ranked above Kodiak (16%), Oroco (15%) with ~14%. Odds within 2 points count as a tie; then the company with more room for a 2nd 3× goes first, then the team with more skin in the game. Here Surge has more room for a 2nd 3× (Kodiak: Yes vs Partly, Oroco: Yes vs Little)."
   }
  },
  {
@@ -1225,6 +1255,10 @@ var D = [
    "conf": "low",
    "odds": "no odds change",
    "s": 3
+  },
+  "tie": {
+   "dir": "up",
+   "tip": "Tie-break: ranked above MUX / Los Azules (9%), Coppernico (8%), Latin Metals (9%), Gladiator (9%), Amarc (8%) with ~7%. Odds within 2 points count as a tie; then the company with more room for a 2nd 3× goes first, then the team with more skin in the game. Here Ivanhoe has more room for a 2nd 3× (MUX / Los Azules: Yes vs Partly, Coppernico: Yes vs Partly, Latin Metals: Yes vs Little, Gladiator: Yes vs Little, Amarc: Yes vs Little)."
   }
  },
  {
@@ -1369,6 +1403,10 @@ var D = [
    "conf": "medium",
    "odds": "works 45% → 40%, 3×+ odds 10% → 9%",
    "s": 5
+  },
+  "tie": {
+   "dir": "down",
+   "tip": "Tie-break: ranked below Osisko (7%), Hercules (7%), Ivanhoe (7%) despite ~9%. Odds within 2 points count as a tie; then the company with more room for a 2nd 3× goes first, then the team with more skin in the game. Here Osisko, Hercules, Ivanhoe have more room for a 2nd 3× (Yes vs Partly each)."
   }
  },
  {
@@ -1467,6 +1505,10 @@ var D = [
    "conf": "medium",
    "odds": "no odds change",
    "s": 2
+  },
+  "tie": {
+   "dir": "up",
+   "tip": "Tie-break: ranked above Marimaca (12%) with ~11%. Odds within 2 points count as a tie; then the company with more room for a 2nd 3× goes first, then the team with more skin in the game. Here Atex has more skin in the game (Marimaca: 2 vs 1)."
   }
  },
  {
@@ -1565,6 +1607,10 @@ var D = [
    "conf": "medium",
    "odds": "no odds change",
    "s": 2
+  },
+  "tie": {
+   "dir": "down",
+   "tip": "Tie-break: ranked below Copper Giant (14%) despite ~15%. Odds within 2 points count as a tie; then the company with more room for a 2nd 3× goes first, then the team with more skin in the game. Here Copper Giant has more skin in the game (3 vs 2)."
   }
  },
  {
@@ -1614,6 +1660,10 @@ var D = [
    "conf": "low",
    "odds": "no odds change",
    "s": 3
+  },
+  "tie": {
+   "dir": "up",
+   "tip": "Tie-break: ranked above Aldebaran (15%), Western (15%), Kodiak (16%), Oroco (15%) with ~14%. Odds within 2 points count as a tie; then the company with more room for a 2nd 3× goes first, then the team with more skin in the game. Here Copper Giant has more room for a 2nd 3× (Kodiak: Yes vs Partly, Oroco: Yes vs Little) and more skin in the game (Aldebaran: 3 vs 2, Western: 3 vs 2)."
   }
  },
  {
@@ -1759,6 +1809,10 @@ var D = [
    "conf": "medium",
    "odds": "no odds change",
    "s": 2
+  },
+  "tie": {
+   "dir": "up",
+   "tip": "Tie-break: ranked above Oroco (15%) with ~13%. Odds within 2 points count as a tie; then the company with more room for a 2nd 3× goes first, then the team with more skin in the game. Here Gunnison has more skin in the game (Oroco: 2 vs 1)."
   }
  },
  {
@@ -1973,6 +2027,8 @@ var HISTURL = "hist.html#cu";
   var hasCC = D.some(function(d){ return d.cc; });
   function ord(n){ var v = n % 100; if(v >= 11 && v <= 13) return n + "th"; return n + ({1:"st",2:"nd",3:"rd"}[n % 10] || "th"); }
   function mb(d){ return d.m && MB[d.m] ? "<span class='mb' style='color:" + (CFG.mbcol[d.m] || "var(--mute)") + "' title='" + esc(CFG.MBT[d.m] || "") + "'>" + esc(MB[d.m]) + "</span>" : ""; }
+  function tieb(d){ return d.tie ? "<span class='tieb " + d.tie.dir + "' title='" + esc(d.tie.tip) + "'>tie " + (d.tie.dir === "up" ? "↑" : "↓") + "</span>" : ""; }
+  function dvb(d){ return d.dy != null ? "<span class='dvb' title='" + esc(d.dvtip || "") + "'>Div " + d.dy.toFixed(1) + "%</span>" : ""; }
   function pk(d){ return d.pick ? "<span class='pk' title='My pick: entry plan in the tracker (does not affect the ranking)'>&#x1F4B8;</span>" : ""; }
   function tgx(d){ return d.tagx ? "<span class='tgx' title='" + esc(d.tagx.tip || "") + "'>" + esc(d.tagx.t) + "</span>" : ""; }
   function late(d){ return d.late ? "<sup class='dg' title='Key trigger may fall at or beyond the 3–5 year horizon'>†</sup>" : ""; }
@@ -2099,7 +2155,7 @@ var HISTURL = "hist.html#cu";
   Array.prototype.forEach.call(document.querySelectorAll(".wseg button"), function(b){ b.addEventListener("click", function(){ applyWindow(b.getAttribute("data-w")); }); });
 
   /* ---------- the two tables ---------- */
-  function rankCell(d, key){ return "<td class='c-n'><span class='rkn " + key + (low(d,key) ? " lo" : "") + "'>" + d[key] + "</span>" + mv(d, key) + "<span class='nmw'><b>" + esc(d.short) + "</b>" + mb(d) + pk(d) + late(d) + tgx(d) + "<span class='tk'>" + esc(d.tick) + "</span></span></td>"; }
+  function rankCell(d, key){ return "<td class='c-n'><span class='rkn " + key + (low(d,key) ? " lo" : "") + "'>" + d[key] + "</span>" + mv(d, key) + "<span class='nmw'><b>" + esc(d.short) + "</b>" + mb(d) + dvb(d) + pk(d) + late(d) + tgx(d) + "<span class='tk'>" + esc(d.tick) + "</span></span></td>"; }
   function scHead(s, i){ var pr = s.split(" / "); return pr.length === 2 ? "Au " + pr[0] + "<span class='s'>Ag " + pr[1] + "</span>" : esc(s) + "<span class='s'>" + (i === 0 ? "own study deck" : "&nbsp;") + "</span>"; }
   function renderTables(){
     ["a", "b"].forEach(function(key){
@@ -2136,7 +2192,7 @@ var HISTURL = "hist.html#cu";
           if(hasCC) cells.push("<td>" + (d.cc ? ccMini(d.cc, true) + "<span class='ccn " + ccCls(d.cc) + "'>" + ord(d.cc.p) + (d.cc.est ? "*" : "") + "</span>" : (d.ccna ? "<span class='ccna' title='Royalty and streaming companies pay a fixed price per ounce, so the mine cost curve does not apply'>" + esc(d.ccna) + "</span>" : "")) + "</td>");
           cells.push("<td class='r num'>" + esc(d.cap) + "</td>");
         } else {
-          cells.push("<td class='r'><span class='oc'>" + ob(d.p3) + "<span class='v" + (d.p3 < BASE ? " lo" : "") + "'>~" + d.p3 + "%</span></span></td>");
+          cells.push("<td class='r'><span class='oc'>" + ob(d.p3) + "<span class='vw'><span class='v" + (d.p3 < BASE ? " lo" : "") + "'>~" + d.p3 + "%</span>" + tieb(d) + "</span></span></td>");
           cells.push("<td class='r num'>~" + d.pw + "%</td>");
           cells.push("<td class='r num'>" + esc(d.mw) + "</td>");
           cells.push("<td>" + rwb(d) + "</td>");
@@ -2170,7 +2226,7 @@ var HISTURL = "hist.html#cu";
       var r = d[key], lo = low(d, key);
       if(r === LOW_FROM[key]) h += "<div class='divider' role='separator'><b>▼ Below this line:</b> " + esc(DIV[key]) + "</div>";
       var why = split1(d[key + "Why"]);
-      var head = "<div class='l1'><span class='nm'>" + esc(d.name) + "</span>" + mb(d) + pk(d) + tgx(d) + "<span class='tk'>" + esc(d.tick) + "</span>" +
+      var head = "<div class='l1'><span class='nm'>" + esc(d.name) + "</span>" + mb(d) + dvb(d) + pk(d) + tgx(d) + "<span class='tk'>" + esc(d.tick) + "</span>" + (key === "b" ? tieb(d) : "") +
         (key === "b" ? "<span class='hm'>" + ob(d.p3) + "<span class='o3'>~" + d.p3 + "%<small>3×+</small></span></span>" : "<span class='hm'><span class='rsb r" + d.rs + "' title='Risk " + d.rs + " of 5'>" + d.rs + "</span></span>") + "</div>";
       var l2 = "<div class='l2'>" + esc(d[key + "Key"]) + "</div>";
       var facts = key === "b"
@@ -2179,6 +2235,7 @@ var HISTURL = "hist.html#cu";
       var sum = "<summary><div class='rk'>" + r + "<div class='rkm' data-mv='" + key + ":" + d.k + "' hidden></div></div><div class='rm'>" + head + l2 + facts + "<p class='gist'>" + esc(why[0]) + "</p><span class='mo'><span class='t1'>More</span><span class='t2'>Less</span></span></div></summary>";
       var more = "<div class='more'>" + (why[1] ? "<p>" + esc(why[1]) + "</p>" : "") +
         (key === "b" ? "<p class='wif'><b>Works if:</b> " + esc(d.wi) + "</p>" : "") +
+        (key === "b" && d.tie ? "<p class='tiep'><span class='tieb " + d.tie.dir + "'>tie " + (d.tie.dir === "up" ? "↑" : "↓") + "</span> " + esc(d.tie.tip) + "</p>" : "") +
         "<div class='kv'>" +
           "<div class='k'>Risk</div><div class='v'><span class='rsb r" + d.rs + "'>" + d.rs + "</span>" + esc(d.rsWhy) + "</div>" +
           (key === "b" && d.rw ? "<div class='k'>Room for a 2nd 3×</div><div class='v'>" + rwb(d) + " " + esc(d.rwWhy) + (mon(d) ? " <b>Monster watch:</b> re-checked every Saturday; re-scored when a big catalyst moves inside the 3–5 year window." : "") + "</div>" : "") +
@@ -2244,7 +2301,7 @@ document.addEventListener("click", function(e){ var a = e.target.closest && e.ta
 .cw-disc .cw-meta { font-variant-numeric:tabular-nums; }
 </style>
 <p><strong>Not investment advice.</strong> Personal research notes by Chung Huynh — views, rankings and estimates may be wrong or out of date. Do your own research.</p>
-<p class="cw-meta">Synced 11 Oct 2026 · Visits and anonymous usage are counted with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>: no cookies, nothing that identifies you. · <a href="/" target="_top">chungwin.com</a></p>
+<p class="cw-meta">Synced 13 Oct 2026 · Visits and anonymous usage are counted with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>: no cookies, nothing that identifies you. · <a href="/" target="_top">chungwin.com</a></p>
 </div>
 </body>
 </html>
