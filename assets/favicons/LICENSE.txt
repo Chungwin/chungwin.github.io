@@ -5,7 +5,7 @@ Noto Emoji images are licensed under the Apache License, Version 2.0 (below).
   avocado = U+1F951 avocado    (site, blog)
   spade = U+2660  spade suit   (poker)
   coin  = U+1FA99 coin         (equities)
-  globe = U+1F310 globe with meridians (homepage thesis tile)
+  globe = U+1F30D globe showing Europe-Africa (homepage thesis tile)
 
 
                                  Apache License
