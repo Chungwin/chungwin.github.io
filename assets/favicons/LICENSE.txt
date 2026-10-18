@@ -2,7 +2,7 @@ Favicons in this folder (and /favicon.ico) are emoji from Noto Emoji by Google
 (https://github.com/googlefonts/noto-emoji), taken from the @svgmoji/noto package.
 Noto Emoji images are licensed under the Apache License, Version 2.0 (below).
 
-  avocado = U+1F951 avocado    (site, blog)
+  sprout = U+1F331 seedling     (site, blog)
   spade = U+2660  spade suit   (poker)
   coin  = U+1FA99 coin         (equities)
   globe = U+1F30D globe showing Europe-Africa (homepage thesis tile)
