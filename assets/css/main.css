@@ -125,9 +125,10 @@ body{
   transition:border-color .18s ease;
 }
 .tile:hover, .tile:focus-visible{ border-color:var(--machine); }
-.tile.metals, .tile.shark{
+.tile.thesis, .tile.metals, .tile.shark{
   background:var(--tint); border-left:3px solid var(--edge); padding-left:calc(1.1rem - 2px);
 }
+.tile.thesis{ --edge:#7a7f85; }   /* mid grey: the essay, between ink and meta */
 .tile.metals{ --edge:#C9A146; }   /* the gold of the equities pages */
 .tile.shark { --edge:#1D9E75; }   /* the felt green of Sharkline */
 .tile .kicker{
