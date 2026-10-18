@@ -2,7 +2,7 @@ Favicons in this folder (and /favicon.ico) are emoji from Noto Emoji by Google
 (https://github.com/googlefonts/noto-emoji), taken from the @svgmoji/noto package.
 Noto Emoji images are licensed under the Apache License, Version 2.0 (below).
 
-  bulb  = U+1F4A1 light bulb   (site, blog)
+  avocado = U+1F951 avocado    (site, blog)
   spade = U+2660  spade suit   (poker)
   coin  = U+1FA99 coin         (equities)
 
