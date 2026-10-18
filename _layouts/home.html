@@ -11,10 +11,45 @@ layout: default
   </h1>
 </section>
 
+{% assign eq = site.data.equities %}
+<section id="start" aria-label="Start here">
+  <p class="eyebrow">Start here</p>
+  <ul class="tiles">
+    <li>
+      <a class="tile" href="{{ '/scarce-inputs-thesis/' | relative_url }}" data-goatcounter-click="home/thesis" data-goatcounter-title="Home: thesis">
+        <p class="kicker">Essay</p>
+        <h2>The Scarce Inputs Thesis</h2>
+        <p class="blurb">An investment framework for a multipolar, energy-constrained world.</p>
+        <div class="foot"><span class="go">Read →</span></div>
+      </a>
+    </li>
+    <li>
+      <a class="tile metals" href="{{ '/equities/' | relative_url }}" data-goatcounter-click="home/equities" data-goatcounter-title="Home: equities">
+        <p class="kicker"><img src="{{ '/assets/favicons/coin.svg' | relative_url }}" alt="" width="14" height="14">Equities</p>
+        <h2>Metals research</h2>
+        <p class="blurb">Research and analysis on {% if eq.companies %}{{ eq.companies }} {% endif %}small gold, silver, copper and critical-minerals companies.</p>
+        <div class="foot">
+          <span class="go">Open →</span>
+          <span class="note">Nightly{% if eq.latest_short %} · <time datetime="{{ eq.latest | date: '%Y-%m-%d' }}">{{ eq.latest_short }}</time>{% endif %}</span>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a class="tile shark" href="{{ '/poker/' | relative_url }}" data-goatcounter-click="home/poker" data-goatcounter-title="Home: poker">
+        <p class="kicker"><img src="{{ '/assets/favicons/spade.svg' | relative_url }}" alt="" width="14" height="14">Poker trainer</p>
+        <h2>Sharkline Poker<span class="badge">beta</span></h2>
+        <p class="blurb">Drill pre- and postflop spots against the solver's answer.</p>
+        <div class="foot"><span class="go">Play →</span></div>
+      </a>
+    </li>
+  </ul>
+</section>
+
+{% assign cutoff = "2026-01-01" | date: "%s" | plus: 0 %}
 <section id="writing">
   <p class="eyebrow">Writing</p>
   <ul class="writing">
-    {% for post in site.posts %}
+    {% for post in site.posts %}{% assign ts = post.date | date: "%s" | plus: 0 %}{% if ts >= cutoff %}
     <li class="entry">
       <a class="title" href="{{ post.url | relative_url }}">
         <span class="name">{{ post.title }}</span>
@@ -24,8 +59,22 @@ layout: default
       <p class="blurb">{{ post.description }}</p>
       {% endif %}
     </li>
-    {% endfor %}
+    {% endif %}{% endfor %}
   </ul>
+
+  <div class="earlier">
+    <p class="eyebrow">Earlier · recruiting &amp; other</p>
+    <ul class="writing">
+      {% for post in site.posts %}{% assign ts = post.date | date: "%s" | plus: 0 %}{% if ts < cutoff %}
+      <li class="entry">
+        <a class="title" href="{{ post.url | relative_url }}">
+          <span class="name">{{ post.title }}</span>
+          <span class="date">{{ post.date | date: "%b %Y" }}</span>
+        </a>
+      </li>
+      {% endif %}{% endfor %}
+    </ul>
+  </div>
 </section>
 
 <script>

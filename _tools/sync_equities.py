@@ -205,6 +205,20 @@ def rebuild_hub(html: str, title: str, area: str) -> str:
     )
 
 
+def write_site_data(landing_src: pathlib.Path) -> None:
+    """_data/equities.yml feeds the homepage card: latest update date and company count.
+    Read from the landing page ("72 small mining companies") and the ranking tabs."""
+    m = re.search(r"(\d+) small mining companies", landing_src.read_text(encoding="utf-8"))
+    lines = []
+    if LATEST:
+        short = dt.datetime.strptime(LATEST, "%d %b %Y").strftime("%-d %b")
+        lines += [f"latest: {LATEST}", f"latest_short: {short}"]
+    if m:
+        lines.append(f"companies: {m.group(1)}")
+    (ROOT / "_data").mkdir(exist_ok=True)
+    (ROOT / "_data" / "equities.yml").write_text("# Written by _tools/sync_equities.py — do not edit.\n" + "\n".join(lines) + "\n", encoding="utf-8")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("landing_dir", type=pathlib.Path)
@@ -237,6 +251,8 @@ def main() -> int:
     for src, dst, title, area in hubs:
         html = rewrite_links(src.read_text(encoding="utf-8"))
         dst.write_text(rebuild_hub(html, title, area), encoding="utf-8")
+
+    write_site_data(a.landing_dir / "index.html")
 
     left = [str(p) for p in OUT.rglob("*.html") if "claude.ai/artifact" in p.read_text(encoding="utf-8")]
     if left:
