@@ -173,6 +173,8 @@ def landing_extras(html: str) -> str:
 def rewrite_links(html: str) -> str:
     for src, dst in LINKS.items():
         html = html.replace(src, dst)
+    # the artifacts' credit line ends with "Not investment advice."; on the site the disclaimer below says it already
+    html = html.replace("does the homework every night.<br>Not investment advice.</p>", "does the homework every night.</p>")
     return html
 
 
