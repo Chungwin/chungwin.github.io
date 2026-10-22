@@ -18,7 +18,6 @@ layout: default
     <div class="strata" aria-hidden="true"><i style="background:var(--gold);flex:{{ eq.pm }}"></i><i style="background:var(--copper);flex:{{ eq.cu }}"></i><i style="background:var(--violet);flex:{{ eq.cm }}"></i></div>
     <div class="legend"><span><i style="background:var(--gold)"></i>Gold &amp; silver <b>{{ eq.pm }}</b></span><span><i style="background:var(--copper)"></i>Copper <b>{{ eq.cu }}</b></span><span><i style="background:var(--violet)"></i>Critical minerals <b>{{ eq.cm }}</b></span></div>
     {% endif %}
-    <p class="build"><i aria-hidden="true"></i><span>build <b>{{ site.time | date: "%Y.%m.%d" }}</b></span>{% if eq.latest_short %}<span>research updated <b>{{ eq.latest_short }}</b></span>{% endif %}</p>
   </div>
 </section>
 
@@ -28,6 +27,7 @@ layout: default
     <div class="nm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 19h16M6 15V9M11 15V5M16 15v-4M21 15v-7"/></svg><h2>Metals research</h2></div>
     <p class="what">Who looks best now, what changed since the last close, and everything behind each score.</p>
     <p class="desc">Two lists per group — the names most likely to deliver, and the names with the best odds of a 3× — plus one card per company: thesis, gate, numbers, people, filings, every release with a verdict.</p>
+    <span class="note">Updated after every US trading day{% if eq.latest_short %} · latest {{ eq.latest_short }}{% endif %}</span>
     <span class="go" aria-hidden="true">→</span>
   </a>
   <a class="door" href="{{ '/scarce-inputs-thesis/' | relative_url }}" data-goatcounter-click="home/thesis" data-goatcounter-title="Home: thesis">

@@ -72,10 +72,6 @@ a:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radiu
 .legend span{ display:inline-flex; align-items:center; gap:7px; }
 .legend i{ width:8px; height:8px; border-radius:50%; }
 .legend b{ color:var(--ink2); font-weight:500; }
-/* build line: when the site was last built and the research last updated (machine voice, so mono) */
-.build{ display:flex; flex-wrap:wrap; align-items:center; gap:4px 16px; margin:14px 0 0; padding-top:10px; border-top:1px solid var(--line); font-family:var(--mono); font-size:11.5px; color:var(--mute); }
-.build b{ color:var(--ink2); font-weight:500; }
-.build i{ width:6px; height:6px; border-radius:50%; background:var(--gold); margin-right:-8px; }
 @media (max-width:820px){ .hero{ grid-template-columns:1fr; gap:28px; padding:36px 0 28px; } }
 
 /* ── doors (primary) and tools (secondary) ────────────── */
@@ -92,6 +88,8 @@ a:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radiu
 .doors .door:first-child h2{ font-size:40px; }
 .what{ margin:0; font-size:15.5px; color:var(--ink); line-height:1.4; max-width:40ch; }
 .desc{ margin:0; color:var(--mute); font-size:13.5px; line-height:1.5; max-width:46ch; }
+.door .note{ margin-top:auto; padding-top:8px; font-family:var(--mono); font-size:11.5px; color:var(--mute); }
+.door .note::before{ content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--gold); margin:0 8px 1px 0; }
 .go{ position:absolute; right:0; top:28px; font-size:18px; color:var(--mute); transition:color .15s, transform .15s; }
 .door:hover .go, .tool:hover .go{ color:var(--gold); transform:translate(2px,-2px); }
 .door:hover h2, .tool:hover h2{ text-decoration:underline; text-decoration-color:var(--line2); text-underline-offset:6px; text-decoration-thickness:1px; }
