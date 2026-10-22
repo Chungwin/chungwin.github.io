@@ -7,9 +7,8 @@ description: "An investment framework for hard assets in a multipolar, energy-co
 permalink: /scarce-inputs-thesis/
 ---
 
-<p style="font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-size:.78rem;line-height:1.65;color:#8d9298;border-left:2px solid #2743d6;padding-left:1rem;margin:0 0 2.2rem;">Written with AI assistance (Claude). The thesis and reasoning are mine — the AI helped me draft, structure, and stress-test them.</p>
+<p class="ai">Written with AI assistance (Claude). The thesis and reasoning are mine — the AI helped me draft, structure, and stress-test them.</p>
 
-*An investment framework for hard assets in a multipolar, energy-constrained world.*
 
 Every plausible future runs on the same physical foundations. Whatever technologies come out on top, whoever gains the upper hand in a fragmenting world, it all still needs energy and raw materials — and the supply of both is structurally constrained. That constraint is the one durable thing I'm willing to build a portfolio around.
 

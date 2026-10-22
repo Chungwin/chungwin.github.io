@@ -217,6 +217,12 @@ def write_site_data(landing_src: pathlib.Path) -> None:
         lines += [f"latest: {LATEST}", f"latest_short: {short}"]
     if m:
         lines.append(f"companies: {m.group(1)}")
+    # group split for the homepage coverage bar: "Gold &amp; silver <b>38</b>" etc. on the landing page
+    src = landing_src.read_text(encoding="utf-8")
+    for key, label in (("pm", "Gold &amp; silver"), ("cu", "Copper"), ("cm", "Critical minerals")):
+        g = re.search(re.escape(label) + r"\s*<b>(\d+)</b>", src)
+        if g:
+            lines.append(f"{key}: {g.group(1)}")
     (ROOT / "_data").mkdir(exist_ok=True)
     (ROOT / "_data" / "equities.yml").write_text("# Written by _tools/sync_equities.py — do not edit.\n" + "\n".join(lines) + "\n", encoding="utf-8")
 

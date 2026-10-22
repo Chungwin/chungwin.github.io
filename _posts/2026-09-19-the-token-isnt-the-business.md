@@ -7,9 +7,8 @@ description: "Why blockchain utility almost never makes a token valuable — a b
 permalink: /the-token-isnt-the-business/
 ---
 
-<p style="font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-size:.78rem;line-height:1.65;color:#8d9298;border-left:2px solid #2743d6;padding-left:1rem;margin:0 0 2.2rem;">Written with AI assistance (Claude). The thesis and reasoning are mine — the AI helped me draft, structure, and stress-test them.</p>
+<p class="ai">Written with AI assistance (Claude). The thesis and reasoning are mine — the AI helped me draft, structure, and stress-test them.</p>
 
-*Why blockchain utility almost never makes a token valuable — a back-of-envelope reality check.*
 
 ## Contents
 

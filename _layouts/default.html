@@ -2,66 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% if page.title %}{{ page.title }} · Chung Huynh{% else %}Chung Huynh{% endif %}</title>
-  <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}Chung Huynh writes from Hamburg about technology, markets, and the occasional philosophical detour.{% endif %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>{% if page.title %}{{ page.title }} · Chung Huynh Research &amp; Analysis{% else %}Chung Huynh Research &amp; Analysis{% endif %}</title>
+  <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}Independent research and analysis by Chung Huynh: a research desk on small mining companies, essays on markets and technology, and a few tools built on the side.{% endif %}">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
   <link rel="icon" href="/assets/favicons/sprout.svg" type="image/svg+xml">
   <link rel="icon" href="/assets/favicons/sprout-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="/assets/favicons/sprout-touch.png">
 </head>
 <body class="{% if page.background == 'white' %}bg-white{% endif %}">
+<div class="wrap">
 
-  <header class="site-head">
-    <div class="wrap head-inner">
-      <a class="mark" href="{{ '/' | relative_url }}">Chung&nbsp;Huynh</a>
-      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Menu">
-        <svg class="i-open" viewBox="0 0 20 14" width="20" height="14" aria-hidden="true"><path d="M0 1h20M0 7h20M0 13h20" stroke="currentColor" stroke-width="1.5"/></svg>
-        <svg class="i-close" viewBox="0 0 20 14" width="20" height="14" aria-hidden="true"><path d="M4 0l12 14M4 14l12-14" stroke="currentColor" stroke-width="1.5"/></svg>
-      </button>
-      <nav class="nav" id="primary-nav" aria-label="Primary">
-        <a href="{{ '/#writing' | relative_url }}">writing</a>
-        <a href="{{ '/equities/' | relative_url }}">equity research</a>
-        <a href="{{ '/poker/' | relative_url }}">poker</a>
-      </nav>
-    </div>
+  <header class="mast">
+    <a class="brand" href="{{ '/' | relative_url }}"><span class="wm">Chung Huynh</span> <span class="wm2">Research &amp; Analysis</span></a>
+    <nav class="nav" aria-label="Primary">
+      <a href="{{ '/equities/' | relative_url }}"{% if page.nav == 'research' %} class="on"{% endif %}>Research</a>
+      <a href="{{ '/#writing' | relative_url }}"{% if page.layout == 'post' %} class="on"{% endif %}>Writing</a>
+      <a href="{{ '/#tools' | relative_url }}">Tools</a>
+      <a href="{{ '/#about' | relative_url }}">About</a>
+    </nav>
   </header>
 
-  <script>
-  (function(){
-    var btn = document.querySelector('.menu-btn'), head = document.querySelector('.head-inner');
-    if (!btn || !head) return;
-    function set(open){ head.classList.toggle('open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
-    btn.addEventListener('click', function(){ set(!head.classList.contains('open')); });
-    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && head.classList.contains('open')) { set(false); btn.focus(); } });
-    document.addEventListener('click', function(e){ if (!head.contains(e.target)) set(false); });
-  })();
-  </script>
+  {{ content }}
 
-  <main class="wrap">
-    {{ content }}
-  </main>
-
-  <footer class="site-foot">
-    <div class="wrap">
-      <div class="links">
-        <a href="https://www.linkedin.com/in/chunghuynh/" data-goatcounter-click="out/linkedin" data-goatcounter-title="LinkedIn (footer)">LinkedIn</a><span class="sep">/</span>
-        <a href="https://github.com/chungwin" data-goatcounter-click="out/github" data-goatcounter-title="GitHub (footer)">GitHub</a>
-      </div>
-      <p class="colophon">
-        Chung Huynh writes from Hamburg — about technology, markets, and the occasional philosophical detour.
-      </p>
-      <p class="colophon" style="margin-top:.35rem;">
-        Visits are counted with <a href="https://www.goatcounter.com" rel="noopener" style="color:inherit;">GoatCounter</a>: no cookies, nothing that identifies you.
-      </p>
+  <footer class="foot">
+    <div class="links">
+      <a href="https://www.linkedin.com/in/chunghuynh/" data-goatcounter-click="out/linkedin" data-goatcounter-title="LinkedIn (footer)">LinkedIn</a>
+      <a href="https://github.com/chungwin" data-goatcounter-click="out/github" data-goatcounter-title="GitHub (footer)">GitHub</a>
+      <span>Visits counted with <a href="https://www.goatcounter.com" rel="noopener">GoatCounter</a> · no cookies, nothing that identifies you</span>
     </div>
+    <p class="disc">Independent research and analysis by one person, written with AI assistance. Not investment advice; small mining companies can lose most of their value.</p>
   </footer>
 
-  <!-- GoatCounter: anonymous, cookie-free page-view counts (same site code as the poker app) -->
-  <script data-goatcounter="https://chungwin.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</div>
+<!-- GoatCounter: anonymous, cookie-free page-view counts (same site code as the poker app) -->
+<script data-goatcounter="https://chungwin.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
