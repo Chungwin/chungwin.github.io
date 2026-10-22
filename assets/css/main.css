@@ -1,5 +1,5 @@
 /* ===================================================================
-   chungwin.com — Chung Huynh Research & Analysis
+   chungwin.com — Chung Huynh
    Paper research-note design: Source Serif 4 for headlines and essays,
    IBM Plex Sans for interface text, IBM Plex Mono for labels and data.
    One accent (gold) plus the three metal colours of the research desk.
@@ -40,7 +40,6 @@ a:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radiu
 .mast::after{ content:""; position:absolute; left:0; bottom:-1px; width:72px; height:1px; background:var(--gold); }
 .brand{ font-family:var(--display); font-size:22px; letter-spacing:-.005em; text-decoration:none; white-space:nowrap; }
 .brand .wm{ font-weight:500; color:var(--ink); }
-.brand .wm2{ font-weight:400; font-style:italic; color:var(--gold); }
 .nav{ display:flex; gap:22px; font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; }
 .nav a{ color:var(--mute); text-decoration:none; transition:color .15s; }
 .nav a:hover, .nav a.on{ color:var(--ink); }

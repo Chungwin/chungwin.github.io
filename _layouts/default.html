@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>{% if page.title %}{{ page.title }} · Chung Huynh Research &amp; Analysis{% else %}Chung Huynh Research &amp; Analysis{% endif %}</title>
+  <title>{% if page.title %}{{ page.title }} · Chung Huynh{% else %}Chung Huynh{% endif %}</title>
   <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}Independent research and analysis by Chung Huynh: a research desk on small mining companies, essays on markets and technology, and a few tools built on the side.{% endif %}">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +18,7 @@
 <div class="wrap">
 
   <header class="mast">
-    <a class="brand" href="{{ '/' | relative_url }}"><span class="wm">Chung Huynh</span> <span class="wm2">Research &amp; Analysis</span></a>
+    <a class="brand" href="{{ '/' | relative_url }}"><span class="wm">Chung Huynh</span></a>
     <nav class="nav" aria-label="Primary">
       <a href="{{ '/equities/' | relative_url }}"{% if page.nav == 'research' %} class="on"{% endif %}>Research</a>
       <a href="{{ '/#writing' | relative_url }}"{% if page.layout == 'post' %} class="on"{% endif %}>Writing</a>
