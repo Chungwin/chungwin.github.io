@@ -22,12 +22,19 @@ layout: default
 </section>
 
 <nav class="doors" aria-label="Research">
-  <a class="door" href="{{ '/equities/' | relative_url }}" data-goatcounter-click="home/equities" data-goatcounter-title="Home: equities">
-    <span class="k"><span class="step-k">Start here</span> <i>rankings · {% if eq.companies %}{{ eq.companies }} {% endif %}cards</i></span>
-    <div class="nm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 19h16M6 15V9M11 15V5M16 15v-4M21 15v-7"/></svg><h2>Metals research</h2></div>
-    <p class="what">Who looks best now, what changed since the last close, and everything behind each score.</p>
-    <p class="desc">Two lists per group — the names most likely to deliver, and the names with the best odds of a 3× — plus one card per company: thesis, gate, numbers, people, filings, every release with a verdict.</p>
+  <a class="door" href="{{ '/equities/rankings/' | relative_url }}" data-goatcounter-click="home/rankings" data-goatcounter-title="Home: rankings">
+    <span class="k"><span class="step-k">Start here</span> <i>4 lists</i></span>
+    <div class="nm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 19h16M6 15V9M11 15V5M16 15v-4M21 15v-7"/></svg><h2>Rankings</h2></div>
+    <p class="what">Who looks best now, and what changed since the last close.</p>
+    <p class="desc">Two lists per group: the names most likely to deliver, and the names with the best odds of a 3×. Every move comes with its reason.</p>
     <span class="note">Updated after every US trading day{% if eq.latest_short %} · latest {{ eq.latest_short }}{% endif %}</span>
+    <span class="go" aria-hidden="true">→</span>
+  </a>
+  <a class="door" href="{{ '/equities/trackers/' | relative_url }}" data-goatcounter-click="home/cards" data-goatcounter-title="Home: company cards">
+    <span class="k"><span class="step-k">Then</span> <i>{% if eq.companies %}{{ eq.companies }} {% endif %}cards</i></span>
+    <div class="nm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M7 9h10M7 12.5h7M7 16h4"/></svg><h2>Company cards</h2></div>
+    <p class="what">Everything behind a score, one card per company.</p>
+    <p class="desc">The thesis and the one gate it must pass, the numbers, the people, the financial statements read from the filings, and every release with a verdict.</p>
     <span class="go" aria-hidden="true">→</span>
   </a>
   <a class="door" href="{{ '/scarce-inputs-thesis/' | relative_url }}" data-goatcounter-click="home/thesis" data-goatcounter-title="Home: thesis">
