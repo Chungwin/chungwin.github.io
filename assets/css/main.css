@@ -96,6 +96,8 @@ a:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radiu
 .tools{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); border-bottom:1px solid var(--rule); }
 .tool{ gap:8px; padding:20px 26px 20px 0; }
 .tool + .tool{ padding-left:26px; border-left:1px solid var(--line); }
+.tool.wide{ grid-column:span 2; }   /* market context sits under rankings + company cards, the poker app under the thesis */
+.tool.wide .what{ max-width:60ch; }
 .tool .k .step-k{ color:var(--mute); }
 .tool .nm svg{ width:20px; height:20px; color:var(--mute); }
 .tool .nm h2{ font-size:22px; }
@@ -110,6 +112,7 @@ a:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radiu
   .door{ padding:22px 0; } .tool{ padding:18px 0; }
   .door + .door, .tool + .tool{ padding-left:0; border-left:0; border-top:1px solid var(--line); }
   .go{ top:22px; right:0; } .tool .go{ top:18px; }
+  .tool.wide{ grid-column:auto; }
 }
 
 /* ── writing list ─────────────────────────────────────── */
