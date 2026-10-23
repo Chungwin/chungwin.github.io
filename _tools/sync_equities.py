@@ -457,7 +457,7 @@ def rebuild_hub(html: str, title: str, area: str) -> str:
 
 
 def write_site_data(trackers_index: pathlib.Path) -> None:
-    """_data/equities.yml feeds the homepage: latest update date, company count and the group split.
+    """_data/equities.yml feeds the homepage: latest update date, company count, the group split and the number of entry plans.
     The split comes from the trackers hub's tab labels ("Precious metals … 38 names")."""
     src = trackers_index.read_text(encoding="utf-8")
     lines = []
@@ -472,6 +472,9 @@ def write_site_data(trackers_index: pathlib.Path) -> None:
     if len(counts) == 3:
         lines.append(f"companies: {sum(counts.values())}")
         lines += [f"{k}: {v}" for k, v in counts.items()]
+    plans = re.search(r'<button[^>]*\bid="tab-plans"[^>]*>.*?<span class="meta">(\d+) plans?</span>.*?</button>', src, re.S)
+    if plans:
+        lines.append(f"plans: {plans.group(1)}")
     else:
         print("WARNING: group counts not found on the trackers hub; homepage numbers not updated")
     (ROOT / "_data").mkdir(exist_ok=True)

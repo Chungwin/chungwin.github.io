@@ -35,6 +35,7 @@ layout: default
     <div class="nm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M7 9h10M7 12.5h7M7 16h4"/></svg><h2>Company cards</h2></div>
     <p class="what">Everything behind a score, one card per company.</p>
     <p class="desc">The thesis and the one gate it must pass, the numbers, the people, the financial statements read from the filings, and every release with a verdict.</p>
+    <span class="note">Plus entry plans for {% if eq.plans %}{{ eq.plans }} of them{% else %}some of them{% endif %}: when to buy, and in what pieces</span>
     <span class="go" aria-hidden="true">→</span>
   </a>
   <a class="door" href="{{ '/scarce-inputs-thesis/' | relative_url }}" data-goatcounter-click="home/thesis" data-goatcounter-title="Home: thesis">
