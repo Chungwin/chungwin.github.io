@@ -338,13 +338,16 @@ window.dash = (function(){
 </html>
 """
 
-# Wording of the dashboard that only holds on Claude, where gold and silver load live from FMP
+# Wording of the dashboard that only holds on Claude (live FMP data, written for its owner)
 PRICES_TEXT = [
     ("Only the last 40 days load live from FMP when you open it, so the price is never older than the last trading session and each visit uses only a few kilobytes of your FMP allowance.",
      "New closes are added by the daily run."),
     ("The molybdenum card also shows the price in US$/lb, converted with the live USD/CNY rate from FMP; this is the Chinese level converted",
      "On this copy the molybdenum price stays in CNY/kg (the US$/lb conversion on the original needs a live USD/CNY rate); it is the Chinese level"),
     ("FMP (live, opens with the page)", "FMP (daily close)"),
+    # the dashboard is written for its owner; on the public site it should not address the visitor
+    ('<p class="sp-exp">Your exposure: ', '<p class="sp-exp">Covered companies: '),
+    ("Neodymium is a proxy. Your rare-earth names sell", "Neodymium is a proxy. The covered rare-earth companies sell"),
 ]
 PRICES_META = {"source_name": {"FMP (live, opens with the page)": "FMP (daily close)"}, "cadence": {"Live daily": "Daily"}}
 
@@ -365,7 +368,7 @@ def build_context(temp_dir: pathlib.Path, prices_dir: pathlib.Path, synced: str)
     page = rewrite_links((prices_dir / "page.html").read_text(encoding="utf-8"))
     for old, new in PRICES_TEXT:
         if old in page:
-            page = page.replace(old, new)
+            page = page.replace(old, new)   # every occurrence
         else:
             print(f"NOTE: prices page wording changed, not adapted: {old[:60]}…")
     if re.search(r"<(iframe|form|base)\b", page, re.I):
