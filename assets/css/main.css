@@ -90,7 +90,7 @@ a:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radiu
 .desc{ margin:0; color:var(--mute); font-size:13.5px; line-height:1.5; max-width:46ch; }
 .door .note{ margin-top:auto; padding-top:8px; font-family:var(--mono); font-size:11.5px; color:var(--mute); }
 .door .note::before{ content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--gold); margin:0 8px 1px 0; }
-.go{ position:absolute; right:0; top:28px; font-size:18px; color:var(--mute); transition:color .15s, transform .15s; }
+.go{ position:absolute; right:26px; top:28px; font-size:18px; color:var(--mute); transition:color .15s, transform .15s; }
 .door:hover .go, .tool:hover .go{ color:var(--gold); transform:translate(2px,-2px); }
 .door:hover h2, .tool:hover h2{ text-decoration:underline; text-decoration-color:var(--line2); text-underline-offset:6px; text-decoration-thickness:1px; }
 .tools{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); border-bottom:1px solid var(--rule); }
@@ -109,7 +109,7 @@ a:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radiu
   .doors, .tools{ grid-template-columns:1fr; }
   .door{ padding:22px 0; } .tool{ padding:18px 0; }
   .door + .door, .tool + .tool{ padding-left:0; border-left:0; border-top:1px solid var(--line); }
-  .go{ top:22px; } .tool .go{ top:18px; }
+  .go{ top:22px; right:0; } .tool .go{ top:18px; }
 }
 
 /* ── writing list ─────────────────────────────────────── */
