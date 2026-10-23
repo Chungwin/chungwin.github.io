@@ -1,27 +1,28 @@
 /* ===================================================================
    chungwin.com — Chung Huynh
-   Paper research-note design: Source Serif 4 for headlines and essays,
+   Dark research-desk design, the same ground as the /equities pages:
+   Source Serif 4 for headlines and essays,
    IBM Plex Sans for interface text, IBM Plex Mono for labels and data.
    One accent (gold) plus the three metal colours of the research desk.
    Shared by every page via _layouts/default.html. The /equities and
-   /poker pages carry their own (dark) styles and do not load this file.
+   /poker pages carry their own styles and do not load this file.
    =================================================================== */
 
 :root{
-  --bg:#F4F4F0;      /* paper */
-  --panel:#ECECE6;   /* quiet blocks: notes, principles, code */
-  --line:#DDDDD5;    /* hairlines */
-  --line2:#C9C9C0;   /* stronger hairlines, borders */
-  --rule:#191B1E;    /* section rules */
-  --ink:#191B1E;
-  --ink2:#44484D;
-  --mute:#7A8086;
-  --gold:#A8842F;    /* the accent */
+  --bg:#0B0F12;      /* near-black, as on the research pages */
+  --panel:#141A1E;   /* quiet blocks: notes, principles, code */
+  --line:#242C32;    /* hairlines */
+  --line2:#334049;   /* stronger hairlines, borders */
+  --rule:#4A5761;    /* section rules */
+  --ink:#ECEEEF;
+  --ink2:#BFC7CB;
+  --mute:#8A969C;
+  --gold:#CFA451;    /* the accent */
   --copper:#4FB3A3; --violet:#A99BF0; --felt:#1D9E75;
   --display:"Source Serif 4","Iowan Old Style","Palatino Linotype",Georgia,serif;
   --sans:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  color-scheme:light;
+  color-scheme:dark;
 }
 *{ box-sizing:border-box; }
 html{ background:var(--bg); -webkit-text-size-adjust:100%; }
@@ -187,8 +188,7 @@ a:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radiu
 .prose th{ font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink2); font-weight:500; border-bottom-color:var(--rule); }
 @media (max-width:640px){ .prose{ font-size:18px; } .prose h2{ font-size:24px; } .prose table{ display:block; overflow-x:auto; } }
 
-/* per-post white canvas (front matter: background: white) — for posts whose images have white backgrounds */
-body.bg-white{ --bg:#ffffff; }
-body.bg-white .prose img{ background:none; padding:0; border:0; border-radius:0; }
+/* older posts set "background: white" for their white-background images; on the dark site those images
+   simply keep the white mat every image gets, so the option no longer changes anything */
 
 @media (prefers-reduced-motion:reduce){ .caret.on{ animation:none; } .go{ transition:none; } }
