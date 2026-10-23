@@ -1,0 +1,779 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Market Temperature</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: header + sticky tab bar + one panel at a time. Tabs: Today / Why these levels / How it works / How it moves / Open / About. Levels named Fear–Overheated, numbered 1–5 ascending with heat. */
+:root{
+  /* Same dark palette and type as the other research pages (Metals Research, Rankings, Trackers). Dark only by design. */
+  --bg:#111517; --panel:#181D20; --raised:#1E2427; --line:#262E32; --line2:#323B40;
+  --fg:#E8EBEC; --ink2:#C2C9CC; --muted:#8D999E;
+  --accent:#89A8DC; --accent-ink:#A9C1EA;
+  --hot:#E0674B; --warm:#E2B04A; --cold:#5FB596; --off:#5A666B; --gold:#D9A94A;
+  --display:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55;margin:0}
+.wrap{max-width:620px;margin:0 auto;padding-block:24px 64px;padding-inline:18px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:2rem;letter-spacing:-.01em}
+h2{font-size:1.35rem;margin:0 0 10px}
+h2.sec{margin-top:36px}
+h3{font-size:1.05rem;margin-top:26px;margin-bottom:6px}
+p{margin:0 0 12px}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.lede{font-size:1.02rem;color:var(--muted);margin-top:8px}
+a{color:var(--accent-ink)}a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);margin:18px -18px 0;padding:0 18px;border-bottom:1px solid var(--line);display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{appearance:none;background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-1px;padding:12px 10px 10px;font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);cursor:pointer;white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--accent-ink);border-bottom-color:var(--accent)}
+.tabs button:hover{color:var(--fg)}
+.panel{padding-top:22px}
+.panel[hidden]{display:none}
+svg{max-width:100%;height:auto;display:block}
+svg{fill:var(--fg)}
+svg text{font-family:var(--mono)}
+.now{border:1px solid var(--line);background:var(--panel);padding:14px 18px 16px}
+.now .lbl{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.now .txt{font-size:1rem;margin-top:12px}
+.now svg{max-width:300px;margin:4px auto 0}
+.legend{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 18px;font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:12px solid var(--fg);margin-right:6px;vertical-align:-1px}
+.legend i.faint{opacity:.3}
+.dials{width:100%;border-collapse:collapse;font-size:.92rem;margin-top:14px;font-variant-numeric:tabular-nums}
+.dials th{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+.dials td{padding:8px;border-bottom:1px solid var(--line);vertical-align:middle}
+.dials tr.mk td{background:var(--bg)}
+.dials .act{color:var(--ink2);font-size:.9rem}
+.dials .sub{font-family:var(--mono);font-size:.7rem;color:var(--hot);display:block;margin-top:3px}
+.lv{font-family:var(--display);font-weight:700;line-height:1;white-space:nowrap}
+.lv b{font-size:1.25rem;margin-right:6px}
+.lv.l1,.lv.l2{color:var(--cold)}.lv.l3{color:var(--warm)}.lv.l4,.lv.l5{color:var(--hot)}
+.blk{border-top:1px solid var(--line);margin-top:14px;padding-top:10px}
+.blk-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.blk-n{font-family:var(--display);font-weight:700;font-size:1.1rem;color:var(--accent)}
+.blk-t{font-family:var(--display);font-weight:700;font-size:1.1rem}
+.blk-s{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.blk-row{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;padding:6px 0}
+.blk-row .lv b{font-size:1.5rem}
+.blk-act{flex:1;min-width:200px;font-size:.98rem;color:var(--ink2)}
+.blk .sub{font-family:var(--mono);font-size:.72rem;color:var(--hot);margin-top:2px}
+.st{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:999px;color:var(--bg);font-weight:500;margin-right:6px}
+.dials .act .st{display:inline-block;line-height:1.7;vertical-align:1px}
+.st.open{background:var(--cold)}.st.closed{background:var(--hot)}
+.dials{margin-top:4px}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+@media (max-width:620px){.three{grid-template-columns:1fr}}
+.three .card h3{font-size:1rem;margin:2px 0 4px}
+.three .card ul{margin:4px 0}
+.card .muted{color:var(--muted);font-size:.86rem}
+.flow{list-style:none;padding:0;margin:10px 0;display:grid;gap:0}
+.flow li{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line);margin:0}
+.flow li:last-child{border-bottom:1px solid var(--line)}
+.flow .fn{width:26px;height:26px;border-radius:50%;background:var(--hot);color:var(--bg);font-family:var(--mono);font-size:.8rem;display:flex;align-items:center;justify-content:center;font-weight:600}
+.flow p{margin:2px 0 0;font-size:.92rem;color:var(--ink2)}
+.ladder,.hist{margin:14px 0 4px;overflow-x:auto}
+.ladder svg,.hist svg{min-width:540px}
+.cap{font-family:var(--mono);font-size:.72rem;color:var(--muted);margin:4px 0 14px}
+.lessons{display:grid;gap:10px;margin:12px 0}
+.lessons div{border-left:3px solid var(--accent);padding:4px 12px}
+.lessons b{display:block;font-weight:600;margin-bottom:2px}
+.lessons span{font-size:.92rem;color:var(--ink2)}
+.hard{border-left:3px solid var(--accent);background:var(--panel);padding:12px 16px;margin:4px 0 20px}
+.hard-h{font-family:var(--display);font-size:1.05rem;font-weight:700;color:var(--fg)}
+.hard-p{font-size:.92rem;color:var(--ink2);margin:6px 0 8px}
+.hard ol{margin:0;padding-left:20px}
+.hard li{margin-bottom:6px;font-size:.95rem}
+.hard em{color:var(--muted);font-style:normal;font-size:.86rem}
+.flow .dflt{margin-left:8px}
+.muted-s{display:block;font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-top:2px}
+.dflt{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 7px;vertical-align:middle;margin-left:6px;font-weight:500}
+.intro{border-left:3px solid var(--accent);padding:4px 14px;margin:0 0 18px;font-size:.98rem}
+.intro2{border-left:3px solid var(--accent);padding:6px 14px 8px;margin:0 0 18px}
+.i-k{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink)}
+.i-lead{font-size:1rem;margin:4px 0 8px}
+.i-q{display:grid;grid-template-columns:24px 1fr;gap:8px;align-items:start;font-size:.95rem;color:var(--ink2);margin-bottom:6px;line-height:1.45}
+.i-n{width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--bg);font-family:var(--mono);font-size:.78rem;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.i-cold{color:var(--cold);font-weight:600}.i-hot{color:var(--hot);font-weight:600}
+.i-q .st{font-size:.62rem;margin:0 2px;vertical-align:1px}
+.intro p{margin:6px 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+@media (max-width:520px){.two{grid-template-columns:1fr}}
+.card{border:1px solid var(--line2);background:var(--panel);padding:12px 14px;min-width:0}
+.card h3{margin-top:0;font-size:1.05rem}
+.card .k{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.card p{font-size:.93rem;margin:6px 0}
+.card ul{font-size:.9rem;padding-left:18px;margin:6px 0 0}
+.card li{margin-bottom:3px}
+.card p.why{font-size:.84rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;margin-top:10px}
+.tablewrap{overflow-x:auto;margin:10px 0 6px}
+table{border-collapse:collapse;width:100%;font-size:.92rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+tr.on td{background:var(--panel);font-weight:500}
+td.lvc{white-space:nowrap}
+.pill{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:999px;color:var(--bg);font-weight:500;white-space:nowrap}
+.pill.hot{background:var(--hot)}.pill.warm{background:var(--warm)}.pill.cold{background:var(--cold)}.pill.open{background:var(--off)}
+.key{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.88rem;color:var(--ink2);border:1px solid var(--line);background:var(--panel);padding:10px 12px;margin:8px 0 12px}
+.gt th{white-space:normal;line-height:1.3}
+.gt td{vertical-align:middle}
+.pend{display:block;font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-top:4px;white-space:normal}
+.pend b{color:var(--hot);font-weight:600}
+.pend.dn b{color:var(--warm)}
+.key .pill{margin-right:6px;vertical-align:1px}
+.note{font-size:.9rem;color:var(--muted);border-left:3px solid var(--line);padding:6px 12px;margin:12px 0}
+.rule{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;margin:10px 0;font-size:.95rem}
+.rule dt{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--accent-ink);padding-top:4px;white-space:nowrap}
+.rule dd{margin:0 0 4px}
+@media (max-width:420px){.rule{grid-template-columns:1fr;gap:2px 0}.rule dd{margin-bottom:10px}}
+details{border-top:1px solid var(--line);padding:10px 0}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;font-weight:600;list-style:none;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+summary::before{content:"+";font-family:var(--mono);color:var(--accent);width:14px;display:inline-block}
+details[open] summary::before{content:"–"}
+details p{font-size:.93rem;margin:8px 0 6px}
+.ev{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;font-size:.9rem;margin:8px 0}
+.ev dt{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:4px;white-space:nowrap}
+.ev dd{margin:0}.ev .pill{margin-right:6px;vertical-align:1px}
+@media (max-width:420px){.ev{grid-template-columns:1fr;gap:2px 0}.ev dd{margin-bottom:8px}}
+ul{padding-left:20px;margin:0 0 12px}li{margin-bottom:5px}
+.src{font-size:.84rem}.src li{margin-bottom:3px}
+.gloss dt{font-weight:600;margin-top:10px}.gloss dd{margin:2px 0 0;font-size:.93rem;color:var(--ink2)}
+.blank{display:inline-block;min-width:60px;border-bottom:1px solid var(--fg);vertical-align:baseline}
+.next{margin-top:26px;font-size:.9rem;color:var(--muted)}
+.next button{appearance:none;background:none;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-family:var(--mono);font-size:.74rem;color:var(--accent-ink);cursor:pointer}
+.watch-top{display:flex;justify-content:space-between;align-items:baseline;gap:4px 12px;flex-wrap:wrap}
+.watch-top .lbl{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sig{font-size:.92rem;color:var(--ink2);margin:4px 0 6px}
+.meter{border-top:1px solid var(--line);padding:12px 0 6px}
+.meter-top{display:flex;justify-content:space-between;align-items:baseline;gap:4px 12px;flex-wrap:wrap}
+.meter-name{font-weight:600}
+.meter-val{font-family:var(--display);font-weight:700;font-size:1.25rem;font-variant-numeric:tabular-nums}
+.meter-val small{font-family:var(--body);font-weight:400;font-size:.8rem;color:var(--muted)}
+.track{position:relative;height:10px;background:var(--line);border-radius:5px;margin:10px 0 26px}
+.track .fill{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:var(--warm)}
+.tick{position:absolute;top:-5px;bottom:-5px;width:2px;margin-left:-1px}
+.tick.s{background:var(--hot)}.tick.w{background:var(--muted)}.tick.l{background:var(--fg)}
+.tl{position:absolute;top:17px;transform:translateX(-50%);font-family:var(--mono);font-size:.68rem;color:var(--muted);white-space:nowrap}
+.tl.s{color:var(--hot);font-weight:600}.tl.l{color:var(--fg)}
+.meter-note{font-size:.86rem;color:var(--muted)}
+.key-s{font-family:var(--mono);font-size:.7rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;border-top:1px solid var(--line);padding-top:10px}
+.kt{display:inline-block;width:2px;height:12px;margin-right:6px;vertical-align:-2px}
+.kt.s{background:var(--hot)}.kt.w{background:var(--muted)}.kt.l{background:var(--fg)}
+.wt td b{font-weight:600}
+.wt .px{display:block;font-family:var(--mono);font-size:.7rem;color:var(--muted)}
+.wt .na{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.wt td,.wt th{padding:7px 8px}
+details.older{border:0;padding:4px 0}
+.verdict{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line)}
+.v-k{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.v-act{font-family:var(--display);font-weight:700;font-size:1.25rem;line-height:1.3;margin:4px 0 10px;text-wrap:balance}
+.v-row{display:grid;grid-template-columns:86px 1fr;gap:4px 10px;align-items:start;padding:7px 0 7px 10px;border-left:3px solid var(--line);margin-bottom:6px;font-size:.93rem;color:var(--ink2);line-height:1.45}
+.v-row.hot{border-left-color:var(--hot)}.v-row.cold{border-left-color:var(--cold)}.v-row.closed{border-left-color:var(--hot)}
+.v-t{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;padding-top:3px}
+.v-row.hot .v-t{color:var(--hot)}.v-row.cold .v-t{color:var(--cold)}.v-row.closed .v-t{color:var(--hot)}
+@media (max-width:420px){.v-row{grid-template-columns:1fr;gap:0}}
+.gv{display:block;font-family:var(--mono);font-size:.66rem;color:var(--muted);margin-top:4px;white-space:nowrap}
+.st-key{font-size:.86rem;color:var(--muted);margin:8px 0 0}
+.mk td.lvc{white-space:normal}
+.ladder2{position:relative;padding:26px 0 6px;margin:14px 0 6px}
+.ta{position:absolute;top:-24px;transform:translateX(-50%);font-family:var(--mono);font-size:.74rem;font-weight:600;white-space:nowrap}
+.hrow{display:grid;grid-template-columns:72px 1fr 76px;gap:0 10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.hn{grid-column:1/-1;font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-top:4px}
+.hrow:last-child{border-bottom:1px solid var(--line)}
+.hl b{display:block;font-family:var(--display);font-size:1rem}
+.hl span{font-family:var(--mono);font-size:.66rem;color:var(--muted)}
+.hb .track{margin:4px 0 4px;height:12px}
+.hb .track.gold{height:6px;margin:2px 0 0;background:transparent}
+.hb .fill.hot{background:var(--hot)}.hb .fill.gold{background:var(--gold)}
+.hb .tick{top:-4px;bottom:-4px;background:var(--fg);opacity:.5}
+.hv{text-align:right;font-variant-numeric:tabular-nums}
+.hv b{display:block;font-family:var(--display);font-size:1.05rem}
+.hv span{display:block;font-family:var(--mono);font-size:.64rem;color:var(--muted)}
+.hv .dots{font-size:.8rem;letter-spacing:1px;color:var(--hot)}
+.hv .dots.off{color:var(--line)}
+.hrow .rose{font-family:var(--mono);font-size:.78rem;color:var(--cold);align-self:center}
+.about-list li{margin-bottom:8px}
+.tree{margin:18px 0 6px}
+.tree .tier{display:grid;grid-template-columns:64px 1fr;gap:0 12px;align-items:start}
+.tree .tn{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:14px;line-height:1.3}
+.tree .tn b{display:block;font-family:var(--display);font-size:1.15rem;color:var(--accent);letter-spacing:0;text-transform:none}
+.node{border:1px solid var(--line);background:var(--panel);padding:10px 12px;border-radius:4px}
+.node.top{border-left:3px solid var(--accent)}
+.node .nk{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.node .nv{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;margin-top:2px}
+.node .nv .lv b{font-size:1.4rem}
+.node .nv .st{margin:0}
+.tree .down{height:22px;margin-left:16px;border-left:2px solid var(--line);position:relative}
+.tree .down::after{content:"";position:absolute;left:-5px;bottom:-1px;border:4px solid transparent;border-top:6px solid var(--line)}
+.gauges3{display:grid;grid-template-columns:1fr;gap:10px}
+.gnode{border:1px solid var(--line);background:var(--panel);padding:10px 12px;border-radius:4px}
+.gnode .gq{font-weight:600;font-size:.95rem;margin-bottom:6px}
+.gnode .ev2{list-style:none;padding:0;margin:8px 0 0;border-top:1px dashed var(--line);padding-top:8px}
+.gnode .ev2 li{font-size:.84rem;color:var(--ink2);margin:0 0 5px;padding-left:16px;position:relative;line-height:1.35}
+.gnode .ev2 li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:50%;background:var(--line)}
+.gnode .ev2 li.lit::before{background:var(--hot)}
+.gnode .ev2 li.coldlit::before{background:var(--cold)}
+.gnode .eh{font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.tree .rule-s{font-size:.86rem;color:var(--muted);margin:10px 0 0;border-left:3px solid var(--line);padding:4px 12px}
+.et{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:8px;font-variant-numeric:tabular-nums}
+.et th{font-family:var(--mono);font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;text-align:left;padding:4px 6px 4px 0;border-bottom:1px solid var(--line)}
+.et td{padding:5px 6px 5px 0;border-bottom:1px dashed var(--line);vertical-align:top;line-height:1.3;color:var(--ink2)}
+.et td:first-child{padding-left:12px;position:relative}
+.et td:first-child::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;border:1.5px solid var(--muted);background:transparent}
+.et tr.lit td:first-child::before,.et tr.coldlit td:first-child::before{border:0;width:8px;height:8px;top:8px}
+.dotk{display:inline-block;width:8px;height:8px;border-radius:50%;vertical-align:0;margin-right:5px}
+.dotk.hot{background:var(--hot)}.dotk.cold{background:var(--cold)}.dotk.off{width:6px;height:6px;border:1.5px solid var(--muted)}
+.adds{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0 14px}
+@media (max-width:520px){.adds{grid-template-columns:1fr}}
+.adds div{border:1px solid var(--line);background:var(--panel);padding:8px 10px;font-size:.86rem;color:var(--ink2);line-height:1.4}
+.adds b{display:block;font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:3px}
+.et tr.lit td:first-child::before{background:var(--hot)}
+.et tr.coldlit td:first-child::before{background:var(--cold)}
+.et tr.lit td,.et tr.coldlit td{color:var(--fg);font-weight:500}
+.et td:nth-child(2){white-space:nowrap}
+.et tr:last-child td{border-bottom:0}
+.mbars{border-top:1px solid var(--line);margin-top:6px;padding-top:4px}
+.mbars h3{margin-top:14px}
+.mb-sub{font-size:.88rem;color:var(--muted);margin:0 0 6px}
+.mb-key{font-family:var(--mono);font-size:.68rem;color:var(--muted);margin:0 0 6px;display:flex;gap:14px;align-items:center}
+.mb-key i{display:inline-block;width:14px;height:8px;border-radius:3px;margin-right:6px;vertical-align:0}
+.mb-key i.lg,.mb-f.lg{background:var(--off)}
+.mb-key i.jr,.mb-f.jr{background:var(--accent)}
+.mb-g{display:grid;grid-template-columns:86px 1fr;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.mb-g:first-of-type{border-top:0}
+.mb-m{font-size:.9rem;font-weight:600;line-height:1.2}
+.mb-pair{display:grid;gap:5px}
+.mb-bar{display:grid;grid-template-columns:44px 1fr 56px;gap:8px;align-items:center}
+.mb-tk{font-family:var(--mono);font-size:.66rem;color:var(--muted)}
+.mb-tk.jr{color:var(--accent-ink)}
+.mb-t{position:relative;height:8px;border-radius:4px;background:linear-gradient(90deg,transparent calc(25% - 1px),var(--line2) calc(25% - 1px),var(--line2) 25%,transparent 25%,transparent calc(50% - 1px),var(--line2) calc(50% - 1px),var(--line2) 50%,transparent 50%,transparent calc(75% - 1px),var(--line2) calc(75% - 1px),var(--line2) 75%,transparent 75%),var(--panel);border:1px solid var(--line)}
+.mb-f{position:absolute;left:0;top:0;bottom:0;border-radius:4px}
+.mb-v{font-family:var(--mono);font-size:.8rem;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.mb-na{font-family:var(--mono);font-size:.66rem;color:var(--muted);line-height:1.3}
+.mb-ax{border-top:0;padding-top:0}
+.mb-axl{position:relative;height:14px}
+.mb-axl i{position:absolute;top:0;transform:translateX(-50%);font-style:normal;font-family:var(--mono);font-size:.62rem;color:var(--muted)}
+.mb-axl i:first-child{transform:none}.mb-axl i:last-child{transform:translateX(-100%)}
+@media (max-width:420px){.mb-g{grid-template-columns:1fr;gap:4px}}
+footer{margin-top:40px;font-family:var(--mono);font-size:.74rem;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+@media (max-width:420px){h1{font-size:1.75rem}}
+@media (prefers-reduced-motion:no-preference){.panel{animation:fade .18s ease}}
+@keyframes fade{from{opacity:.4}to{opacity:1}}
+</style>
+
+<div class="wrap">
+<div class="eyebrow">Hard-asset book · Playbook</div>
+<h1>Market Temperature</h1>
+<p class="lede">A temperature check for a mining portfolio, read monthly and watched daily. It answers two questions: how much cash to hold, and which junior miners may be bought.</p>
+
+<div class="tabs" role="tablist" aria-label="Sections">
+  <button role="tab" id="t-today" aria-controls="p-today" aria-selected="true" data-tab="today">This month</button>
+  <button role="tab" id="t-how" aria-controls="p-how" aria-selected="false" data-tab="how">How it works</button>
+  <button role="tab" id="t-moves" aria-controls="p-moves" aria-selected="false" data-tab="moves">How it moves</button>
+  <button role="tab" id="t-about" aria-controls="p-about" aria-selected="false" data-tab="about">About</button>
+</div>
+
+<!-- TODAY -->
+<section class="panel" id="p-today" role="tabpanel" aria-labelledby="t-today">
+<div class="intro2">
+<div class="i-k">New here?</div>
+<p class="i-lead">Two questions for a mining portfolio, answered every month:</p>
+<div class="i-q"><span class="i-n">1</span><span><strong>How much cash to hold.</strong> The dial reads the US stock market from <span class="i-cold">1 Fear → buy</span> to <span class="i-hot">5 Overheated → raise cash</span>.</span></div>
+<div class="i-q"><span class="i-n">2</span><span><strong>Which junior miners may be bought.</strong> One line per metal, <span class="st open">Open</span> or <span class="st closed">Closed</span>.</span></div>
+</div>
+<!-- READING:START -->
+<div class="now">
+  <div class="lbl">Reading of 15 Oct 2026 · data refreshed 17 Oct</div>
+  <svg viewBox="0 0 400 292" role="img" aria-label="US market dial at Worrisome (4 of 5); eases to Elevated (3) if November agrees">
+    <defs><clipPath id="cl"><rect x="0" y="0" width="400" height="200"/></clipPath></defs>
+    <g clip-path="url(#cl)">
+      <path d="M50 200 A150 150 0 0 1 78.6 111.8 L109.1 134 A112 112 0 0 0 88 200 Z" fill="var(--cold)"/>
+      <path d="M78.6 111.8 A150 150 0 0 1 153.6 57.3 L165.4 93.5 A112 112 0 0 0 109.1 134 Z" fill="var(--cold)"/>
+      <path d="M153.6 57.3 A150 150 0 0 1 246.4 57.3 L234.6 93.5 A112 112 0 0 0 165.4 93.5 Z" fill="var(--warm)"/>
+      <path d="M246.4 57.3 A150 150 0 0 1 321.4 111.8 L290.9 134 A112 112 0 0 0 234.6 93.5 Z" fill="var(--hot)"/>
+      <path d="M321.4 111.8 A150 150 0 0 1 350 200 L312 200 A112 112 0 0 0 290.9 134 Z" fill="var(--hot)"/>
+      <g stroke="var(--bg)" stroke-width="3">
+        <line x1="78.6" y1="111.8" x2="109.1" y2="134"/><line x1="153.6" y1="57.3" x2="165.4" y2="93.5"/>
+        <line x1="246.4" y1="57.3" x2="234.6" y2="93.5"/><line x1="321.4" y1="111.8" x2="290.9" y2="134"/>
+      </g>
+      <g font-size="22" font-weight="500" text-anchor="middle" dominant-baseline="middle" fill="var(--bg)">
+        <text x="75.4" y="159.5">1</text><text x="123" y="94">2</text><text x="200" y="69">3</text><text x="277" y="94">4</text><text x="324.6" y="159.5">5</text>
+      </g>
+      <g transform="rotate(36 200 200)"><polygon points="200,62 194,200 206,200" fill="var(--fg)"/></g>
+      <circle cx="200" cy="200" r="11" fill="var(--fg)"/><circle cx="200" cy="200" r="5" fill="var(--accent)"/>
+    </g>
+    <g font-weight="500">
+      <text x="50" y="219" font-size="14" fill="var(--cold)">FEAR</text>
+      <text x="50" y="235" font-size="12" fill="var(--cold)">→ BUY</text>
+      <text x="350" y="219" font-size="14" fill="var(--hot)" text-anchor="end">OVERHEATED</text>
+      <text x="350" y="235" font-size="12" fill="var(--hot)" text-anchor="end">→ RAISE CASH</text>
+    </g>
+    <text x="200" y="262" font-size="13" text-anchor="middle" fill="var(--hot)" font-weight="500">US MARKET · WORRISOME · 4 OF 5</text>
+    <text x="200" y="283" font-size="12" text-anchor="middle"><tspan fill="var(--warm)" font-weight="600">↓ 3 Elevated</tspan><tspan fill="var(--muted)"> if November agrees</tspan></text>
+  </svg>
+  <div class="verdict">
+    <div class="v-k">This month</div>
+    <p class="v-act">Hold at least a quarter in cash and keep junior miners small.</p>
+    <div class="v-row hot"><span class="v-t">US market</span><span>Expensive and running on borrowed money. Bonds and credit have cooled a little since September, not enough to change course.</span></div>
+    <div class="v-row cold"><span class="v-t">Open</span><span>Gold, silver, copper and uranium juniors are still cheap. May buy.</span></div>
+    <div class="v-row closed"><span class="v-t">Closed</span><span>Rare earths. Money is pouring into that sector, which is the warning sign.</span></div>
+  </div>
+
+  <div class="blk">
+    <div class="blk-h"><span class="blk-n">1</span><span class="blk-t">How much cash to hold</span><span class="blk-s">set by the US market dial</span></div>
+    <div class="blk-row"><span class="lv l4"><b>4</b>Worrisome</span><span class="blk-act">Hold at least <strong>25% cash</strong>. Buy junior miners only while they stay under <strong>20%</strong> of the book. New money otherwise goes to physical metal.</span></div>
+    <div class="sub" style="color:var(--muted)">Reads Elevated today (one hot gauge, margin debt). A dial only cools after two readings in a row, so Worrisome stays in force unless November agrees.</div>
+  </div>
+
+  <div class="blk">
+    <div class="blk-h"><span class="blk-n">2</span><span class="blk-t">Which junior miners may be bought</span><span class="blk-s">set by each metal's own dial</span></div>
+    <table class="dials">
+    <tr><th>Junior miners</th><th>Level</th><th>Status</th></tr>
+    <tr><td>Gold / silver</td><td><span class="lv l2"><b>2</b>Normal</span></td><td class="act"><span class="st open">Open</span> may buy</td></tr>
+    <tr><td>Copper</td><td><span class="lv l2"><b>2</b>Normal</span></td><td class="act"><span class="st open">Open</span> may buy</td></tr>
+    <tr><td>Uranium</td><td><span class="lv l2"><b>2</b>Normal</span></td><td class="act"><span class="st open">Open</span> may buy</td></tr>
+    <tr><td>Rare earths</td><td><span class="lv l3"><b>3</b>Elevated</span></td><td class="act"><span class="st closed">Closed</span> no buying</td></tr>
+    </table>
+    <p class="st-key"><strong>Open</strong>: may buy, as long as all juniors together stay under 20% of the book. <strong>Closed</strong>: no new money; sold first if the pile must shrink.</p>
+  </div>
+</div>
+<!-- WATCH:START -->
+<section class="watch" aria-labelledby="watch-h">
+<div class="watch-top"><h2 class="sec" id="watch-h">Crash watch</h2><span class="lbl">Close of 22 Oct 2026 · updated every US trading day</span></div>
+<p class="sig"><span class="st open">Signal off</span> It fires only when both lines below are crossed on the same day.</p>
+<p class="muted" style="font-size:.9rem;color:var(--muted);margin:0 0 6px">If the S&amp;P 500 closes 20% below its high <em>and</em> credit spreads pass 600 bp on the same day, the US market dial jumps to Fear and cash is spent as miners fall. These three bars show how close that is.</p>
+<div class="meter">
+  <div class="meter-top"><span class="meter-name">S&amp;P 500</span><span class="meter-val">−0.8% <small>below its high on 21 Oct</small></span></div>
+  <div class="track"><div class="fill" style="width:2.7%"></div>
+    <i class="tick w" style="left:50.0%"></i><i class="tick s" style="left:66.7%"></i>
+    <span class="tl" style="left:50.0%">−15%</span><span class="tl s" style="left:66.7%">−20%</span></div>
+  <div class="meter-note">19.2 points from the signal line. High: 7,818.93.</div>
+</div>
+<div class="meter">
+  <div class="meter-top"><span class="meter-name">US credit spreads</span><span class="meter-val">327 bp <small>on 21 Oct</small></span></div>
+  <div class="track"><div class="fill" style="width:46.7%"></div>
+    <i class="tick w" style="left:71.4%"></i><i class="tick s" style="left:85.7%"></i>
+    <span class="tl" style="left:71.4%">500</span><span class="tl s" style="left:85.7%">600 bp</span></div>
+  <div class="meter-note">273 bp from the signal line. The extra yield junk-rated US companies pay over Treasuries (ICE BofA US High Yield index, via FRED). It widens when lenders get scared.</div>
+</div>
+<div class="meter">
+  <div class="meter-top"><span class="meter-name">Gold miners (GDX)</span><span class="meter-val">−29.5% <small>below their 2-year high on 22 Oct</small></span></div>
+  <div class="track"><div class="fill" style="width:36.9%"></div><i class="tick l" style="left:43.8%"></i><i class="tick l" style="left:68.8%"></i><i class="tick l" style="left:87.5%"></i><span class="tl l" style="left:43.8%">−35%</span><span class="tl l" style="left:68.8%">−55%</span><span class="tl l" style="left:87.5%">−70%</span></div>
+  <div class="meter-note">5.5 points from the first ladder step. Steps only count once the signal has fired. High: $115.84. GDX is the measuring stick, not what gets bought: ladder money goes into junior miners in the coldest metals.</div>
+</div>
+<p class="key-s"><i class="kt s"></i>signal line <i class="kt w"></i>early warning <i class="kt l"></i>ladder step</p>
+<div class="mbars">
+<h3>Miners by metal</h3>
+<p class="mb-sub">How far each metal's miners have fallen from their highest close of the last two years: the large-miner fund above, the junior-miner fund below. Deepest first. Context for where ladder money would go, not a trigger.</p>
+<p class="mb-key"><i class="lg"></i>large miners <i class="jr"></i>junior miners</p>
+<div class="mb-g"><span class="mb-m">Rare earths</span><div class="mb-pair"><div class="mb-bar"><span class="mb-tk lg">REMX</span><span class="mb-t"><span class="mb-f lg" style="width:66.1%"></span></span><span class="mb-v">−52.9%</span></div></div></div><div class="mb-g"><span class="mb-m">Uranium</span><div class="mb-pair"><div class="mb-bar"><span class="mb-tk lg">URNM</span><span class="mb-t"><span class="mb-f lg" style="width:63.1%"></span></span><span class="mb-v">−50.5%</span></div><div class="mb-bar"><span class="mb-tk jr">URNJ</span><span class="mb-na">not shown: the two sources differ by one cent (16.69 vs 16.70)</span><span class="mb-v">–</span></div></div></div><div class="mb-g"><span class="mb-m">Silver</span><div class="mb-pair"><div class="mb-bar"><span class="mb-tk lg">SIL</span><span class="mb-t"><span class="mb-f lg" style="width:44.5%"></span></span><span class="mb-v">−35.6%</span></div><div class="mb-bar"><span class="mb-tk jr">SILJ</span><span class="mb-t"><span class="mb-f jr" style="width:51.6%"></span></span><span class="mb-v">−41.3%</span></div></div></div><div class="mb-g"><span class="mb-m">Gold</span><div class="mb-pair"><div class="mb-bar"><span class="mb-tk lg">GDX</span><span class="mb-t"><span class="mb-f lg" style="width:36.9%"></span></span><span class="mb-v">−29.5%</span></div><div class="mb-bar"><span class="mb-tk jr">GDXJ</span><span class="mb-t"><span class="mb-f jr" style="width:44.0%"></span></span><span class="mb-v">−35.2%</span></div></div></div><div class="mb-g"><span class="mb-m">Copper</span><div class="mb-pair"><div class="mb-bar"><span class="mb-tk lg">COPX</span><span class="mb-t"><span class="mb-f lg" style="width:30.2%"></span></span><span class="mb-v">−24.2%</span></div><div class="mb-bar"><span class="mb-tk jr">COPJ</span><span class="mb-t"><span class="mb-f jr" style="width:33.4%"></span></span><span class="mb-v">−26.7%</span></div></div></div>
+<div class="mb-g mb-ax"><span></span><div class="mb-bar"><span></span><span class="mb-axl"><i style="left:0.0%">0%</i><i style="left:25.0%">−20%</i><i style="left:50.0%">−40%</i><i style="left:75.0%">−60%</i><i style="left:100.0%">−80%</i></span><span></span></div></div>
+<p class="cap">Closes of 22 Oct 2026, checked against two providers (stockanalysis.com and Yahoo Finance); a fund is left out when they disagree. Two-year highs from daily closes. Large: GDX VanEck Gold Miners · SIL Global X Silver Miners (about a quarter is royalty company Wheaton) · COPX Global X Copper Miners · URNM Sprott Uranium Miners (also holds the Sprott uranium trust). Junior: GDXJ VanEck Junior Gold Miners · SILJ Amplify Junior Silver Miners · COPJ Sprott Junior Copper Miners · URNJ Sprott Junior Uranium Miners. Rare earths: REMX VanEck Rare Earth and Strategic Metals (also holds lithium producers; no junior fund exists).</p>
+</div>
+<h3>Day by day</h3>
+<div class="tablewrap"><table class="wt"><tr><th>Close</th><th>S&amp;P 500</th><th>Spreads</th><th>Gold miners</th></tr><tr><td>22 Oct</td><td><span class="na">not yet checked</span></td><td><span class="na">next day</span></td><td><b>−29.5%</b><span class="px">$81.69</span></td></tr><tr><td>21 Oct</td><td><b>−0.8%</b><span class="px">7,757</span></td><td><b>327 bp</b></td><td><b>−25.1%</b><span class="px">$86.72</span></td></tr><tr><td>20 Oct</td><td><b>−1.4%</b><span class="px">7,713</span></td><td><b>333 bp</b></td><td><b>−25.7%</b><span class="px">$86.10</span></td></tr><tr><td>19 Oct</td><td><b>−1.6%</b><span class="px">7,691</span></td><td><b>329 bp</b></td><td><b>−25.4%</b><span class="px">$86.47</span></td></tr><tr><td>16 Oct</td><td><b>−2.0%</b><span class="px">7,659</span></td><td><b>331 bp</b></td><td><b>−24.3%</b><span class="px">$87.71</span></td></tr></table></div><details class="older"><summary>Show 11 earlier days</summary><div class="tablewrap"><table class="wt"><tr><th>Close</th><th>S&amp;P 500</th><th>Spreads</th><th>Gold miners</th></tr><tr><td>15 Oct</td><td><b>−1.0%</b><span class="px">7,744</span></td><td><b>323 bp</b></td><td><b>−24.9%</b><span class="px">$87.02</span></td></tr><tr><td>14 Oct</td><td><b>−1.3%</b><span class="px">7,719</span></td><td><b>325 bp</b></td><td><b>−28.0%</b><span class="px">$83.40</span></td></tr><tr><td>13 Oct</td><td><b>−0.2%</b><span class="px">7,805</span></td><td><b>316 bp</b></td><td><b>−24.7%</b><span class="px">$87.24</span></td></tr><tr><td>12 Oct</td><td><b>−0.1%</b><span class="px">7,807</span></td><td><b>311 bp</b></td><td><b>−23.6%</b><span class="px">$88.53</span></td></tr><tr><td>9 Oct</td><td><b>−0.1%</b><span class="px">7,812</span></td><td><b>311 bp</b></td><td><b>−22.9%</b><span class="px">$89.28</span></td></tr><tr><td>8 Oct</td><td><b>−0.7%</b><span class="px">7,765</span></td><td><b>315 bp</b></td><td><b>−25.1%</b><span class="px">$86.72</span></td></tr><tr><td>7 Oct</td><td><b>−0.2%</b><span class="px">7,802</span></td><td><b>309 bp</b></td><td><b>−26.2%</b><span class="px">$85.46</span></td></tr><tr><td>6 Oct</td><td><b>0.0%</b><span class="px">7,819</span></td><td><b>303 bp</b></td><td><b>−23.8%</b><span class="px">$88.22</span></td></tr><tr><td>5 Oct</td><td><b>−0.3%</b><span class="px">7,774</span></td><td><b>312 bp</b></td><td><b>−24.5%</b><span class="px">$87.42</span></td></tr><tr><td>2 Oct</td><td><b>−1.0%</b><span class="px">7,723</span></td><td><b>310 bp</b></td><td><b>−24.2%</b><span class="px">$87.78</span></td></tr><tr><td>1 Oct</td><td><b>−1.7%</b><span class="px">7,666</span></td><td><b>324 bp</b></td><td><b>−25.1%</b><span class="px">$86.74</span></td></tr></table></div></details>
+<p class="cap">S&amp;P 500 and gold miners: % below their high at each close. Spreads: ICE BofA US high-yield option-adjusted spread, published a day later. "Not yet checked": the close has not yet been confirmed by the second source and is left out until it is. Sources: FMP, cross-checked against FRED (S&amp;P 500); stockanalysis.com (GDX); FRED (spreads).</p>
+</section>
+<!-- WATCH:END -->
+<h2 class="sec">Why these levels</h2>
+<p>The gauge readings behind this month's levels. How the gauges are defined is on the "How it works" tab.</p>
+<div class="key">
+<span><span class="pill cold">cold</span> Neglected and cheap. The buying opportunity.</span>
+<span><span class="pill warm">warm</span> In between. Nothing to act on.</span>
+<span><span class="pill hot">hot</span> Frothy or crowded. A warning sign: be cautious.</span>
+</div>
+<h3>US market</h3>
+<div class="tablewrap"><table class="gt">
+<tr><th>Level</th><th>S&amp;P 500 vs bonds</th><th>Credit spreads</th><th>Margin debt</th></tr>
+<tr><td class="lvc"><span class="lv l4"><b>4</b>Worrisome</span><span class="pend dn"><b>↓ 3 Elevated</b> if November agrees</span></td><td><span class="pill warm">warm</span><span class="gv">5.26% vs 5.10%</span></td><td><span class="pill warm">warm</span><span class="gv">323 bp</span></td><td><span class="pill hot">hot</span><span class="gv">+31% y/y</span></td></tr>
+</table></div>
+<h3>Junior miners</h3>
+<div class="tablewrap"><table class="gt">
+<tr><th></th><th>Level</th><th>Easy to raise money?</th><th>Expensive?</th><th>Everyone piling in?</th></tr>
+<tr><td>Gold / silver</td><td class="lvc"><span class="lv l2"><b>2</b>Normal</span></td><td><span class="pill warm">warm</span></td><td><span class="pill cold">cold</span></td><td><span class="pill warm">warm</span></td></tr>
+<tr><td>Copper</td><td class="lvc"><span class="lv l2"><b>2</b>Normal</span></td><td><span class="pill warm">warm</span></td><td><span class="pill cold">cold</span></td><td><span class="pill warm">warm</span></td></tr>
+<tr><td>Uranium</td><td class="lvc"><span class="lv l2"><b>2</b>Normal</span></td><td><span class="pill warm">warm</span></td><td><span class="pill cold">cold</span></td><td><span class="pill warm">warm</span></td></tr>
+<tr><td>Rare earths</td><td class="lvc"><span class="lv l3"><b>3</b>Elevated</span></td><td><span class="pill hot">hot</span></td><td><span class="pill warm">warm</span></td><td><span class="pill warm">warm</span></td></tr>
+</table></div>
+<p class="note">Count the hot gauges in a row: none → Normal, one → Elevated, two → Worrisome, three → Overheated. The US market has one, so it reads Elevated, one level below the set level. A dial only cools after two readings in a row agree, so Worrisome stays in force until November. The evidence behind each reading is below.</p>
+
+<details open><summary>US market <span class="pill warm">reads Elevated</span></summary>
+<dl class="ev">
+<dt>S&amp;P vs bonds</dt><dd><span class="pill warm">warm</span>The S&amp;P 500 trades at 19.0 times expected earnings (FactSet, 16 October), an earnings yield of 5.26%. The 10-year Treasury yielded 5.10% on 15 October (FRED), down from 5.24% a week earlier. Stocks again offer a slight edge over bonds, 0.16 points, so the gauge is no longer hot. The edge is thin: a 10-year back near 5.26% turns it hot again. <em>Corrected 17 Oct; the first reading used late-September yields.</em></dd>
+<dt>Credit</dt><dd><span class="pill warm">warm</span>US junk-bond spreads at 323 bp on 15 October (ICE BofA, via FRED), up from 260–290 bp all summer. They crossed the 300 bp hot line on 28 September and have stayed above it since. Still far from fear (500 bp) and the crash level (600 bp), but the direction has turned: lenders are starting to ask for more. <em>Corrected 17 Oct; the first reading used July data (~270 bp).</em></dd>
+<dt>Margin debt</dt><dd><span class="pill hot">hot</span>FINRA, September 2026: US$1.48 tn, up 31% year on year. Still above the ~30% hot line, but cooling fast: +49% in June, +39% in July, +37% in August, +31% in September. The record was US$1.50 tn in June; July fell 5.6%, then it recovered. <strong>Watch this one:</strong> if October growth drops below 30%, this gauge turns warm too, and no US gauge would be hot.</dd>
+<dt>Crash signal</dt><dd>Not triggered. S&amp;P about 1% below its high; spreads 323 bp, widening but far from 600 bp. Gold miners (GDX) closed at $87.02 on 15 October, 25% below their 27 February high of $115.84: a sizeable fall, but the ladder only runs once the signal fires.</dd>
+</dl></details>
+
+<details><summary>Gold/silver juniors <span class="pill cold">Normal</span></summary>
+<dl class="ev">
+<dt>Raise money</dt><dd><span class="pill warm">warm</span>Measured on the TSX Venture Exchange, where most gold and silver juniors raise (TMX, 8 October). Money raised in the twelve months to September: C$13.8 bn, a record, 25% above the 2021 peak year (C$11.0 bn) and up 68% on a year earlier. But the <em>number</em> of financings is falling: 88 in September against 119 a year ago, and 1,441 over twelve months against 1,684 in 2021. Bigger cheques for fewer, larger names; not yet a window where tiny explorers raise with ease. One of the four hot markers is lit (record dollars); it takes two. The money is hot, the breadth is not. <strong>Watch this one:</strong> a second marker turns the gauge hot and closes gold/silver juniors to new buying. The data marker is still far off: the twelve-month financing count is 1,441 against the 2021 line of 1,684, a gap that takes months to close. The nearer routes are the judgment markers, placements at a premium becoming common or a rush of new listings, and neither is visible today.</dd>
+<dt>Expensive</dt><dd><span class="pill cold">cold</span>Bank of America (July 2026): metals equities trade at a 19% discount to net asset value (about 0.8x), and gold miners are the cheapest relative to the S&amp;P 500 in two decades. Monthly cross-check from VanEck's GDX fact sheet (30 September): price/earnings 13.9, low for gold miners, which usually trade at 15–25; price/book 3.15, high, which is what record metal prices do to a producer: earnings jump, book value does not. The NAV discount is the primary read; the fact-sheet pair is logged each month so a threshold can be set once there is a run of data. In June, BofA found miners priced in gold at about US$3,350/oz, 19% below spot. Developers sit lower still, around 0.2–0.5x (Beaver Creek, September). Right at the cold line for producers, well below it for developers.</dd>
+<dt>Piling in</dt><dd><span class="pill warm">warm</span>Largest daily retail inflow of the year into GDX in August; resource funds adding, generalists arriving in the larger names. Not a flood.</dd>
+</dl></details>
+
+<details><summary>Copper juniors <span class="pill cold">Normal</span></summary>
+<dl class="ev">
+<dt>Raise money</dt><dd><span class="pill warm">warm</span>Active and selective: Kodiak C$15 m oversubscribed, Copper Giant C$31 m, majors taking stakes (BHP in Faraday, Agnico in Cascadia). Raises at market or dilutive, not at premiums.</dd>
+<dt>Expensive</dt><dd><span class="pill cold">cold</span>Gunnison's CEO cites ~0.25x P/NAV against peers at 0.8–0.9x; 2026 takeovers were share deals with no headline premium. Copper at a record US$6.78/lb in August, but the equities haven't followed.</dd>
+<dt>Piling in</dt><dd><span class="pill warm">warm</span>Record-copper headlines and an "M&amp;A wave" narrative; trade-press tone still cautious.</dd>
+</dl></details>
+
+<details><summary>Uranium juniors <span class="pill cold">Normal</span></summary>
+<dl class="ev">
+<dt>Raise money</dt><dd><span class="pill warm">warm</span>Same TSX Venture series as gold/silver (uranium juniors raise there too): record dollars, fewer deals, one of four hot markers lit. Uranium-specific: the last big raise on record is NexGen's upsized A$600 m plus C$400 m (October 2025); three of September's five new TSXV listings were mining companies, one of them a uranium explorer. Warm.</dd>
+<dt>Expensive</dt><dd><span class="pill cold">cold</span>Sprott Physical Uranium Trust closed 16 October at a 13.0% discount to NAV (US$18.81 against NAV US$21.61). Money leaving the physical vehicle, the opposite of a mania.</dd>
+<dt>Piling in</dt><dd><span class="pill warm">warm</span>ETF flows turned positive in September 2025 and the junior index rose 39% in three months; the trust discount a year later says that enthusiasm has cooled.</dd>
+</dl></details>
+
+<details><summary>Rare-earth juniors <span class="pill warm">Elevated</span></summary>
+<dl class="ev">
+<dt>Raise money</dt><dd><span class="pill hot">hot</span>The window is wide open. US government took a 10% stake in USA Rare Earth for US$1.6 bn; Arafura, Iluka and Hastings carry over A$3 bn of Australian government loans; Lynas raised A$750 m. Down the food chain: Ionic (A$15.6 m) and American Rare Earths (A$14 m) oversubscribed, Turnstone placed at an 11% premium, Barkly listed in January, a Rare Earths Americas IPO in preview. Premium placements and new listings are the hot markers by this page's own definition.</dd>
+<dt>Expensive</dt><dd><span class="pill warm">warm</span>Lynas rose 70% in two months after the MP Materials deal; MP, USA Rare Earth and NioCorp jumped 3–9% in a day on policy headlines. Warm, not hot: the moves follow real government money. Watch for the first explorer that doubles on a press release; that takes this dial to Worrisome.</dd>
+<dt>Piling in</dt><dd><span class="pill warm">warm</span>"Top rare-earth stocks for October" listicles and "sovereign picks" framing in the general financial press. Retail is in; generalists in the large caps. Not yet the sub-$10M explorer frenzy.</dd>
+</dl></details>
+
+<details><summary>Sources</summary>
+<ul class="src">
+<li><a href="https://www.livewiremarkets.com/wires/the-howard-marks-guide-to-overheated-stock-markets">Livewire: Howard Marks' six INVESTCON stages (The Calculus of Value, Aug 2025)</a></li>
+<li><a href="https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_101626.pdf">FactSet Earnings Insight, 16 Oct 2026: S&amp;P 500 forward P/E 19.0</a></li>
+<li><a href="https://fred.stlouisfed.org/series/DGS10">FRED: 10-year Treasury yield, daily (primary source)</a></li>
+<li><a href="https://fred.stlouisfed.org/series/BAMLH0A0HYM2">FRED: ICE BofA US High Yield option-adjusted spread, daily (primary source)</a></li>
+<li><a href="https://www.finra.org/rules-guidance/key-topics/margin-accounts/margin-statistics">FINRA: margin statistics, monthly (primary source)</a></li>
+<li><a href="https://convextrade.com/metrics/finra-margin-debt/history/2025">FINRA margin debt, 2025 monthly series (for year-on-year)</a></li>
+<li><a href="https://www.thetrading.tools/chart-of-the-day/2026-09-10-margin-debt-record-drop">Margin debt: July 2026 record drop, +38.6% y/y</a></li>
+<li><a href="https://www.kucoin.com/blog/en-us-margin-debt-hits-record-1-53-trillion-as-investors-ramp-up-leverage">Margin debt: June 2026 record, +51.5% y/y</a></li>
+<li><a href="https://convextrade.com/metrics/finra-margin-debt">FINRA margin debt monthly series and GDP ratio</a></li>
+<li><a href="https://www.cantechletter.com/newswires/tmx-group-equity-financing-statistics-september-2026/">TMX Group: equity financing statistics, September 2026 (TSX Venture, released 8 Oct 2026)</a></li>
+<li><a href="https://s21.q4cdn.com/671813756/files/doc_news/TMX-Group-Equity-Financing-Statistics---December-2025-2026.pdf">TMX Group: equity financing statistics, December 2025 (full-year 2025 and 2024)</a></li>
+<li><a href="https://s21.q4cdn.com/671813756/files/doc_news/2023/01/1/TMX-Group-Equity-Financing-Statistics-December-2022-2023.pdf">TMX Group: equity financing statistics, December 2022 (full-year 2022 and the 2021 record)</a></li>
+<li><a href="https://www.spglobal.com/market-intelligence/en/news-insights/research/2025/11/im-november-2025-funds-raised-surpass-3b-amid-strong-gains-across-groups">S&amp;P Global: October 2025 junior and intermediate financings</a></li>
+<li><a href="https://discoveryalert.com/analysis/junior-mining-recovery-capital-september-2026/">Discovery Alert: H1 2026 junior financing US$18 bn, capital selective</a></li>
+<li><a href="https://www.cruxinvestor.com/posts/beaver-creek-2026-recap-a-window-to-the-future-of-junior-mining">Crux Investor: Beaver Creek 2026 recap</a></li>
+<li><a href="https://gilbertanalytics.substack.com/p/capital-is-coming">Gilbert Analytics: gold ETF inflows vs GDXJ outflows</a></li>
+<li><a href="https://www.vaneck.com/us/en/investments/junior-gold-miners-etf-gdxj/legacy/">VanEck GDXJ</a></li>
+<li><a href="https://www.indexbox.io/blog/bank-of-america-sees-value-in-gold-miners-despite-lower-2026-price-forecast/">Bank of America via IndexBox: metals equities at 19% discount to NAV, July 2026</a></li>
+<li><a href="https://www.mining.com/gold-selloff-opens-door-to-investors-miners-have-upside-bofa/">Bank of America via Mining.com: miners price in ~US$3,350 gold, June 2026</a></li>
+<li><a href="https://skillings.net/skillings-mining-intelligence-weekly-investment-ma-outlook">Skillings: P/NAV multiples by tier</a></li>
+<li><a href="https://www.webull.ca/news-detail/15402167236912128">Benzinga: retail inflows into GDX, August 2026</a></li>
+<li><a href="https://www.canadianminingreport.com/blog/copper-s-record-rally-could-trigger-a-new-mining-m-a-wave-which-junior-miners-are-most-attractive">Canadian Mining Report: copper record, 2026 deals and financings</a></li>
+<li><a href="https://www.sprott.com/investment-strategies/physical-commodity-funds/uranium/">Sprott Physical Uranium Trust, 16 Oct 2026</a></li>
+<li><a href="https://sprott.com/insights/investors-act-with-conviction/">Sprott uranium report, October 2025</a></li>
+<li><a href="https://www.bloomberg.com/news/articles/2026-01-26/usa-rare-earth-lines-up-1-6-billion-in-us-government-funding">Bloomberg: US$1.6 bn for USA Rare Earth</a></li>
+<li><a href="https://ionanalytics.com/insights/mergermarket/australias-rare-earths-sector-up-for-more-funding-deals-with-expected-boost-in-government-help/">Mergermarket: Australian rare-earth government funding</a></li>
+<li><a href="https://finance.yahoo.com/news/ionic-rare-earths-asx-ixr-121147319.html">Ionic Rare Earths: oversubscribed raise</a></li>
+<li><a href="https://www.proactiveinvestors.com/companies/news/990965/american-rare-earths-closes-the-books-on-oversubscribed-14-million-placement-990965.html">American Rare Earths: oversubscribed placement</a></li>
+<li><a href="https://discoveryalert.com/asx-stock-news/mining/tsr-turnstone-resources-placement-critical-minerals-september-2026/">Turnstone: raise at an 11% premium</a></li>
+<li><a href="https://discoveryalert.com/rare-earth-elements-australia-market-2026/">Barkly Rare Earths ASX listing</a></li>
+<li><a href="https://247wallst.com/investing/2026/08/14/rare-earth-stocks-soar-on-friday-mp-materials-up-8-usa-rare-earth-up-9-niocorp-up-3-whats-behind-the-jump/">24/7 Wall St: rare-earth stocks on policy headlines</a></li>
+<li><a href="https://finance.yahoo.com/markets/commodities/articles/unveiling-october-2026s-premier-rare-111228666.html">"Premier rare earth stocks, October 2026" (listicle)</a></li>
+</ul>
+</details>
+<!-- READING:END -->
+<p class="next">Next: <button data-go="how">How it works →</button></p>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="panel" id="p-how" role="tabpanel" aria-labelledby="t-how" hidden>
+<h2>How it works</h2>
+
+<p>Five dials, one for the US stock market and one for each metal's junior miners. Each dial has three gauges and the same five levels. The dials are never added up: each one answers its own question and controls its own thing.</p>
+<div class="two">
+<div class="card">
+<div class="k">One dial</div>
+<h3>US market</h3>
+<p><strong>Question:</strong> would a stock-market decline turn into forced selling?</p>
+<p><strong>Controls:</strong> how much cash to hold, and the total size of the risky pile (developers and explorers, all metals together).</p>
+<p><strong>Three gauges:</strong></p>
+<ul>
+<li>S&amp;P 500 earnings yield vs the 10-year US Treasury</li>
+<li>US high-yield credit spreads</li>
+<li>FINRA margin debt (growth, and share of GDP)</li>
+</ul>
+<p class="why">Why the S&amp;P 500 and not the Nasdaq: the question is whether a decline spreads to everything, which is about the broad market, not tech. A tech bust alone did not hurt gold miners in 2000–02; a squeeze in credit and leverage did in 2008, 2020 and 2022. Why the US: liquidity crises have started in or spread through US markets, and most buyers of miners trade in New York and Toronto.</p>
+</div>
+<div class="card">
+<div class="k">One dial per metal</div>
+<h3>Junior miners: gold/silver · copper · uranium · rare earths</h3>
+<p><strong>Question:</strong> are this metal's small mining companies in a frenzy? (The metal price itself is not a gauge.)</p>
+<p><strong>Controls:</strong> whether that metal's corner of the pile is open or closed for buying, and which corner is cut first.</p>
+<p><strong>Three gauges:</strong></p>
+<ul>
+<li>Is it easy for small companies to raise money?</li>
+<li>Are the stocks expensive?</li>
+<li>Is everyone piling in?</li>
+</ul>
+</div>
+</div>
+
+
+<h3>How a dial is put together</h3>
+<p>Three layers, read from the bottom up. Gold/silver juniors, as read this month:</p>
+<div class="adds">
+<div><b>1 · Evidence → gauge</b>Each gauge has a few markers with a line to cross. Enough markers crossed on the hot side → gauge is <span class="pill hot" style="font-size:.6rem">hot</span>; on the cold side → <span class="pill cold" style="font-size:.6rem">cold</span>; otherwise <span class="pill warm" style="font-size:.6rem">warm</span>.</div>
+<div><b>2 · Gauges → level</b>Count the hot gauges: none → Normal (Fear if all three are cold), one → Elevated, two → Worrisome, three → Overheated.</div>
+<div><b>3 · Level → action</b>Open or Closed for new buying (metal dials); how much cash to hold (US market dial).</div>
+</div>
+<!-- TREE:START -->
+<div class="tree">
+<div class="tier"><div class="tn"><b>3</b>Level → action</div>
+  <div class="node top"><div class="nk">Gold / silver juniors · dial</div>
+    <div class="nv"><span class="lv l2"><b>2</b>Normal</span><span class="st open">Open</span><span style="font-size:.88rem;color:var(--muted)">0 of 3 gauges hot → Normal → may buy</span></div></div></div>
+<div class="tier"><div></div><div class="down"></div></div>
+<div class="tier"><div class="tn"><b>2</b>Gauges<br>cold · warm · hot</div>
+  <div class="gauges3">
+    <div class="gnode"><div class="gq">Easy to raise money?</div><span class="pill warm">warm</span>
+      <div class="eh">4 markers · hot at 2 · 1 lit</div>
+      <table class="et"><tr><th>Marker</th><th>Now</th><th>Hot line</th></tr>
+        <tr class="lit"><td>Money raised, 12 m</td><td>C$13.8 bn</td><td>≥ C$11.0 bn</td></tr>
+        <tr><td>Financings, 12 m</td><td>1,441</td><td>≥ 1,684</td></tr>
+        <tr><td>Premium placements</td><td>isolated</td><td>common</td></tr>
+        <tr><td>New listings</td><td>5 in Sep</td><td>a rush</td></tr>
+      </table></div>
+    <div class="gnode"><div class="gq">Expensive?</div><span class="pill cold">cold</span>
+      <div class="eh">price vs reserve value · cold below 0.8×</div>
+      <table class="et"><tr><th>Measure</th><th>Now</th><th>Read</th></tr>
+        <tr class="coldlit"><td>Price / NAV (BofA, Jul)</td><td>~0.8×</td><td>cold</td></tr>
+        <tr><td>GDX P/E (30 Sep)</td><td>13.9</td><td>low</td></tr>
+        <tr><td>GDX P/B (30 Sep)</td><td>3.15</td><td>high</td></tr>
+      </table></div>
+    <div class="gnode"><div class="gq">Everyone piling in?</div><span class="pill warm">warm</span>
+      <div class="eh">flows and behaviour · judgment</div>
+      <table class="et"><tr><th>Sign</th><th>Now</th><th>Read</th></tr>
+        <tr><td>Retail flows (GDX)</td><td>record day in Aug</td><td>warm</td></tr>
+        <tr><td>Generalist funds</td><td>in large caps only</td><td>warm</td></tr>
+        <tr><td>Insider selling</td><td>none reported</td><td>not hot</td></tr>
+      </table></div>
+  </div></div>
+<div class="tier"><div></div><div class="down" style="height:14px"></div></div>
+<div class="tier"><div class="tn"><b>1</b>Evidence</div><div class="rule-s"><span class="dotk hot"></span>hot marker met &nbsp; <span class="dotk cold"></span>cold marker met &nbsp; <span class="dotk off"></span>line not crossed. Dated facts from primary sources; full detail and sources on "This month", under "Why these levels".</div></div>
+</div>
+<!-- TREE:END -->
+<p class="note">The US market dial is built the same way, with its three gauges (S&amp;P 500 vs bonds, credit spreads, margin debt) and the cash level as the action.</p>
+
+<h3>From gauges to a level</h3>
+<p>Each gauge reads <span class="pill cold">cold</span> (neglected, cheap: the opportunity), <span class="pill warm">warm</span> (in between) or <span class="pill hot">hot</span> (frothy or crowded: the warning). Count the hot ones:</p>
+<div class="tablewrap"><table>
+<tr><th>Hot gauges</th><th>Level</th><th>Means</th></tr>
+<tr><td>none, all cold</td><td class="lvc"><span class="lv l1"><b>1</b>Fear</span></td><td>Nobody wants it, everything is cheap, money is leaving. The time to buy.</td></tr>
+<tr><td>none</td><td class="lvc"><span class="lv l2"><b>2</b>Normal</span></td><td>Nothing hot, nothing cold. The resting state.</td></tr>
+<tr><td>one</td><td class="lvc"><span class="lv l3"><b>3</b>Elevated</span></td><td>Caution begins.</td></tr>
+<tr><td>two</td><td class="lvc"><span class="lv l4"><b>4</b>Worrisome</span></td><td>Pull back.</td></tr>
+<tr><td>three</td><td class="lvc"><span class="lv l5"><b>5</b>Overheated</span></td><td>Everyone is piling in. Raise cash.</td></tr>
+</table></div>
+
+<h3>What the US market level means <span class="dflt">default</span></h3>
+<div class="tablewrap"><table>
+<tr><th>Level</th><th>Cash</th><th>Risky pile</th><th>New money goes to</th></tr>
+<tr><td class="lvc"><span class="lv l1"><b>1</b>Fear</span></td><td>10%, then deploy</td><td>up to 40%</td><td>The ladder: cash in three steps as miners fall, into the coldest metals</td></tr>
+<tr><td class="lvc"><span class="lv l2"><b>2</b>Normal</span></td><td>15%</td><td>up to 35%</td><td>Your strongest research case, in any metal whose dial is open</td></tr>
+<tr><td class="lvc"><span class="lv l3"><b>3</b>Elevated</span></td><td>20%</td><td>up to 30%</td><td>Producers and physical metal only</td></tr>
+<tr class="on"><td class="lvc"><span class="lv l4"><b>4</b>Worrisome</span></td><td>25%</td><td>up to 20%</td><td>Physical metal only</td></tr>
+<tr><td class="lvc"><span class="lv l5"><b>5</b>Overheated</span></td><td>30–35%</td><td>up to 15%</td><td>Physical metal only</td></tr>
+</table></div>
+
+<h3>What a metal level means <span class="dflt">default</span></h3>
+<div class="tablewrap"><table>
+<tr><th>Level</th><th>That metal's juniors</th></tr>
+<tr><td class="lvc"><span class="lv l1"><b>1</b>Fear</span></td><td>Open. Buy here first whenever the market dial allows buying</td></tr>
+<tr><td class="lvc"><span class="lv l2"><b>2</b>Normal</span></td><td>Open. May buy, within the pile cap</td></tr>
+<tr><td class="lvc"><span class="lv l3"><b>3</b>Elevated</span></td><td>Closed. No buying; sold first if the pile must shrink</td></tr>
+<tr><td class="lvc"><span class="lv l4"><b>4</b>Worrisome</span></td><td>Reduce to funded names only, whatever the market dial says</td></tr>
+<tr><td class="lvc"><span class="lv l5"><b>5</b>Overheated</span></td><td>Funded names only, and trim what sits above a position's ceiling</td></tr>
+</table></div>
+
+<h3>What the dials never touch</h3>
+<p>Physical gold and silver, and the producing miners. Those are governed by the owner's separate rules for individual holdings (the thesis, see glossary). Any single company is still bought or sold by its own rules; the dials only size the pile and say which corners of it are open.</p>
+<dl class="rule">
+<dt>Cash</dt><dd>Cash means cash. It is the ammunition, and inflation is the price of keeping that option. Gold does not count toward the cash bucket.</dd>
+<dt>Funded</dt><dd>Cash plus committed funding covers at least 18 months of burn, including the cost of the next catalyst, with no raise required.</dd>
+<dt>Trim</dt><dd>At metal level Overheated, trim only the part of a position above its ceiling, never the position. A 3× is the first leg of a 10×.</dd>
+<dt>Tax order</dt><dd><span class="dflt">default</span> Selling is the last resort, and it goes in tax order. A hotter dial first closes the buy window and lets new money build cash; no sales for rebalancing at Elevated. Sales start at Worrisome, after a confirmed reading, from the metal with the hottest own dial: positions at a loss first, then the smallest gains, then the winners. A realised loss offsets gains in the same year, so the first sales are often tax-free on balance. Physical gold held over a year is tax-free in Germany; miner gains are not. <em>Confirm the details with a tax adviser.</em></dd>
+</dl>
+
+<h3>How to read a gauge</h3>
+<details><summary>US market gauges</summary>
+<dl class="ev">
+<dt>S&amp;P vs bonds</dt><dd>Hot when the index's forward earnings yield sits at or below the 10-year Treasury yield: stocks then only win if earnings forecasts hold. Cold when the earnings yield is well above the bond yield.</dd>
+<dt>Credit</dt><dd>The ICE BofA US High Yield option-adjusted spread (FRED, daily): the extra yield junk-rated US companies pay over Treasuries. Hot below ~300 bp (no fear priced). Cold above ~500 bp. Crash signal above ~600 bp.</dd>
+<dt>Margin debt</dt><dd>The fuel for forced selling. Hot when FINRA margin debt is up more than ~30% year on year, or at a record share of GDP or market cap. Cold when down more than ~15% year on year. Growth is the main reading; the share is the sanity check. Margin-debt growth peaked a few months before the 2000, 2007 and 2021 tops.</dd>
+</dl></details>
+<details><summary>Metal gauges</summary>
+<dl class="ev">
+<dt>Raise money</dt><dd>The yardstick is the TSX Venture Exchange's monthly financing statistics (TMX Group), the market where most juniors raise, plus per-metal deal news. Four hot markers: money raised over twelve months at or above the 2021 record (C$11.0 bn); the number of financings back at the 2021 pace (1,684 a year); placements at a premium becoming common; a rush of new listings. <strong>Hot</strong> when two or more are lit. <strong>Cold</strong> when twelve-month money raised is down more than 40% on a year earlier (as in 2022), with raises small, discounted and hard to fill. The most important question: an open window means dilution at the top, a closed one means no money at the bottom.</dd>
+<dt>Expensive</dt><dd>Hot when producers trade well above net asset value (above ~1.2x) or small companies jump on announcements with nothing new in them. Cold when producers sit below 0.8x and developers below 0.5x.</dd>
+<dt>Piling in</dt><dd>Hot when retail and generalist funds flood in, every newsletter is bullish, insiders sell into strength. Cold when the sector is ignored and money is leaving its ETFs.</dd>
+<dt>Instruments</dt><dd>S&amp;P Global gold and base-metals financings; the Sprott Physical Uranium Trust's premium or discount to NAV; rare-earth placements at a premium and new listings; GDXJ, URNJ and REMX flows. A new metal gets its own three questions and its own row. Nothing else changes.</dd>
+</dl></details>
+<p class="next">Next: <button data-go="moves">How it moves →</button></p>
+</section>
+
+<!-- HOW IT MOVES -->
+<section class="panel" id="p-moves" role="tabpanel" aria-labelledby="t-moves" hidden>
+<h2>How it moves</h2>
+<p>The dials are deliberately slow. Nobody can time markets, so the playbook accepts being a little late in exchange for not being whipsawed. Four things are held to even when they feel wrong; the rest is defaults.</p>
+<div class="hard">
+<div class="hard-h">Four commitments</div>
+<p class="hard-p">Most of this page is a set of defaults, meant to guide judgment rather than replace it. Deviate when you have a good reason, and note it in the log. These four are the exception: they're kept even when they feel wrong, because that's exactly when they matter.</p>
+<ol>
+<li><strong>Always keep some cash.</strong> Never drop below the cash level of the current set level, and never below 10%. <em>Guards against feeling certain.</em></li>
+<li><strong>Let the ladder run.</strong> Once a crash signal has fired, buy at each step as it's reached. The steps themselves can be adjusted, but only in calm markets. <em>Guards against fear.</em></li>
+<li><strong>Don't add to what's running hot.</strong> No new money for a metal at Elevated or above. <em>Guards against chasing.</em></li>
+<li><strong>Move in two halves.</strong> When a dial turns hotter, adjust new money at once, but sell only after a second monthly reading agrees. When it turns colder, wait for two readings. <em>Guards against overreacting.</em></li>
+</ol>
+</div>
+
+<h3>The rhythm</h3>
+<div class="three">
+<div class="card">
+<div class="k">Every trading day · automatic</div>
+<h3>Crash check</h3>
+<p>Crashes can happen in days, so three numbers are checked the morning after every US trading day:</p>
+<ul><li>S&amp;P 500: how far below its high</li><li>US credit spreads</li><li>Gold miners (GDX): how far below their high</li></ul>
+<p class="muted">Act only if the crash signal fires or a ladder step is hit. A step counts once GDX <em>closes</em> at that level, even if it bounces back the next day. Otherwise nothing changes.</p>
+</div>
+<div class="card">
+<div class="k">Monthly</div>
+<h3>Full reading</h3>
+<p>Read all gauges on all five dials and write them in the log, together with any deviation from a default and its reason.</p>
+<p class="muted">Turning hotter: new money follows at once; any selling waits for <strong>a second month</strong> that agrees. Turning colder: <strong>two months in a row</strong>. A dial moves one level at a time.</p>
+</div>
+<div class="card">
+<div class="k">Once a year</div>
+<h3>Review</h3>
+<p>Did the dials protect anything, or only cost return? Compare with doing nothing.</p>
+<p class="muted">If after two years they only cost return, loosen them. Also check what holding cash really costs.</p>
+</div>
+</div>
+
+<h3>When a crash comes</h3>
+<ol class="flow">
+<li><span class="fn">1</span><div><strong>The signal fires</strong><p>S&amp;P 500 down 20% from its high <em>and</em> US credit spreads above 600 bp. Both are needed: a fall in stocks alone can be an ordinary correction. With credit seizing too, it is the kind of crash that drags miners down and creates the buying chance. The signal says <em>what kind</em> of fall it is; the ladder below decides <em>when</em> to buy.</p></div></li>
+<li><span class="fn">2</span><div><strong>The US market dial jumps to Fear</strong><p>Straight away, without waiting for a second month.</p></div></li>
+<li><span class="fn">3</span><div><strong>Cash is spent in steps as miners fall <span class="dflt">steps are defaults</span></strong><p>One third of the cash each time gold miners close 35%, 55% and 70% below their highest close of the last two years. The money goes into junior miners, picked by research, in the metals whose dials read lowest. GDX only measures how deep the fall is; it is not what gets bought. Letting the ladder run is one of the four commitments; the levels, the equal thirds and the index are defaults, adjustable in calm markets, never while a signal is active.</p><p class="muted-s">"Gold miners" = GDX, the VanEck Gold Miners ETF: about 65 of the largest gold and silver producers and royalty companies (Newmont, Agnico Eagle, Barrick…), the most traded miner fund, with daily prices back to 2006.</p></div></li>
+</ol>
+
+<div class="ladder2">
+  <div class="track"><div class="fill" style="width:0"></div>
+    <i class="tick l" style="left:43.75%"></i><i class="tick l" style="left:68.75%"></i><i class="tick l" style="left:87.5%"></i>
+    <span class="ta" style="left:43.75%">⅓ of cash</span><span class="ta" style="left:68.75%">⅓</span><span class="ta" style="left:87.5%">⅓</span>
+    <span class="tl" style="left:0;transform:none">0%</span><span class="tl l" style="left:43.75%">−35%</span><span class="tl l" style="left:68.75%">−55%</span><span class="tl l" style="left:87.5%">−70%</span></div>
+</div>
+<p class="cap">Gold miners (GDX), distance below their 2-year high. The same bar sits on the "This month" tab, under Crash watch, showing where miners are today.</p>
+<p class="note"><strong>Why price, not calendar?</strong> Miners have bottomed when central banks stepped in, not when the selling stopped. A rule like "buy one month after the crash" would have bought 50–60% above the 2008 and 2020 lows. The ladder buys more the further prices fall, whenever that happens.</p>
+
+<h3>What history says</h3>
+<p>Four past crashes, on the same bar as the ladder above: how far gold miners (red) and gold (brown) fell in each, and which ladder steps would have been used.</p>
+<div class="hist2">
+<div class="hrow"><div class="hl"><b>2008</b><span>credit crisis</span></div><div class="hb"><div class="track"><div class="fill hot" style="width:88.75%"></div><i class="tick" style="left:43.75%"></i><i class="tick" style="left:68.75%"></i><i class="tick" style="left:87.5%"></i></div><div class="track gold"><div class="fill gold" style="width:37.50%"></div></div></div><div class="hv"><b>−71%</b><span>gold −30%</span><span class="dots">●●●</span></div></div>
+<div class="hrow"><div class="hl"><b>2020</b><span>Covid, fast</span></div><div class="hb"><div class="track"><div class="fill hot" style="width:48.75%"></div><i class="tick" style="left:43.75%"></i><i class="tick" style="left:68.75%"></i><i class="tick" style="left:87.5%"></i></div><div class="track gold"><div class="fill gold" style="width:15.00%"></div></div></div><div class="hv"><b>−39%</b><span>gold −12%</span><span class="dots">●</span><span class="dots off">●●</span></div><div class="hn">Step 1 used at the 13 March close ($19.00, the low). Two thirds kept for later.</div></div>
+<div class="hrow"><div class="hl"><b>2022</b><span>rates, slow</span></div><div class="hb"><div class="track"><div class="fill hot" style="width:58.75%"></div><i class="tick" style="left:43.75%"></i><i class="tick" style="left:68.75%"></i><i class="tick" style="left:87.5%"></i></div><div class="track gold"><div class="fill gold" style="width:22.50%"></div></div></div><div class="hv"><b>−47%</b><span>gold −18%</span><span class="dots off">●●●</span></div><div class="hn">Signal didn't fire: credit spreads peaked near 600 bp, not above.</div></div>
+<div class="hrow"><div class="hl"><b>2000–02</b><span>tech bust</span></div><div class="rose">Miners (HUI index) rose. Gold flat, then up.</div><div class="hv"><span class="dots off">●●●</span></div></div>
+</div>
+<p class="cap">● = ladder step that would have been used. GDX peak-to-trough on daily closes: 2008 $56.42 → $16.37; 2020 $31.05 → $19.00; 2022 $40.87 → $21.86. GDX started in 2006, so 2000–02 uses the older HUI index. Gold falls are approximate. Junior miners fell further still: about −80% in 2008, −50% in 2020 and 2022.</p>
+
+<div class="lessons">
+<div><b>A tech bust alone doesn't sink gold.</b><span>In 2000–02 the Nasdaq lost 78% while miners started a ten-year rise. What hurts miners is a credit squeeze, which is why the US market dial watches credit and leverage, not tech.</span></div>
+<div><b>The bottom comes when central banks act.</b><span>Miners turned within days of the Fed's emergency moves in 2008 and 2020, often while the selling elsewhere went on. That's why the ladder follows price, not the news.</span></div>
+<div><b>The ladder fits deep and fast crashes; not every fall is a crash.</b><span>A deep crash (2008) uses all three steps near the bottom, the last one by a single point, even though the signal fired months earlier. A fast one (2020) uses one step at the low and keeps two thirds; with the first step at −40% it would have missed by a point, which is why it sits at −35%. A stock-and-rates fall without a credit squeeze (2022) never fires the signal; credit spreads peaked near 600 bp. That is by design: miners fall 40% every few years, and the crash cash is for the once-a-decade kind.</span></div>
+</div>
+
+<p class="next">Next: <button data-go="about">About →</button></p>
+</section>
+
+<!-- ABOUT -->
+<section class="panel" id="p-about" role="tabpanel" aria-labelledby="t-about" hidden>
+<h2>About</h2>
+<h3>Where it comes from</h3>
+<p>Howard Marks of Oaktree introduced INVESTCON in his memo <em>The Calculus of Value</em> (August 2025). He modelled it on the Pentagon's DEFCON scale, where 5 is peacetime and 1 is nuclear war: the lower the number, the more alarmed you are. His six stages, in his own order and words:</p>
+<div class="tablewrap"><table class="mk">
+<tr><th>Marks</th><th>His action</th><th>Here</th></tr>
+<tr><td>—</td><td><em>No resting state in Marks' scale</em></td><td class="lvc"><span class="lv l1"><b>1</b>Fear</span> · <span class="lv l2"><b>2</b>Normal</span></td></tr>
+<tr><td><strong>INVESTCON 6</strong></td><td>Stop buying</td><td class="lvc"><span class="lv l3"><b>3</b>Elevated</span> <span class="muted-s">no new money to juniors</span></td></tr>
+<tr><td><strong>INVESTCON 5</strong></td><td>Reduce aggressive holdings and increase defensive holdings</td><td class="lvc"><span class="lv l4"><b>4</b>Worrisome</span> <span class="muted-s">pile to 20%, cash to 25%</span></td></tr>
+<tr><td><strong>INVESTCON 4</strong></td><td>Sell off the remaining aggressive holdings</td><td class="lvc"><span class="lv l5"><b>5</b>Overheated</span> <span class="muted-s">pile to 15%, cash to 30–35%</span></td></tr>
+<tr><td><strong>INVESTCON 3</strong></td><td>Trim defensive holdings as well</td><td>Not used: producers and metal are never sold by a dial</td></tr>
+<tr><td><strong>INVESTCON 2</strong></td><td>Eliminate all holdings</td><td>Not used: the book is long-only</td></tr>
+<tr><td><strong>INVESTCON 1</strong></td><td>Go short</td><td>Not used</td></tr>
+</table></div>
+<p>In the memo Marks wrote that it is "essentially impossible to reasonably reach the degree of certainty needed to implement INVESTCON 3, 2, or 1," but that he had "no problem thinking it's time for INVESTCON 5." His reasons were the S&amp;P 500's elevated P/E, the relationship between Treasury yields and the index's dividend yield, and general investor exuberance. The first two are the ancestors of this page's market gauges.</p>
+<p>Four things are different here:</p>
+<ul class="about-list">
+<li><strong>The numbers run the other way.</strong> 1 to 5 rising with the heat, so a newcomer can read the dial like a thermometer rather than a military alert.</li>
+<li><strong>The scale is shifted.</strong> Marks' scale starts at caution ("stop buying"); this page adds two levels below it, a resting state and a buying state. At the other end it stops at his stage 4: long-term holdings are never trimmed by a dial, and the book never goes to zero or short.</li>
+<li><strong>Less is dialled.</strong> Marks moves a whole portfolio between aggressive and defensive. This page only sizes cash and the pile of small companies that need outside money; the long-term holdings stay put.</li>
+<li><strong>Nothing is compiled.</strong> A market dial for the liquidity risk that hits everything at once, and one dial per metal for the cycles that run separately. Earlier drafts merged them into one number, and each merge needed a rule whose only job was to combine things that don't belong together. Kept apart, those rules disappear, and the structure survives adding metals or markets.</li>
+</ul>
+<h3>Why only the small companies</h3>
+<p>The dials govern developers and explorers because a crash hits them twice: the price falls, then the funding window shuts, and a raise at the bottom is permanent per-share damage. Gold recovers first; producers fall hard but keep their cash flow. A crash is treated as a reset to Fear rather than as a level of its own.</p>
+<h3>Rules or principles?</h3>
+<p>Mostly principles. A rule earns its place only where judgment is predictably worst: when afraid, and when greedy. Four commitments are kept for that reason; the rest are defaults that may be overridden with a reason noted in the log, which the yearly review then looks back on. The thresholds come from four historical episodes and reasoning, not a backtest, so treating them as fixed would be false precision. Some may earn promotion after two reviews.</p>
+<h3>What it is not</h3>
+<p>The dials never override the thesis: its kill-switches decide whether an investment case is still alive, the dials decide how much illiquid exposure to carry while it is. The rules do not depend on current holdings. The cash and pile percentages are judgment, not data, and the yearly review is where they get checked.</p>
+
+<h3>Glossary</h3>
+<dl class="gloss">
+<dt>Risky pile</dt><dd>Developers (companies building a mine, not yet producing) and explorers (companies still looking), across all metals. The part of the book that needs outside money to survive.</dd>
+<dt>Juniors</dt><dd>Same thing, the industry's word for small mining companies without production.</dd>
+<dt>P/NAV</dt><dd>Price to net asset value. What the market pays for a miner relative to what its ounces are worth on paper. Below 1.0x is a discount; the 2011 bull peak saw 1.2–1.5x.</dd>
+<dt>Credit spreads (high-yield spread)</dt><dd>The extra interest that US companies with a junk rating (BB and lower) pay to borrow, compared with the US government, in basis points (100 bp = 1 percentage point). The page uses the <a href="https://fred.stlouisfed.org/series/BAMLH0A0HYM2">ICE BofA US High Yield Index option-adjusted spread</a>, about 2,000 bonds, published daily by the St. Louis Fed (FRED series BAMLH0A0HYM2, one day behind). Junk bonds are used because the weakest borrowers lose access to money first, so their spread is the earliest sign of fear. Low spreads mean nobody fears defaults; above 600 bp means credit is seizing.</dd>
+<dt>Earnings yield</dt><dd>Earnings divided by price, the inverse of the P/E ratio. Comparing it with the bond yield shows how much extra you are paid for owning stocks instead of Treasuries.</dd>
+<dt>Margin debt</dt><dd>Money borrowed from brokers to buy stocks, reported monthly by FINRA. When prices fall, brokers demand repayment and the borrowed stocks get sold: forced selling.</dd>
+<dt>Drawdown</dt><dd>How far an index has fallen from its highest point.</dd>
+<dt>Funded</dt><dd>A company that can reach its next milestone without raising money: 18 months of spending covered, including the milestone's own cost.</dd>
+<dt>Position ceiling</dt><dd>The largest share of the book one company is allowed to be. Set in the thesis, not here.</dd>
+<dt>The thesis</dt><dd>The owner's written investment case and the rules for individual holdings: why each is owned, what would prove it wrong (the kill-switches), and how big it may be. This page sits beside it and never overrides it.</dd>
+<dt>Crash signal</dt><dd>S&amp;P 500 down 20% from its high and high-yield spreads above 600 bp, together. Resets the US market dial to Fear and starts the ladder.</dd>
+<dt>Ladder</dt><dd>The plan for spending cash in a crash: a third each time gold miners (GDX) close 35%, 55% and 70% below their highest close of the last two years.</dd>
+<dt>GDX</dt><dd>The VanEck Gold Miners ETF: about 65 of the largest gold and silver miners and royalty companies (Newmont, Agnico Eagle, Barrick, Wheaton, Franco-Nevada…). The page uses it as the yardstick for how far miners have fallen.</dd>
+</dl>
+<footer>Personal framework. Not investment advice.</footer>
+</section>
+</div>
+
+<script>
+(function(){
+  var tabs=document.querySelectorAll('.tabs [role=tab]');
+  var panels=document.querySelectorAll('.panel');
+  var names=[];tabs.forEach(function(t){names.push(t.dataset.tab);});
+  function show(name,push){
+    if(names.indexOf(name)<0)name='today';
+    tabs.forEach(function(t){var on=t.dataset.tab===name;t.setAttribute('aria-selected',on?'true':'false');t.tabIndex=on?0:-1;});
+    panels.forEach(function(p){p.hidden=(p.id!=='p-'+name);});
+    try{localStorage.setItem('investcon-tab',name);}catch(e){}
+    if(push){try{history.replaceState(null,'','#'+name);}catch(e){}}
+    window.scrollTo({top:0});
+  }
+  tabs.forEach(function(t){
+    t.addEventListener('click',function(){show(t.dataset.tab,true);});
+    t.addEventListener('keydown',function(e){
+      var i=names.indexOf(t.dataset.tab),n=null;
+      if(e.key==='ArrowRight')n=(i+1)%names.length;
+      if(e.key==='ArrowLeft')n=(i-1+names.length)%names.length;
+      if(n!==null){e.preventDefault();tabs[n].focus();show(names[n],true);}
+    });
+  });
+  document.querySelectorAll('[data-go]').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();show(b.dataset.go,true);});});
+  var start=(location.hash||'').replace('#','');
+  if(!start){try{start=localStorage.getItem('investcon-tab')||'';}catch(e){}}
+  show(start||'today',false);
+  window.addEventListener('hashchange',function(){show((location.hash||'').replace('#',''),false);});
+})();
+</script>
+
+<div class="cw-disc" role="contentinfo">
+<style>
+.cw-disc { max-width:1180px; margin:56px auto 0; padding:18px 20px 28px; border-top:1px solid var(--line,#262E32);
+  font:12.5px/1.55 "IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--mute,#8D999E); }
+.cw-disc p { margin:0 0 4px; max-width:72ch; }
+.cw-disc strong { color:var(--ink,#E8EBEC); font-weight:500; }
+.cw-disc a { color:inherit; text-decoration:none; border:0; border-bottom:1px solid var(--line,#262E32); padding:0; margin:0; background:none; border-radius:0; display:inline; font:inherit; }
+.cw-disc a:hover { color:var(--ink,#E8EBEC); }
+.cw-disc .cw-meta { font-variant-numeric:tabular-nums; }
+</style>
+<p><strong>Not investment advice.</strong> Personal research notes by Chung Huynh — views, rankings and estimates may be wrong or out of date. Do your own research.</p>
+<p class="cw-meta">Synced 23 Oct 2026 · Visits and anonymous usage are counted with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>: no cookies, nothing that identifies you. · <a href="/" target="_top">chungwin.com</a></p>
+</div>
+</body></html>

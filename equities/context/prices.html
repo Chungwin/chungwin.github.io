@@ -1,0 +1,1177 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Metal prices · Chung Huynh</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root { color-scheme:dark;
+  --color-fg:#ECEEEF; --color-fg-muted:#8A969C; --color-bg:#0B0F12; --color-panel:#141A1E; --color-border-line:#242C32;
+  --color-ok:#3FB27F; --color-warn:#CFA451; --color-bad:#E5675A;
+  --cds-border:#242C32; --cds-chart-axis:#4A5761; --cds-chart-grid:#1B2227; --cds-chart-reference:#5B6871;
+  --cds-surface-popover:#1A2126; --cds-shadow-popover:0 8px 28px rgba(0,0,0,.5); --cds-text-secondary:#8A969C;
+  --cds-font-size-caption:12px; --cds-font-size-body:14px; --cds-font-size-heading:16px; --cds-font-size-title:28px; --cds-font-weight-medium:500;
+  --cds-gap-xs:4px; --cds-gap-sm:8px; --cds-gap-md:12px; --cds-gap-lg:16px; --cds-gap-xl:28px;
+  --cds-pad-xs:4px; --cds-pad-sm:8px; --cds-pad-md:12px; --cds-pad-lg:16px; --cds-radius:8px; --cds-dur-slow:.3s;
+  --font-anthropic-sans:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --font-anthropic-serif:"Source Serif 4","Iowan Old Style",Georgia,serif; }
+html, body { margin:0; background:var(--color-bg); color:var(--color-fg); font-family:var(--font-anthropic-sans); font-size:14px; line-height:1.45; }
+#dash-root { padding:20px var(--dash-gutter, 24px) 0; }
+#dash-root a { color:inherit; }
+.cw-loading { max-width:1280px; margin:40px auto; color:var(--color-fg-muted); font-size:13px; }
+</style>
+<script src="/assets/js/d3-7.9.0.min.js"></script>
+<script>
+// Stand-in for the Claude dashboard runtime (only what this page uses): datasets come from
+// prices-data.json, the live FMP datasets are empty, calcs run on demand, params live in memory.
+window.dash = (function(){
+  var DS = { gold_fmp:[], silver_fmp:[], sp500_fmp:[], usdcny_fmp:[], spot_file:null, meta:null };
+  var calcs = {}, cache = {}, subs = [], P = {}, state = 'loading', msg = '';
+  function wrap(d, st){ var rows = Array.isArray(d) ? d : [];
+    return { status:st, data: st === 'ok' ? d : [], rows: st === 'ok' ? rows : [], value: st === 'ok' ? d : null,
+             columns: rows.length && typeof rows[0] === 'object' ? Object.keys(rows[0]) : [], message:msg, refreshing:false, meta:[] }; }
+  function rowsOf(id){ return id in calcs ? get(id).data : (DS[id] || []); }
+  function get(id){
+    if(state !== 'ok') return wrap(null, state);
+    if(id in calcs){
+      if(!(id in cache)){ var c = calcs[id]; try { cache[id] = c.fn.apply(null, c.inputs.map(rowsOf)); } catch(e){ console.error('calc ' + id, e); cache[id] = undefined; } }
+      return cache[id] === undefined ? wrap(null, 'error') : wrap(cache[id], 'ok');
+    }
+    return id in DS ? wrap(DS[id], 'ok') : wrap(null, 'missing');
+  }
+  function run(){ subs.forEach(function(fn){ try { fn(); } catch(e){ console.error(e); } }); }
+  var w = 0, t = null;
+  window.addEventListener('resize', function(){ clearTimeout(t); t = setTimeout(function(){ if(document.documentElement.clientWidth !== w){ w = document.documentElement.clientWidth; run(); } }, 120); });
+  fetch('prices-data.json').then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); }).then(function(j){
+    var spot = [];
+    Object.keys(j.series).forEach(function(m){ var s = j.series[m];
+      s.d.forEach(function(r){ spot.push({ metal:m, date:r[0], price:r[1], source:s.src[r[2] || 0] }); }); });
+    DS.spot_file = spot; DS.meta = j.meta; state = 'ok'; cache = {}; w = document.documentElement.clientWidth;
+    var l = document.getElementById('cw-loading'); if(l) l.remove(); run();
+  }).catch(function(e){ state = 'error'; msg = 'Prices could not be loaded.'; var l = document.getElementById('cw-loading'); if(l) l.textContent = msg; run(); });
+  return {
+    data: get,
+    calc: function(id, o){ calcs[id] = o; },
+    loader: function(){}, refresh: function(){}, setLink: function(){},
+    onData: function(fn){ subs.push(fn); try { fn(); } catch(e){ console.error(e); } },
+    params: function(){ return Object.assign({}, P); },
+    setParams: function(o){ Object.assign(P, o); run(); },
+    resetParams: function(){ P = {}; run(); },
+    colors: ['#CFA451','#4FB3A3','#A99BF0','#E07A5F','#6FA8DC','#B5C46A','#D98BB5','#9AA5AB']
+  };
+})();
+</script>
+</head>
+<body>
+<p class="cw-loading" id="cw-loading">Loading prices…</p>
+<div id="dash-root">
+<style>
+#dash-root { --dash-gutter: clamp(16px, 3vw, 32px); }
+.sp { display: flex; flex-direction: column; gap: var(--cds-gap-xl); font-family: var(--font-anthropic-sans); max-width: 1280px; margin-inline: auto; }
+.sp-head { display: flex; flex-direction: column; gap: var(--cds-gap-sm); }
+.sp-head h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; }
+.sp-take { margin: 0; max-width: 72ch; line-height: 1.55; font-size: var(--cds-font-size-body); }
+.sp-bar { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; justify-content: space-between; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--color-bg); padding-block: var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); }
+.sp-range { display: inline-flex; border: 1px solid var(--color-border-line); border-radius: 999px; overflow: hidden; }
+.sp-range button { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-md); background: transparent; color: var(--color-fg-muted); border: 0; cursor: pointer; }
+.sp-range button[aria-pressed="true"] { background: var(--color-fg); color: var(--color-bg); }
+.sp-range button:focus-visible { outline: 2px solid var(--color-fg); outline-offset: -2px; }
+.sp-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.sp-sec { display: flex; flex-direction: column; gap: var(--cds-gap-md); }
+.sp-sec h2 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
+.sp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: var(--cds-gap-md); }
+.sp-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-xs); min-width: 0; }
+.sp-top { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--cds-gap-sm); }
+.sp-name { display: flex; align-items: center; gap: var(--cds-gap-sm); flex-wrap: wrap; min-width: 0; }
+.sp-name h3 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
+.sp-q { font-size: 11px; letter-spacing: .03em; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--color-border-line); color: var(--color-fg-muted); white-space: nowrap; }
+.sp-q[data-level="Benchmark"] { color: var(--color-ok); border-color: currentColor; }
+.sp-q[data-level="Indicative"], .sp-q[data-level="Proxy"] { color: var(--color-warn); border-color: currentColor; }
+.sp-fresh { font-size: var(--cds-font-size-caption); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.sp-fresh::before { content: ""; width: .45rem; height: .45rem; border-radius: 50%; background: currentColor; }
+.sp-fresh[data-s="ok"] { color: var(--color-ok); }
+.sp-fresh[data-s="warn"] { color: var(--color-warn); }
+.sp-fresh[data-s="bad"] { color: var(--color-bad); }
+.sp-price { display: flex; align-items: baseline; gap: 6px; margin-top: var(--cds-gap-xs); }
+.sp-num { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.sp-unit { color: var(--color-fg-muted); font-size: var(--cds-font-size-body); }
+.sp-sub, .sp-chg { display: flex; flex-wrap: wrap; gap: 4px var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+.sp-chg b { font-weight: 600; color: var(--color-fg); }
+.sp-chg b.up { color: var(--color-ok); }
+.sp-chg b.down { color: var(--color-bad); }
+.sp-chart { position: relative; min-height: 150px; margin-top: var(--cds-gap-xs); }
+.sp-chart svg { display: block; overflow: visible; }
+.sp-chart text { fill: var(--color-fg-muted); font-size: 10.5px; font-variant-numeric: tabular-nums; }
+.sp-empty { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 150px; padding: 0 var(--cds-pad-md); color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); line-height: 1.45; border: 1px dashed var(--color-border-line); border-radius: var(--cds-radius); }
+.sp-fail { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 150px; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+.sp-fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+.sp-src, .sp-exp { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.45; }
+.sp-exp span { color: var(--color-fg); }
+.sp-tip { position: absolute; z-index: 5; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); pointer-events: none; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sp-tip .h { color: var(--cds-text-secondary); }
+.sp-tablewrap { overflow-x: auto; }
+.sp-table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); }
+.sp-table th, .sp-table td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--color-border-line); vertical-align: top; }
+.sp-table th { color: var(--color-fg-muted); font-weight: 500; white-space: nowrap; }
+.sp-table td:last-child { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sp-notes { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 6px; font-size: var(--cds-font-size-body); line-height: 1.5; max-width: 82ch; }
+.cmp { display: flex; flex-direction: column; gap: var(--cds-gap-md); }
+.cmp-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: var(--cds-gap-sm); }
+.cmp-head h2 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
+.cmp-intro { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-body); line-height: 1.5; max-width: 76ch; }
+.cmp-win { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--color-border-line); border-radius: 999px; overflow: hidden; }
+.cmp-win button { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-sm); background: transparent; color: var(--color-fg-muted); border: 0; cursor: pointer; }
+.cmp-win button[aria-pressed="true"] { background: var(--color-fg); color: var(--color-bg); }
+.cmp-win button:focus-visible { outline: 2px solid var(--color-fg); outline-offset: -2px; }
+.cmp-take { margin: 0; font-size: var(--cds-font-size-body); line-height: 1.55; max-width: 76ch; }
+.cmp-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm) var(--cds-gap-lg); font-size: var(--cds-font-size-body); }
+.cmp-legend .item { display: inline-flex; align-items: baseline; gap: 6px; font: inherit; color: var(--color-fg); background: transparent; border: 1px solid var(--color-border-line); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.cmp-legend .item:hover { border-color: var(--color-fg-muted); }
+.cmp-legend .item:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 1px; }
+.cmp-legend .item[aria-pressed="false"] { opacity: .5; }
+.cmp-legend .item[aria-pressed="false"] .sw { background: transparent !important; outline: 1.5px solid var(--color-fg-muted); outline-offset: -1.5px; }
+.cmp-legend .item[aria-pressed="false"] b { text-decoration: line-through; }
+.cmp-hint { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.cmp-legend .sw { width: 14px; height: 2px; border-radius: 2px; align-self: center; }
+.cmp-legend .item.main { border-color: var(--color-fg-muted); font-weight: 600; }
+.cmp-legend .item.main .sw { height: 4px; }
+.cmp-legend b { font-variant-numeric: tabular-nums; font-weight: 600; }
+.cmp-legend .na { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+.cmp-chart { position: relative; min-height: 320px; }
+.cmp-chart svg { display: block; overflow: visible; }
+.cmp-chart text { fill: var(--color-fg-muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+.cmp-chart text.lbl { font-weight: 600; font-size: 11.5px; }
+.cmp-sync { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); }
+.cmp-sync th, .cmp-sync td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--color-border-line); }
+.cmp-sync th { color: var(--color-fg-muted); font-weight: 500; }
+.cmp-sync td:nth-child(2) { font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 600; }
+.cmp-sync td:nth-child(3) { color: var(--color-fg-muted); }
+.src-more > summary { cursor: pointer; list-style: none; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px var(--cds-gap-sm); }
+.src-more > summary::-webkit-details-marker { display: none; }
+.src-more > summary h2 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); display: inline-flex; align-items: center; gap: 8px; }
+.src-more > summary h2::before { content: "▸"; font-size: .8em; color: var(--color-fg-muted); display: inline-block; transition: transform var(--cds-dur-slow); }
+.src-more[open] > summary h2::before { transform: rotate(90deg); }
+.src-hint { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.src-more > summary:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; border-radius: 4px; }
+.src-body { display: flex; flex-direction: column; gap: var(--cds-gap-md); margin-top: var(--cds-gap-md); }
+.cmp-more { border-top: 1px solid var(--color-border-line); padding-top: var(--cds-pad-sm); }
+.cmp-more > summary { cursor: pointer; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); list-style: none; display: inline-flex; align-items: center; gap: 6px; }
+.cmp-more > summary::-webkit-details-marker { display: none; }
+.cmp-more > summary::before { content: "▸"; display: inline-block; transition: transform var(--cds-dur-slow); }
+.cmp-more[open] > summary::before { transform: rotate(90deg); }
+.cmp-more > summary:hover { color: var(--color-fg); }
+.cmp-more > summary:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; border-radius: 4px; }
+.cmp-more-body { display: flex; flex-direction: column; gap: var(--cds-gap-sm); margin-top: var(--cds-gap-sm); }
+.sp [hidden] { display: none !important; }
+.cmp-tools { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; }
+.cmp-price { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: var(--cds-gap-sm) var(--cds-gap-xl); padding: var(--cds-pad-md); border: 1px solid var(--color-border-line); border-left: 3px solid var(--pb-accent, var(--color-border-line)); border-radius: var(--cds-radius); background: color-mix(in srgb, var(--pb-accent, transparent) 11%, var(--color-panel)); }
+.cmp-price .pb-main, .cmp-price .pb-meta { display: flex; flex-direction: column; gap: var(--cds-gap-xs); min-width: 0; }
+.cmp-price .pb-meta { flex: 1 1 18rem; max-width: 46rem; }
+.cmp-price h3 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
+.cmp-price .sp-price { margin-top: 0; }
+.sp-bar-lbl { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.cmp-foot { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.5; max-width: 82ch; }
+[data-dash-source-state=empty] { color: transparent; }
+[data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+</style>
+
+<div class="sp">
+  <header class="sp-head" id="top">
+    <h1>Metal spot prices</h1>
+    <p class="sp-take" id="takeaway" data-source="summary">—</p>
+  </header>
+  <section class="sp-sec cmp" id="compare">
+    <div class="sp-card cmp">
+      <div class="cmp-head">
+        <h2>Gold, gold miners and stocks, side by side</h2>
+        <div class="cmp-tools">
+          <div class="cmp-win cmp-view" id="cmp-view" role="group" aria-label="Chart view"><button type="button" data-v="pct">% change vs ETFs</button><button type="button" data-v="price">Gold price</button></div>
+          <div class="cmp-win" id="cmp-win" role="group" aria-label="Comparison period">
+            <button type="button" data-w="1M">1M</button><button type="button" data-w="3M">3M</button><button type="button" data-w="6M">6M</button><button type="button" data-w="YTD">YTD</button><button type="button" data-w="1Y">1Y</button><button type="button" data-w="2Y">2Y</button><button type="button" data-w="5Y">5Y</button><button type="button" data-w="10Y">10Y</button><button type="button" data-w="20Y">20Y</button><button type="button" data-w="MAX">Max</button>
+          </div>
+        </div>
+      </div>
+      <div class="cmp-price" style="--pb-accent: #B8890F">
+        <div class="pb-main">
+          <div class="sp-name"><h3 data-source="meta" data-field="name" data-where="metal=gold">Gold</h3><span class="sp-q" data-q="gold"></span><span class="sp-fresh" data-fresh="gold" hidden></span></div>
+          <div class="sp-price"><span class="sp-num dash-skeleton" data-source="summary" data-field="price" data-where="metal=gold">—</span><span class="sp-unit" data-source="meta" data-field="unit" data-where="metal=gold">US$/oz</span></div>
+          <div class="sp-sub">
+          <span>as of <span data-source="summary" data-field="date" data-where="metal=gold">—</span></span>
+          <span class="sp-alt" data-alt="gold" hidden><span data-source="summary" data-field="alt_lb" data-where="metal=gold">—</span> US$/lb</span>
+        </div>
+        </div>
+        <div class="pb-meta">
+          <div class="sp-chg">
+          <span>1M <b class="sp-c" data-source="summary" data-field="chg_1m" data-where="metal=gold">—</b></span>
+          <span>1Y <b class="sp-c" data-source="summary" data-field="chg_1y" data-where="metal=gold">—</b></span>
+          <span class="sp-lt" data-lt="gold" hidden>Long-term contract <b data-source="meta" data-field="lt_price" data-where="metal=gold">—</b></span>
+        </div>
+          <p class="sp-src"><span data-source="meta" data-field="benchmark" data-where="metal=gold">COMEX front-month future</span> · <span data-source="meta" data-field="source_name" data-where="metal=gold">FMP (daily close)</span></p>
+          <p class="sp-exp">Your exposure: <span data-source="meta" data-field="exposure" data-where="metal=gold">NexGold, Equinox, Agnico, Aya, Troilus, Emperor and the gold developers</span></p>
+        </div>
+      </div>
+      <p class="cmp-intro" id="cmp-intro">All lines start at 0% on the first day of the period you pick, so you see how much each one moved from the same starting point. Lines that rise and fall together move in sync; lines that drift apart don't.</p>
+      <p class="cmp-take" id="cmp-take" data-source="cmp_stats">—</p>
+      <div class="cmp-legend" id="cmp-legend" data-source="cmp_stats" role="group" aria-label="Show or hide lines"></div>
+      <p class="cmp-hint" id="cmp-hint">Click a name to hide or show its line.</p>
+      <p class="cmp-take" id="cmp-ptake" hidden></p>
+      <div class="cmp-chart" id="cmp-price" hidden></div>
+      <div class="cmp-chart" id="cmp-chart" data-source="series"></div>
+      <details class="cmp-more">
+        <summary>Correlation table and how to read it</summary>
+        <div class="cmp-more-body">
+      <div class="sp-tablewrap">
+        <table class="cmp-sync" id="cmp-sync" data-source="cmp_stats" data-row-key="id">
+          <thead><tr><th data-field="label">How closely they moved together</th><th data-field="value">Value</th><th data-field="reading">What it means</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="cmp-foot">Correlation compares daily moves: +1 means they moved in the same direction every day, 0 means no relation, −1 means opposite directions. The GDX and GDXJ ratios say how many percent each typically moved for each 1% move in gold. All lines are price only, without dividends. Gold is the COMEX front-month future (FMP), the S&amp;P 500 the index close (FMP), GDX and GDXJ the closing prices of the VanEck Gold Miners and Junior Gold Miners ETFs (Nasdaq historical data, checked against stockanalysis.com and digrin.com; both Nasdaq files hold a placeholder row on 20 Apr 2026, replaced with the stockanalysis close). GDX and GDXJ history starts in October 2016, so the 20Y view compares gold and the S&amp;P 500 only. Every period ends on the latest close available for all lines shown.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section class="sp-sec cmp" id="compare-silver">
+    <div class="sp-card cmp">
+      <div class="cmp-head">
+        <h2>Silver, silver miners and stocks, side by side</h2>
+        <div class="cmp-tools">
+          <div class="cmp-win cmp-view" id="cmpag-view" role="group" aria-label="Chart view"><button type="button" data-v="pct">% change vs ETFs</button><button type="button" data-v="price">Silver price</button></div>
+          <div class="cmp-win" id="cmpag-win" role="group" aria-label="Comparison period">
+            <button type="button" data-w="1M">1M</button><button type="button" data-w="3M">3M</button><button type="button" data-w="6M">6M</button><button type="button" data-w="YTD">YTD</button><button type="button" data-w="1Y">1Y</button><button type="button" data-w="2Y">2Y</button><button type="button" data-w="5Y">5Y</button><button type="button" data-w="10Y">10Y</button><button type="button" data-w="20Y">20Y</button><button type="button" data-w="MAX">Max</button>
+          </div>
+        </div>
+      </div>
+      <div class="cmp-price" style="--pb-accent: #7F8A96">
+        <div class="pb-main">
+          <div class="sp-name"><h3 data-source="meta" data-field="name" data-where="metal=silver">Silver</h3><span class="sp-q" data-q="silver"></span><span class="sp-fresh" data-fresh="silver" hidden></span></div>
+          <div class="sp-price"><span class="sp-num dash-skeleton" data-source="summary" data-field="price" data-where="metal=silver">—</span><span class="sp-unit" data-source="meta" data-field="unit" data-where="metal=silver">US$/oz</span></div>
+          <div class="sp-sub">
+          <span>as of <span data-source="summary" data-field="date" data-where="metal=silver">—</span></span>
+          <span class="sp-alt" data-alt="silver" hidden><span data-source="summary" data-field="alt_lb" data-where="metal=silver">—</span> US$/lb</span>
+        </div>
+        </div>
+        <div class="pb-meta">
+          <div class="sp-chg">
+          <span>1M <b class="sp-c" data-source="summary" data-field="chg_1m" data-where="metal=silver">—</b></span>
+          <span>1Y <b class="sp-c" data-source="summary" data-field="chg_1y" data-where="metal=silver">—</b></span>
+          <span class="sp-lt" data-lt="silver" hidden>Long-term contract <b data-source="meta" data-field="lt_price" data-where="metal=silver">—</b></span>
+        </div>
+          <p class="sp-src"><span data-source="meta" data-field="benchmark" data-where="metal=silver">COMEX front-month future</span> · <span data-source="meta" data-field="source_name" data-where="metal=silver">FMP (daily close)</span></p>
+          <p class="sp-exp">Your exposure: <span data-source="meta" data-field="exposure" data-where="metal=silver">Pan American, Coeur, Avino, Vizsla, Fresnillo, Aya, Argenta, AbraSilver</span></p>
+        </div>
+      </div>
+      <p class="cmp-intro" id="cmpag-intro">All lines start at 0% on the first day of the period you pick, so you see how much each one moved from the same starting point. Lines that rise and fall together move in sync; lines that drift apart don't.</p>
+      <p class="cmp-take" id="cmpag-take" data-source="cmp_ag_stats">—</p>
+      <div class="cmp-legend" id="cmpag-legend" data-source="cmp_ag_stats" role="group" aria-label="Show or hide lines"></div>
+      <p class="cmp-hint" id="cmpag-hint">Click a name to hide or show its line.</p>
+      <p class="cmp-take" id="cmpag-ptake" hidden></p>
+      <div class="cmp-chart" id="cmpag-price" hidden></div>
+      <div class="cmp-chart" id="cmpag-chart" data-source="series"></div>
+      <details class="cmp-more">
+        <summary>Correlation table and how to read it</summary>
+        <div class="cmp-more-body">
+      <div class="sp-tablewrap">
+        <table class="cmp-sync" id="cmpag-sync" data-source="cmp_ag_stats" data-row-key="id">
+          <thead><tr><th data-field="label">How closely they moved together</th><th data-field="value">Value</th><th data-field="reading">What it means</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="cmp-foot">Correlation compares daily moves: +1 means they moved in the same direction every day, 0 means no relation, −1 means opposite directions. The SIL and SILJ ratios say how many percent each typically moved for each 1% move in silver. All lines are price only, without dividends. Silver is the COMEX front-month future (FMP), the S&amp;P 500 the index close (FMP), SIL the Global X Silver Miners ETF and SILJ the Amplify Junior Silver Miners ETF (Nasdaq historical closes, checked against stockanalysis.com and digrin.com). Both Nasdaq files hold a placeholder row on 20 Apr 2026, replaced with the stockanalysis close; the SILJ file also has placeholder rows on 29–30 Jan 2024, which are left out because no second source covers them. SIL and SILJ history starts in October 2016, so the 20Y view compares silver and the S&amp;P 500 only. Every period ends on the latest close available for all lines shown.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section class="sp-sec cmp" id="compare-copper">
+    <div class="sp-card cmp">
+      <div class="cmp-head">
+        <h2>Copper, copper miners and stocks, side by side</h2>
+        <div class="cmp-tools">
+          <div class="cmp-win cmp-view" id="cmpcu-view" role="group" aria-label="Chart view"><button type="button" data-v="pct">% change vs ETFs</button><button type="button" data-v="price">Copper price</button></div>
+          <div class="cmp-win" id="cmpcu-win" role="group" aria-label="Comparison period">
+            <button type="button" data-w="1M">1M</button><button type="button" data-w="3M">3M</button><button type="button" data-w="6M">6M</button><button type="button" data-w="YTD">YTD</button><button type="button" data-w="1Y">1Y</button><button type="button" data-w="2Y">2Y</button><button type="button" data-w="5Y">5Y</button><button type="button" data-w="10Y">10Y</button><button type="button" data-w="20Y">20Y</button><button type="button" data-w="MAX">Max</button>
+          </div>
+        </div>
+      </div>
+      <div class="cmp-price" style="--pb-accent: #B86B32">
+        <div class="pb-main">
+          <div class="sp-name"><h3 data-source="meta" data-field="name" data-where="metal=copper">Copper</h3><span class="sp-q" data-q="copper"></span><span class="sp-fresh" data-fresh="copper" hidden></span></div>
+          <div class="sp-price"><span class="sp-num dash-skeleton" data-source="summary" data-field="price" data-where="metal=copper">—</span><span class="sp-unit" data-source="meta" data-field="unit" data-where="metal=copper">US$/t</span></div>
+          <div class="sp-sub">
+          <span>as of <span data-source="summary" data-field="date" data-where="metal=copper">—</span></span>
+          <span class="sp-alt" data-alt="copper" hidden><span data-source="summary" data-field="alt_lb" data-where="metal=copper">—</span> US$/lb</span>
+        </div>
+        </div>
+        <div class="pb-meta">
+          <div class="sp-chg">
+          <span>1M <b class="sp-c" data-source="summary" data-field="chg_1m" data-where="metal=copper">—</b></span>
+          <span>1Y <b class="sp-c" data-source="summary" data-field="chg_1y" data-where="metal=copper">—</b></span>
+          <span class="sp-lt" data-lt="copper" hidden>Long-term contract <b data-source="meta" data-field="lt_price" data-where="metal=copper">—</b></span>
+        </div>
+          <p class="sp-src"><span data-source="meta" data-field="benchmark" data-where="metal=copper">LME official cash settlement</span> · <span data-source="meta" data-field="source_name" data-where="metal=copper">Westmetall (LME data)</span></p>
+          <p class="sp-exp">Your exposure: <span data-source="meta" data-field="exposure" data-where="metal=copper">Hot Chili, Aldebaran, Copper Giant, Los Andes, McEwen, Atex, Solaris, Gladiator</span></p>
+        </div>
+      </div>
+      <p class="cmp-intro" id="cmpcu-intro">All lines start at 0% on the first day of the period you pick. Copper is often called a growth barometer because it follows industrial demand; this chart shows how closely it has actually tracked US stocks.</p>
+      <p class="cmp-take" id="cmpcu-take" data-source="cmp_cu_stats">—</p>
+      <div class="cmp-legend" id="cmpcu-legend" data-source="cmp_cu_stats" role="group" aria-label="Show or hide lines"></div>
+      <p class="cmp-hint" id="cmpcu-hint">Click a name to hide or show its line.</p>
+      <p class="cmp-take" id="cmpcu-ptake" hidden></p>
+      <div class="cmp-chart" id="cmpcu-price" hidden></div>
+      <div class="cmp-chart" id="cmpcu-chart" data-source="series"></div>
+      <details class="cmp-more">
+        <summary>Correlation table and how to read it</summary>
+        <div class="cmp-more-body">
+      <div class="sp-tablewrap">
+        <table class="cmp-sync" id="cmpcu-sync" data-source="cmp_cu_stats" data-row-key="id">
+          <thead><tr><th data-field="label">How closely they moved together</th><th data-field="value">Value</th><th data-field="reading">What it means</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="cmp-foot">Correlation compares daily moves: +1 means they moved in the same direction every day, 0 means no relation, −1 means opposite directions. The COPX ratio says how many percent the miners typically moved for each 1% move in copper. Copper is the LME official cash settlement (Westmetall, US$ per tonne), fixed around midday London; the S&amp;P 500 is the index close in New York (FMP); COPX is the closing price of the Global X Copper Miners ETF (Nasdaq historical data, checked against stockanalysis.com and digrin.com). All are price only, without dividends. LME copper is set about 3½ hours before US markets close, so a move in the US afternoon shows up in copper only the next day. That makes copper's daily correlation with both COPX and the S&amp;P 500, and the COPX-per-copper ratio, lower than the true link; COPX and the S&amp;P 500 close at the same time and are not affected. Only days on which both markets traded are used. COPJ (Sprott Junior Copper Miners ETF, Nasdaq closes) is shown with its distributions reinvested, because it paid unusually large year-end distributions ($2.15 per share in December 2024 and $4.55 in December 2025, about 10–12% of its price) that would otherwise appear as one-day crashes; all other lines are price only, and COPX's own distributions are about 2% a year. Copper history starts in January 2008, COPX in October 2016 and COPJ in February 2023, so the longer periods show fewer lines. Every period ends on the latest close both have.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section class="sp-sec cmp" id="compare-nickel">
+    <div class="sp-card cmp">
+      <div class="cmp-head">
+        <h2>Nickel, nickel miners and stocks, side by side</h2>
+        <div class="cmp-tools">
+          <div class="cmp-win cmp-view" id="cmpni-view" role="group" aria-label="Chart view"><button type="button" data-v="pct">% change vs ETFs</button><button type="button" data-v="price">Nickel price</button></div>
+          <div class="cmp-win" id="cmpni-win" role="group" aria-label="Comparison period">
+            <button type="button" data-w="1M">1M</button><button type="button" data-w="3M">3M</button><button type="button" data-w="6M">6M</button><button type="button" data-w="YTD">YTD</button><button type="button" data-w="1Y">1Y</button><button type="button" data-w="2Y">2Y</button><button type="button" data-w="3Y">3Y</button><button type="button" data-w="MAX">Max</button>
+          </div>
+        </div>
+      </div>
+      <div class="cmp-price" style="--pb-accent: #3F9A6B">
+        <div class="pb-main">
+          <div class="sp-name"><h3 data-source="meta" data-field="name" data-where="metal=nickel">Nickel</h3><span class="sp-q" data-q="nickel"></span><span class="sp-fresh" data-fresh="nickel" hidden></span></div>
+          <div class="sp-price"><span class="sp-num dash-skeleton" data-source="summary" data-field="price" data-where="metal=nickel">—</span><span class="sp-unit" data-source="meta" data-field="unit" data-where="metal=nickel">US$/t</span></div>
+          <div class="sp-sub">
+          <span>as of <span data-source="summary" data-field="date" data-where="metal=nickel">—</span></span>
+          <span class="sp-alt" data-alt="nickel" hidden><span data-source="summary" data-field="alt_lb" data-where="metal=nickel">—</span> US$/lb</span>
+        </div>
+        </div>
+        <div class="pb-meta">
+          <div class="sp-chg">
+          <span>1M <b class="sp-c" data-source="summary" data-field="chg_1m" data-where="metal=nickel">—</b></span>
+          <span>1Y <b class="sp-c" data-source="summary" data-field="chg_1y" data-where="metal=nickel">—</b></span>
+          <span class="sp-lt" data-lt="nickel" hidden>Long-term contract <b data-source="meta" data-field="lt_price" data-where="metal=nickel">—</b></span>
+        </div>
+          <p class="sp-src"><span data-source="meta" data-field="benchmark" data-where="metal=nickel">LME official cash settlement</span> · <span data-source="meta" data-field="source_name" data-where="metal=nickel">Westmetall (LME data)</span></p>
+          <p class="sp-exp">Your exposure: <span data-source="meta" data-field="exposure" data-where="metal=nickel">Centaurus Metals (Jaguar)</span></p>
+        </div>
+      </div>
+      <p class="cmp-intro" id="cmpni-intro">All lines start at 0% on the first day of the period you pick. NIKL is a basket of nickel miners, and about half of it is Indonesian producers or companies with their smelters in Indonesia, so it shows how the Indonesia-centred industry has traded against the nickel price.</p>
+      <p class="cmp-take" id="cmpni-take" data-source="cmp_ni_stats">—</p>
+      <div class="cmp-legend" id="cmpni-legend" data-source="cmp_ni_stats" role="group" aria-label="Show or hide lines"></div>
+      <p class="cmp-hint" id="cmpni-hint">Click a name to hide or show its line.</p>
+      <p class="cmp-take" id="cmpni-ptake" hidden></p>
+      <div class="cmp-chart" id="cmpni-price" hidden></div>
+      <div class="cmp-chart" id="cmpni-chart" data-source="series"></div>
+      <details class="cmp-more">
+        <summary>Correlation table and how to read it</summary>
+        <div class="cmp-more-body">
+      <div class="sp-tablewrap">
+        <table class="cmp-sync" id="cmpni-sync" data-source="cmp_ni_stats" data-row-key="id">
+          <thead><tr><th data-field="label">How closely they moved together</th><th data-field="value">Value</th><th data-field="reading">What it means</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="cmp-foot">Correlation compares daily moves: +1 means they moved in the same direction every day, 0 means no relation, −1 means opposite directions. The NIKL ratio says how many percent NIKL typically moved for each 1% move in nickel. Nickel is the LME official cash settlement (Westmetall, US$ per tonne), fixed around midday London, about 3½ hours before US markets close, so a move in the US afternoon shows up in nickel only the next day; that makes nickel's daily correlation with NIKL and the S&amp;P 500, and the NIKL ratio, lower than the true link. Only days on which both markets traded are used. NIKL (Sprott Nickel Miners ETF, Nasdaq closes since its launch in March 2023) is shown with its distributions reinvested: it paid $2.77 per share in December 2023 (about 17% of its price), $0.37 in December 2024 and $0.40 in December 2025; the adjusted values match stockanalysis.com's adjusted closes. Its largest holdings (October 2026, stockanalysis.com) are Antam, Nickel Industries, Merdeka Battery Materials, IGO, Talon Metals, Vale Indonesia, Trimegah Bangun Persada and Nickel Asia, so it is closer to a bet on the Indonesian industry than on non-Indonesian producers. The S&amp;P 500 is the index close, price only. NIKL history starts in March 2023, so Max compares nickel and the S&amp;P 500 since 2008. Every period ends on the latest close all lines shown have.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section class="sp-sec cmp" id="compare-uranium">
+    <div class="sp-card cmp">
+      <div class="cmp-head">
+        <h2>Uranium, uranium miners and stocks, side by side</h2>
+        <div class="cmp-tools">
+          <div class="cmp-win cmp-view" id="cmpu-view" role="group" aria-label="Chart view"><button type="button" data-v="pct">% change vs ETFs</button><button type="button" data-v="price">Uranium price</button></div>
+          <div class="cmp-win" id="cmpu-win" role="group" aria-label="Comparison period">
+            <button type="button" data-w="YTD">YTD</button><button type="button" data-w="1Y">1Y</button><button type="button" data-w="2Y">2Y</button><button type="button" data-w="3Y">3Y</button><button type="button" data-w="5Y">5Y</button><button type="button" data-w="SINCE16">Since 2016</button><button type="button" data-w="20Y">20Y</button><button type="button" data-w="MAX">Max</button>
+          </div>
+        </div>
+      </div>
+      <div class="cmp-price" style="--pb-accent: #6A9E26">
+        <div class="pb-main">
+          <div class="sp-name"><h3 data-source="meta" data-field="name" data-where="metal=uranium">Uranium (U3O8)</h3><span class="sp-q" data-q="uranium"></span><span class="sp-fresh" data-fresh="uranium" hidden></span></div>
+          <div class="sp-price"><span class="sp-num dash-skeleton" data-source="summary" data-field="price" data-where="metal=uranium">—</span><span class="sp-unit" data-source="meta" data-field="unit" data-where="metal=uranium">US$/lb</span></div>
+          <div class="sp-sub">
+          <span>as of <span data-source="summary" data-field="date" data-where="metal=uranium">—</span></span>
+          <span class="sp-alt" data-alt="uranium" hidden><span data-source="summary" data-field="alt_lb" data-where="metal=uranium">—</span> US$/lb</span>
+        </div>
+        </div>
+        <div class="pb-meta">
+          <div class="sp-chg">
+          <span>1M <b class="sp-c" data-source="summary" data-field="chg_1m" data-where="metal=uranium">—</b></span>
+          <span>1Y <b class="sp-c" data-source="summary" data-field="chg_1y" data-where="metal=uranium">—</b></span>
+          <span class="sp-lt" data-lt="uranium" hidden>Long-term contract <b data-source="meta" data-field="lt_price" data-where="metal=uranium">—</b></span>
+        </div>
+          <p class="sp-src"><span data-source="meta" data-field="benchmark" data-where="metal=uranium">Spot U3O8</span> · <span data-source="meta" data-field="source_name" data-where="metal=uranium">Trading Economics (daily) + Cameco (month-end history)</span></p>
+          <p class="sp-exp">Your exposure: <span data-source="meta" data-field="exposure" data-where="metal=uranium">Cameco, Centrus, ATHA Energy, Stallion Uranium</span></p>
+        </div>
+      </div>
+      <p class="cmp-intro" id="cmpu-intro">All lines start at 0% at the first month-end of the period you pick. Uranium is not traded on an exchange every day; it is sold mostly in private long-term contracts, and the free, reliable spot history is a month-end price. So this chart compares month-ends, not days.</p>
+      <p class="cmp-take" id="cmpu-take" data-source="cmp_u_stats">—</p>
+      <div class="cmp-legend" id="cmpu-legend" data-source="cmp_u_stats" role="group" aria-label="Show or hide lines"></div>
+      <p class="cmp-hint" id="cmpu-hint">Click a name to hide or show its line.</p>
+      <p class="cmp-take" id="cmpu-ptake" hidden></p>
+      <div class="cmp-chart" id="cmpu-price" hidden></div>
+      <div class="cmp-chart" id="cmpu-chart" data-source="cmp_u_stats"></div>
+      <details class="cmp-more">
+        <summary>Correlation table and how to read it</summary>
+        <div class="cmp-more-body">
+      <div class="sp-tablewrap">
+        <table class="cmp-sync" id="cmpu-sync" data-source="cmp_u_stats" data-row-key="id">
+          <thead><tr><th data-field="label">How closely they moved together</th><th data-field="value">Value</th><th data-field="reading">What it means</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="cmp-foot">Correlation here compares monthly moves: +1 means they moved in the same direction every month, 0 means no relation, −1 means opposite directions. The URA ratio says how many percent URA typically moved for each 1% monthly move in uranium. A year has only 12 monthly moves, so for periods under two years the numbers are a rough guide. Uranium is Cameco's month-end spot price (the average of the UxC and TradeTech month-end spot prices, US$ per lb U<sub>3</sub>O<sub>8</sub>). Daily spot prices are a paid UxC and TradeTech product, and the free daily quotes (futures and CFDs) trade too thinly to compare day by day. URA (Global X Uranium ETF) is its closing price on the last trading day of each month (Nasdaq historical data, checked against stockanalysis.com), shown with its distributions reinvested: it paid $1.31 per share in December 2021, $1.68 in December 2023 and $2.08 in December 2025, about 5–6% of its price each time, which a price-only line would miss. The adjusted values match stockanalysis.com's adjusted closes to within 0.1%. URA holds uranium miners and other companies in the nuclear fuel chain, so it is not a pure uranium play. The S&amp;P 500 is the index close on the last trading day of each month, price only. URA history here starts in October 2016, so the 20-year view shows only uranium and the S&amp;P 500. The chart ends at the latest month-end Cameco has published, usually early in the following month.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <div class="sp-bar" id="range-bar">
+      <span class="sp-bar-lbl">Other metals · chart period</span>
+      <div class="sp-range" role="group" aria-label="Chart range">
+        <button type="button" data-r="3M" aria-pressed="false">3M</button>
+        <button type="button" data-r="6M" aria-pressed="false">6M</button>
+        <button type="button" data-r="1Y" aria-pressed="true">1Y</button>
+        <button type="button" data-r="5Y" aria-pressed="false">5Y</button>
+        <button type="button" data-r="10Y" aria-pressed="false">10Y</button>
+        <button type="button" data-r="MAX" aria-pressed="false">Max</button>
+      </div>
+      <div class="sp-legend"><span>Source grade: <b>Benchmark</b> = exchange or industry reference · <b>Reference</b> = daily quote from a data vendor · <b>Proxy</b> / <b>Indicative</b> = best free stand-in</span></div>
+    </div>
+
+  <section class="sp-sec" id="base-battery">
+    <h2>Base & battery</h2>
+    <div class="sp-grid">
+      <article class="sp-card" id="card-molybdenum">
+        <div class="sp-top">
+          <div class="sp-name"><h3 data-source="meta" data-field="name" data-where="metal=molybdenum">Molybdenum</h3><span class="sp-q" data-q="molybdenum"></span></div>
+          <span class="sp-fresh" data-fresh="molybdenum" hidden></span>
+        </div>
+        <div class="sp-price"><span class="sp-num dash-skeleton" data-source="summary" data-field="price" data-where="metal=molybdenum">—</span><span class="sp-unit" data-source="meta" data-field="unit" data-where="metal=molybdenum">CNY/kg</span></div>
+        <div class="sp-sub">
+          <span>as of <span data-source="summary" data-field="date" data-where="metal=molybdenum">—</span></span>
+          <span class="sp-alt" data-alt="molybdenum" hidden><span data-source="summary" data-field="alt_lb" data-where="metal=molybdenum">—</span> US$/lb</span>
+        </div>
+        <div class="sp-chg">
+          <span>1M <b class="sp-c" data-source="summary" data-field="chg_1m" data-where="metal=molybdenum">—</b></span>
+          <span>1Y <b class="sp-c" data-source="summary" data-field="chg_1y" data-where="metal=molybdenum">—</b></span>
+          <span class="sp-lt" data-lt="molybdenum" hidden>Long-term contract <b data-source="meta" data-field="lt_price" data-where="metal=molybdenum">—</b></span>
+        </div>
+        <div class="sp-chart" data-chart="molybdenum" data-source="series"></div>
+        <p class="sp-src"><span data-source="meta" data-field="benchmark" data-where="metal=molybdenum">China domestic price (CFD)</span> · <span data-source="meta" data-field="source_name" data-where="metal=molybdenum">Trading Economics</span></p>
+        <p class="sp-exp">Your exposure: <span data-source="meta" data-field="exposure" data-where="metal=molybdenum">By-product at Los Andes, Copper Giant, Gladiator</span></p>
+      </article>
+      <article class="sp-card" id="card-manganese">
+        <div class="sp-top">
+          <div class="sp-name"><h3 data-source="meta" data-field="name" data-where="metal=manganese">Manganese ore</h3><span class="sp-q" data-q="manganese"></span></div>
+          <span class="sp-fresh" data-fresh="manganese" hidden></span>
+        </div>
+        <div class="sp-price"><span class="sp-num dash-skeleton" data-source="summary" data-field="price" data-where="metal=manganese">—</span><span class="sp-unit" data-source="meta" data-field="unit" data-where="metal=manganese">CNY/mtu</span></div>
+        <div class="sp-sub">
+          <span>as of <span data-source="summary" data-field="date" data-where="metal=manganese">—</span></span>
+          <span class="sp-alt" data-alt="manganese" hidden><span data-source="summary" data-field="alt_lb" data-where="metal=manganese">—</span> US$/lb</span>
+        </div>
+        <div class="sp-chg">
+          <span>1M <b class="sp-c" data-source="summary" data-field="chg_1m" data-where="metal=manganese">—</b></span>
+          <span>1Y <b class="sp-c" data-source="summary" data-field="chg_1y" data-where="metal=manganese">—</b></span>
+          <span class="sp-lt" data-lt="manganese" hidden>Long-term contract <b data-source="meta" data-field="lt_price" data-where="metal=manganese">—</b></span>
+        </div>
+        <div class="sp-chart" data-chart="manganese" data-source="series"></div>
+        <p class="sp-src"><span data-source="meta" data-field="benchmark" data-where="metal=manganese">South African ore 32% Mn, Tianjin port</span> · <span data-source="meta" data-field="source_name" data-where="metal=manganese">Trading Economics</span></p>
+        <p class="sp-exp">Your exposure: <span data-source="meta" data-field="exposure" data-where="metal=manganese">Element 25, Aftermath Silver (Berenguela)</span></p>
+      </article>
+    </div>
+  </section>
+  <section class="sp-sec" id="energy-strategic">
+    <h2>Energy & strategic</h2>
+    <div class="sp-grid">
+      <article class="sp-card" id="card-rare_earths">
+        <div class="sp-top">
+          <div class="sp-name"><h3 data-source="meta" data-field="name" data-where="metal=rare_earths">Rare earths (neodymium)</h3><span class="sp-q" data-q="rare_earths"></span></div>
+          <span class="sp-fresh" data-fresh="rare_earths" hidden></span>
+        </div>
+        <div class="sp-price"><span class="sp-num dash-skeleton" data-source="summary" data-field="price" data-where="metal=rare_earths">—</span><span class="sp-unit" data-source="meta" data-field="unit" data-where="metal=rare_earths">CNY/t</span></div>
+        <div class="sp-sub">
+          <span>as of <span data-source="summary" data-field="date" data-where="metal=rare_earths">—</span></span>
+          <span class="sp-alt" data-alt="rare_earths" hidden><span data-source="summary" data-field="alt_lb" data-where="metal=rare_earths">—</span> US$/lb</span>
+        </div>
+        <div class="sp-chg">
+          <span>1M <b class="sp-c" data-source="summary" data-field="chg_1m" data-where="metal=rare_earths">—</b></span>
+          <span>1Y <b class="sp-c" data-source="summary" data-field="chg_1y" data-where="metal=rare_earths">—</b></span>
+          <span class="sp-lt" data-lt="rare_earths" hidden>Long-term contract <b data-source="meta" data-field="lt_price" data-where="metal=rare_earths">—</b></span>
+        </div>
+        <div class="sp-chart" data-chart="rare_earths" data-source="series"></div>
+        <p class="sp-src"><span data-source="meta" data-field="benchmark" data-where="metal=rare_earths">Neodymium, China (proxy for NdPr oxide)</span> · <span data-source="meta" data-field="source_name" data-where="metal=rare_earths">Trading Economics</span></p>
+        <p class="sp-exp">Your exposure: <span data-source="meta" data-field="exposure" data-where="metal=rare_earths">Ucore, Arafura, Viridis, Meteoric/Lynas</span></p>
+      </article>
+      <article class="sp-card" id="card-antimony">
+        <div class="sp-top">
+          <div class="sp-name"><h3 data-source="meta" data-field="name" data-where="metal=antimony">Antimony</h3><span class="sp-q" data-q="antimony"></span></div>
+          <span class="sp-fresh" data-fresh="antimony" hidden></span>
+        </div>
+        <div class="sp-price"><span class="sp-num dash-skeleton" data-source="summary" data-field="price" data-where="metal=antimony">—</span><span class="sp-unit" data-source="meta" data-field="unit" data-where="metal=antimony">US$/kg</span></div>
+        <div class="sp-sub">
+          <span>as of <span data-source="summary" data-field="date" data-where="metal=antimony">—</span></span>
+          <span class="sp-alt" data-alt="antimony" hidden><span data-source="summary" data-field="alt_lb" data-where="metal=antimony">—</span> US$/lb</span>
+        </div>
+        <div class="sp-chg">
+          <span>1M <b class="sp-c" data-source="summary" data-field="chg_1m" data-where="metal=antimony">—</b></span>
+          <span>1Y <b class="sp-c" data-source="summary" data-field="chg_1y" data-where="metal=antimony">—</b></span>
+          <span class="sp-lt" data-lt="antimony" hidden>Long-term contract <b data-source="meta" data-field="lt_price" data-where="metal=antimony">—</b></span>
+        </div>
+        <div class="sp-chart" data-chart="antimony" data-source="series"></div>
+        <p class="sp-src"><span data-source="meta" data-field="benchmark" data-where="metal=antimony">Retail price for 99.65% metal (no free benchmark)</span> · <span data-source="meta" data-field="source_name" data-where="metal=antimony">Strategic Metals Invest</span></p>
+        <p class="sp-exp">Your exposure: <span data-source="meta" data-field="exposure" data-where="metal=antimony">Antimony Resources</span></p>
+      </article>
+    </div>
+  </section>
+  <section class="sp-sec" id="sources">
+    <details class="src-more">
+      <summary><h2>Sources and reliability</h2><span class="src-hint">Where each price comes from and how far to trust it</span></summary>
+      <div class="src-body">
+    <div class="sp-card">
+      <div class="sp-tablewrap">
+        <table class="sp-table" id="tbl" data-source="summary" data-row-key="metal">
+          <thead><tr>
+            <th data-field="name">Metal</th>
+            <th data-field="benchmark">What is quoted</th>
+            <th data-field="source_name">Source</th>
+            <th data-field="quality">Grade</th>
+            <th data-field="cadence">Updates</th>
+            <th data-field="date">Latest price</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <ul class="sp-notes">
+      <li>Gold and silver history (since 1975 and 1970) is stored with the page. New closes are added by the daily run.</li>
+      <li>Copper and nickel are the LME official cash settlements, the price physical contracts settle against. They publish once per London trading day, so the latest date is usually yesterday.</li>
+      <li>Uranium history is Cameco's month-end spot (the average of UxC and TradeTech). Daily points come from Trading Economics. The long-term contract price is shown because utilities buy most uranium on term contracts.</li>
+      <li>Molybdenum, manganese ore and neodymium are Chinese market prices via Trading Economics. On this copy the molybdenum price stays in CNY/kg (the US$/lb conversion on the original needs a live USD/CNY rate); it is the Chinese level, not the Western molybdenum-oxide benchmark (Platts/Fastmarkets), which is paywalled. The Western benchmarks (Platts, Fastmarkets, Argus) are behind paywalls. Their charts start today and add a point with each daily run.</li>
+      <li>Neodymium is a proxy. Your rare-earth names sell NdPr oxide, and Ucore and Viridis also depend on dysprosium and terbium, which have no free daily source.</li>
+      <li>Antimony has no free benchmark. The price shown is a dealer's retail price for investors. Use it for direction, not level.</li>
+      <li>Max goes back as far as each free source allows: gold to 1975, silver to 1970, uranium to 1988 (monthly), copper and nickel to 2008. Long-run moves are therefore only comparable within one metal, not across metals.</li>
+      <li>Nickel has a gap from 8 to 25 March 2022. The LME suspended nickel trading after the short squeeze, and the source only shows placeholder values for those days.</li>
+      <li>SIL (Global X Silver Miners) and SILJ (Amplify Junior Silver Miners) use Nasdaq's historical closes since October 2016; they match stockanalysis.com and digrin.com on every checked day and month-end. Placeholder rows in the Nasdaq files (20 Apr 2026 in both, 29–30 Jan 2024 in SILJ) were replaced with the stockanalysis close where one exists and otherwise left out. New days are added by the daily run.</li>
+      <li>COPJ (Sprott Junior Copper Miners ETF) uses Nasdaq's daily closes since February 2023, adjusted for its three year-end distributions (Dec 2023 $0.46, Dec 2024 $2.15, Dec 2025 $4.55 per share) as if they were reinvested; the adjusted values match stockanalysis.com's adjusted closes. New days are added by the daily run.</li>
+      <li>COPX (Global X Copper Miners ETF) uses Nasdaq's historical closes since October 2016; they match stockanalysis.com on 8 checked days and digrin.com on 9 month-ends. New days are added by the daily run.</li>
+      <li>NIKL (Sprott Nickel Miners ETF) uses Nasdaq's daily closes since its launch on 22 March 2023, adjusted for its three December distributions ($2.77 in 2023, $0.37 in 2024, $0.40 in 2025) as if they were reinvested. The closes match a second download (StockScan) on all 21 overlapping days and stockanalysis.com on 8 checked days, and the adjusted values match stockanalysis.com's adjusted closes. New days are added by the daily run.</li>
+      <li>URA (Global X Uranium ETF) uses Nasdaq's daily closes since October 2016, adjusted for all 15 distributions since then as if they were reinvested (amounts from stockanalysis.com, matching digrin.com and dividendhistory.net). The closes match stockanalysis.com on all 53 checked days. The uranium comparison chart uses month-ends because the free uranium spot history is monthly. New days are added by the daily run.</li>
+      <li>The copper-versus-S&amp;P 500 chart uses the same LME copper prices as the copper card and the stored S&amp;P 500 closes, both updated by the daily run.</li>
+      <li>GDXJ (junior gold miners) uses Nasdaq's historical closes since October 2016, checked against digrin.com month-end prices and stockanalysis.com; the 20 Apr 2026 Nasdaq row was a placeholder and was replaced with the stockanalysis close (131.56). New days are added by the daily run.</li>
+      <li>The comparison chart's GDX line uses Nasdaq's historical closes up to June 2024 and stockanalysis.com since July 2024, because the FMP plan doesn't include ETFs. On the 576 days both cover they match to the cent, except 20 Apr 2026, where the Nasdaq file holds a placeholder (no volume, previous day's price); the stockanalysis close is used there. New days are added by the daily run.</li>
+      <li>Charts spanning many years plot a thinned series (at most about 700 points) so they stay fast. Latest prices and changes always use the full data.</li>
+      <li>The freshness dot turns amber after 5 days without a new price and red after 10.</li>
+    </ul>
+      </div>
+    </details>
+  </section>
+</div>
+
+<script>
+const fmtPrice = (v) => v == null || isNaN(v) ? '—' : new Intl.NumberFormat('en-US', { maximumFractionDigits: Math.abs(v) >= 1000 ? 0 : Math.abs(v) >= 100 ? 1 : 2, minimumFractionDigits: Math.abs(v) >= 1000 ? 0 : Math.abs(v) >= 100 ? 1 : 2 }).format(v);
+const fmtPct = (v) => v == null || isNaN(v) ? '—' : (v > 0 ? '+' : '') + v.toFixed(1) + '%';
+const fmtDate = (s) => s ? new Date(s + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }) : '—';
+
+dash.calc('series', {
+  inputs: ['gold_fmp', 'silver_fmp', 'sp500_fmp', 'spot_file'],
+  title: 'All price series',
+  description: 'The stored series for every metal plus the S&P 500 and GDX, with the last weeks of gold, silver and the S&P 500 replaced by the live FMP closes (weekend sessions dropped; a live close wins over a stored one for the same day).',
+  fn: (gold_fmp, silver_fmp, sp500_fmp, spot_file) => {
+    const wk = (d) => { const g = new Date(String(d).slice(0, 10) + 'T00:00:00Z').getUTCDay(); return g !== 0 && g !== 6; };
+    const all = new Map();
+    spot_file.forEach((r) => all.set(r.metal + '|' + r.date, r.metal === 'uranium' ? { metal: r.metal, date: r.date, price: Number(r.price), source: r.source } : { metal: r.metal, date: r.date, price: Number(r.price) }));
+    const live = (rows, metal) => rows.filter((r) => wk(r.date)).forEach((r) => { const d = String(r.date).slice(0, 10); all.set(metal + '|' + d, { metal, date: d, price: Number(r.price) }); });
+    live(gold_fmp, 'gold'); live(silver_fmp, 'silver'); live(sp500_fmp, 'sp500');
+    return [...all.values()].sort((a, b) => (a.metal < b.metal ? -1 : a.metal > b.metal ? 1 : a.date < b.date ? -1 : 1));
+  },
+});
+
+dash.calc('summary', {
+  inputs: ['series', 'meta', 'usdcny_fmp'],
+  title: 'Latest price and changes',
+  description: 'Latest price and date per metal; 1M and 1Y change from the series where it reaches back far enough, otherwise from the source page; copper and nickel also in US$/lb (÷ 2,204.62); molybdenum CNY/kg converted to US$/lb with the latest FMP USD/CNY rate (÷ rate ÷ 2.20462).',
+  fn: (series, meta, usdcny_fmp) => meta.map((m) => {
+    const fx = usdcny_fmp.length ? Number(usdcny_fmp.slice().sort((a, b) => (a.date < b.date ? -1 : 1))[usdcny_fmp.length - 1].price) : null;
+    const s = series.filter((r) => r.metal === m.metal);
+    const last = s[s.length - 1];
+    const back = (days) => {
+      if (!last) return null;
+      const t = new Date(new Date(last.date + 'T00:00:00Z').getTime() - days * 864e5).toISOString().slice(0, 10);
+      const prev = s.filter((r) => r.date <= t);
+      return prev.length && (s[0].date <= t) ? prev[prev.length - 1].price : null;
+    };
+    const p1m = back(30), p1y = back(365);
+    const chg = (p, te) => (p ? Math.round((last.price / p - 1) * 1000) / 10 : te != null ? Number(te) : null);
+    return {
+      metal: m.metal, name: m.name, benchmark: m.benchmark, source_name: m.source_name, quality: m.quality, cadence: m.cadence,
+      price: last ? last.price : null, date: last ? last.date : null, points: s.length,
+      chg_1m: last ? chg(p1m, m.te_1m) : null, chg_1y: last ? chg(p1y, m.te_1y) : null,
+      chg_src: p1y ? 'series' : 'source page',
+      alt_lb: last && (m.metal === 'copper' || m.metal === 'nickel') ? Math.round(last.price / 2204.62 * 100) / 100 : last && m.metal === 'molybdenum' && fx ? Math.round(last.price / fx / 2.20462 * 100) / 100 : null,
+      fx_usdcny: m.metal === 'molybdenum' ? fx : null,
+    };
+  }),
+});
+
+
+dash.calc('cmp_stats', {
+  inputs: ['series'],
+  title: 'Gold vs GDX vs S&P 500',
+  description: 'For each period: % change of each line between the first and last common close, correlation of daily log returns for each pair, and how many % GDX and GDXJ moved per 1% gold move (regression slope). Uses only days on which all lines shown have a close.',
+  fn: (series) => {
+    const K = ['gold', 'gdx', 'gdxj', 'sp500'];
+    const by = Object.fromEntries(K.map((k) => [k, new Map()]));
+    series.forEach((r) => { if (by[r.metal]) by[r.metal].set(r.date, r.price); });
+    const first = (k) => [...by[k].keys()].sort()[0];
+    const lastD = (k) => [...by[k].keys()].sort().pop();
+    const anchor = K.map(lastD).sort()[0];
+    const spDates = [...by.sp500.keys()].sort();
+    const W = { '1M': 30, '3M': 91, '6M': 182, 'YTD': 0, '1Y': 365, '2Y': 730, '5Y': 1826, '10Y': 3652, '20Y': 7305, 'MAX': 0 };
+    const NAME = { gold: 'Gold', gdx: 'GDX (gold miners)', gdxj: 'GDXJ (junior miners)', sp500: 'S&P 500' };
+    const out = [];
+    const corr = (x, y) => { const n = x.length, mx = x.reduce((a, b) => a + b) / n, my = y.reduce((a, b) => a + b) / n; let sxy = 0, sxx = 0, syy = 0; for (let i = 0; i < n; i++) { sxy += (x[i] - mx) * (y[i] - my); sxx += (x[i] - mx) ** 2; syy += (y[i] - my) ** 2; } return { r: sxy / Math.sqrt(sxx * syy), slope: sxy / sxx }; };
+    for (const [w, days] of Object.entries(W)) {
+      const start = w === 'YTD' ? anchor.slice(0, 4) + '-01-01' : w === 'MAX' ? [first(K[0]), first('sp500')].sort().pop() : new Date(Date.parse(anchor + 'T00:00:00Z') - days * 864e5).toISOString().slice(0, 10);
+      const grace = new Date(Date.parse(start + 'T00:00:00Z') + 7 * 864e5).toISOString().slice(0, 10);
+      const inc = K.filter((k) => first(k) <= grace);
+      const dates = spDates.filter((d) => d >= start && d <= anchor && inc.every((k) => by[k].has(d)));
+      if (dates.length < 3) continue;
+      const base = { window: w, start: dates[0], end: dates[dates.length - 1], days: dates.length };
+      K.forEach((k) => {
+        const v = inc.includes(k) ? Math.round((by[k].get(dates[dates.length - 1]) / by[k].get(dates[0]) - 1) * 1000) / 10 : null;
+        out.push({ id: w + '|return|' + k, ...base, kind: 'return', series: k, label: NAME[k], value: v, reading: v == null ? 'No data this far back (GDX and GDXJ start in October 2016)' : '' });
+      });
+      const ret = Object.fromEntries(inc.map((k) => [k, dates.slice(1).map((d, i) => Math.log(by[k].get(d) / by[k].get(dates[i])))]));
+      const pairs = [['gold', 'sp500'], ['gdx', 'gold'], ['gdxj', 'gold'], ['gdxj', 'gdx'], ['gdx', 'sp500'], ['gdxj', 'sp500']].filter(([a, b]) => inc.includes(a) && inc.includes(b));
+      pairs.forEach(([a, b]) => {
+        const { r } = corr(ret[b], ret[a]); const rr = Math.round(r * 100) / 100;
+        const word = Math.abs(rr) < 0.2 ? 'barely related' : Math.abs(rr) < 0.5 ? 'loosely related' : Math.abs(rr) < 0.8 ? 'fairly closely related' : 'closely related';
+        out.push({ id: w + '|corr|' + a + '-' + b, ...base, kind: 'corr', series: a + '-' + b, label: NAME[a] + ' ↔ ' + NAME[b] + ' (daily correlation)', value: rr, reading: (rr < 0 ? 'Tended to move in opposite directions; ' : '') + word });
+      });
+      ['gdx', 'gdxj'].filter((m) => inc.includes(m)).forEach((m) => {
+        const { slope } = corr(ret.gold, ret[m]); const b = Math.round(slope * 100) / 100; const nm = m.toUpperCase();
+        out.push({ id: w + '|beta|' + m + '-gold', ...base, kind: 'beta', series: m + '-gold', label: nm + ' move per 1% gold move', value: b, reading: nm + ' typically moved about ' + b.toFixed(1) + '% for each 1% move in gold' });
+      });
+    }
+    return out;
+  },
+});
+dash.calc('cmp_ag_stats', {
+  inputs: ['series'],
+  title: 'Silver vs SIL vs SILJ vs S&P 500',
+  description: 'For each period: % change of each line between the first and last common close, correlation of daily log returns for each pair, and how many % SIL and SILJ moved per 1% silver move (regression slope). Uses only days on which all lines shown have a close.',
+  fn: (series) => {
+    const K = ['silver', 'sil', 'silj', 'sp500'];
+    const by = Object.fromEntries(K.map((k) => [k, new Map()]));
+    series.forEach((r) => { if (by[r.metal]) by[r.metal].set(r.date, r.price); });
+    const first = (k) => [...by[k].keys()].sort()[0];
+    const lastD = (k) => [...by[k].keys()].sort().pop();
+    const anchor = K.map(lastD).sort()[0];
+    const spDates = [...by.sp500.keys()].sort();
+    const W = { '1M': 30, '3M': 91, '6M': 182, 'YTD': 0, '1Y': 365, '2Y': 730, '5Y': 1826, '10Y': 3652, '20Y': 7305, 'MAX': 0 };
+    const NAME = { silver: 'Silver', sil: 'SIL (silver miners)', silj: 'SILJ (junior silver miners)', sp500: 'S&P 500' };
+    const out = [];
+    const corr = (x, y) => { const n = x.length, mx = x.reduce((a, b) => a + b) / n, my = y.reduce((a, b) => a + b) / n; let sxy = 0, sxx = 0, syy = 0; for (let i = 0; i < n; i++) { sxy += (x[i] - mx) * (y[i] - my); sxx += (x[i] - mx) ** 2; syy += (y[i] - my) ** 2; } return { r: sxy / Math.sqrt(sxx * syy), slope: sxy / sxx }; };
+    for (const [w, days] of Object.entries(W)) {
+      const start = w === 'YTD' ? anchor.slice(0, 4) + '-01-01' : w === 'MAX' ? [first(K[0]), first('sp500')].sort().pop() : new Date(Date.parse(anchor + 'T00:00:00Z') - days * 864e5).toISOString().slice(0, 10);
+      const grace = new Date(Date.parse(start + 'T00:00:00Z') + 7 * 864e5).toISOString().slice(0, 10);
+      const inc = K.filter((k) => first(k) <= grace);
+      const dates = spDates.filter((d) => d >= start && d <= anchor && inc.every((k) => by[k].has(d)));
+      if (dates.length < 3) continue;
+      const base = { window: w, start: dates[0], end: dates[dates.length - 1], days: dates.length };
+      K.forEach((k) => {
+        const v = inc.includes(k) ? Math.round((by[k].get(dates[dates.length - 1]) / by[k].get(dates[0]) - 1) * 1000) / 10 : null;
+        out.push({ id: w + '|return|' + k, ...base, kind: 'return', series: k, label: NAME[k], value: v, reading: v == null ? 'No data this far back (SIL and SILJ start in October 2016)' : '' });
+      });
+      const ret = Object.fromEntries(inc.map((k) => [k, dates.slice(1).map((d, i) => Math.log(by[k].get(d) / by[k].get(dates[i])))]));
+      const pairs = [['silver', 'sp500'], ['sil', 'silver'], ['silj', 'silver'], ['silj', 'sil'], ['sil', 'sp500'], ['silj', 'sp500']].filter(([a, b]) => inc.includes(a) && inc.includes(b));
+      pairs.forEach(([a, b]) => {
+        const { r } = corr(ret[b], ret[a]); const rr = Math.round(r * 100) / 100;
+        const word = Math.abs(rr) < 0.2 ? 'barely related' : Math.abs(rr) < 0.5 ? 'loosely related' : Math.abs(rr) < 0.8 ? 'fairly closely related' : 'closely related';
+        out.push({ id: w + '|corr|' + a + '-' + b, ...base, kind: 'corr', series: a + '-' + b, label: NAME[a] + ' ↔ ' + NAME[b] + ' (daily correlation)', value: rr, reading: (rr < 0 ? 'Tended to move in opposite directions; ' : '') + word });
+      });
+      ['sil', 'silj'].filter((m) => inc.includes(m)).forEach((m) => {
+        const { slope } = corr(ret.silver, ret[m]); const b = Math.round(slope * 100) / 100; const nm = m.toUpperCase();
+        out.push({ id: w + '|beta|' + m + '-silver', ...base, kind: 'beta', series: m + '-silver', label: nm + ' move per 1% silver move', value: b, reading: nm + ' typically moved about ' + b.toFixed(1) + '% for each 1% move in silver' });
+      });
+    }
+    return out;
+  },
+});
+
+dash.calc('cmp_cu_stats', {
+  inputs: ['series'],
+  title: 'Copper vs COPX vs COPJ vs S&P 500',
+  description: 'For each period: % change of LME cash copper, COPX, COPJ and the S&P 500 between the first and last common close, the correlation of daily log returns for each pair, and how many % COPX and COPJ moved per 1% copper move (regression slope). Uses only days on which all lines shown have a close.',
+  fn: (series) => {
+    const K = ['copper', 'copx', 'copj', 'sp500'];
+    const by = Object.fromEntries(K.map((k) => [k, new Map()]));
+    series.forEach((r) => { if (by[r.metal]) by[r.metal].set(r.date, r.price); });
+    const first = (k) => [...by[k].keys()].sort()[0];
+    const anchor = K.map((k) => [...by[k].keys()].sort().pop()).sort()[0];
+    const spDates = [...by.sp500.keys()].sort();
+    const W = { '1M': 30, '3M': 91, '6M': 182, 'YTD': 0, '1Y': 365, '2Y': 730, '5Y': 1826, '10Y': 3652, '20Y': 7305, 'MAX': 0 };
+    const NAME = { copper: 'Copper (LME cash)', copx: 'COPX (copper miners)', copj: 'COPJ (junior copper miners, distributions reinvested)', sp500: 'S&P 500' };
+    const out = [];
+    for (const [w, days] of Object.entries(W)) {
+      const start = w === 'YTD' ? anchor.slice(0, 4) + '-01-01' : w === 'MAX' ? [first(K[0]), first('sp500')].sort().pop() : new Date(Date.parse(anchor + 'T00:00:00Z') - days * 864e5).toISOString().slice(0, 10);
+      const grace = new Date(Date.parse(start + 'T00:00:00Z') + 7 * 864e5).toISOString().slice(0, 10);
+      const inc = K.filter((k) => first(k) <= grace);
+      const dates = spDates.filter((d) => d >= start && d <= anchor && inc.every((k) => by[k].has(d)));
+      if (dates.length < 3) continue;
+      const base = { window: w, start: dates[0], end: dates[dates.length - 1], days: dates.length };
+      K.forEach((k) => {
+        const v = inc.includes(k) ? Math.round((by[k].get(dates[dates.length - 1]) / by[k].get(dates[0]) - 1) * 1000) / 10 : null;
+        out.push({ id: w + '|return|' + k, ...base, kind: 'return', series: k, label: NAME[k], value: v, reading: v == null ? 'No data this far back (copper starts January 2008, COPX October 2016, COPJ February 2023)' : '' });
+      });
+      const ret = Object.fromEntries(inc.map((k) => [k, dates.slice(1).map((d, i) => Math.log(by[k].get(d) / by[k].get(dates[i])))]));
+      const stat = (x, y) => { const n = x.length, mx = x.reduce((a, b) => a + b) / n, my = y.reduce((a, b) => a + b) / n; let sxy = 0, sxx = 0, syy = 0; for (let i = 0; i < n; i++) { sxy += (x[i] - mx) * (y[i] - my); sxx += (x[i] - mx) ** 2; syy += (y[i] - my) ** 2; } return { r: sxy / Math.sqrt(sxx * syy), slope: sxy / sxx }; };
+      [['copper', 'sp500'], ['copx', 'copper'], ['copj', 'copper'], ['copj', 'copx'], ['copx', 'sp500'], ['copj', 'sp500']].filter(([a, b]) => inc.includes(a) && inc.includes(b)).forEach(([a, b]) => {
+        const rr = Math.round(stat(ret[b], ret[a]).r * 100) / 100;
+        const word = Math.abs(rr) < 0.2 ? 'barely related' : Math.abs(rr) < 0.5 ? 'loosely related' : Math.abs(rr) < 0.8 ? 'fairly closely related' : 'closely related';
+        out.push({ id: w + '|corr|' + a + '-' + b, ...base, kind: 'corr', series: a + '-' + b, label: NAME[a] + ' ↔ ' + NAME[b] + ' (daily correlation)', value: rr, reading: (rr < 0 ? 'Tended to move in opposite directions; ' : '') + word });
+      });
+      ['copx', 'copj'].filter((m) => inc.includes(m) && inc.includes('copper')).forEach((m) => {
+        const b = Math.round(stat(ret.copper, ret[m]).slope * 100) / 100; const nm = m.toUpperCase();
+        out.push({ id: w + '|beta|' + m + '-copper', ...base, kind: 'beta', series: m + '-copper', label: nm + ' move per 1% copper move', value: b, reading: nm + ' typically moved about ' + b.toFixed(1) + '% for each 1% move in copper' });
+      });
+    }
+    return out;
+  },
+});
+dash.calc('cmp_ni_stats', {
+  inputs: ['series'],
+  title: 'Nickel vs NIKL vs S&P 500',
+  description: 'For each period: % change of LME cash nickel, NIKL (distributions reinvested) and the S&P 500 between the first and last common close, the correlation of daily log returns for each pair, and how many % NIKL moved per 1% nickel move (regression slope). Uses only days on which all lines shown have a close.',
+  fn: (series) => {
+    const K = ['nickel', 'nikl', 'sp500'];
+    const by = Object.fromEntries(K.map((k) => [k, new Map()]));
+    series.forEach((r) => { if (by[r.metal]) by[r.metal].set(r.date, r.price); });
+    const first = (k) => [...by[k].keys()].sort()[0];
+    const anchor = K.map((k) => [...by[k].keys()].sort().pop()).sort()[0];
+    const spDates = [...by.sp500.keys()].sort();
+    const W = { '1M': 30, '3M': 91, '6M': 182, 'YTD': 0, '1Y': 365, '2Y': 730, '3Y': 1095, 'MAX': 0 };
+    const NAME = { nickel: 'Nickel (LME cash)', nikl: 'NIKL (nickel miners, distributions reinvested)', sp500: 'S&P 500' };
+    const out = [];
+    for (const [w, days] of Object.entries(W)) {
+      const start = w === 'YTD' ? anchor.slice(0, 4) + '-01-01' : w === 'MAX' ? [first(K[0]), first('sp500')].sort().pop() : new Date(Date.parse(anchor + 'T00:00:00Z') - days * 864e5).toISOString().slice(0, 10);
+      const grace = new Date(Date.parse(start + 'T00:00:00Z') + 7 * 864e5).toISOString().slice(0, 10);
+      const inc = K.filter((k) => first(k) <= grace);
+      const dates = spDates.filter((d) => d >= start && d <= anchor && inc.every((k) => by[k].has(d)));
+      if (dates.length < 3) continue;
+      const base = { window: w, start: dates[0], end: dates[dates.length - 1], days: dates.length };
+      K.forEach((k) => {
+        const v = inc.includes(k) ? Math.round((by[k].get(dates[dates.length - 1]) / by[k].get(dates[0]) - 1) * 1000) / 10 : null;
+        out.push({ id: w + '|return|' + k, ...base, kind: 'return', series: k, label: NAME[k], value: v, reading: v == null ? 'No data this far back (NIKL starts in March 2023)' : '' });
+      });
+      const ret = Object.fromEntries(inc.map((k) => [k, dates.slice(1).map((d, i) => Math.log(by[k].get(d) / by[k].get(dates[i])))]));
+      const stat = (x, y) => { const n = x.length, mx = x.reduce((a, b) => a + b) / n, my = y.reduce((a, b) => a + b) / n; let sxy = 0, sxx = 0, syy = 0; for (let i = 0; i < n; i++) { sxy += (x[i] - mx) * (y[i] - my); sxx += (x[i] - mx) ** 2; syy += (y[i] - my) ** 2; } return { r: sxy / Math.sqrt(sxx * syy), slope: sxy / sxx }; };
+      [['nickel', 'sp500'], ['nikl', 'nickel'], ['nikl', 'sp500']].filter(([a, b]) => inc.includes(a) && inc.includes(b)).forEach(([a, b]) => {
+        const rr = Math.round(stat(ret[b], ret[a]).r * 100) / 100;
+        const word = Math.abs(rr) < 0.2 ? 'barely related' : Math.abs(rr) < 0.5 ? 'loosely related' : Math.abs(rr) < 0.8 ? 'fairly closely related' : 'closely related';
+        out.push({ id: w + '|corr|' + a + '-' + b, ...base, kind: 'corr', series: a + '-' + b, label: NAME[a] + ' ↔ ' + NAME[b] + ' (daily correlation)', value: rr, reading: (rr < 0 ? 'Tended to move in opposite directions; ' : '') + word });
+      });
+      ['nikl'].filter((m) => inc.includes(m) && inc.includes('nickel')).forEach((m) => {
+        const b = Math.round(stat(ret.nickel, ret[m]).slope * 100) / 100; const nm = m.toUpperCase();
+        out.push({ id: w + '|beta|' + m + '-nickel', ...base, kind: 'beta', series: m + '-nickel', label: nm + ' move per 1% nickel move', value: b, reading: nm + ' typically moved about ' + b.toFixed(1) + '% for each 1% move in nickel' });
+      });
+    }
+    return out;
+  },
+});
+
+dash.calc('cmp_u_stats', {
+  inputs: ['series'],
+  title: 'Uranium vs URA vs S&P 500 (month-end)',
+  description: 'Month-end comparison: Cameco month-end uranium spot (the only free reliable uranium spot history), the last URA close of each month (distributions reinvested) and the last S&P 500 close of each month. For each period: % change between the first and last common month-end, correlation of monthly log returns for each pair, and how many % URA moved per 1% uranium move (regression slope). Also returns the month-end points used, for the chart.',
+  fn: (series) => {
+    const K = ['uranium', 'ura', 'sp500'];
+    const NAME = { uranium: 'Uranium (month-end spot)', ura: 'URA (uranium miners, distributions reinvested)', sp500: 'S&P 500' };
+    // month key -> {date, price}; uranium uses only Cameco month-end rows, URA and S&P 500 the last close of each month
+    const M = Object.fromEntries(K.map((k) => [k, new Map()]));
+    series.forEach((r) => {
+      if (r.metal === 'uranium') { if (r.source && !String(r.source).startsWith('Month-end')) return; }
+      else if (!M[r.metal]) return;
+      const m = r.date.slice(0, 7), cur = M[r.metal].get(m);
+      if (!cur || r.date > cur.date) M[r.metal].set(m, { date: r.date, price: r.price });
+    });
+    // a URA / S&P 500 month counts only if its last close is in the last 5 days of the month, i.e. the month is complete
+    const monthEnd = (m) => new Date(Date.UTC(+m.slice(0, 4), +m.slice(5, 7), 0)).toISOString().slice(0, 10);
+    ['ura', 'sp500'].forEach((k) => { for (const [m, v] of M[k]) if (Date.parse(monthEnd(m)) - Date.parse(v.date) > 5 * 864e5) M[k].delete(m); });
+    const uMonths = [...M.uranium.keys()].sort();
+    const firstM = (k) => [...M[k].keys()].sort()[0];
+    const common = uMonths.filter((m) => M.sp500.has(m));
+    const anchor = common.filter((m) => M.ura.has(m)).pop();
+    const out = [];
+    if (!anchor) return out;
+    common.filter((m) => m <= anchor).forEach((m) => K.forEach((k) => { if (M[k].has(m)) out.push({ id: '*|point|' + k + '|' + m, window: '*', kind: 'point', series: k, date: monthEnd(m), value: M[k].get(m).price }); }));
+    const back = (n) => { const y = +anchor.slice(0, 4), mo = +anchor.slice(5, 7) - 1 - n; const d = new Date(Date.UTC(y, mo, 1)); return d.toISOString().slice(0, 7); };
+    const W = { 'YTD': (+anchor.slice(0, 4) - 1) + '-12', '1Y': back(12), '2Y': back(24), '3Y': back(36), '5Y': back(60), 'SINCE16': firstM('ura'), '20Y': back(240), 'MAX': [firstM('uranium'), firstM('sp500')].sort().pop() };
+    const stat = (x, y) => { const n = x.length, mx = x.reduce((a, b) => a + b) / n, my = y.reduce((a, b) => a + b) / n; let sxy = 0, sxx = 0, syy = 0; for (let i = 0; i < n; i++) { sxy += (x[i] - mx) * (y[i] - my); sxx += (x[i] - mx) ** 2; syy += (y[i] - my) ** 2; } return { r: sxy / Math.sqrt(sxx * syy), slope: sxy / sxx }; };
+    for (const [w, start] of Object.entries(W)) {
+      const inc = K.filter((k) => firstM(k) <= start);
+      const months = common.filter((m) => m >= start && m <= anchor && inc.every((k) => M[k].has(m)));
+      if (months.length < 4 || months[0] !== start) continue;
+      const base = { window: w, start: monthEnd(months[0]), end: monthEnd(months[months.length - 1]), days: months.length - 1 };
+      K.forEach((k) => {
+        const v = inc.includes(k) ? Math.round((M[k].get(months[months.length - 1]).price / M[k].get(months[0]).price - 1) * 1000) / 10 : null;
+        out.push({ id: w + '|return|' + k, ...base, kind: 'return', series: k, label: NAME[k], value: v, reading: v == null ? 'No data this far back (URA history here starts in October 2016)' : '' });
+      });
+      const ret = Object.fromEntries(inc.map((k) => [k, months.slice(1).map((m, i) => Math.log(M[k].get(m).price / M[k].get(months[i]).price))]));
+      const n = months.length - 1;
+      const few = n < 24 ? `; based on only ${n} monthly moves, so treat it as a rough guide` : '';
+      [['uranium', 'sp500'], ['ura', 'uranium'], ['ura', 'sp500']].filter(([a, b]) => inc.includes(a) && inc.includes(b)).forEach(([a, b]) => {
+        const rr = Math.round(stat(ret[b], ret[a]).r * 100) / 100;
+        const word = Math.abs(rr) < 0.2 ? 'barely related' : Math.abs(rr) < 0.5 ? 'loosely related' : Math.abs(rr) < 0.8 ? 'fairly closely related' : 'closely related';
+        out.push({ id: w + '|corr|' + a + '-' + b, ...base, kind: 'corr', series: a + '-' + b, label: NAME[a].replace(/ \(.*\)/, '') + ' ↔ ' + NAME[b].replace(/ \(.*\)/, '') + ' (monthly correlation)', value: rr, reading: (rr < 0 ? 'Tended to move in opposite directions; ' : '') + word + few });
+      });
+      if (inc.includes('ura')) {
+        const b = Math.round(stat(ret.uranium, ret.ura).slope * 100) / 100;
+        out.push({ id: w + '|beta|ura-uranium', ...base, kind: 'beta', series: 'ura-uranium', label: 'URA move per 1% uranium move (monthly)', value: b, reading: 'URA typically moved about ' + b.toFixed(1) + '% for each 1% monthly move in uranium' + few });
+      }
+    }
+    return out;
+  },
+});
+
+const setLiveStart = () => dash.setParams({ fmp_start: new Date(Date.now() - 40 * 864e5).toISOString().slice(0, 10) });
+setLiveStart();
+
+const RANGES = { '3M': 92, '6M': 183, '1Y': 366, '5Y': 1827, '10Y': 3653, 'MAX': 99999 };
+document.querySelectorAll('.sp-range button').forEach((b) => b.addEventListener('click', () => dash.setParams({ range: b.dataset.r })));
+
+function daysOld(d) {
+  if (!d) return null;
+  const now = new Date(); const t = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  return Math.round((t - Date.parse(d + 'T00:00:00Z')) / 864e5);
+}
+
+function drawChart(el, rows, color, hgt) {
+  el.replaceChildren();
+  const W = el.clientWidth; if (!W) return;
+  if (rows.length < 3) {
+    const e = document.createElement('div'); e.className = 'sp-empty';
+    e.textContent = rows.length ? 'History starts ' + fmtDate(rows[0].date) + '. Each daily run adds a point, so the chart fills in over the coming weeks.' : 'No prices yet.';
+    el.appendChild(e); return;
+  }
+  const H = hgt || 150, mt = 8, mb = 20;
+  const step = Math.ceil(rows.length / 700);
+  const thin = step > 1 ? rows.filter((r, i) => i % step === 0 || i === rows.length - 1) : rows;
+  const data = thin.map((r) => ({ ...r, d: new Date(r.date + 'T00:00:00Z') }));
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+  const [lo, hi] = d3.extent(data, (r) => r.price);
+  const pad = (hi - lo) * 0.08 || hi * 0.02;
+  const y = d3.scaleLinear([lo >= 0 ? Math.max(0, lo - pad) : lo - pad, hi + pad], [H - mb, mt]).nice(4);
+  const fmtAxP = (t) => (t === 0 ? '0' : fmtPrice(t));
+  const ticks = y.ticks(3);
+  const probe = svg.append('g').attr('opacity', 0);
+  const ml = Math.max(...ticks.map((t) => probe.append('text').text(fmtAxP(t)).node().getComputedTextLength())) + 8;
+  probe.remove();
+  const x = d3.scaleUtc(d3.extent(data, (r) => r.d), [ml, W - 6]);
+  ticks.forEach((t) => {
+    svg.append('line').attr('x1', ml).attr('x2', W - 6).attr('y1', y(t)).attr('y2', y(t)).attr('stroke', 'var(--cds-chart-grid)');
+    svg.append('text').attr('x', ml - 6).attr('y', y(t)).attr('dy', '0.32em').attr('text-anchor', 'end').text(fmtAxP(t));
+  });
+  const span = data[data.length - 1].d - data[0].d;
+  const xt = x.ticks(W < 360 ? 2 : 4);
+  const xf = span > 3 * 365 * 864e5 ? (d) => String(d.getUTCFullYear()) : span > 300 * 864e5 ? (d) => d.toLocaleDateString('en-GB', { month: 'short', year: '2-digit', timeZone: 'UTC' }) : (d) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+  xt.forEach((t) => svg.append('text').attr('x', x(t)).attr('y', H - 4).attr('text-anchor', 'middle').text(xf(t)));
+  const gid = 'g-' + Math.random().toString(36).slice(2);
+  const grad = svg.append('defs').append('linearGradient').attr('id', gid).attr('x1', 0).attr('x2', 0).attr('y1', 0).attr('y2', 1);
+  [[0, .26], [.25, .16], [.5, .08], [.75, .03], [1, 0]].forEach(([o, a]) => grad.append('stop').attr('offset', o).attr('style', `stop-color:${color};stop-opacity:${a}`));
+  svg.append('path').datum(data).attr('fill', `url(#${gid})`).attr('d', d3.area((r) => x(r.d), H - mb, (r) => y(r.price)));
+  svg.append('path').datum(data).attr('fill', 'none').attr('stroke', color).attr('stroke-width', 2).attr('stroke-linejoin', 'round').attr('stroke-linecap', 'round').attr('d', d3.line((r) => x(r.d), (r) => y(r.price)));
+  if (data.length < 40) svg.append('g').selectAll('circle').data(data).join('circle').attr('cx', (r) => x(r.d)).attr('cy', (r) => y(r.price)).attr('r', 2.5).attr('fill', color);
+  const last = data[data.length - 1];
+  svg.append('circle').attr('cx', x(last.d)).attr('cy', y(last.price)).attr('r', 4).attr('fill', color).attr('stroke', 'var(--color-panel)').attr('stroke-width', 2);
+  const tip = document.createElement('div'); tip.className = 'sp-tip'; tip.hidden = true; el.appendChild(tip);
+  const dot = svg.append('circle').attr('r', 4).attr('fill', color).attr('stroke', 'var(--color-panel)').attr('stroke-width', 2).attr('opacity', 0);
+  const rule = svg.append('line').attr('y1', mt).attr('y2', H - mb).attr('stroke', 'var(--cds-chart-reference)').attr('opacity', 0);
+  const bis = d3.bisector((r) => r.d).center;
+  svg.append('rect').attr('x', ml).attr('width', W - 6 - ml).attr('y', 0).attr('height', H).attr('fill', 'transparent')
+    .on('mousemove', (ev) => {
+      const [mx] = d3.pointer(ev); const r = data[bis(data, x.invert(mx))];
+      dot.attr('cx', x(r.d)).attr('cy', y(r.price)).attr('opacity', 1);
+      rule.attr('x1', x(r.d)).attr('x2', x(r.d)).attr('opacity', 1);
+      tip.replaceChildren();
+      const h = document.createElement('div'); h.className = 'h'; h.textContent = fmtDate(r.date); tip.appendChild(h);
+      const v = document.createElement('div'); v.textContent = fmtPrice(r.price); tip.appendChild(v);
+      tip.hidden = false;
+      const [px, py] = d3.pointer(ev, el);
+      let left = px + 12; if (left + tip.offsetWidth > W) left = Math.max(0, px - tip.offsetWidth - 12);
+      tip.style.left = left + 'px'; tip.style.top = Math.max(0, py - tip.offsetHeight - 8) + 'px';
+    })
+    .on('mouseleave', () => { tip.hidden = true; dot.attr('opacity', 0); rule.attr('opacity', 0); });
+}
+
+// Metal colours: chosen to read as gold, silver and copper, each with at least 3:1 contrast on both the light and the dark page background
+const METAL_COL = {
+  gold: '#B8890F', silver: '#7F8A96', copper: '#B86B32',
+  uranium: '#6A9E26',     // uranium-glass green
+  nickel: '#3F9A6B',      // the green of nickel salts
+  molybdenum: '#5B7FB0',  // blue-grey of molybdenite
+  manganese: '#C0587E',   // rose of rhodochrosite, the manganese mineral
+  rare_earths: '#7E6BC9', // lavender of neodymium glass
+  antimony: '#3A8FA3',    // steel-blue sheen of stibnite
+};
+// Comparison lines: large-cap miner ETFs blue, junior miner ETFs magenta, S&P 500 a dashed text-colour line (the benchmark) — clearly apart from the metal colours, with at least 3:1 contrast in light and dark mode
+const LINE_COL = { big: '#2F6FD0', junior: '#C2348A', sp500: 'var(--color-fg)' };
+const CMP_DASH = { sp500: '6 4' };
+const CMP_COL = { nickel: () => METAL_COL.nickel, nikl: () => LINE_COL.big, uranium: () => METAL_COL.uranium, ura: () => LINE_COL.big, gold: () => METAL_COL.gold, gdx: () => LINE_COL.big, gdxj: () => LINE_COL.junior, sp500: () => LINE_COL.sp500, copper: () => METAL_COL.copper, copx: () => LINE_COL.big, copj: () => LINE_COL.junior, silver: () => METAL_COL.silver, sil: () => LINE_COL.big, silj: () => LINE_COL.junior };
+const CMP_NAME = { nickel: 'Nickel', nikl: 'NIKL', uranium: 'Uranium', ura: 'URA', gold: 'Gold', gdx: 'GDX', gdxj: 'GDXJ', sp500: 'S&P 500', copper: 'Copper', copx: 'COPX', copj: 'COPJ', silver: 'Silver', sil: 'SIL', silj: 'SILJ' };
+const PANELS = [
+  { pre: 'cmp', stats: 'cmp_stats', pw: 'cmp', ph: 'cmp_hide', keys: ['gold', 'gdx', 'gdxj', 'sp500'],
+    take: (rows) => { const p = []; const b = rows.find((r) => r.kind === 'beta' && r.series === 'gdx-gold'), bj = rows.find((r) => r.kind === 'beta' && r.series === 'gdxj-gold'), c = rows.find((r) => r.kind === 'corr' && r.series === 'gold-sp500');
+      if (b && bj) p.push(`Day to day, GDX moved about ${b.value.toFixed(1)}× and GDXJ about ${bj.value.toFixed(1)}× as much as gold.`);
+      if (c) p.push(`Gold and the S&P 500 were ${c.reading.toLowerCase()} (correlation ${c.value.toFixed(2)}).`); return p; } },
+  { pre: 'cmpag', stats: 'cmp_ag_stats', pw: 'cmpag', ph: 'cmpag_hide', keys: ['silver', 'sil', 'silj', 'sp500'],
+    take: (rows) => { const p = []; const b = rows.find((r) => r.kind === 'beta' && r.series === 'sil-silver'), bj = rows.find((r) => r.kind === 'beta' && r.series === 'silj-silver'), c = rows.find((r) => r.kind === 'corr' && r.series === 'silver-sp500');
+      if (b && bj) p.push(`Day to day, SIL moved about ${b.value.toFixed(1)}× and SILJ about ${bj.value.toFixed(1)}× as much as silver.`);
+      if (c) p.push(`Silver and the S&P 500 were ${c.reading.toLowerCase()} (correlation ${c.value.toFixed(2)}).`); return p; } },
+  { pre: 'cmpcu', stats: 'cmp_cu_stats', pw: 'cmpcu', ph: 'cmpcu_hide', keys: ['copper', 'copx', 'copj', 'sp500'],
+    take: (rows) => { const p = []; const c = rows.find((r) => r.kind === 'corr' && r.series === 'copper-sp500'), b = rows.find((r) => r.kind === 'beta' && r.series === 'copx-copper'), bj = rows.find((r) => r.kind === 'beta' && r.series === 'copj-copper');
+      if (b && bj) p.push(`Day to day, COPX moved about ${b.value.toFixed(1)}× and COPJ about ${bj.value.toFixed(1)}× as much as copper.`);
+      else if (b) p.push(`Day to day, COPX moved about ${b.value.toFixed(1)}× as much as copper.`);
+      if (c) p.push(`Copper and the S&P 500 were ${c.reading.toLowerCase()} (correlation ${c.value.toFixed(2)}).`); return p; } },
+  { pre: 'cmpni', stats: 'cmp_ni_stats', pw: 'cmpni', ph: 'cmpni_hide', keys: ['nickel', 'nikl', 'sp500'],
+    take: (rows) => { const p = []; const c = rows.find((r) => r.kind === 'corr' && r.series === 'nickel-sp500'), b = rows.find((r) => r.kind === 'beta' && r.series === 'nikl-nickel');
+      if (b) p.push(`Day to day, NIKL moved about ${b.value.toFixed(1)}× as much as nickel.`);
+      if (c) p.push(`Nickel and the S&P 500 were ${c.reading.toLowerCase()} (correlation ${c.value.toFixed(2)}).`); return p; } },
+  { pre: 'cmpu', stats: 'cmp_u_stats', pw: 'cmpu', ph: 'cmpu_hide', keys: ['uranium', 'ura', 'sp500'], monthly: true, def: '5Y',
+    take: (rows) => { const p = []; const c = rows.find((r) => r.kind === 'corr' && r.series === 'uranium-sp500'), b = rows.find((r) => r.kind === 'beta' && r.series === 'ura-uranium');
+      if (b) p.push(`Month to month, URA moved about ${b.value.toFixed(1)}× as much as uranium.`);
+      if (c) p.push(`Uranium and the S&P 500 were ${c.reading.split(';')[0].toLowerCase()} (correlation ${c.value.toFixed(2)}).`);
+      if (rows[0] && rows[0].days < 24) p.push(`With only ${rows[0].days} monthly moves, treat these numbers as a rough guide.`); return p; } },
+];
+PANELS.forEach((P) => document.querySelectorAll('#' + P.pre + '-win button').forEach((b) => b.addEventListener('click', () => dash.setParams({ [P.pw]: b.dataset.w }))));
+PANELS.forEach((P) => document.querySelectorAll('#' + P.pre + '-view button').forEach((b) => b.addEventListener('click', () => dash.setParams({ [P.pre + '_view']: b.dataset.v }))));
+// Price view: the metal's own price in its unit over the chosen period, ending on its latest price (not the common end date of the % view)
+const PV_DAYS = { '1M': 30, '3M': 91, '6M': 182, '1Y': 365, '2Y': 730, '3Y': 1095, '5Y': 1826, '10Y': 3652, '20Y': 7305 };
+function renderPriceView(P, w) {
+  const metal = P.keys[0];
+  const el = document.getElementById(P.pre + '-price'), cap = document.getElementById(P.pre + '-ptake');
+  const se = dash.data('series');
+  if (se.status === 'error') { el.replaceChildren(); const f = document.createElement('div'); f.className = 'sp-fail'; f.textContent = 'Failed to load'; el.appendChild(f); cap.textContent = ''; return; }
+  if (se.status !== 'ok') { el.replaceChildren(); cap.textContent = '—'; return; }
+  const rows = se.data.filter((r) => r.metal === metal);
+  if (!rows.length) { el.replaceChildren(); cap.textContent = 'No prices yet.'; return; }
+  const last = rows[rows.length - 1].date;
+  const cut = w === 'MAX' ? '' : w === 'YTD' ? last.slice(0, 4) + '-01-01' : w === 'SINCE16' ? '2016-10-01' : new Date(Date.parse(last + 'T00:00:00Z') - (PV_DAYS[w] || 365) * 864e5).toISOString().slice(0, 10);
+  const shown = rows.filter((r) => r.date >= cut);
+  const mt = dash.data('meta'); const m = mt.status === 'ok' ? mt.data.find((x) => x.metal === metal) : null;
+  const unit = m && m.unit ? m.unit : '';
+  if (shown.length >= 2) {
+    const a = shown[0], b = shown[shown.length - 1];
+    cap.textContent = `${m ? m.name : CMP_NAME[metal]} price in ${unit}: ${fmtPrice(a.price)} on ${fmtDate(a.date)} → ${fmtPrice(b.price)} on ${fmtDate(b.date)} (${fmtPct((b.price / a.price - 1) * 100)}).` + (metal === 'uranium' && shown.some((r) => r.source && !String(r.source).startsWith('Month-end')) ? ` Month-end prices (Cameco) until ${fmtDate(shown.filter((r) => String(r.source).startsWith('Month-end')).pop()?.date)}, daily quotes (Trading Economics, a less authoritative source) after that.` : '');
+  } else cap.textContent = '';
+  drawChart(el, shown, METAL_COL[metal], el.clientWidth < 480 ? 260 : 320);
+}
+
+function drawCompare(el, series, stats, w, hidden, main) {
+  el.replaceChildren();
+  const W = el.clientWidth; if (!W) return;
+  const rows = stats.filter((r) => r.window === w && r.kind === 'return');
+  if (!rows.length) return;
+  const start = rows[0].start, end = rows[0].end;
+  const avail = rows.filter((r) => r.value != null).map((r) => r.series);
+  const inc = avail.filter((k) => !hidden.includes(k));
+  if (!inc.length) { const e = document.createElement('div'); e.className = 'sp-empty'; e.style.minHeight = '260px'; e.textContent = 'All lines are hidden. Click a name above to show it again.'; el.appendChild(e); return; }
+  const by = Object.fromEntries(avail.map((k) => [k, new Map()]));
+  series.forEach((r) => { if (by[r.metal] && r.date >= start && r.date <= end) by[r.metal].set(r.date, r.price); });
+  let dates = [...by.sp500.keys()].sort().filter((d) => avail.every((k) => by[k].has(d)));
+  const step = Math.ceil(dates.length / 700);
+  if (step > 1) dates = dates.filter((d, i) => i % step === 0 || i === dates.length - 1);
+  const pts = dates.map((d) => ({ d: new Date(d + 'T00:00:00Z'), date: d, v: Object.fromEntries(inc.map((k) => [k, (by[k].get(d) / by[k].get(start) - 1) * 100])) }));
+  const H = W < 480 ? 260 : 320, mt = 10, mb = 22;
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+  const all = pts.flatMap((p) => inc.map((k) => p.v[k]));
+  const y = d3.scaleLinear([Math.min(0, d3.min(all)), Math.max(0, d3.max(all))], [H - mb, mt]).nice(5);
+  { const lo = Math.min(0, d3.min(all)), [n0, n1] = y.domain(); const step = (n1 - n0) / 5; if (lo < 0 && lo - n0 > step * 0.5) y.domain([lo - step * 0.15, n1]); }
+  const fmtAx = (v) => (v > 0 ? '+' : '') + d3.format(Math.abs(y.domain()[1] - y.domain()[0]) >= 20 ? '.0f' : '.1f')(v) + '%';
+  const ticks = y.ticks(5);
+  const probe = svg.append('g').attr('opacity', 0);
+  const ml = Math.max(...ticks.map((t) => probe.append('text').text(fmtAx(t)).node().getComputedTextLength())) + 8;
+  const endLbl = inc.map((k) => CMP_NAME[k] + ' ' + fmtPct(pts[pts.length - 1].v[k]));
+  const mr = Math.min(W * 0.35, Math.max(...endLbl.map((t) => probe.append('text').attr('class', 'lbl').text(t).node().getComputedTextLength())) + 12);
+  probe.remove();
+  const x = d3.scaleUtc(d3.extent(pts, (p) => p.d), [ml, W - mr]);
+  ticks.forEach((t) => {
+    svg.append('line').attr('x1', ml).attr('x2', W - mr).attr('y1', y(t)).attr('y2', y(t)).attr('stroke', t === 0 ? 'var(--cds-chart-axis)' : 'var(--cds-chart-grid)');
+    svg.append('text').attr('x', ml - 6).attr('y', y(t)).attr('dy', '0.32em').attr('text-anchor', 'end').text(fmtAx(t));
+  });
+  const span = pts[pts.length - 1].d - pts[0].d;
+  const xf = span > 3 * 365 * 864e5 ? (d) => String(d.getUTCFullYear()) : span > 120 * 864e5 ? (d) => d.toLocaleDateString('en-GB', { month: 'short', year: '2-digit', timeZone: 'UTC' }) : (d) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+  x.ticks(W < 480 ? 3 : 6).forEach((t) => svg.append('text').attr('x', x(t)).attr('y', H - 4).attr('text-anchor', 'middle').text(xf(t)));
+  // the metal is drawn last (on top) and thicker; the comparison lines are thinner and slightly faded
+  [...inc.filter((k) => k !== main), ...inc.filter((k) => k === main)].forEach((k) => svg.append('path').datum(pts).attr('fill', 'none').attr('stroke', CMP_COL[k]()).attr('stroke-width', k === main ? 3.25 : 1.6).attr('stroke-opacity', k === main ? 1 : 0.75).style('stroke', CMP_COL[k]()).attr('stroke-dasharray', CMP_DASH[k] || null).attr('stroke-linejoin', 'round').attr('stroke-linecap', CMP_DASH[k] ? 'butt' : 'round').attr('d', d3.line((p) => x(p.d), (p) => y(p.v[k]))));
+  // end labels, nudged apart
+  const ends = inc.map((k) => ({ k, y: y(pts[pts.length - 1].v[k]) })).sort((a, b) => a.y - b.y);
+  for (let i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 14) ends[i].y = ends[i - 1].y + 14;
+  ends.forEach((e) => {
+    svg.append('circle').attr('cx', x(pts[pts.length - 1].d)).attr('cy', y(pts[pts.length - 1].v[e.k])).attr('r', e.k === main ? 5 : 3.5).style('fill', CMP_COL[e.k]()).attr('stroke', 'var(--color-panel)').attr('stroke-width', 1.5);
+    svg.append('text').attr('class', 'lbl').attr('x', x(pts[pts.length - 1].d) + 8).attr('y', e.y).attr('dy', '0.32em').style('fill', e.k === main ? 'var(--color-fg)' : 'var(--color-fg-muted)').style('font-weight', e.k === main ? 700 : 500).text(CMP_NAME[e.k] + ' ' + fmtPct(pts[pts.length - 1].v[e.k]));
+  });
+  const tip = document.createElement('div'); tip.className = 'sp-tip'; tip.hidden = true; el.appendChild(tip);
+  const rule = svg.append('line').attr('y1', mt).attr('y2', H - mb).attr('stroke', 'var(--cds-chart-reference)').attr('opacity', 0);
+  const dots = inc.map((k) => svg.append('circle').attr('r', 4).style('fill', CMP_COL[k]()).attr('stroke', 'var(--color-panel)').attr('stroke-width', 2).attr('opacity', 0));
+  const bis = d3.bisector((p) => p.d).center;
+  svg.append('rect').attr('x', ml).attr('width', W - mr - ml).attr('y', 0).attr('height', H).attr('fill', 'transparent')
+    .on('mousemove', (ev) => {
+      const [mx] = d3.pointer(ev); const p = pts[bis(pts, x.invert(mx))];
+      rule.attr('x1', x(p.d)).attr('x2', x(p.d)).attr('opacity', 1);
+      inc.forEach((k, i) => dots[i].attr('cx', x(p.d)).attr('cy', y(p.v[k])).attr('opacity', 1));
+      tip.replaceChildren();
+      const h = document.createElement('div'); h.className = 'h'; h.textContent = fmtDate(p.date) + ' · change since ' + fmtDate(start); tip.appendChild(h);
+      [...inc].sort((a, b) => p.v[b] - p.v[a]).forEach((k) => { const r = document.createElement('div'); r.style.display = 'flex'; r.style.alignItems = 'center'; r.style.gap = '6px'; const sw = document.createElement('span'); sw.style.cssText = `width:8px;height:8px;border-radius:2px;background:${CMP_COL[k]()}`; const t = document.createElement('span'); t.textContent = CMP_NAME[k] + ' ' + fmtPct(p.v[k]); r.append(sw, t); tip.appendChild(r); });
+      tip.hidden = false;
+      const [px, py] = d3.pointer(ev, el);
+      let left = px + 12; if (left + tip.offsetWidth > W) left = Math.max(0, px - tip.offsetWidth - 12);
+      tip.style.left = left + 'px'; tip.style.top = Math.max(0, py - tip.offsetHeight - 8) + 'px';
+    })
+    .on('mouseleave', () => { tip.hidden = true; rule.attr('opacity', 0); dots.forEach((d) => d.attr('opacity', 0)); });
+}
+
+function renderCompare(P) {
+  const w = dash.params()[P.pw] || P.def || '1Y';
+  const hidden = Array.isArray(dash.params()[P.ph]) ? dash.params()[P.ph] : [];
+  document.querySelectorAll('#' + P.pre + '-win button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.w === w)));
+  const view = dash.params()[P.pre + '_view'] === 'price' ? 'price' : 'pct';
+  document.querySelectorAll('#' + P.pre + '-view button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === view)));
+  ['intro', 'take', 'legend', 'hint', 'chart'].forEach((id) => { document.getElementById(P.pre + '-' + id).hidden = view === 'price'; });
+  ['ptake', 'price'].forEach((id) => { document.getElementById(P.pre + '-' + id).hidden = view !== 'price'; });
+  if (view === 'price') renderPriceView(P, w);
+  const st = dash.data(P.stats), se = P.monthly ? dash.data(P.stats) : dash.data('series');
+  const chart = document.getElementById(P.pre + '-chart'), leg = document.getElementById(P.pre + '-legend'), take = document.getElementById(P.pre + '-take'), tb = document.querySelector('#' + P.pre + '-sync tbody');
+  if (st.status !== 'ok' || se.status !== 'ok') {
+    [leg, tb].forEach((e) => e.replaceChildren()); take.textContent = '—';
+    if (st.status === 'error' || se.status === 'error') { chart.replaceChildren(); const f = document.createElement('div'); f.className = 'sp-fail'; f.textContent = 'Failed to load'; chart.appendChild(f); } else chart.replaceChildren();
+    return;
+  }
+  const rows = st.data.filter((r) => r.window === w);
+  const ret = Object.fromEntries(rows.filter((r) => r.kind === 'return').map((r) => [r.series, r]));
+  leg.replaceChildren();
+  P.keys.forEach((k) => {
+    const r = ret[k]; if (!r) return;
+    const it = document.createElement('button'); it.type = 'button'; it.className = k === P.keys[0] ? 'item main' : 'item';
+    const on = r.value != null && !hidden.includes(k);
+    it.setAttribute('aria-pressed', String(on)); it.disabled = r.value == null;
+    it.addEventListener('click', () => { const h = new Set(hidden); h.has(k) ? h.delete(k) : h.add(k); dash.setParams({ [P.ph]: [...h] }); });
+    const sw = document.createElement('span'); sw.className = 'sw'; sw.style.background = CMP_DASH[k] ? `repeating-linear-gradient(90deg, ${CMP_COL[k]()} 0 5px, transparent 5px 8px)` : CMP_COL[k]();
+    const n = document.createElement('span'); n.textContent = r.label;
+    const v = document.createElement(r.value == null ? 'span' : 'b'); if (r.value == null) v.className = 'na'; v.textContent = r.value == null ? 'not available for this period' : fmtPct(r.value);
+    it.append(sw, n, v); leg.appendChild(it);
+  });
+  const any = rows[0];
+  const parts = [];
+  if (any) parts.push(`${fmtDate(any.start)} to ${fmtDate(any.end)} (${P.monthly ? any.days + ' monthly moves' : any.days + ' trading days'}).`);
+  parts.push(...P.take(rows));
+  take.textContent = parts.join(' ');
+  tb.replaceChildren();
+  rows.filter((r) => r.kind !== 'return' && r.series.split('-').every((k) => !hidden.includes(k))).forEach((r) => {
+    const tr = document.createElement('tr'); tr.dataset.key = r.id;
+    [r.label, r.kind === 'beta' ? r.value.toFixed(2) + '×' : (r.value > 0 ? '+' : '') + r.value.toFixed(2), r.reading].forEach((t) => { const td = document.createElement('td'); td.textContent = t; tr.appendChild(td); });
+    tb.appendChild(tr);
+  });
+  const pts = P.monthly ? st.data.filter((r) => r.kind === 'point').map((r) => ({ metal: r.series, date: r.date, price: r.value })) : se.data;
+  drawCompare(chart, pts, st.data, w, hidden, P.keys[0]);
+}
+PANELS.forEach((P) => dash.onData(() => renderCompare(P)));
+
+dash.onData(() => {
+  const range = dash.params().range || '1Y';
+  document.querySelectorAll('.sp-range button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.r === range)));
+  const meta = dash.data('meta'), sm = dash.data('summary'), se = dash.data('series');
+  const metaRows = meta.status === 'ok' ? meta.data : [];
+  const sumRows = sm.status === 'ok' ? sm.data : [];
+  const byMeta = Object.fromEntries(metaRows.map((m) => [m.metal, m]));
+  const bySum = Object.fromEntries(sumRows.map((s) => [s.metal, s]));
+
+  document.querySelectorAll('[data-source="summary"][data-where]').forEach((el) => {
+    const metal = el.dataset.where.split('=')[1]; const s = bySum[metal]; const f = el.dataset.field;
+    el.classList.remove('dash-skeleton');
+    if (!s) { el.textContent = '—'; return; }
+    if (f === 'price') el.textContent = fmtPrice(s.price);
+    else if (f === 'date') el.textContent = fmtDate(s.date);
+    else if (f === 'alt_lb') el.textContent = s.alt_lb == null ? '—' : s.alt_lb.toFixed(2);
+    else if (f === 'chg_1m' || f === 'chg_1y') {
+      el.textContent = fmtPct(s[f]);
+      el.classList.toggle('up', s[f] > 0); el.classList.toggle('down', s[f] < 0);
+      el.title = f === 'chg_1y' && s.chg_src !== 'series' ? 'From the source page; the stored series does not reach back a full year yet' : '';
+    }
+  });
+  document.querySelectorAll('[data-source="meta"][data-where]').forEach((el) => {
+    const m = byMeta[el.dataset.where.split('=')[1]]; const f = el.dataset.field;
+    if (f === 'lt_price') return;
+    el.textContent = m && m[f] != null ? String(m[f]) : '—';
+  });
+  document.querySelectorAll('[data-alt]').forEach((el) => { el.hidden = !(bySum[el.dataset.alt] && bySum[el.dataset.alt].alt_lb != null); });
+  document.querySelectorAll('[data-lt]').forEach((el) => {
+    const m = byMeta[el.dataset.lt]; el.hidden = !(m && m.lt_price);
+    if (m && m.lt_price) el.querySelector('b').textContent = fmtPrice(Number(m.lt_price)) + ' (' + fmtDate(m.lt_date) + ')';
+  });
+  document.querySelectorAll('[data-q]').forEach((el) => { const m = byMeta[el.dataset.q]; el.textContent = m ? m.quality : ''; el.dataset.level = m ? m.quality : ''; });
+  let fresh = 0, lag = 0, stale = [];
+  document.querySelectorAll('[data-fresh]').forEach((el) => {
+    const s = bySum[el.dataset.fresh]; const age = s ? daysOld(s.date) : null;
+    if (age == null) { el.hidden = true; return; }
+    const st = age <= 4 ? 'ok' : age <= 10 ? 'warn' : 'bad';
+    el.dataset.s = st; el.textContent = age <= 1 ? 'Current' : age + ' days old'; el.hidden = false;
+    if (st === 'ok') fresh++; else { lag++; stale.push(s.name); }
+  });
+  const take = document.getElementById('takeaway');
+  if (sumRows.length) {
+    const movers = sumRows.filter((s) => s.chg_1m != null).sort((a, b) => Math.abs(b.chg_1m) - Math.abs(a.chg_1m));
+    const mv = movers[0];
+    take.textContent = `${fresh} of ${sumRows.length} prices are current` + (lag ? ` (${stale.join(', ')} lagging)` : '') + '.' + (mv ? ` Biggest move over the past month: ${mv.name} ${fmtPct(mv.chg_1m)}.` : '');
+  } else take.textContent = '—';
+
+  document.querySelectorAll('[data-chart]').forEach((el, i) => {
+    const metal = el.dataset.chart;
+    if (se.status === 'error') { el.replaceChildren(); const f = document.createElement('div'); f.className = 'sp-fail'; f.textContent = 'Failed to load'; el.appendChild(f); return; }
+    if (se.status !== 'ok') { el.replaceChildren(); return; }
+    const rows = se.data.filter((r) => r.metal === metal);
+    const lastD = rows.length ? Date.parse(rows[rows.length - 1].date + 'T00:00:00Z') : 0;
+    const cut = new Date(lastD - RANGES[range] * 864e5).toISOString().slice(0, 10);
+    const shown = rows.filter((r) => r.date >= cut);
+    drawChart(el, shown, METAL_COL[metal] || dash.colors[0]);
+  });
+
+  const tb = document.querySelector('#tbl tbody'); tb.replaceChildren();
+  sumRows.forEach((s) => {
+    const tr = document.createElement('tr'); tr.dataset.key = s.metal;
+    [s.name, s.benchmark, s.source_name, s.quality, s.cadence, fmtDate(s.date)].forEach((t) => { const td = document.createElement('td'); td.textContent = t ?? '—'; tr.appendChild(td); });
+    tb.appendChild(tr);
+  });
+});
+</script>
+</div>
+<div class="cw-disc" role="contentinfo">
+<style>
+.cw-disc { max-width:1180px; margin:56px auto 0; padding:18px 20px 28px; border-top:1px solid var(--line,#262E32);
+  font:12.5px/1.55 "IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--mute,#8D999E); }
+.cw-disc p { margin:0 0 4px; max-width:72ch; }
+.cw-disc strong { color:var(--ink,#E8EBEC); font-weight:500; }
+.cw-disc a { color:inherit; text-decoration:none; border:0; border-bottom:1px solid var(--line,#262E32); padding:0; margin:0; background:none; border-radius:0; display:inline; font:inherit; }
+.cw-disc a:hover { color:var(--ink,#E8EBEC); }
+.cw-disc .cw-meta { font-variant-numeric:tabular-nums; }
+</style>
+<p><strong>Not investment advice.</strong> Personal research notes by Chung Huynh — views, rankings and estimates may be wrong or out of date. Do your own research.</p>
+<p class="cw-meta">Synced 23 Oct 2026 · Visits and anonymous usage are counted with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>: no cookies, nothing that identifies you. · <a href="/" target="_top">chungwin.com</a></p>
+</div>
+</body>
+</html>

@@ -8,6 +8,7 @@
 <link rel="icon" href="/assets/favicons/coin-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/assets/favicons/coin-touch.png">
 <meta name="description" content="Chung Huynh's personal equity research on small mining companies — rankings and company cards for gold, silver, copper and critical minerals. Not investment advice.">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -68,11 +69,18 @@ iframe[hidden] { display:none; }
   .side { display:none; }
 }
 @media (prefers-reduced-motion: no-preference) { .tab { transition:color .12s, border-color .12s; } }
+
+.cw-home { flex:none; display:flex; align-items:center; padding:0 16px 0 0; margin-right:6px; border-right:1px solid var(--line,#262E32);
+  font:400 18px/1 "Source Serif 4","Iowan Old Style",Georgia,serif; letter-spacing:-.005em; color:var(--ink,#E8EBEC); text-decoration:none; white-space:nowrap; }
+.cw-home:hover { color:#CFA451; }
+.cw-home-short { display:none; }
+.cw-home + .tabs, .cw-home + .tabwrap { margin-right:auto; }   /* keep the tabs next to the home link; the side links stay right */
+@media (max-width:520px) { .cw-home { padding-right:10px; margin-right:2px; font-size:18px; } .cw-home-full { display:none; } .cw-home-short { display:inline; font-family:"IBM Plex Sans",sans-serif; } }
 </style>
 </head>
 <body>
 <header class="strip">
-  <div class="tabwrap"><div class="tabs" role="tablist" aria-label="Rankings">
+  <a class="cw-home" href="/" data-goatcounter-click="equities/home" data-goatcounter-title="Research: back home"><span class="cw-home-full">Chung Huynh</span><span class="cw-home-short" aria-hidden="true">←</span></a><div class="tabwrap"><div class="tabs" role="tablist" aria-label="Rankings">
     <button class="tab" role="tab" id="tab-pmd" data-tab="pmd" aria-selected="true" aria-controls="frame-pmd" type="button"><span class="dot pm" aria-hidden="true"></span><span class="lbl"><span class="grp">Gold &amp; silver · </span>Developers</span><span class="meta">23 names</span></button>
     <button class="tab" role="tab" id="tab-pmp" data-tab="pmp" aria-selected="false" aria-controls="frame-pmp" tabindex="-1" type="button"><span class="dot pm" aria-hidden="true"></span><span class="lbl"><span class="grp">Gold &amp; silver · </span>Producers</span><span class="meta">15 names</span></button>
     <button class="tab" role="tab" id="tab-cu" data-tab="cu" aria-selected="false" aria-controls="frame-cu" tabindex="-1" type="button"><span class="dot cu" aria-hidden="true"></span>Copper<span class="meta">29 names</span></button>
@@ -202,7 +210,7 @@ iframe[hidden] { display:none; }
   function tab(){
     var t = document.querySelector('.tab[aria-selected="true"]'); if(!t) return;
     var lbl = t.cloneNode(true); Array.prototype.forEach.call(lbl.querySelectorAll('.meta'), function(m){ m.remove(); });
-    ev(AREA + '/' + t.getAttribute('data-tab'), (AREA === 'rankings' ? 'Rankings: ' : 'Trackers: ') + txt(lbl));
+    ev(AREA + '/' + t.getAttribute('data-tab'), ({ rankings:'Rankings: ', trackers:'Trackers: ', context:'Market context: ' })[AREA] + txt(lbl));
   }
   new MutationObserver(tab).observe(document.querySelector('.tabs'), { subtree:true, attributes:true, attributeFilter:['aria-selected'] });
   tab();

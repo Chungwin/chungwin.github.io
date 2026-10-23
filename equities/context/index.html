@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Market context · Chung Huynh</title>
+<link rel="icon" href="/assets/favicons/coin.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicons/coin-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/assets/favicons/coin-touch.png">
+<meta name="description" content="Market temperature and metal prices behind Chung Huynh's research on small mining companies. Not investment advice.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#0B0F12; --panel:#141A1E; --ink:#ECEEEF; --mute:#8A969C; --line:#242C32; --acc:#E6E0CF;
+  --font:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color-scheme:dark; }
+* { box-sizing:border-box; }
+html, body { height:100%; }
+body { margin:0; background:var(--bg); color:var(--ink); font-family:var(--font); font-size:16px; line-height:1.4; display:flex; flex-direction:column; overflow:hidden; }
+header.strip { flex:none; background:var(--panel); border-bottom:1px solid var(--line); padding:0 16px; display:flex; align-items:stretch; gap:12px; }
+.tabs { display:flex; gap:4px; min-width:0; overflow-x:auto; scrollbar-width:none; margin-right:auto; }
+.tabs::-webkit-scrollbar { display:none; }
+.tab { font:inherit; font-size:15px; font-weight:500; color:var(--mute); background:none; border:none; border-bottom:3px solid transparent; padding:14px 14px 11px; cursor:pointer; display:flex; align-items:baseline; gap:10px; white-space:nowrap; letter-spacing:-0.005em; }
+.tab .meta { font-size:12px; font-weight:400; color:var(--mute); }
+.tab:hover { color:var(--ink); }
+.tab[aria-selected="true"] { color:var(--ink); font-weight:600; border-bottom-color:var(--acc); }
+.tab:focus-visible { outline:2px solid var(--ink); outline-offset:-4px; border-radius:4px; }
+.pico { width:13px; height:13px; align-self:center; flex:none; color:var(--mute); }
+.tab[aria-selected="true"] .pico { color:var(--acc); }
+.side { display:flex; align-items:center; gap:14px; font-size:12.5px; white-space:nowrap; }
+.side a { color:var(--mute); text-decoration:none; border-bottom:1px solid var(--line); }
+.side a:hover { color:var(--ink); }
+main { flex:1; min-height:0; position:relative; }
+iframe { position:absolute; inset:0; width:100%; height:100%; border:0; background:var(--bg); }
+iframe[hidden] { display:none; }
+@media (max-width:900px) { .tab .meta { display:none; } }
+@media (max-width:520px) { header.strip { padding:0 8px; } .tab { padding:12px 10px 9px; font-size:14px; gap:7px; } .side { display:none; } }
+@media (prefers-reduced-motion: no-preference) { .tab { transition:color .12s, border-color .12s; } }
+.cw-home { flex:none; display:flex; align-items:center; padding:0 16px 0 0; margin-right:6px; border-right:1px solid var(--line,#262E32);
+  font:400 18px/1 "Source Serif 4","Iowan Old Style",Georgia,serif; letter-spacing:-.005em; color:var(--ink,#E8EBEC); text-decoration:none; white-space:nowrap; }
+.cw-home:hover { color:#CFA451; }
+.cw-home-short { display:none; }
+.cw-home + .tabs, .cw-home + .tabwrap { margin-right:auto; }   /* keep the tabs next to the home link; the side links stay right */
+@media (max-width:520px) { .cw-home { padding-right:10px; margin-right:2px; font-size:18px; } .cw-home-full { display:none; } .cw-home-short { display:inline; font-family:"IBM Plex Sans",sans-serif; } }
+</style>
+</head>
+<body>
+<header class="strip">
+  <a class="cw-home" href="/" data-goatcounter-click="equities/home" data-goatcounter-title="Market context: back home"><span class="cw-home-full">Chung Huynh</span><span class="cw-home-short" aria-hidden="true">←</span></a><div class="tabs" role="tablist" aria-label="Market context">
+    <button class="tab" role="tab" id="tab-temperature" data-tab="temperature" aria-selected="true" aria-controls="frame-temperature" type="button"><svg class="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 17a8 8 0 0 1 16 0"/><path d="M12 17l4.5-5"/></svg>Market temperature<span class="meta">monthly</span></button>
+    <button class="tab" role="tab" id="tab-prices" data-tab="prices" aria-selected="false" aria-controls="frame-prices" tabindex="-1" type="button"><svg class="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3.5 16.5l4.5-5 3.5 3 4-6 5 4"/></svg>Metal prices<span class="meta">daily</span></button>
+  </div>
+  <div class="side"><a href="/equities/rankings/">Rankings</a><a href="/equities/trackers/">Company cards</a></div>
+</header>
+<main>
+  <iframe id="frame-temperature" title="Market temperature" role="tabpanel" aria-labelledby="tab-temperature"></iframe>
+  <iframe id="frame-prices" title="Metal prices" role="tabpanel" aria-labelledby="tab-prices" hidden></iframe>
+</main>
+<script>
+(function(){
+  var KEYS = ['temperature','prices'], SRC = { temperature:'temperature.html', prices:'prices.html' };
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  function show(key, fromHash){
+    if(KEYS.indexOf(key) === -1) key = 'temperature';
+    tabs.forEach(function(t){ var on = t.getAttribute('data-tab') === key; t.setAttribute('aria-selected', on ? 'true' : 'false'); t.tabIndex = on ? 0 : -1; });
+    KEYS.forEach(function(k){ var f = document.getElementById('frame-' + k); f.hidden = k !== key; if(k === key && !f.getAttribute('src')) f.setAttribute('src', SRC[k]); });
+    try { localStorage.setItem('context-tab', key); } catch(e){}
+    if(!fromHash && location.hash !== '#' + key) history.replaceState(null, '', '#' + key);
+  }
+  tabs.forEach(function(t, i){
+    t.addEventListener('click', function(){ show(t.getAttribute('data-tab')); });
+    t.addEventListener('keydown', function(e){
+      if(e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      e.preventDefault(); var n = (i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+      show(tabs[n].getAttribute('data-tab')); tabs[n].focus();
+    });
+  });
+  window.addEventListener('hashchange', function(){ var h = location.hash.slice(1); if(KEYS.indexOf(h) !== -1) show(h, true); });
+  var h = location.hash.slice(1), r = null; try { r = localStorage.getItem('context-tab'); } catch(e){}
+  if(KEYS.indexOf(h) !== -1) show(h, true); else show(KEYS.indexOf(r) !== -1 ? r : 'temperature');
+})();
+</script>
+<script data-goatcounter="https://chungwin.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<script>
+(function(){
+  var AREA = 'context', q = [], seen = {};
+  function flush(){ var gc = window.goatcounter; if(!gc || !gc.count) return; while(q.length){ try { gc.count(q.shift()); } catch(e){} } }
+  function ev(path, title){
+    path = 'equities/' + path;
+    if(seen[path]) return; seen[path] = 1;
+    if(window.__eqTest) window.__eqTest.push({ path:path, title:title });
+    q.push({ path:path, title:title || path, event:true }); flush();
+  }
+  var gcs = document.querySelector('script[data-goatcounter]');
+  if(gcs) gcs.addEventListener('load', flush);
+  window.addEventListener('load', flush);
+
+  function txt(el){ return el ? (el.textContent || '').replace(/\s+/g, ' ').trim() : ''; }
+  function tab(){
+    var t = document.querySelector('.tab[aria-selected="true"]'); if(!t) return;
+    var lbl = t.cloneNode(true); Array.prototype.forEach.call(lbl.querySelectorAll('.meta'), function(m){ m.remove(); });
+    ev(AREA + '/' + t.getAttribute('data-tab'), ({ rankings:'Rankings: ', trackers:'Trackers: ', context:'Market context: ' })[AREA] + txt(lbl));
+  }
+  new MutationObserver(tab).observe(document.querySelector('.tabs'), { subtree:true, attributes:true, attributeFilter:['aria-selected'] });
+  tab();
+
+  function hook(f){
+    var d; try { d = f.contentDocument; } catch(e){ return; }
+    if(!d || d.__eqHooked || !d.body) return; d.__eqHooked = true;
+    function opened(el){
+      if(!el || !el.open) return;
+      if(el.classList.contains('card') && el.id) ev('company/' + el.id, el.getAttribute('data-name') || el.id);
+      else if(el.classList.contains('row') && el.getAttribute('data-k')){
+        var nm = txt(el.querySelector('.rm b, .rm strong, .rm .nm, .rm .co')) || el.getAttribute('data-k');
+        // use the tracker card's slug when the row links to it, so a company counts under one name
+        var a = el.querySelector('a[href*="/equities/trackers/#"]'), m = a && a.getAttribute('href').match(/#[a-z]+\.([a-z0-9-]+)/);
+        ev('company/' + (m ? m[1] : el.getAttribute('data-k')), nm);
+      }
+    }
+    d.addEventListener('toggle', function(e){ opened(e.target); }, true);
+    // a company reached by link (e.g. rankings -> tracker card) may open before this hook is attached
+    function fromHash(){ var h = ''; try { h = decodeURIComponent((f.contentWindow.location.hash || '').slice(1)); } catch(e){} if(h) opened(d.getElementById(h)); }
+    fromHash(); setTimeout(fromHash, 800);
+    d.addEventListener('click', function(e){
+      if(!e.isTrusted) return;   // the page clicks some tabs itself; count only real clicks
+      var b = e.target.closest && e.target.closest('.card .tabs button[data-tab]'); if(!b) return;
+      ev('card-tab/' + b.getAttribute('data-tab'), 'Card tab: ' + txt(b));
+    }, true);
+    var s = d.getElementById('q');
+    if(s) s.addEventListener('input', function(){ ev(AREA + '/search', (AREA === 'rankings' ? 'Rankings' : 'Trackers') + ': search used'); });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('main iframe'), function(f){
+    f.addEventListener('load', function(){ hook(f); }); hook(f);
+  });
+})();
+</script>
+</body>
+</html>
