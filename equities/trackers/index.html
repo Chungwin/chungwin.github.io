@@ -19,6 +19,7 @@
   --pm:#D9A94A;   /* gold — precious metals tracker accent */
   --cu:#4FB3A3;   /* teal — copper tracker accent */
   --cm:#A99BF0;   /* violet — critical minerals tracker accent */
+  --plan:#E6E0CF; /* entry plans tab */
   --font:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   color-scheme:dark;
 }
@@ -34,6 +35,10 @@ header.strip { flex:none; background:var(--panel); border-bottom:1px solid var(-
 .tab[data-tab="pm"][aria-selected="true"] { border-bottom-color:var(--pm); }
 .tab[data-tab="cu"][aria-selected="true"] { border-bottom-color:var(--cu); }
 .tab[data-tab="cm"][aria-selected="true"] { border-bottom-color:var(--cm); }
+.tab[data-tab="plans"][aria-selected="true"] { border-bottom-color:var(--plan); }
+.tab.plans { margin-left:6px; border-left:1px solid var(--line); padding-left:16px; }
+.pico { width:12px; height:12px; align-self:center; flex:none; color:var(--mute); }
+.tab[aria-selected="true"] .pico { color:var(--plan); }
 .tab[data-tab="cm"] .dot { background:var(--cm); }
 .tabs { overflow-x:auto; scrollbar-width:none; }
 .tabs::-webkit-scrollbar { display:none; }
@@ -63,6 +68,7 @@ iframe[hidden] { display:none; }
     <button class="tab" role="tab" id="tab-pm" data-tab="pm" aria-selected="true" aria-controls="frame-pm" type="button"><span class="dot" aria-hidden="true"></span>Precious metals<span class="meta">38 names</span></button>
     <button class="tab" role="tab" id="tab-cu" data-tab="cu" aria-selected="false" aria-controls="frame-cu" tabindex="-1" type="button"><span class="dot" aria-hidden="true"></span>Copper<span class="meta">29 names</span></button>
     <button class="tab" role="tab" id="tab-cm" data-tab="cm" aria-selected="false" aria-controls="frame-cm" tabindex="-1" type="button"><span class="dot" aria-hidden="true"></span>Critical minerals<span class="meta">9 names</span></button>
+    <button class="tab plans" role="tab" id="tab-plans" data-tab="plans" aria-selected="false" aria-controls="frame-plans" tabindex="-1" type="button" title="When to buy, in what pieces, and which event unlocks each piece"><svg class="pico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13h3V9h3V6h3V3h3"/></svg>Entry plans<span class="meta">8 plans</span></button>
   </div>
   <div class="side"><a href="/scarce-inputs-thesis/" rel="noopener">Investment thesis ↗</a><a href="/equities/rankings/" rel="noopener">Rankings ↗</a></div>
 </header>
@@ -70,12 +76,13 @@ iframe[hidden] { display:none; }
   <iframe id="frame-pm" title="Precious metals research tracker" role="tabpanel" aria-labelledby="tab-pm"></iframe>
   <iframe id="frame-cu" title="Copper research tracker" role="tabpanel" aria-labelledby="tab-cu" hidden></iframe>
   <iframe id="frame-cm" title="Critical minerals research tracker" role="tabpanel" aria-labelledby="tab-cm" hidden></iframe>
+  <iframe id="frame-plans" title="Entry plans" role="tabpanel" aria-labelledby="tab-plans" hidden></iframe>
 </main>
 
 <script>
 (function(){
-  var KEYS = ['pm','cu','cm'];
-  var SRC = { pm:'pm.html', cu:'cu.html', cm:'cm.html' };
+  var KEYS = ['pm','cu','cm','plans'];
+  var SRC = { pm:'pm.html', cu:'cu.html', cm:'cm.html', plans:'plans.html' };
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
   var frames = {}; KEYS.forEach(function(k){ frames[k] = document.getElementById('frame-' + k); });
   var current = null;
@@ -111,6 +118,7 @@ iframe[hidden] { display:none; }
     });
     KEYS.forEach(function(k){ frames[k].hidden = k !== key; });
     load(key, slug);
+    var act = document.getElementById('tab-' + key); if (act && act.scrollIntoView) { try { act.scrollIntoView({block:'nearest', inline:'nearest'}); } catch(e){} }
     current = key;
     remember(key);
     if(!fromHash){
