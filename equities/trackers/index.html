@@ -95,7 +95,7 @@ iframe[hidden] { display:none; }
   var frames = {}; KEYS.forEach(function(k){ frames[k] = document.getElementById('frame-' + k); });
   var current = null;
 
-  // Hash forms: #pm, #cu, #cm, #<tab>.<card-id>  (the dot separates tracker from card)
+  // Hash forms: #pm, #cu, #cm, #<tab>.<card-id>, #<tab>.<card-id>/plan (opens the card on its Entry plan tab)
   function parseHash(){
     var h = (location.hash || '').slice(1);
     if(!h) return null;
@@ -113,7 +113,7 @@ iframe[hidden] { display:none; }
     var want = SRC[key] + (slug ? '#' + slug : '');
     if(!f.getAttribute('src')){ f.setAttribute('src', want); return; }
     if(slug){
-      try { f.contentWindow.location.hash = slug; } catch(e){ f.setAttribute('src', want); }
+      try { var w = f.contentWindow; if(w.location.hash === '#' + slug) w.location.hash = ''; w.location.hash = slug; } catch(e){ f.setAttribute('src', want); }
     }
   }
 

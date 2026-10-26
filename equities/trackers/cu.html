@@ -275,7 +275,7 @@ nav.jump a.pk::after { content:" \1F4B8"; }
 
 .nt a.wire { font-size:12px; color:var(--mute); border-bottom:1px dotted var(--line); margin-left:6px; white-space:nowrap; }
 
-.card, .news { scroll-margin-top:var(--hdr,190px); }
+.card, .news, .blk.plan { scroll-margin-top:var(--hdr,190px); }
 
 details.changed .cb ul.log { list-style:none; padding-left:0; }
 details.changed .cb ul.log li { margin:7px 0; padding-left:0; font-size:14px; line-height:1.5; color:var(--ink); }
@@ -666,7 +666,7 @@ table.fin tr.der td{ color:var(--ink2); } table.fin tr.der td.l{ font-style:ital
 <h2>Marimaca Copper <span class="mbadge m-cu" title="Copper-led">Cu</span></h2>
 <span class="ticker">TSX: MARI / ASX: MC2 <a class="site" href="https://www.marimaca.com" rel="noopener" target="_blank">website</a></span>
 </div>
-<div class="s-cap"><span class="cap">US$677M</span><span class="cap-as">C$7.12 · 23 Oct 2026 (~C$954M)</span><span class="rsb r2" title="Risk 2 of 5">Risk 2/5</span></div><div class="s-rank" title="Where this company stands on the rankings page today: list A (certainty alpha) and list B (multi-bagger, ranked on the odds of a 3x in 3-5 years), out of 29. Muted = below that list's line.">Rankings: <span class="">A <b>#1</b></span> · <span class="">B <b>#18</b></span> of 29 · 3×+ odds <b>~12%</b><a href="/equities/rankings/#cu" rel="noopener" target="_blank">rankings ↗</a></div><div class="s-tags"><span class="chip bucket">Quality / jurisdiction premium</span><span class="chip fchip part">Partly funded</span><span class="chip rwchip rw-medium" title="Room for a 2nd 3×? After a first 3× (years 1–5), is there room for another 3× by about year 10? Yes · Partly (capped or metal-price dependent) · Little (the first re-rating is most of the value). Not about cash — months of cash are on the Financials tab. This company: Best-in-class oxide project; Pampa Medina sulphides could turn it long if the early-2027 resource shows scale.">2nd 3×: partly</span><span class="chip cashchip" title="From the Financials tab: cash US$140.0M at Q2 FY26, divided by a burn of about US$10.6M a quarter (the higher of last quarter and the average of the last four; operations + exploration + capex). Months of cash at that pace, before any new raise.">Cash: ~40 months</span><span class="chip mgchip gB" title="Management B — solid, or unproven but clean (the default). Track 3 · fit 4 · candour 3. The build chain hired in 2024–26 has done Chilean oxide SX-EW before; the CEO has not built a mine, the DFS ran ~20 months late and pay is rich for the stage.">Mgmt: B</span></div>
+<div class="s-cap"><span class="cap">US$677M</span><span class="cap-as">C$7.12 · 23 Oct 2026 (~C$954M)</span><span class="rsb r2" title="Risk 2 of 5">Risk 2/5</span></div><div class="s-rank" title="Where this company stands on the rankings page today: list A (certainty alpha) and list B (multi-bagger, ranked on the odds of a 3x in 3-5 years), out of 29. Muted = below that list's line.">Rankings: <span class="">A <b>#1</b></span> · <span class="">B <b>#18</b></span> of 29 · 3×+ odds <b>~12%</b><a href="/equities/rankings/#cu" rel="noopener" target="_blank">rankings ↗</a></div><div class="s-tags"><span class="chip bucket">Quality / jurisdiction premium</span><span class="chip fchip part">Partly funded</span><span class="chip rwchip rw-medium" title="Room for a 2nd 3×? After a first 3× (years 1–5), is there room for another 3× by about year 10? Yes · Partly (capped or metal-price dependent) · Little (the first re-rating is most of the value). Not about cash — months of cash are on the Financials tab. This company: Best-in-class oxide project; Pampa Medina sulphides could turn it long if the early-2027 resource shows scale.">2nd 3×: partly</span><span class="chip cashchip" title="From the Financials tab: cash US$140.0M at Q2 FY26, divided by a burn of about US$10.5M a quarter (the higher of last quarter and the average of the last four; operations + exploration + capex). Months of cash at that pace, before any new raise.">Cash: ~40 months</span><span class="chip mgchip gB" title="Management B — solid, or unproven but clean (the default). Track 3 · fit 4 · candour 3. The build chain hired in 2024–26 has done Chilean oxide SX-EW before; the CEO has not built a mine, the DFS ran ~20 months late and pay is rich for the stage.">Mgmt: B</span></div>
 <div class="s-econ"><span class="stat"><span class="sl">Capex</span><span class="sv"> US$587M</span></span><span class="stat"><span class="sl">IRR</span><span class="sv"> 31%</span></span><span class="stat"><span class="sl">NPV</span><span class="sv"> US$709M <span class="deck">at US$4.30/lb</span></span></span><span class="stat"><span class="sl">NPV/capex</span><span class="sv"> 1.21x</span></span></div>
 
 <p class="s-take">Permitted, DFS-stage, low-capex oxide project in the Antofagasta coastal belt near the port of Mejillones — the fastest and cheapest build in the…</p>
@@ -1200,12 +1200,20 @@ table.fin tr.der td{ color:var(--ink2); } table.fin tr.der td.l{ font-style:ital
   setOffset(); window.addEventListener('resize', setOffset);
   function openHash(){
     if(!location.hash) return;
-    var el=document.getElementById(location.hash.slice(1));
+    // "#<card-id>/plan" opens the card on its Entry plan tab (links from the Entry plans tab use this)
+    var h=decodeURIComponent(location.hash.slice(1)), sub='', k=h.indexOf('/');
+    if(k!==-1){ sub=h.slice(k+1); h=h.slice(0,k); }
+    var el=document.getElementById(h);
     if(!el) return;
     if(el.classList.contains('card')){ el.open=true; }
     if(el.id==='news'){ var nb=el.querySelector('.newsbox'); if(nb) nb.open=true; }
+    var target=el;
+    if(sub==='plan' && el.classList.contains('card')){
+      var pb=el.querySelector('.tabs button[data-tab="watch"]'); if(pb) pb.click();
+      var plan=el.querySelector('section.blk.plan'); if(plan) target=plan;
+    }
     setOffset();
-    requestAnimationFrame(function(){ el.scrollIntoView({block:'start'}); });
+    requestAnimationFrame(function(){ target.scrollIntoView({block:'start'}); });
   }
   // clicking the same jump link twice doesn't fire hashchange — handle it directly
   document.addEventListener('click', function(e){
@@ -1281,7 +1289,7 @@ document.addEventListener('click', function(e){
 .cw-disc .cw-meta { font-variant-numeric:tabular-nums; }
 </style>
 <p><strong>Not investment advice.</strong> Personal research notes by Chung Huynh — views, rankings and estimates may be wrong or out of date. Do your own research.</p>
-<p class="cw-meta">Synced 25 Oct 2026 · Visits and anonymous usage are counted with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>: no cookies, nothing that identifies you. · <a href="/" target="_top">chungwin.com</a></p>
+<p class="cw-meta">Synced 26 Oct 2026 · Visits and anonymous usage are counted with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>: no cookies, nothing that identifies you. · <a href="/" target="_top">chungwin.com</a></p>
 </div>
 </body>
 </html>
