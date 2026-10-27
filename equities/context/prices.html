@@ -27,7 +27,8 @@ html, body { margin:0; background:var(--color-bg); color:var(--color-fg); font-f
 <script src="/assets/js/d3-7.9.0.min.js"></script>
 <script>
 // Stand-in for the Claude dashboard runtime (only what this page uses): datasets come from
-// prices-data.json, the live FMP datasets are empty, calcs run on demand, params live in memory.
+// prices-data.json (the FMP closes fetched at sync time stand in for the live FMP datasets),
+// calcs run on demand, params live in memory.
 window.dash = (function(){
   var DS = { gold_fmp:[], silver_fmp:[], sp500_fmp:[], usdcny_fmp:[], spot_file:null, meta:null };
   var calcs = {}, cache = {}, subs = [], P = {}, state = 'loading', msg = '';
@@ -50,7 +51,9 @@ window.dash = (function(){
     var spot = [];
     Object.keys(j.series).forEach(function(m){ var s = j.series[m];
       s.d.forEach(function(r){ spot.push({ metal:m, date:r[0], price:r[1], source:s.src[r[2] || 0] }); }); });
-    DS.spot_file = spot; DS.meta = j.meta; state = 'ok'; cache = {}; w = document.documentElement.clientWidth;
+    DS.spot_file = spot; DS.meta = j.meta;
+    Object.keys(j.live || {}).forEach(function(k){ DS[k] = j.live[k]; });
+    state = 'ok'; cache = {}; w = document.documentElement.clientWidth;
     var l = document.getElementById('cw-loading'); if(l) l.remove(); run();
   }).catch(function(e){ state = 'error'; msg = 'Prices could not be loaded.'; var l = document.getElementById('cw-loading'); if(l) l.textContent = msg; run(); });
   return {
@@ -558,10 +561,10 @@ window.dash = (function(){
       </div>
     </div>
     <ul class="sp-notes">
-      <li>Gold and silver history (since 1975 and 1970) is stored with the page. New closes are added by the daily run.</li>
+      <li>Gold and silver history (since 1975 and 1970) is stored with the page. On this site the last 40 days come from FMP with each site update (overnight and in the morning).</li>
       <li>Copper and nickel are the LME official cash settlements, the price physical contracts settle against. They publish once per London trading day, so the latest date is usually yesterday.</li>
       <li>Uranium history is Cameco's month-end spot (the average of UxC and TradeTech). Daily points come from Trading Economics. The long-term contract price is shown because utilities buy most uranium on term contracts.</li>
-      <li>Molybdenum, manganese ore and neodymium are Chinese market prices via Trading Economics. On this copy the molybdenum price stays in CNY/kg (the US$/lb conversion on the original needs a live USD/CNY rate); it is the Chinese level, not the Western molybdenum-oxide benchmark (Platts/Fastmarkets), which is paywalled. The Western benchmarks (Platts, Fastmarkets, Argus) are behind paywalls. Their charts start today and add a point with each daily run.</li>
+      <li>Molybdenum, manganese ore and neodymium are Chinese market prices via Trading Economics. The molybdenum card also shows the price in US$/lb, converted with the live USD/CNY rate from FMP; this is the Chinese level converted, not the Western molybdenum-oxide benchmark (Platts/Fastmarkets), which is paywalled. The Western benchmarks (Platts, Fastmarkets, Argus) are behind paywalls. Their charts start today and add a point with each daily run.</li>
       <li>Neodymium is a proxy. The covered rare-earth companies sell NdPr oxide, and Ucore and Viridis also depend on dysprosium and terbium, which have no free daily source.</li>
       <li>Antimony has no free benchmark. The price shown is a dealer's retail price for investors. Use it for direction, not level.</li>
       <li>Max goes back as far as each free source allows: gold to 1975, silver to 1970, uranium to 1988 (monthly), copper and nickel to 2008. Long-run moves are therefore only comparable within one metal, not across metals.</li>

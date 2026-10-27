@@ -24,7 +24,10 @@ RANKINGS_DIR holds index.html, pmd.html, pmp.html, cu.html, cm.html, hist.html, 
 TRACKERS_DIR holds index.html, pm.html, cu.html, cm.html, plans.html
 TEMP_DIR     holds the market temperature artifact's index.html
 PRICES_DIR   holds page.html (the metal prices dashboard's files/index.html "text"), meta.json and
-             spot.json (its "Metal list and sources" and "Stored price series" data files)
+             spot.json (its "Metal list and sources" and "Stored price series" data files), and
+             optionally gold_fmp.json, silver_fmp.json, sp500_fmp.json, usdcny_fmp.json: the FMP
+             "chart" answers (historical-price-eod-light for GCUSD, SIUSD, ^GSPC, USDCNY, last ~40
+             days) that the dashboard on Claude loads live; the page lays them over the stored series
 (as downloaded from the artifacts' published files; src/ is never copied).
 Every .html under /equities is regenerated on each run, so pages that no longer
 exist in the artifacts disappear from the site too.
@@ -289,7 +292,8 @@ html, body { margin:0; background:var(--color-bg); color:var(--color-fg); font-f
 <script src="/assets/js/d3-7.9.0.min.js"></script>
 <script>
 // Stand-in for the Claude dashboard runtime (only what this page uses): datasets come from
-// prices-data.json, the live FMP datasets are empty, calcs run on demand, params live in memory.
+// prices-data.json (the FMP closes fetched at sync time stand in for the live FMP datasets),
+// calcs run on demand, params live in memory.
 window.dash = (function(){
   var DS = { gold_fmp:[], silver_fmp:[], sp500_fmp:[], usdcny_fmp:[], spot_file:null, meta:null };
   var calcs = {}, cache = {}, subs = [], P = {}, state = 'loading', msg = '';
@@ -312,7 +316,9 @@ window.dash = (function(){
     var spot = [];
     Object.keys(j.series).forEach(function(m){ var s = j.series[m];
       s.d.forEach(function(r){ spot.push({ metal:m, date:r[0], price:r[1], source:s.src[r[2] || 0] }); }); });
-    DS.spot_file = spot; DS.meta = j.meta; state = 'ok'; cache = {}; w = document.documentElement.clientWidth;
+    DS.spot_file = spot; DS.meta = j.meta;
+    Object.keys(j.live || {}).forEach(function(k){ DS[k] = j.live[k]; });
+    state = 'ok'; cache = {}; w = document.documentElement.clientWidth;
     var l = document.getElementById('cw-loading'); if(l) l.remove(); run();
   }).catch(function(e){ state = 'error'; msg = 'Prices could not be loaded.'; var l = document.getElementById('cw-loading'); if(l) l.textContent = msg; run(); });
   return {
@@ -341,14 +347,16 @@ window.dash = (function(){
 # Wording of the dashboard that only holds on Claude (live FMP data, written for its owner)
 PRICES_TEXT = [
     ("Only the last 40 days load live from FMP when you open it, so the price is never older than the last trading session and each visit uses only a few kilobytes of your FMP allowance.",
-     "New closes are added by the daily run."),
-    ("The molybdenum card also shows the price in US$/lb, converted with the live USD/CNY rate from FMP; this is the Chinese level converted",
-     "On this copy the molybdenum price stays in CNY/kg (the US$/lb conversion on the original needs a live USD/CNY rate); it is the Chinese level"),
+     "On this site the last 40 days come from FMP with each site update (overnight and in the morning)."),
     ("FMP (live, opens with the page)", "FMP (daily close)"),
     # the dashboard is written for its owner; on the public site it should not address the visitor
     ('<p class="sp-exp">Your exposure: ', '<p class="sp-exp">Covered companies: '),
     ("Neodymium is a proxy. Your rare-earth names sell", "Neodymium is a proxy. The covered rare-earth companies sell"),
 ]
+# only when the site update could not fetch the USD/CNY rate from FMP
+PRICES_NO_FX = ("The molybdenum card also shows the price in US$/lb, converted with the live USD/CNY rate from FMP; this is the Chinese level converted",
+                "On this copy the molybdenum price stays in CNY/kg (the US$/lb conversion needs a USD/CNY rate that could not be fetched); it is the Chinese level")
+PRICES_LIVE = {"gold_fmp": "GCUSD", "silver_fmp": "SIUSD", "sp500_fmp": "^GSPC", "usdcny_fmp": "USDCNY"}
 PRICES_META = {"source_name": {"FMP (live, opens with the page)": "FMP (daily close)"}, "cadence": {"Live daily": "Daily"}}
 
 
@@ -365,8 +373,22 @@ def build_context(temp_dir: pathlib.Path, prices_dir: pathlib.Path, synced: str)
     i = html.rindex("</body>")
     (out / "temperature.html").write_text(html[:i] + footer + "\n" + html[i:], encoding="utf-8")
 
+    # FMP closes fetched at sync time (what the dashboard on Claude loads live)
+    live = {}
+    for key, sym in PRICES_LIVE.items():
+        f = prices_dir / f"{key}.json"
+        if not f.exists():
+            print(f"NOTE: {f.name} missing; {sym} comes from the stored series only")
+            continue
+        rows = json.loads(f.read_text(encoding="utf-8"))
+        rows = rows.get("historical", rows.get("rows", rows)) if isinstance(rows, dict) else rows
+        live[key] = sorted(({"date": str(r["date"])[:10], "price": float(r.get("price", r.get("close")))} for r in rows
+                            if r.get("price", r.get("close")) is not None), key=lambda r: r["date"])
+        if not live[key]:
+            print(f"NOTE: {f.name} holds no rows; {sym} comes from the stored series only")
+
     page = rewrite_links((prices_dir / "page.html").read_text(encoding="utf-8"))
-    for old, new in PRICES_TEXT:
+    for old, new in PRICES_TEXT + ([] if live.get("usdcny_fmp") else [PRICES_NO_FX]):
         if old in page:
             page = page.replace(old, new)   # every occurrence
         else:
@@ -393,7 +415,7 @@ def build_context(temp_dir: pathlib.Path, prices_dir: pathlib.Path, synced: str)
         s["d"].append([r["date"], float(r["price"])] + ([k] if k else []))
     for s in series.values():
         s["d"].sort()
-    (out / "prices-data.json").write_text(json.dumps({"meta": meta, "series": series}, separators=(",", ":")), encoding="utf-8")
+    (out / "prices-data.json").write_text(json.dumps({"meta": meta, "series": series, "live": live}, separators=(",", ":")), encoding="utf-8")
 
     hub = (CONTEXT_HUB.replace("{home_css}", HUB_HOME_CSS.strip())
            .replace("{home}", HUB_HOME.replace("Research: back home", "Market context: back home"))
@@ -401,7 +423,8 @@ def build_context(temp_dir: pathlib.Path, prices_dir: pathlib.Path, synced: str)
            .replace("{analytics}", ANALYTICS.replace("{area}", "context")))
     (out / "index.html").write_text(hub, encoding="utf-8")
     latest = max(r[0] for s in series.values() for r in s["d"])
-    print(f"Market context: temperature + prices ({len(spot)} stored prices, latest {latest})")
+    lv = ", ".join(f"{k.split('_')[0]} {v[-1]['date']}" for k, v in live.items() if v) or "none"
+    print(f"Market context: temperature + prices ({len(spot)} stored prices, latest {latest}; FMP closes: {lv})")
     return [str(out / p) for p in ("index.html", "temperature.html", "prices.html")]
 
 
