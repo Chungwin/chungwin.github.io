@@ -21,7 +21,6 @@
   --cm:#A99BF0;
   --cu:#4FB3A3;   /* teal — copper tracker accent */
   --hs:#C2C9CC;   /* history — neutral, spans all groups */
-  --cl:#89A8DC;   /* calendar */
   --font:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   color-scheme:dark;
 }
@@ -38,7 +37,6 @@ header.strip { flex:none; background:var(--panel); border-bottom:1px solid var(-
 .tab[data-tab="cu"][aria-selected="true"] { border-bottom-color:var(--cu); }
 .tab[data-tab="cm"][aria-selected="true"] { border-bottom-color:var(--cm); }
 .tab[data-tab="hist"][aria-selected="true"] { border-bottom-color:var(--hs); }
-.tab[data-tab="cal"][aria-selected="true"] { border-bottom-color:var(--cl); }
 .tab.hist { margin-left:6px; border-left:1px solid var(--line); padding-left:16px; }
 .hico { width:13px; height:13px; align-self:center; flex:none; color:var(--mute); }
 .tab[aria-selected="true"] .hico { color:var(--ink); }
@@ -86,7 +84,6 @@ iframe[hidden] { display:none; }
     <button class="tab" role="tab" id="tab-cu" data-tab="cu" aria-selected="false" aria-controls="frame-cu" tabindex="-1" type="button"><span class="dot cu" aria-hidden="true"></span>Copper<span class="meta">31 names</span></button>
     <button class="tab" role="tab" id="tab-cm" data-tab="cm" aria-selected="false" aria-controls="frame-cm" tabindex="-1" type="button"><span class="dot cm" aria-hidden="true"></span>Critical minerals<span class="meta">11 names</span></button>
     <button class="tab hist" role="tab" id="tab-hist" title="How ranks, odds and costs moved over time" data-tab="hist" aria-selected="false" aria-controls="frame-hist" tabindex="-1" type="button"><svg class="hico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13h12M3.5 10.5l3-3.5 2.5 2 3.5-4.5"/></svg>History</button>
-    <button class="tab" role="tab" id="tab-cal" title="Results, production releases and AGMs" data-tab="cal" aria-selected="false" aria-controls="frame-cal" tabindex="-1" type="button"><svg class="hico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="1.5"/><path d="M2 7h12M5 1.5v3M11 1.5v3"/></svg>Calendar</button>
   </div><button class="more" type="button" aria-label="More tabs" tabindex="-1">›</button></div>
   <div class="side"><a href="/scarce-inputs-thesis/" rel="noopener">Investment thesis ↗</a><a href="/equities/trackers/" rel="noopener">Research trackers ↗</a></div>
 </header>
@@ -96,13 +93,12 @@ iframe[hidden] { display:none; }
   <iframe id="frame-cu" title="Copper rankings" role="tabpanel" aria-labelledby="tab-cu" hidden></iframe>
   <iframe id="frame-cm" title="Critical minerals rankings" role="tabpanel" aria-labelledby="tab-cm" hidden></iframe>
   <iframe id="frame-hist" title="Rankings history" role="tabpanel" aria-labelledby="tab-hist" hidden></iframe>
-  <iframe id="frame-cal" title="Reporting calendar" role="tabpanel" aria-labelledby="tab-cal" hidden></iframe>
 </main>
 
 <script>
 (function(){
-  var KEYS = ['pmd','pmp','cu','cm','hist','cal'];
-  var SRC = { pmd:'pmd.html', pmp:'pmp.html', cu:'cu.html', cm:'cm.html', hist:'hist.html', cal:'cal.html' };
+  var KEYS = ['pmd','pmp','cu','cm','hist'];
+  var SRC = { pmd:'pmd.html', pmp:'pmp.html', cu:'cu.html', cm:'cm.html', hist:'hist.html' };
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
   var frames = {}; KEYS.forEach(function(k){ frames[k] = document.getElementById('frame-' + k); });
   var current = null;

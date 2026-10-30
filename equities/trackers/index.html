@@ -36,7 +36,7 @@ header.strip { flex:none; background:var(--panel); border-bottom:1px solid var(-
 .tab[data-tab="pm"][aria-selected="true"] { border-bottom-color:var(--pm); }
 .tab[data-tab="cu"][aria-selected="true"] { border-bottom-color:var(--cu); }
 .tab[data-tab="cm"][aria-selected="true"] { border-bottom-color:var(--cm); }
-.tab[data-tab="plans"][aria-selected="true"] { border-bottom-color:var(--plan); }
+.tab[data-tab="plans"][aria-selected="true"], .tab[data-tab="dates"][aria-selected="true"] { border-bottom-color:var(--plan); }
 .tab.plans { margin-left:6px; border-left:1px solid var(--line); padding-left:16px; }
 .pico { width:12px; height:12px; align-self:center; flex:none; color:var(--mute); }
 .tab[aria-selected="true"] .pico { color:var(--plan); }
@@ -77,6 +77,7 @@ iframe[hidden] { display:none; }
     <button class="tab" role="tab" id="tab-cu" data-tab="cu" aria-selected="false" aria-controls="frame-cu" tabindex="-1" type="button"><span class="dot" aria-hidden="true"></span>Copper<span class="meta">31 names</span></button>
     <button class="tab" role="tab" id="tab-cm" data-tab="cm" aria-selected="false" aria-controls="frame-cm" tabindex="-1" type="button"><span class="dot" aria-hidden="true"></span>Critical minerals<span class="meta">11 names</span></button>
     <button class="tab plans" role="tab" id="tab-plans" data-tab="plans" aria-selected="false" aria-controls="frame-plans" tabindex="-1" type="button" title="When to buy, in what pieces, and which event unlocks each piece"><svg class="pico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13h3V9h3V6h3V3h3"/></svg>Entry plans<span class="meta">13 plans</span></button>
+    <button class="tab" role="tab" id="tab-dates" data-tab="dates" aria-selected="false" aria-controls="frame-dates" tabindex="-1" type="button" title="Every date and window the entry plans wait for, in order"><svg class="pico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="1.5"/><path d="M2 7h12M5 1.5v3M11 1.5v3"/></svg>Dates</button>
   </div>
   <div class="side"><a href="/scarce-inputs-thesis/" rel="noopener">Investment thesis ↗</a><a href="/equities/rankings/" rel="noopener">Rankings ↗</a></div>
 </header>
@@ -85,17 +86,18 @@ iframe[hidden] { display:none; }
   <iframe id="frame-cu" title="Copper research tracker" role="tabpanel" aria-labelledby="tab-cu" hidden></iframe>
   <iframe id="frame-cm" title="Critical minerals research tracker" role="tabpanel" aria-labelledby="tab-cm" hidden></iframe>
   <iframe id="frame-plans" title="Entry plans" role="tabpanel" aria-labelledby="tab-plans" hidden></iframe>
+  <iframe id="frame-dates" title="Dates" role="tabpanel" aria-labelledby="tab-dates" hidden></iframe>
 </main>
 
 <script>
 (function(){
-  var KEYS = ['pm','cu','cm','plans'];
-  var SRC = { pm:'pm.html', cu:'cu.html', cm:'cm.html', plans:'plans.html' };
+  var KEYS = ['pm','cu','cm','plans','dates'];
+  var SRC = { pm:'pm.html', cu:'cu.html', cm:'cm.html', plans:'plans.html', dates:'dates.html' };
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
   var frames = {}; KEYS.forEach(function(k){ frames[k] = document.getElementById('frame-' + k); });
   var current = null;
 
-  // Hash forms: #pm, #cu, #cm, #<tab>.<card-id>, #<tab>.<card-id>/plan (opens the card on its Entry plan tab)
+  // Hash forms: #pm, #cu, #cm, #plans, #dates, #<tab>.<card-id>, #<tab>.<card-id>/plan (opens the card on its Entry plan tab)
   function parseHash(){
     var h = (location.hash || '').slice(1);
     if(!h) return null;
