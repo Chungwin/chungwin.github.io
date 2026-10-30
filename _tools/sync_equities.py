@@ -382,8 +382,13 @@ def build_context(temp_dir: pathlib.Path, prices_dir: pathlib.Path, synced: str)
             continue
         rows = json.loads(f.read_text(encoding="utf-8"))
         rows = rows.get("historical", rows.get("rows", rows)) if isinstance(rows, dict) else rows
+        # only finished sessions: a row dated today (New York) counts from 17:00 New York, as in the dashboard's runs
+        from zoneinfo import ZoneInfo
+        ny = dt.datetime.now(ZoneInfo("America/New_York"))
+        last_ok = ny.date() if ny.hour >= 17 else ny.date() - dt.timedelta(days=1)
         live[key] = sorted(({"date": str(r["date"])[:10], "price": float(r.get("price", r.get("close")))} for r in rows
-                            if r.get("price", r.get("close")) is not None), key=lambda r: r["date"])
+                            if r.get("price", r.get("close")) is not None and str(r["date"])[:10] <= last_ok.isoformat()),
+                           key=lambda r: r["date"])
         if not live[key]:
             print(f"NOTE: {f.name} holds no rows; {sym} comes from the stored series only")
 
