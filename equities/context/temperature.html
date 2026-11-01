@@ -64,9 +64,10 @@ svg text{font-family:var(--mono)}
 .st.open{background:var(--cold)}.st.closed{background:var(--hot)}
 .dials{margin-top:4px}
 .three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
-@media (max-width:620px){.three{grid-template-columns:1fr}}
-.three .card h3{font-size:1rem;margin:2px 0 4px}
-.three .card ul{margin:4px 0}
+.four{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:10px 0}
+@media (max-width:620px){.three,.four{grid-template-columns:1fr}}
+.three .card h3,.four .card h3{font-size:1rem;margin:2px 0 4px}
+.three .card ul,.four .card ul{margin:4px 0}
 .card .muted{color:var(--muted);font-size:.86rem}
 .flow{list-style:none;padding:0;margin:10px 0;display:grid;gap:0}
 .flow li{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line);margin:0}
@@ -266,7 +267,7 @@ footer{margin-top:40px;font-family:var(--mono);font-size:.74rem;color:var(--mute
 <div class="wrap">
 <div class="eyebrow">Hard-asset book · Playbook</div>
 <h1>Market Temperature</h1>
-<p class="lede">A temperature check for a mining portfolio, read monthly and watched daily. It answers two questions: how much cash to hold, and which junior miners may be bought.</p>
+<p class="lede">A temperature check for a mining portfolio: watched daily, read weekly, set monthly. It answers two questions: how much cash to hold, and which junior miners may be bought.</p>
 
 <div class="tabs" role="tablist" aria-label="Sections">
   <button role="tab" id="t-today" aria-controls="p-today" aria-selected="true" data-tab="today">This month</button>
@@ -596,8 +597,8 @@ footer{margin-top:40px;font-family:var(--mono);font-size:.74rem;color:var(--mute
 <h3>How to read a gauge</h3>
 <details><summary>US market gauges</summary>
 <dl class="ev">
-<dt>S&amp;P vs bonds</dt><dd>Hot when the index's forward earnings yield sits at or below the 10-year Treasury yield: stocks then only win if earnings forecasts hold. Cold when the earnings yield is well above the bond yield.</dd>
-<dt>Credit</dt><dd>The ICE BofA US High Yield option-adjusted spread (FRED, daily): the extra yield junk-rated US companies pay over Treasuries. Hot below ~300 bp (no fear priced). Cold above ~500 bp. Crash signal above ~600 bp.</dd>
+<dt>S&amp;P vs bonds</dt><dd>Hot when the index's forward earnings yield sits at or below the 10-year Treasury yield: stocks then only win if earnings forecasts hold. Cold when the earnings yield is well above the bond yield. Read weekly on Friday's close (FactSet forward P/E, FRED 10-year); the reading changes once the new state has shown on four of the last five Fridays.</dd>
+<dt>Credit</dt><dd>The ICE BofA US High Yield option-adjusted spread (FRED, daily): the extra yield junk-rated US companies pay over Treasuries. Hot below ~300 bp (no fear priced). Cold above ~500 bp. Crash signal above ~600 bp. Read weekly on Friday's close; the reading changes once the new state has shown on four of the last five Fridays.</dd>
 <dt>Margin debt</dt><dd>The fuel for forced selling. Hot when FINRA margin debt is up more than ~30% year on year, or at a record share of GDP or market cap. Cold when down more than ~15% year on year. Growth is the main reading; the share is the sanity check. Margin-debt growth peaked a few months before the 2000, 2007 and 2021 tops.</dd>
 </dl></details>
 <details><summary>Metal gauges</summary>
@@ -621,12 +622,12 @@ footer{margin-top:40px;font-family:var(--mono);font-size:.74rem;color:var(--mute
 <li><strong>Always keep some cash.</strong> Never drop below the cash level of the current set level, and never below 10%. <em>Guards against feeling certain.</em></li>
 <li><strong>Let the ladder run.</strong> Once a crash signal has fired, buy at each step as it's reached. The steps themselves can be adjusted, but only in calm markets. <em>Guards against fear.</em></li>
 <li><strong>Don't add to what's running hot.</strong> No new money for a metal at Elevated or above. <em>Guards against chasing.</em></li>
-<li><strong>Move in two halves.</strong> When a dial turns hotter, adjust new money at once, but sell only after a second monthly reading agrees. When it turns colder, wait for two readings. <em>Guards against overreacting.</em></li>
+<li><strong>Move in two halves.</strong> When a dial turns hotter, adjust new money at once, but sell only after a monthly reading at least four weeks later agrees. When it turns colder, wait for two monthly readings. <em>Guards against overreacting.</em></li>
 </ol>
 </div>
 
 <h3>The rhythm</h3>
-<div class="three">
+<div class="four">
 <div class="card">
 <div class="k">Every trading day · automatic</div>
 <h3>Crash check</h3>
@@ -635,10 +636,16 @@ footer{margin-top:40px;font-family:var(--mono);font-size:.74rem;color:var(--mute
 <p class="muted">Act only if the crash signal fires or a ladder step is hit. A step counts once GDX <em>closes</em> at that level, even if it bounces back the next day. Otherwise nothing changes.</p>
 </div>
 <div class="card">
+<div class="k">Every week · automatic</div>
+<h3>Temperature read</h3>
+<p>Two of the US market's three gauges are published often enough to read weekly: credit spreads, and the S&amp;P 500's earnings yield against the 10-year Treasury. Each Friday's values go in the log.</p>
+<p class="muted">A gauge changes only when the new reading has shown on <strong>four of the last five Fridays</strong>, about a month. If that makes the dial read hotter, new money follows at once; the level itself, and any selling, wait for a monthly reading at least four weeks later that agrees. Margin debt is monthly and is read at the monthly reading.</p>
+</div>
+<div class="card">
 <div class="k">Monthly</div>
 <h3>Full reading</h3>
-<p>Read all gauges on all five dials and write them in the log, together with any deviation from a default and its reason.</p>
-<p class="muted">Turning hotter: new money follows at once; any selling waits for <strong>a second month</strong> that agrees. Turning colder: <strong>two months in a row</strong>. A dial moves one level at a time.</p>
+<p>Read all gauges on all five dials and write them in the log, together with any deviation from a default and its reason. The two weekly gauges are taken at their standing weekly read, not from a single day.</p>
+<p class="muted">Turning hotter: new money follows at once; any selling waits for <strong>a monthly reading at least four weeks later</strong> that agrees. Turning colder: <strong>two months in a row</strong>. A dial moves one level at a time.</p>
 </div>
 <div class="card">
 <div class="k">Once a year</div>
@@ -722,6 +729,7 @@ footer{margin-top:40px;font-family:var(--mono);font-size:.74rem;color:var(--mute
 <dt>Earnings yield</dt><dd>Earnings divided by price, the inverse of the P/E ratio. Comparing it with the bond yield shows how much extra you are paid for owning stocks instead of Treasuries.</dd>
 <dt>Margin debt</dt><dd>Money borrowed from brokers to buy stocks, reported monthly by FINRA. When prices fall, brokers demand repayment and the borrowed stocks get sold: forced selling.</dd>
 <dt>Drawdown</dt><dd>How far an index has fallen from its highest point.</dd>
+<dt>Standing read</dt><dd>A gauge's reading after the weekly persistence rule: the state (cold, warm or hot) it has shown on four of the last five Fridays. The monthly reading uses this for the two weekly gauges, not a single day's value.</dd>
 <dt>Funded</dt><dd>A company that can reach its next milestone without raising money: 18 months of spending covered, including the milestone's own cost.</dd>
 <dt>Position ceiling</dt><dd>The largest share of the book one company is allowed to be. Set in the thesis, not here.</dd>
 <dt>The thesis</dt><dd>The owner's written investment case and the rules for individual holdings: why each is owned, what would prove it wrong (the kill-switches), and how big it may be. This page sits beside it and never overrides it.</dd>
@@ -774,6 +782,6 @@ footer{margin-top:40px;font-family:var(--mono);font-size:.74rem;color:var(--mute
 .cw-disc .cw-meta { font-variant-numeric:tabular-nums; }
 </style>
 <p><strong>Not investment advice.</strong> Personal research notes by Chung Huynh — views, rankings and estimates may be wrong or out of date. Do your own research.</p>
-<p class="cw-meta">Synced 31 Oct 2026 · Visits and anonymous usage are counted with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>: no cookies, nothing that identifies you. · <a href="/" target="_top">chungwin.com</a></p>
+<p class="cw-meta">Synced 1 Nov 2026 · Visits and anonymous usage are counted with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>: no cookies, nothing that identifies you. · <a href="/" target="_top">chungwin.com</a></p>
 </div>
 </body></html>
