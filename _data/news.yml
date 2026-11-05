@@ -8,6 +8,8 @@ items:
     u: "https://emperormetals.com/_resources/news/2026/2026-11-04%20NR%20re%20Duquesne%20Ppty%20update%20clean.pdf"
     n: "Six more holes at Duquesne West, best 24.8 m at 7.0 g/t gold about 85 m below surface; 55 of 66 holes now reported and 3,000–5,000 m more planned. Good near-surface grade that supports the planned resource, but no…"
     out: false
+    plan: "Step 4 · Touches the plan"
+    pv: "info"
   - d: "4 Nov"
     co: "Avino"
     c: gold
@@ -15,6 +17,8 @@ items:
     u: "https://www.avino.com/news/avino-reports-q3-2026-financial-results"
     n: "Q3 revenue US$33.4M, net income US$6.1M, operating cash flow US$12.7M. 2026 production guidance cut to 2.2–2.5M AgEq oz (from 2.4–2.7M, expected at or slightly below the low end) and AISC guidance raised to US$30–32…"
     out: false
+    plan: "Step 2 · 3 red · 1 between · 1 green"
+    pv: "red"
   - d: "4 Nov"
     co: "Aya"
     c: gold
@@ -22,6 +26,8 @@ items:
     u: "https://www.ayagoldsilver.com/news/news-releases/aya-gold--silver-drill-results-confirm-high-grade-continuity-at-boumadine-new-permits-secured"
     n: "Boumadine infill (best 17.0 m at 239 g/t AgEq), 51% of the 360,000 m 2026–27 program done, and three more exploration permits around the mining licence. Feasibility study still guided for 2027. Infill as planned; the…"
     out: false
+    plan: "Step 4 · Touches the plan"
+    pv: "info"
   - d: "4 Nov"
     co: "Pan American"
     c: gold
