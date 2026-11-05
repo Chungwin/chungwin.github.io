@@ -12,6 +12,8 @@ pages into the site and adapts them:
   * /equities/ itself only forwards to /equities/rankings/ (the homepage carries the
     overview now); old /equities/#pmd-style links keep working through it
   * _data/equities.yml (latest update, company count, group split) feeds the homepage
+  * /equities/news/ is the trackers' News tab (every company release and odds change) as a page of its own,
+    and _data/news.yml (the four latest releases) feeds the homepage's Newswire list
   * /equities/context/ shows the market temperature and the metal prices as two tabs
     (see build_context; without --temperature/--prices those pages are left as they are)
 
@@ -21,7 +23,7 @@ Usage:
 
 LANDING_DIR  no longer used (kept so existing calls keep working)
 RANKINGS_DIR holds index.html, pmd.html, pmp.html, cu.html, cm.html, hist.html, score.html
-TRACKERS_DIR holds index.html, pm.html, cu.html, cm.html, plans.html, dates.html
+TRACKERS_DIR holds index.html, pm.html, cu.html, cm.html, plans.html, dates.html, news.html
 TEMP_DIR     holds the market temperature artifact's index.html
 PRICES_DIR   holds page.html (the metal prices dashboard's files/index.html "text"), meta.json and
              spot.json (its "Metal list and sources" and "Stored price series" data files), and
@@ -52,7 +54,7 @@ LINKS = {
 }
 
 RANKING_PAGES = ["pmd.html", "pmp.html", "cu.html", "cm.html", "hist.html", "score.html"]   # the calendar moved to the trackers' Dates tab (30 Oct 2026)
-TRACKER_PAGES = ["pm.html", "cu.html", "cm.html", "plans.html", "dates.html"]
+TRACKER_PAGES = ["pm.html", "cu.html", "cm.html", "plans.html", "dates.html", "news.html"]   # News tab added 5 Nov 2026
 
 # Appended to the end of every inner page (rankings tabs and trackers), so it sits
 # below the content and scrolls with it rather than sticking to the viewport.
@@ -512,6 +514,52 @@ def write_site_data(trackers_index: pathlib.Path) -> None:
     (ROOT / "_data" / "equities.yml").write_text("# Written by _tools/sync_equities.py — do not edit.\n" + "\n".join(lines) + "\n", encoding="utf-8")
 
 
+def build_news_page(news_html: str, synced: str) -> None:
+    """/equities/news/: the trackers' News tab (already link-rewritten) as a page of its own, with the site's
+    favicon, a way home, the disclaimer and GoatCounter. Inside the trackers hub the same file runs as a tab."""
+    html = news_html
+    html, n = re.subn(r"<title>.*?</title>", "<title>Metals News · Chung Huynh</title>\n"
+                      '<link rel="icon" href="/assets/favicons/coin.svg" type="image/svg+xml">\n'
+                      '<link rel="icon" href="/assets/favicons/coin-32.png" type="image/png" sizes="32x32">\n'
+                      '<link rel="apple-touch-icon" href="/assets/favicons/coin-touch.png">\n'
+                      '<meta name="description" content="Every news release from the small mining companies in Chung Huynh\'s metals research, newest first, with a one-line read on each and every change to the odds of a 3×. Not investment advice.">', html, count=1, flags=re.S)
+    if not n:
+        raise SystemExit("news.html: <title> not found")
+    back = ('<p class="cw-back" style="margin:0 0 10px;font:13px/1.4 var(--sans,sans-serif)"><a href="/" style="color:var(--mute,#8D999E);text-decoration:none">← Chung Huynh</a>'
+            '<span style="color:var(--faint,#5F6B70)"> · </span><a href="/equities/rankings/" style="color:var(--mute,#8D999E);text-decoration:none">Rankings</a>'
+            '<span style="color:var(--faint,#5F6B70)"> · </span><a href="/equities/trackers/" style="color:var(--mute,#8D999E);text-decoration:none">Company cards</a></p>')
+    html, n = re.subn(r'(<header class="hd wrap">\s*)', lambda m: m.group(1) + back, html, count=1)
+    if not n:
+        raise SystemExit("news.html: page header not found; the way home could not be added")
+    i = html.rindex("</body>")
+    html = html[:i] + DISCLAIMER.replace("{synced}", synced).strip() + "\n" + GOATCOUNTER + "\n" + html[i:]
+    (OUT / "news").mkdir(parents=True, exist_ok=True)
+    (OUT / "news" / "index.html").write_text(html, encoding="utf-8")
+
+
+def write_news_data(news_html: str) -> None:
+    """_data/news.yml: the four latest company releases (own releases and outside reports, not odds changes) for the
+    homepage. Read from the data the News page itself carries, so the homepage and the page never disagree."""
+    import json
+    m = re.search(r"var D=(\{.*?\});\nvar COL=", news_html, re.S)
+    if not m:
+        print("WARNING: news data not found in news.html; homepage Newswire not updated")
+        return
+    d = json.loads(m.group(1).replace("<\\/", "</"))
+    items = [x for x in d["items"] if x["ty"] in ("rel", "out")][:4]
+    col = {"pm": "gold", "cu": "copper", "cm": "violet"}
+    q = lambda s: json.dumps(s, ensure_ascii=False)
+    lines = ["# Written by _tools/sync_equities.py from the News page — do not edit.", f"latest: {q(dt.date.fromisoformat(d['today']).strftime('%-d %b %Y'))}", "items:"]
+    for x in items:
+        c = d["co"][x["s"]]
+        note = x.get("n", "")
+        note = note if len(note) <= 220 else note[:217].rsplit(" ", 1)[0] + "…"
+        lines += [f"  - d: {q(dt.date.fromisoformat(x['d']).strftime('%-d %b'))}", f"    co: {q(c['n'])}", f"    c: {col[c['g']]}",
+                  f"    t: {q(x['t'])}", f"    u: {q(x['u'])}", f"    n: {q(note)}", f"    out: {'true' if x['ty'] == 'out' else 'false'}"]
+    (ROOT / "_data").mkdir(exist_ok=True)
+    (ROOT / "_data" / "news.yml").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("landing_dir", type=pathlib.Path, help="no longer used (the homepage replaced the landing page); kept so existing calls still work")
@@ -538,6 +586,10 @@ def main() -> int:
         footer = DISCLAIMER.replace("{synced}", a.synced).strip()
         dst.write_text(html[:i] + footer + "\n" + html[i:], encoding="utf-8")
 
+    news = rewrite_links((a.trackers_dir / "news.html").read_text(encoding="utf-8"))
+    build_news_page(news, a.synced)
+    write_news_data(news)
+
     global LATEST
     LATEST = latest_update((a.rankings_dir / p).read_text(encoding="utf-8") for p in ["pmd.html", "pmp.html", "cu.html", "cm.html"])
 
@@ -563,7 +615,7 @@ def main() -> int:
     if left:
         print("WARNING: claude.ai artifact links remain in:", *left, sep="\n  ")
         return 1
-    print(f"Synced {len(jobs) + len(hubs)} pages and the /equities/ forwarder into {OUT.relative_to(ROOT)}/")
+    print(f"Synced {len(jobs) + len(hubs) + 1} pages (incl. /equities/news/) and the /equities/ forwarder into {OUT.relative_to(ROOT)}/")
     return 0
 
 

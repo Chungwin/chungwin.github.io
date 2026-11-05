@@ -131,6 +131,17 @@ a:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radiu
 .notes.quiet a{ padding:11px 0; }
 @media (max-width:640px){ .notes a{ grid-template-columns:1fr; gap:4px; } .notes .b{ grid-column:1; } }
 
+/* Newswire on the homepage: the four latest company releases (_data/news.yml, written by _tools/sync_equities.py) */
+.wire .sec{ padding-top:36px; }
+.notes.wire .t{ font-family:var(--sans); font-size:16px; line-height:1.4; letter-spacing:0; }
+.notes.wire .co{ display:inline-flex; align-items:baseline; gap:7px; margin-right:10px; font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink2); white-space:nowrap; }
+.notes.wire .co i{ width:7px; height:7px; border-radius:50%; display:inline-block; transform:translateY(-1px); }
+.notes.wire .out{ font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--mute); border:1px solid var(--line2); border-radius:3px; padding:0 4px; margin-right:8px; }
+.notes.wire .b{ display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2; overflow:hidden; color:var(--mute); }
+.notes.wire a{ padding:14px 0; }
+.wire-all{ display:inline-block; margin-top:14px; font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); text-decoration:none; border-bottom:1px solid var(--line2); padding-bottom:2px; }
+.wire-all:hover{ color:var(--gold); border-bottom-color:var(--gold); }
+
 /* ── about (collapsed by default) ─────────────────────── */
 .about{ border-bottom:1px solid var(--line); margin-top:36px; scroll-margin-top:16px; }
 .about summary{ list-style:none; cursor:pointer; display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 16px; padding:18px 0; font-family:var(--display); font-size:20px; }
