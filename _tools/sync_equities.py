@@ -556,6 +556,8 @@ def write_news_data(news_html: str) -> None:
         note = note if len(note) <= 220 else note[:217].rsplit(" ", 1)[0] + "…"
         lines += [f"  - d: {q(dt.date.fromisoformat(x['d']).strftime('%-d %b'))}", f"    co: {q(c['n'])}", f"    c: {col[c['g']]}",
                   f"    t: {q(x['t'])}", f"    u: {q(x['u'])}", f"    n: {q(note)}", f"    out: {'true' if x['ty'] == 'out' else 'false'}"]
+        if x.get("p"):   # the release touches a point in the company's entry plan: badge text and verdict colour
+            lines += [f"    plan: {q(x['p']['lab'])}", f"    pv: {q(x['p']['top'])}"]
     (ROOT / "_data").mkdir(exist_ok=True)
     (ROOT / "_data" / "news.yml").write_text("\n".join(lines) + "\n", encoding="utf-8")
 

@@ -70,7 +70,7 @@ layout: default
   <div class="sec"><h3>Newswire</h3><span class="k">Latest from the companies{% if wire.latest %} · {{ wire.latest }}{% endif %}</span></div>
   <ul class="notes wire">
     {% for it in wire.items %}
-    <li><a href="{{ it.u }}" target="_blank" rel="noopener" data-goatcounter-click="home/news-item" data-goatcounter-title="Home: newswire item"><span class="d">{{ it.d }}</span><span class="t"><span class="co"><i style="background:var(--{{ it.c }})"></i>{{ it.co }}</span>{% if it.out %}<span class="out">Report</span>{% endif %}{{ it.t }}</span>{% if it.n %}<p class="b">{{ it.n }}</p>{% endif %}</a></li>
+    <li><a href="{{ it.u }}" target="_blank" rel="noopener" data-goatcounter-click="home/news-item" data-goatcounter-title="Home: newswire item"><span class="d">{{ it.d }}</span><span class="t"><span class="co"><i style="background:var(--{{ it.c }})"></i>{{ it.co }}</span>{% if it.out %}<span class="out">Report</span>{% endif %}{{ it.t }}</span>{% if it.plan %}<span class="plan pv-{{ it.pv }}">Entry plan · {{ it.plan }}</span>{% endif %}{% if it.n %}<p class="b">{{ it.n }}</p>{% endif %}</a></li>
     {% endfor %}
   </ul>
   <a class="wire-all" href="{{ '/equities/news/' | relative_url }}" data-goatcounter-click="home/news" data-goatcounter-title="Home: all news">All news and odds changes →</a>
