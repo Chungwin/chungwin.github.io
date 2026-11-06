@@ -1,37 +1,31 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-latest: "4 Nov 2026"
+latest: "6 Nov 2026"
 items:
-  - d: "4 Nov"
-    co: "Emperor"
+  - d: "5 Nov"
+    co: "Rua"
     c: gold
-    t: "Emperor Hits High-Grade Gold Near Surface"
-    u: "https://emperormetals.com/_resources/news/2026/2026-11-04%20NR%20re%20Duquesne%20Ppty%20update%20clean.pdf"
-    n: "Six more holes at Duquesne West, best 24.8 m at 7.0 g/t gold about 85 m below surface; 55 of 66 holes now reported and 3,000–5,000 m more planned. Good near-surface grade that supports the planned resource, but no…"
+    t: "RUA GOLD Submits Substantive Fast-track Application for Auld Creek Gold-Antimony Project in New Zealand"
+    u: "https://ruagold.com/rua-gold-submits-substantive-fast-track-application-for-auld-creek-gold-antimony-project-in-new-zealand/"
+    n: "The full permit application for an underground gold-antimony mine at Auld Creek is now lodged under the Fast-track Approvals Act; completeness checks and an expert panel follow. PFS still targeted Q4 2026, key…"
     out: false
-    plan: "Step 4 · Not decided yet"
-    pv: "info"
-  - d: "4 Nov"
-    co: "Avino"
+  - d: "5 Nov"
+    co: "First Majestic"
     c: gold
-    t: "Avino Reports Q3 2026 Financial Results"
-    u: "https://www.avino.com/news/avino-reports-q3-2026-financial-results"
-    n: "Q3 revenue US$33.4M, net income US$6.1M, operating cash flow US$12.7M. 2026 production guidance cut to 2.2–2.5M AgEq oz (from 2.4–2.7M, expected at or slightly below the low end) and AISC guidance raised to US$30–32…"
+    t: "First Majestic Announces Q3 2026 Financial Results and Quarterly Dividend Payment"
+    u: "https://firstmajestic.com/investors/news-releases/first-majestic-announces-q3-2026-financial-results-and-quarterly-dividend-payment"
+    n: "AISC US$30.45/AgEq oz in Q3 (Q2 US$25.68), nine months US$28.55, inside the US$27.69–28.77 guide. San Dimas suspended by the strike; its 2026 guidance withdrawn, legality ruling expected late November. Los Gatos…"
     out: false
-    plan: "Step 2 · 3 red · 1 between · 1 green"
-    pv: "red"
-  - d: "4 Nov"
-    co: "Aya"
+  - d: "5 Nov"
+    co: "IAMGOLD"
     c: gold
-    t: "Aya Gold & Silver Drill Results Confirm High-Grade Continuity at Boumadine; New Permits Secured"
-    u: "https://www.ayagoldsilver.com/news/news-releases/aya-gold--silver-drill-results-confirm-high-grade-continuity-at-boumadine-new-permits-secured"
-    n: "Boumadine infill (best 17.0 m at 239 g/t AgEq), 51% of the 360,000 m 2026–27 program done, and three more exploration permits around the mining licence. Feasibility study still guided for 2027. Infill as planned; the…"
+    t: "IAMGOLD Reports Third Quarter 2026 Results"
+    u: "https://www.stocktitan.net/news/IAG/iamgold-reports-third-quarter-2026-r086bro32hi5.html"
+    n: "Q3 186,900 oz attributable at AISC US$2,184/oz incl. royalties (Q2 US$2,271); full-year AISC incl. royalties now expected above the top of the US$2,000–2,150 guide because high gold lifts royalties; Côté at the low…"
     out: false
-    plan: "Step 4 · Not decided yet"
-    pv: "info"
-  - d: "4 Nov"
-    co: "Pan American"
+  - d: "5 Nov"
+    co: "Wheaton"
     c: gold
-    t: "Pan American Silver Reports Third Quarter 2026 Financial Results"
-    u: "https://panamericansilver.com/news/pan-american-silver-reports-third-quarter-2026-financial-results/"
-    n: "Silver 6.07 Moz and gold 167.9 koz, both below the quarterly outlook. Gold guidance cut to 660–680 koz (from 700–750) and gold-segment AISC raised to US$2,000–2,150/oz (from US$1,700–1,850); silver-segment AISC…"
+    t: "DIVIDEND DECLARATION - Wheaton Precious Metals Announces Quarterly Dividend"
+    u: "https://www.wheatonpm.com/news/news-details/2026/DIVIDEND-DECLARATION---Wheaton-Precious-Metals-Announces-Quarterly-Dividend-bfa7f3111/default.aspx"
+    n: "US$0.195 a share, unchanged; record 19 Nov, paid ~3 Dec. No change to the card."
     out: false
