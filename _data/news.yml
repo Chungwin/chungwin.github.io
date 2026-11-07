@@ -1,31 +1,31 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
 latest: "6 Nov 2026"
 items:
-  - d: "5 Nov"
-    co: "Rua"
+  - d: "6 Nov"
+    co: "Coeur"
     c: gold
-    t: "RUA GOLD Submits Substantive Fast-track Application for Auld Creek Gold-Antimony Project in New Zealand"
-    u: "https://ruagold.com/rua-gold-submits-substantive-fast-track-application-for-auld-creek-gold-antimony-project-in-new-zealand/"
-    n: "The full permit application for an underground gold-antimony mine at Auld Creek is now lodged under the Fast-track Approvals Act; completeness checks and an expert panel follow. PFS still targeted Q4 2026, key…"
+    t: "Coeur to Participate in RBC Capital Markets London Precious Metals Conference"
+    u: "https://www.coeur.com/investors/news/news-details/2026/Coeur-to-Participate-in-RBC-Capital-Markets-London-Precious-Metals-Conference/default.aspx"
+    n: "Conference notice (CFO in London on 10 Nov). No new operating or financial information; does not change the card."
+    out: false
+  - d: "6 Nov"
+    co: "Surge"
+    c: copper
+    t: "Surge Copper Completes 2026 Drilling Program at Berg Copper Project"
+    u: "https://surgecopper.com/news-releases/surge-copper-completes-2026-drilling-program-at-berg-copper-project/"
+    n: "The 2026 Berg season is finished: 31 holes (6,334.5 m), mostly geotechnical and waste-rock holes for engineering and permits, plus 2 exploration holes at Sylvia. Remaining assays come later, undated. Routine; does…"
+    out: false
+  - d: "6 Nov"
+    co: "Centaurus"
+    c: violet
+    t: "Becoming a substantial holder"
+    u: "https://www.centaurus.com.au/site/pdf/c9238785-67c8-4f5a-975d-6cec994badb1/Platform/ListPage/Becoming-a-substantial-holder.pdf"
+    n: "A new holder crossed 5% on the register. The notice is an image-only PDF, so the holder’s name and stake could not be read here; it follows the 4 Nov issue of 41.9M shares to CNGR. No change to the card until the…"
     out: false
   - d: "5 Nov"
-    co: "First Majestic"
+    co: "Aya"
     c: gold
-    t: "First Majestic Announces Q3 2026 Financial Results and Quarterly Dividend Payment"
-    u: "https://firstmajestic.com/investors/news-releases/first-majestic-announces-q3-2026-financial-results-and-quarterly-dividend-payment"
-    n: "AISC US$30.45/AgEq oz in Q3 (Q2 US$25.68), nine months US$28.55, inside the US$27.69–28.77 guide. San Dimas suspended by the strike; its 2026 guidance withdrawn, legality ruling expected late November. Los Gatos…"
-    out: false
-  - d: "5 Nov"
-    co: "IAMGOLD"
-    c: gold
-    t: "IAMGOLD Reports Third Quarter 2026 Results"
-    u: "https://www.stocktitan.net/news/IAG/iamgold-reports-third-quarter-2026-r086bro32hi5.html"
-    n: "Q3 186,900 oz attributable at AISC US$2,184/oz incl. royalties (Q2 US$2,271); full-year AISC incl. royalties now expected above the top of the US$2,000–2,150 guide because high gold lifts royalties; Côté at the low…"
-    out: false
-  - d: "5 Nov"
-    co: "Wheaton"
-    c: gold
-    t: "DIVIDEND DECLARATION - Wheaton Precious Metals Announces Quarterly Dividend"
-    u: "https://www.wheatonpm.com/news/news-details/2026/DIVIDEND-DECLARATION---Wheaton-Precious-Metals-Announces-Quarterly-Dividend-bfa7f3111/default.aspx"
-    n: "US$0.195 a share, unchanged; record 19 Nov, paid ~3 Dec. No change to the card."
+    t: "Aya Gold & Silver Enters Into an Agreement to Sell Azegour to Sama Resources"
+    u: "https://www.ayagoldsilver.com/news/news-releases/aya-gold--silver-enters-into-an-agreement-to-sell-azegour-to-sama-resources"
+    n: "Non-binding term sheet to sell the small Azegour project (two mining licences, two exploration permits) to Sama Resources for shares only: per Sama’s release 52M shares at a deemed C$0.15 (~C$7.8M), up to 19.11% of…"
     out: false
