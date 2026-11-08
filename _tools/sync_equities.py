@@ -22,7 +22,7 @@ Usage:
          [--temperature TEMP_DIR --prices PRICES_DIR]
 
 LANDING_DIR  no longer used (kept so existing calls keep working)
-RANKINGS_DIR holds index.html, pmd.html, pmp.html, cu.html, cm.html, hist.html, score.html
+RANKINGS_DIR holds index.html, pmd.html, pmp.html, cu.html, cm.html, hist.html, score.html, audit.html
 TRACKERS_DIR holds index.html, pm.html, cu.html, cm.html, plans.html, dates.html, news.html
 TEMP_DIR     holds the market temperature artifact's index.html
 PRICES_DIR   holds page.html (the metal prices dashboard's files/index.html "text"), meta.json and
@@ -53,7 +53,7 @@ LINKS = {
     "https://chungwin.com/": "/",
 }
 
-RANKING_PAGES = ["pmd.html", "pmp.html", "cu.html", "cm.html", "hist.html", "score.html"]   # the calendar moved to the trackers' Dates tab (30 Oct 2026)
+RANKING_PAGES = ["pmd.html", "pmp.html", "cu.html", "cm.html", "hist.html", "score.html", "audit.html"]   # the calendar moved to the trackers' Dates tab (30 Oct 2026); Audit tab added 8 Nov 2026
 TRACKER_PAGES = ["pm.html", "cu.html", "cm.html", "plans.html", "dates.html", "news.html"]   # News tab added 5 Nov 2026
 
 # Appended to the end of every inner page (rankings tabs and trackers), so it sits
