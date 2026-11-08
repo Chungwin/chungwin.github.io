@@ -1,6 +1,13 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-latest: "6 Nov 2026"
+latest: "7 Nov 2026"
 items:
+  - d: "7 Nov"
+    co: "Rua"
+    c: gold
+    t: "NZ 2026 General Election preliminary results"
+    u: "https://elections.nz/media-and-news/2026/2026-general-election-preliminary-results"
+    n: "Preliminary count (indicative only; special votes still to come, official result Friday 27 Nov): National 42, ACT 13 and NZ First 12 seats (67 of 131) against Labour 36, Greens 16, Opportunity 7 and Te Pāti Māori 5…"
+    out: true
   - d: "6 Nov"
     co: "Coeur"
     c: gold
@@ -16,16 +23,9 @@ items:
     n: "The 2026 Berg season is finished: 31 holes (6,334.5 m), mostly geotechnical and waste-rock holes for engineering and permits, plus 2 exploration holes at Sylvia. Remaining assays come later, undated. Routine; does…"
     out: false
   - d: "6 Nov"
-    co: "Centaurus"
-    c: violet
-    t: "Becoming a substantial holder"
-    u: "https://www.centaurus.com.au/site/pdf/c9238785-67c8-4f5a-975d-6cec994badb1/Platform/ListPage/Becoming-a-substantial-holder.pdf"
-    n: "A new holder crossed 5% on the register. The notice is an image-only PDF, so the holder’s name and stake could not be read here; it follows the 4 Nov issue of 41.9M shares to CNGR. No change to the card until the…"
-    out: false
-  - d: "5 Nov"
-    co: "Aya"
-    c: gold
-    t: "Aya Gold & Silver Enters Into an Agreement to Sell Azegour to Sama Resources"
-    u: "https://www.ayagoldsilver.com/news/news-releases/aya-gold--silver-enters-into-an-agreement-to-sell-azegour-to-sama-resources"
-    n: "Non-binding term sheet to sell the small Azegour project (two mining licences, two exploration permits) to Sama Resources for shares only: per Sama’s release 52M shares at a deemed C$0.15 (~C$7.8M), up to 19.11% of…"
+    co: "Prospect"
+    c: copper
+    t: "Application for quotation of securities - PSC"
+    u: "https://www.aspecthuntley.com.au/asxdata/20261106/pdf/03159169.pdf"
+    n: "240,946 shares issued on 5 Nov from a cashless exercise of 1,140,000 A$0.20 incentive options; 837,631,879 shares quoted afterwards. Routine; no change to the card."
     out: false
