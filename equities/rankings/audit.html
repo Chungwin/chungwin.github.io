@@ -1,0 +1,81 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{ --bg:#111517; --panel:#181D20; --raised:#1E2427; --ink:#E8EBEC; --ink2:#C2C9CC; --mute:#8D999E; --line:#262E32; --line2:#323B40; --good:#72C9A9; --warn:#E3A35F; --bad:#E78C7D;
+  --sans:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; color-scheme:dark; }
+*{ box-sizing:border-box; } html{ background:var(--bg); } body{ margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:15px; line-height:1.55; }
+a{ color:var(--ink2); text-underline-offset:2px; overflow-wrap:anywhere; }
+.wrap{ max-width:1180px; margin:0 auto; padding:0 20px 72px; }
+.hd{ padding:26px 0 8px; } .eyebrow{ font-size:11.5px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; color:var(--mute); }
+h1{ font-size:30px; line-height:1.15; font-weight:600; letter-spacing:-.02em; margin:8px 0 6px; } .lede{ margin:0; max-width:78ch; color:var(--ink2); font-size:15.5px; }
+.note{ margin:14px 0 0; padding:12px 14px; border:1px solid var(--line); border-left:3px solid var(--warn); border-radius:10px; background:var(--panel); color:var(--ink2); font-size:14px; max-width:90ch; }
+.note b{ color:var(--ink); }
+h2{ font-size:19px; font-weight:600; margin:34px 0 6px; letter-spacing:-.01em; } h2 small{ font-weight:400; color:var(--mute); font-size:13px; margin-left:8px; }
+.sub{ color:var(--ink2); font-size:14px; margin:0 0 12px; max-width:90ch; }
+.grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin:16px 0 4px; }
+.tile{ background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px 14px; }
+.tile .k{ font-size:12px; color:var(--mute); letter-spacing:.04em; text-transform:uppercase; } .tile .v{ font-size:24px; font-weight:600; margin-top:2px; font-variant-numeric:tabular-nums; }
+.tile .d{ font-size:12.5px; color:var(--mute); margin-top:2px; } .tile.open .v{ color:var(--warn); } .tile.zero .v{ color:var(--ink2); }
+table{ width:100%; border-collapse:collapse; font-size:13.5px; background:var(--panel); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+th{ text-align:left; font-size:11px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--mute); padding:8px 10px; border-bottom:1px solid var(--line2); white-space:nowrap; }
+td{ padding:9px 10px; border-top:1px solid var(--line); vertical-align:top; } td.r, th.r{ text-align:right; font-variant-numeric:tabular-nums; }
+td .co{ color:var(--ink); font-weight:600; text-decoration:none; } td .co i, .dj i{ display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:7px; vertical-align:1px; }
+td .where{ display:block; color:var(--mute); font-size:12.5px; margin-top:2px; }
+.was{ color:var(--ink2); } .was q{ quotes:"“" "”"; } .now b{ color:var(--ink); font-weight:600; }
+.src{ display:block; font-size:12.5px; color:var(--mute); margin-top:4px; } .src a{ color:var(--ink2); }
+.tag{ display:inline-block; font-size:11px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; padding:1px 7px; border-radius:999px; border:1px solid var(--line2); color:var(--ink2); white-space:nowrap; }
+.tag.serious{ border-color:var(--bad); color:var(--bad); } .tag.minor{ color:var(--mute); }
+.ok{ color:var(--good); white-space:nowrap; } .wait{ color:var(--mute); white-space:nowrap; } .dt{ font-family:var(--mono); font-size:12.5px; color:var(--mute); white-space:nowrap; }
+.empty{ padding:16px; border:1px dashed var(--line2); border-radius:10px; color:var(--mute); font-size:14px; }
+.how{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:10px; }
+.how .tile h3{ margin:0 0 4px; font-size:15px; font-weight:600; } .how .tile p{ margin:0; color:var(--ink2); font-size:14px; } .how .tile .when{ font-size:12.5px; color:var(--mute); margin:0 0 6px; }
+ul.rules{ margin:8px 0 0; padding-left:20px; color:var(--ink2); font-size:14px; max-width:90ch; } ul.rules li{ margin:4px 0; } ul.rules b{ color:var(--ink); font-weight:600; }
+.foot{ margin-top:34px; font-size:12.5px; color:var(--mute); max-width:90ch; }
+@media (max-width:720px){
+  .wrap{ padding-inline:16px; } h1{ font-size:25px; } .grid{ grid-template-columns:1fr 1fr; } .grid .tile:last-child{ grid-column:1 / -1; } .tile .v{ font-size:21px; }
+  table.stack, table.stack tbody, table.stack tr, table.stack td{ display:block; width:100%; }
+  table.stack thead{ display:none; } table.stack{ background:none; border:0; }
+  table.stack tr{ background:var(--panel); border:1px solid var(--line); border-radius:10px; margin-bottom:10px; padding:4px 0; }
+  table.stack td{ border:0; padding:5px 12px; } table.stack td[data-l]::before{ content:attr(data-l); display:block; font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--mute); }
+  table.stack td.r{ text-align:left; }
+}
+</style></head><body><div class="wrap">
+<div class="hd"><div class="eyebrow">Audit · an independent check of the research</div><h1>What the audit found, and what was fixed</h1>
+<p class="lede">Every night an automated update re-reads the companies' news and prices and re-scores the rankings. After every update, a separate check goes over that work. It reads stock-exchange filings and newswires, not the company websites the update used, and looks for wrong figures and for releases the update missed. The check only reports; it never changes a page. The next nightly update fixes what it found, and the audit after that confirms the fix. Every correction is listed below with the correct figure and its source.</p>
+<p class="note"><b>The audit starts on 10 Nov 2026.</b> The first daily check runs that morning, the first weekly check on 15 Nov 2026 and the first evaluation audit on 29 Nov 2026, after the third-quarter results season. Until then the counts below stay at zero, apart from what the set-up check on 8 Nov 2026 found.</p></div>
+<div class="grid"><div class="tile zero"><div class="k">Audits run</div><div class="v">0</div><div class="d">first daily audit 10 Nov 2026</div></div><div class="tile zero"><div class="k">Checks made</div><div class="v">0</div><div class="d">figures, releases and filings re-read against a second source</div></div><div class="tile "><div class="k">Problems found</div><div class="v">1</div><div class="d">1 data error</div></div><div class="tile zero"><div class="k">Fixed</div><div class="v">0</div><div class="d">none yet</div></div><div class="tile open"><div class="k">Open now</div><div class="v">1</div><div class="d">oldest found 8 Nov 2026; fixed by the next nightly update</div></div></div>
+<h2>Corrections<small>newest first</small></h2>
+<p class="sub">Each row is a figure or a missing release that the audit found, the correct value, and the document it comes from. "Confirmed" means a later audit re-read the page and the source and found the fix in place.</p>
+<div class="empty">No corrections yet. Each fixed error will be listed here with what the page said, the correct figure and the source it came from.</div>
+<h2>Judgement questions the owner decided</h2>
+<p class="sub">Some findings are not errors of fact but questions of judgement: an odds call that no longer fits the numbers, a ranking that contradicts its own scores, an entry-plan step whose trigger has already passed. These go to the owner, and nothing changes until he decides. Each decision is listed with its reason, whether the call was kept or changed.</p>
+<div class="empty">No decided judgement questions yet. When the audit questions a ranking, an odds call or an entry plan, the owner decides, and the decision and its reason appear here.</div>
+<h2>How the audit works</h2>
+<div class="how">
+<div class="tile"><h3>Daily check</h3><p class="when">Tuesday to Saturday, about 10:00 Hamburg time, after each nightly update</p><p>Every figure, odds change and news item the night's update changed, checked against the filing or the newswire copy. Every company is checked for releases from the last two days that the update missed. A fifth of the share prices is checked each day, so every price is checked once a week.</p></div>
+<div class="tile"><h3>Weekly check</h3><p class="when">Sunday, about 12:00 Hamburg time</p><p>Every company's share count, cash, debt and latest quarterly figures against its latest filing. Every release of the past seven days. Everything Saturday's weekly review changed.</p></div>
+<div class="tile"><h3>Evaluation audit</h3><p class="when">First Sunday of each month, plus once after each results season</p><p>Do the rankings, odds and entry plans still make sense? It looks for dates that have passed, triggers already hit, reasons that no longer fit the numbers and rankings that contradict their own scores, and it writes the bear case for the top names. It runs no more often than this, so the evaluations do not churn.</p></div>
+</div>
+<ul class="rules">
+<li><b>Severity.</b> <span class="tag serious">serious</span> a figure that feeds the odds, a rank, an entry plan or a valuation (share count, cash, debt, a study's value or cost, the price the odds were set at) that is off by more than 10%, or a missed release that changes the odds or a plan. <span class="tag">normal</span> a wrong figure or a missed release that changes no conclusion. <span class="tag minor">minor</span> a stale date, rounding or wording.</li>
+<li><b>What is not published.</b> Findings the audit withdrew after re-checking, and judgement questions the owner has not decided yet. Everything else is here.</li>
+<li><b>Limits.</b> The audit is a second pair of eyes, not a guarantee. It is automated, it can miss things, and some filings cannot be read automatically (Canada's SEDAR+ often blocks it), so it then falls back to the newswire copy of a release.</li>
+</ul>
+<h2>Audit log<small>the last 40 runs</small></h2>
+<div class="empty">No audit has run yet.</div>
+<p class="foot">Built 8 Nov 2026 from <span class="dt">audit/findings.json</span> and <span class="dt">audit/runs.json</span>, which only the audit tool writes. No figure on this page is typed by hand. Educational research, not investment advice.</p>
+</div><div class="cw-disc" role="contentinfo">
+<style>
+.cw-disc { max-width:1180px; margin:56px auto 0; padding:18px 20px 28px; border-top:1px solid var(--line,#262E32);
+  font:12.5px/1.55 "IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--mute,#8D999E); }
+.cw-disc p { margin:0 0 4px; max-width:72ch; }
+.cw-disc strong { color:var(--ink,#E8EBEC); font-weight:500; }
+.cw-disc a { color:inherit; text-decoration:none; border:0; border-bottom:1px solid var(--line,#262E32); padding:0; margin:0; background:none; border-radius:0; display:inline; font:inherit; }
+.cw-disc a:hover { color:var(--ink,#E8EBEC); }
+.cw-disc .cw-meta { font-variant-numeric:tabular-nums; }
+</style>
+<p><strong>Not investment advice.</strong> Personal research notes by Chung Huynh — views, rankings and estimates may be wrong or out of date. Do your own research.</p>
+<p class="cw-meta">Synced 9 Nov 2026 · Visits and anonymous usage are counted with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>: no cookies, nothing that identifies you. · <a href="/" target="_top">chungwin.com</a></p>
+</div>
+</body></html>
