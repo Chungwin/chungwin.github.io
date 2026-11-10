@@ -3,8 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>{% if page.title %}{{ page.title }} · Chung Huynh{% else %}Chung Huynh{% endif %}</title>
-  <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}Independent research and analysis by Chung Huynh: a research desk on small mining companies, essays on markets and technology, and a few tools built on the side.{% endif %}">
+  <title>{% if page.title %}{{ page.title }} · Chung Huynh{% else %}Chung Huynh · Independent equity research for a decade of scarce inputs{% endif %}</title>
+  {% capture desc %}{% if page.description %}{{ page.description }}{% else %}Independent equity research for a decade of scarce inputs: {% if site.data.equities.companies %}{{ site.data.equities.companies }} companies, {% endif %}mostly small miners and processors in gold, silver, copper and critical minerals, re-scored after every US trading day. Plus essays on markets and technology.{% endif %}{% endcapture %}
+  <meta name="description" content="{{ desc | strip }}">
+  <link rel="canonical" href="https://chungwin.com{{ page.url }}">
+  <!-- link previews (LinkedIn, WhatsApp, Slack, X) -->
+  <meta property="og:site_name" content="Chung Huynh">
+  <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+  <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}Independent equity research for a decade of scarce inputs · Chung Huynh{% endif %}">
+  <meta property="og:description" content="{{ desc | strip }}">
+  <meta property="og:url" content="https://chungwin.com{{ page.url }}">
+  <meta property="og:image" content="https://chungwin.com/assets/images/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Chung Huynh: independent equity research for a decade of scarce inputs. Human judgement on what matters, machine effort on everything else.">
+  <meta name="twitter:card" content="summary_large_image">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +36,7 @@
     <nav class="nav" aria-label="Primary">
       <a href="{{ '/equities/rankings/' | relative_url }}">Research</a>
       <a href="{{ '/#writing' | relative_url }}"{% if page.layout == 'post' %} class="on"{% endif %}>Writing</a>
-      <a href="{{ '/#tools' | relative_url }}">Tools</a>
+      <a href="{{ '/equities/context/' | relative_url }}">Market context</a>
       <a href="{{ '/#about' | relative_url }}">About</a>
     </nav>
   </header>
@@ -36,7 +49,7 @@
       <a href="https://github.com/chungwin" data-goatcounter-click="out/github" data-goatcounter-title="GitHub (footer)">GitHub</a>
       <span>Visits counted with <a href="https://www.goatcounter.com" rel="noopener">GoatCounter</a> · no cookies, nothing that identifies you</span>
     </div>
-    <p class="disc">Independent research and analysis by one person, written with AI assistance. Not investment advice; small mining companies can lose most of their value.</p>
+    <p class="disc">Independent research and analysis by one person, written with AI assistance. Not investment advice; small companies can lose most of their value.</p>
   </footer>
 
 </div>

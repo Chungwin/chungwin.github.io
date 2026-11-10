@@ -1,0 +1,23 @@
+# Written by _tools/sync_equities.py from the News page — do not edit.
+close: "9 Nov 2026"
+n: 10
+releases: 19
+items:
+  - co: "Andina"
+    c: copper
+    list: "Copper"
+    o0: 17
+    o1: 11
+    why: "Shares +17% (C$0.92 → C$1.08, 9 Nov) with no company release: the same outcome at a higher price, so 'if it works' narrows to ~1.7⁠–⁠3.4× and the odds fall 17% → 11%."
+  - co: "Aftermath"
+    c: gold
+    list: "Gold & silver developers"
+    o0: 10
+    o1: 5
+    why: "Shares +23% to C$0.53 with no release and no outside news found: the same outcome at a higher price…"
+  - co: "Coppernico"
+    c: copper
+    list: "Copper"
+    o0: 12
+    o1: 9
+    why: "Shares +21% (C$0.31 → C$0.375, 9 Nov) with no company release: 'if it works' ~1.6⁠–⁠3.7×, odds 12% → 9%. Works chance unchanged at 13%; Phase 2 assays still ~Q1 2027."

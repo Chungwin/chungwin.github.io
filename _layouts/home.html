@@ -1,41 +1,80 @@
 ---
 layout: default
 ---
+{% comment %}
+  DRAFT homepage (8 Nov 2026), investor-first:
+  1. the headline says what the site is ("Independent equity research for a decade of scarce inputs", not only miners); the sub headline
+     "Human judgement on what matters. Machine effort on everything else." sits outside the <h1>, so search engines and
+     link previews no longer read the animation's ⇥ tab ▍ as part of the headline
+  2. "Since the last close" shows what the desk concluded (_data/moves.yml), instead of a ledger that repeated the intro
+  3. the Newswire lists releases that mattered (material news, entry-plan tests), one per company, cut at a sentence end
+  4. "How the desk keeps itself honest": the rules, the Scorecard and the audit
+  5. Writing counts only the essays on markets and technology; the poker app becomes a small "also built" line
+  6. About is open, not folded shut at the bottom
+{% endcomment %}
 {% assign eq = site.data.equities %}
+{% assign mv = site.data.moves %}
 {% assign cutoff = "2026-01-01" | date: "%s" | plus: 0 %}
 {% assign recent = 0 %}{% for post in site.posts %}{% assign ts = post.date | date: "%s" | plus: 0 %}{% if ts >= cutoff %}{% assign recent = recent | plus: 1 %}{% endif %}{% endfor %}
 
-<section class="hero">
-  <div>
-    <h1>Ideas, written and built. <span class="mach">These days, <span id="machine">machines help.</span><span class="taphint" id="taphint" aria-hidden="true">⇥ tab</span><span class="caret" id="caret" aria-hidden="true">▍</span></span></h1>
-    <p class="lede">Essays on markets and technology, a research desk on <b>{% if eq.companies %}{{ eq.companies }} {% endif %}small mining companies</b>, and the odd tool built on the side. I set the rules and make the judgement calls; Claude does the legwork.</p>
-  </div>
-  <div class="ledger" aria-label="What's here">
-    <div class="row"><div class="lab">Research<span>{% if eq.companies %}{{ eq.companies }} {% endif %}small mining companies, scored after every US trading day</span></div><div class="v">Daily</div></div>
-    <div class="row"><div class="lab">Writing<span>essays on markets and technology · latest {{ site.posts.first.date | date: "%-d %b %Y" }}</span></div><div class="v">{{ site.posts.size }}</div></div>
-    <div class="row"><div class="lab">Tools<span>market temperature &amp; metal prices · a poker trainer</span></div><div class="v">2</div></div>
+<section class="hero2">
+  <div class="intro">
+    <p class="k eyebrow"><span class="dot"></span>{% if eq.companies %}{{ eq.companies }}&nbsp;companies · {% endif %}re-scored after every US&nbsp;trading&nbsp;day</p>
+    <h1>Independent equity research for a decade of <span class="hl">scarce inputs</span>.</h1>
+    <p class="voice"><span class="hum">Human judgement on what matters.</span> <span class="mach"><span id="machine">Machine effort on everything <span class="nb">else.<span class="caret" id="caret" aria-hidden="true">▍</span></span></span></span><span class="taphint" id="taphint" aria-hidden="true">⇥ tab</span></p>
+    <p class="lede">Mostly small miners and processors in gold, silver, copper and critical minerals, each chosen because it fits <a href="{{ '/scarce-inputs-thesis/' | relative_url }}">the Scarce Inputs Thesis</a>. <span class="lede-more">Ranked lists, a card for every company with the numbers read from its filings, and entry plans for {% if eq.plans %}{{ eq.plans }}{% else %}some{% endif %} of them. Every score that moves comes with its reason.</span></p>
     {% if eq.pm and eq.cu and eq.cm %}
-    <div class="strata" aria-hidden="true"><i style="background:var(--gold);flex:{{ eq.pm }}"></i><i style="background:var(--copper);flex:{{ eq.cu }}"></i><i style="background:var(--violet);flex:{{ eq.cm }}"></i></div>
-    <div class="legend"><span><i style="background:var(--gold)"></i>Gold &amp; silver <b>{{ eq.pm }}</b></span><span><i style="background:var(--copper)"></i>Copper <b>{{ eq.cu }}</b></span><span><i style="background:var(--violet)"></i>Critical minerals <b>{{ eq.cm }}</b></span></div>
+    <div class="cover" aria-label="Coverage by metal group">
+      <div class="strata" aria-hidden="true"><i style="background:var(--gold);flex:{{ eq.pm }}"></i><i style="background:var(--copper);flex:{{ eq.cu }}"></i><i style="background:var(--violet);flex:{{ eq.cm }}"></i></div>
+      <div class="legend"><span><i style="background:var(--gold)"></i>Gold &amp; silver <b>{{ eq.pm }}</b></span><span><i style="background:var(--copper)"></i>Copper <b>{{ eq.cu }}</b></span><span><i style="background:var(--violet)"></i>Critical minerals <b>{{ eq.cm }}</b></span></div>
+    </div>
     {% endif %}
+    <div class="cta">
+      <a class="btn" href="{{ '/equities/rankings/' | relative_url }}" data-goatcounter-click="home/cta-rankings" data-goatcounter-title="Home: open the rankings">Open the rankings <span aria-hidden="true">→</span></a>
+      <a class="btn ghost" href="#honest">How the desk works</a>
+    </div>
   </div>
+
+  {% if mv.close %}
+  <aside class="since" aria-label="Since the last close">
+    <div class="since-h">
+      <span class="k">Since the <b>{{ mv.close | replace: " 2026", "" | replace: " ", "&nbsp;" }}</b> close</span>
+      <span class="k tally">{% if mv.checked %}<span class="nb">{{ mv.checked }} companies checked</span> · {% endif %}{% if mv.releases %}<span class="nb">{{ mv.releases }} {% if mv.releases == 1 %}release{% else %}releases{% endif %} read</span> · {% endif %}<span class="nb">{{ mv.n }} odds {% if mv.n == 1 %}change{% else %}changes{% endif %}</span></span>
+    </div>
+    {% if mv.items and mv.n > 0 %}
+    <ul class="moves">
+      {% for it in mv.items %}
+      <li>
+        <div class="mv-top"><span class="co"><i style="background:var(--{{ it.c }})"></i>{{ it.co }}</span><span class="grp">{{ it.list }}</span><span class="odds {% if it.o1 > it.o0 %}up{% else %}down{% endif %}">{{ it.o0 }}%<span class="ar">→</span>{{ it.o1 }}%</span></div>
+        <p class="why">{{ it.why }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+    {% if mv.n > 3 %}<p class="more k">+ {{ mv.n | minus: 3 }} more on the news page</p>{% endif %}
+    {% else %}
+    <p class="quiet-day">No odds changed. Every release was read; none moved a score.</p>
+    {% endif %}
+    <p class="gloss"><b>Odds</b> = the desk's estimated chance that the share price at least triples within 3–5 years.</p>
+    <a class="since-all" href="{{ '/equities/news/' | relative_url }}" data-goatcounter-click="home/since-all" data-goatcounter-title="Home: since the last close, all">All odds changes and releases <span aria-hidden="true">→</span></a>
+  </aside>
+  {% endif %}
 </section>
 
 <nav class="doors" aria-label="Research">
   <a class="door" href="{{ '/equities/rankings/' | relative_url }}" data-goatcounter-click="home/rankings" data-goatcounter-title="Home: rankings">
-    <span class="k"><span class="step-k">Start here</span> <i>4 lists</i></span>
+    <span class="k"><span class="step-k">Start here</span> <i>4&nbsp;lists</i></span>
     <div class="nm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 19h16M6 15V9M11 15V5M16 15v-4M21 15v-7"/></svg><h2>Rankings</h2></div>
     <p class="what">Who looks best now, and what changed since the last close.</p>
     <p class="desc">Two lists per group: the names most likely to deliver, and the names with the best odds of a 3×. Every move comes with its reason.</p>
-    <span class="note">Updated after every US trading day{% if eq.latest_short %} · latest {{ eq.latest_short }}{% endif %}</span>
+    <span class="note">Updated after every US trading day{% if eq.latest_short %} · latest&nbsp;{{ eq.latest_short | replace: " ", "&nbsp;" }}{% endif %}</span>
     <span class="go" aria-hidden="true">→</span>
   </a>
   <a class="door" href="{{ '/equities/trackers/' | relative_url }}" data-goatcounter-click="home/cards" data-goatcounter-title="Home: company cards">
-    <span class="k"><span class="step-k">Then</span> <i>{% if eq.companies %}{{ eq.companies }} {% endif %}cards</i></span>
+    <span class="k"><span class="step-k">Then</span> <i>{% if eq.companies %}{{ eq.companies }}&nbsp;{% endif %}cards</i></span>
     <div class="nm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M7 9h10M7 12.5h7M7 16h4"/></svg><h2>Company cards</h2></div>
     <p class="what">Everything behind a score, one card per company.</p>
     <p class="desc">The thesis and the one gate it must pass, the numbers, the people, the financial statements read from the filings, and every release with a verdict.</p>
-    <span class="note">Plus entry plans for {% if eq.plans %}{{ eq.plans }} of them{% else %}some of them{% endif %}: when to buy, and in what pieces</span>
+    <span class="note">Plus entry plans for {% if eq.plans %}{{ eq.plans }}&nbsp;of&nbsp;them{% else %}some of them{% endif %}: when to buy, and in what pieces</span>
     <span class="go" aria-hidden="true">→</span>
   </a>
   <a class="door" href="{{ '/scarce-inputs-thesis/' | relative_url }}" data-goatcounter-click="home/thesis" data-goatcounter-title="Home: thesis">
@@ -47,19 +86,12 @@ layout: default
   </a>
 </nav>
 
-<nav class="tools" id="tools" aria-label="Tools">
-  <a class="tool wide" href="{{ '/equities/context/' | relative_url }}" data-goatcounter-click="home/context" data-goatcounter-title="Home: market context">
-    <span class="k"><span class="step-k">Context</span> <i>2 tabs</i></span>
+<nav class="tools" id="tools" aria-label="Market context">
+  <a class="tool full" href="{{ '/equities/context/' | relative_url }}" data-goatcounter-click="home/context" data-goatcounter-title="Home: market context">
+    <span class="k"><span class="step-k">Context</span> <i>2&nbsp;tabs</i></span>
     <div class="nm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 17a8 8 0 0 1 16 0"/><path d="M12 17l4.5-5"/><circle cx="12" cy="17" r="1.3" fill="currentColor"/></svg><h2>Market context</h2></div>
     <p class="what">How hot the market is, whether junior miners may be bought this month, and the price of every metal under coverage.</p>
     <span class="state"><span>Temperature monthly · crash watch daily · prices daily</span></span>
-    <span class="go" aria-hidden="true">→</span>
-  </a>
-  <a class="tool" href="{{ '/poker/' | relative_url }}" data-goatcounter-click="home/poker" data-goatcounter-title="Home: poker">
-    <span class="k"><span class="step-k">Side project</span> <i>app</i></span>
-    <div class="nm"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3C9 7.5 4.5 10 4.5 14a4 4 0 0 0 6.6 3c-.3 1.5-1 2.6-2.1 3.5h6c-1.1-.9-1.8-2-2.1-3.5a4 4 0 0 0 6.6-3C19.5 10 15 7.5 12 3z"/></svg><h2>Sharkline Poker</h2></div>
-    <p class="what">Drill pre- and postflop spots against the solver's answer.</p>
-    <span class="state"><span class="lv beta"><i></i>Beta</span><span>NL25 6-max</span></span>
     <span class="go" aria-hidden="true">→</span>
   </a>
 </nav>
@@ -67,40 +99,69 @@ layout: default
 {% assign wire = site.data.news %}
 {% if wire.items %}
 <section id="newswire" class="wire">
-  <div class="sec"><h3>Newswire</h3><span class="k">Latest from the companies{% if wire.latest %} · {{ wire.latest }}{% endif %}</span></div>
+  <div class="sec"><h3>Releases that mattered</h3><span class="k">Material news and entry-plan tests · one per company</span></div>
   <ul class="notes wire">
     {% for it in wire.items %}
-    <li><a href="{{ it.u }}" target="_blank" rel="noopener" data-goatcounter-click="home/news-item" data-goatcounter-title="Home: newswire item"><span class="d">{{ it.d }}</span><span class="t"><span class="co"><i style="background:var(--{{ it.c }})"></i>{{ it.co }}</span>{% if it.out %}<span class="out">Report</span>{% endif %}{{ it.t }}</span>{% if it.plan %}<span class="plan pv-{{ it.pv }}">Entry plan · {{ it.plan }}</span>{% endif %}{% if it.n %}<p class="b">{{ it.n }}</p>{% endif %}</a></li>
+    <li><a href="{{ it.u }}" target="_blank" rel="noopener" data-goatcounter-click="home/news-item" data-goatcounter-title="Home: newswire item"><span class="d">{{ it.d | replace: " ", "&nbsp;" }}</span><span class="t"><span class="co"><i style="background:var(--{{ it.c }})"></i>{{ it.co }}</span>{% if it.out %}<span class="out">Report</span>{% endif %}{{ it.t }}</span>{% if it.plan %}<span class="plan pv-{{ it.pv }}">Entry plan · {{ it.plan }}</span>{% elsif it.mat %}<span class="plan pv-mat">Material</span>{% endif %}{% if it.n %}<p class="b">{{ it.n }}</p>{% endif %}</a></li>
     {% endfor %}
   </ul>
-  <a class="wire-all" href="{{ '/equities/news/' | relative_url }}" data-goatcounter-click="home/news" data-goatcounter-title="Home: all news">All news and odds changes →</a>
+  <a class="wire-all" href="{{ '/equities/news/' | relative_url }}" data-goatcounter-click="home/news" data-goatcounter-title="Home: all news">Every release and odds change →</a>
 </section>
 {% endif %}
 
+<section id="honest" class="honest">
+  <div class="sec"><h3>How the desk keeps itself honest</h3><span class="k">Rules first, record in public</span></div>
+  <div class="trio">
+    <div class="pillar">
+      <span class="k num">01 · Rules</span>
+      <h4>A score moves only for a reason</h4>
+      <p>After every US trading day: closing prices from dated series, every company release, and the regional news that touches a project. A score changes only for news, a price move of 10% or more, or a written re-think, and the reason is recorded on the page. Each Saturday every company is re-checked against its filings.</p>
+    </div>
+    <a class="pillar" href="{{ '/equities/rankings/#score' | relative_url }}" data-goatcounter-click="home/scorecard" data-goatcounter-title="Home: scorecard">
+      <span class="k num">02 · Scorecard</span>
+      <h4>Every call, then against now</h4>
+      <p>Each company's odds, rank and risk on the day it was first scored, set against today, kept in public whether or not it flatters the method. The record is young: for a 3–5 year horizon it is a ledger, not yet a verdict.</p>
+      <span class="lnk">Open the scorecard <span aria-hidden="true">→</span></span>
+    </a>
+    <a class="pillar" href="{{ '/equities/rankings/#audit' | relative_url }}" data-goatcounter-click="home/audit" data-goatcounter-title="Home: audit">
+      <span class="k num">03 · Audit</span>
+      <h4>An independent re-check</h4>
+      <p>After every nightly update, a separate check re-reads exchange filings and newswires, not the company websites the update used, to catch wrong numbers and missed releases. It only reports; the next update fixes, and every correction is listed with its source.</p>
+      {% assign audit_start = "2026-11-10" | date: "%s" | plus: 0 %}{% assign built = site.time | date: "%s" | plus: 0 %}
+      <span class="chip"><i></i>{% if built < audit_start %}Starts 10 Nov 2026{% else %}Daily since 10 Nov 2026{% endif %}</span>
+      <span class="lnk">Open the audit <span aria-hidden="true">→</span></span>
+    </a>
+  </div>
+</section>
+
 <section id="writing">
-  <div class="sec"><h3>Writing</h3><span class="k">Essays and notes</span></div>
+  <div class="sec"><h3>Writing</h3><span class="k">{{ recent }} essays on markets and technology</span></div>
   <ul class="notes">
     {% for post in site.posts %}{% assign ts = post.date | date: "%s" | plus: 0 %}{% if ts >= cutoff %}
-    <li><a href="{{ post.url | relative_url }}"><span class="d">{{ post.date | date: "%-d %b %Y" }}</span><span class="t">{{ post.title }}</span>{% if post.description %}<p class="b">{{ post.description }}</p>{% endif %}</a></li>
+    <li><a href="{{ post.url | relative_url }}"><span class="d">{{ post.date | date: "%-d %b %Y" | replace: " ", "&nbsp;" }}</span><span class="t">{{ post.title }}</span>{% if post.description %}<p class="b">{{ post.description }}</p>{% endif %}</a></li>
     {% endif %}{% endfor %}
   </ul>
   <div class="sec sub"><h3>Earlier · recruiting &amp; other</h3></div>
   <ul class="notes quiet">
     {% for post in site.posts %}{% assign ts = post.date | date: "%s" | plus: 0 %}{% if ts < cutoff %}
-    <li><a href="{{ post.url | relative_url }}"><span class="d">{{ post.date | date: "%b %Y" }}</span><span class="t">{{ post.title }}</span></a></li>
+    <li><a href="{{ post.url | relative_url }}"><span class="d">{{ post.date | date: "%b %Y" | replace: " ", "&nbsp;" }}</span><span class="t">{{ post.title }}</span></a></li>
     {% endif %}{% endfor %}
   </ul>
 </section>
 
-<details class="about" id="about"><summary><span>About</span><span class="k">who writes this, and how the desk works</span></summary>
-  <section class="band">
-    <div><h4>Chung Huynh</h4>
-      <p>Writes from Hamburg about technology, markets and the occasional philosophical detour. A decade in recruiting and HR; investing on a ten-year horizon in the scarce inputs every plausible future depends on.</p>
-      <p class="principle"><b>Human judgement on what matters, machine effort on everything else.</b> I set the rules and make the judgement calls; Claude, an AI by Anthropic, does the homework every night and writes down why.</p></div>
-    <div><h4>How the desk works</h4>
-      <p>After every US trading day: closing prices from dated series, every company release, and the regional news that touches a project. A score changes only for news, a price move of 10% or more, or a written re-think, and the reason is recorded on the page. Saturdays re-check every company from the filings up.</p></div>
-  </section>
-</details>
+<section class="about2" id="about">
+  <div class="sec"><h3>About</h3><span class="k">Who writes this</span></div>
+  <div class="band">
+    <div>
+      <p>Chung Huynh writes from Hamburg about technology, markets and the occasional philosophical detour. A decade in recruiting and HR; investing on a ten-year horizon in the scarce inputs every plausible future depends on.</p>
+      <p class="principle">I set the rules and make the judgement calls. Claude, an AI by Anthropic, does the homework every night and writes down why.</p>
+    </div>
+    <div class="also">
+      <span class="k">Also built</span>
+      <a href="{{ '/poker/' | relative_url }}" data-goatcounter-click="home/poker" data-goatcounter-title="Home: poker"><b>Sharkline Poker</b> <span class="beta">Beta</span><br><span>A trainer for no-limit hold'em: drill spots before and after the flop against the solver's answer.</span> <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
 
 <script>
 (function(){
@@ -110,8 +171,5 @@ layout: default
   document.body.classList.add('anim');
   setTimeout(function(){ hint.classList.add('show'); }, 750);
   setTimeout(function(){ m.classList.add('accepted'); hint.classList.remove('show'); caret.classList.add('on'); }, 1650);
-  var a = document.getElementById('about');
-  if (a && location.hash === '#about') a.open = true;
-  window.addEventListener('hashchange', function(){ if (location.hash === '#about' && a) a.open = true; });
 })();
 </script>

@@ -13,7 +13,8 @@ pages into the site and adapts them:
     overview now); old /equities/#pmd-style links keep working through it
   * _data/equities.yml (latest update, company count, group split) feeds the homepage
   * /equities/news/ is the trackers' News tab (every company release and odds change) as a page of its own,
-    and _data/news.yml (the four latest releases) feeds the homepage's Newswire list
+    and _data/news.yml ("Releases that mattered": material releases and entry-plan tests of the last 14 days, one
+    per company) and _data/moves.yml ("Since the last close": the odds changes of the newest snapshot) feed the homepage
   * /equities/context/ shows the market temperature and the metal prices as two tabs
     (see build_context; without --temperature/--prices those pages are left as they are)
 
@@ -537,29 +538,109 @@ def build_news_page(news_html: str, synced: str) -> None:
     (OUT / "news" / "index.html").write_text(html, encoding="utf-8")
 
 
-def write_news_data(news_html: str) -> None:
-    """_data/news.yml: the four latest company releases (own releases and outside reports, not odds changes) for the
-    homepage. Read from the data the News page itself carries, so the homepage and the page never disagree."""
+# Homepage data (8 Nov 2026 redesign). Both files are read from the data the News page itself carries, so the
+# homepage and the News page can never disagree. Summaries are cut at a sentence end (never inside a number), and
+# number ranges such as "US$25–27" get word joiners around the dash in text (never in links) so they do not wrap.
+SENT_SPLIT = re.compile(r'(?<=[.!?])\s+(?=[A-Z0-9“"(])')
+GROUP_COL = {"pm": "gold", "cu": "copper", "cm": "violet"}
+LIST_NAME = {"pmd": "Gold & silver developers", "pmp": "Gold & silver producers", "cu": "Copper", "cm": "Critical minerals"}
+
+
+def cut_sentences(text: str, maxlen: int) -> str:
+    """Whole sentences up to maxlen. If the first sentence alone is longer, cut it at the last clause break
+    ('; ', ' — ', ', ') before maxlen and end with '…'."""
+    text = re.sub(r"\s+", " ", text or "").strip()
+    out = ""
+    for sent in SENT_SPLIT.split(text):
+        if not out:
+            out = sent
+            if len(out) > maxlen:
+                head = out[:maxlen]
+                m = max(head.rfind("; "), head.rfind(" — "), head.rfind(", "))
+                return (head[:m] if m > 60 else head.rsplit(" ", 1)[0]).rstrip(",;: ") + "…"
+        elif len(out) + 1 + len(sent) <= maxlen:
+            out += " " + sent
+        else:
+            break
+    return out
+
+
+def keep_ranges(text: str) -> str:
+    return re.sub(r"(?<=\d)([–-])(?=[\dA-Z$])", "\u2060\\1\u2060", text)
+
+
+def news_data(news_html: str):
     import json
     m = re.search(r"var D=(\{.*?\});\nvar COL=", news_html, re.S)
     if not m:
-        print("WARNING: news data not found in news.html; homepage Newswire not updated")
+        return None
+    return json.loads(m.group(1).replace("<\\/", "</"))
+
+
+def write_news_data(news_html: str) -> None:
+    """_data/news.yml, "Releases that mattered": company releases of the last 14 days that the card marks as
+    material or that tested a point in an entry plan with a verdict; one per company (its newest), newest first, 4 items."""
+    import json
+    d = news_data(news_html)
+    if not d:
+        print("WARNING: news data not found in news.html; homepage news not updated")
         return
-    d = json.loads(m.group(1).replace("<\\/", "</"))
-    items = [x for x in d["items"] if x["ty"] in ("rel", "out")][:4]
-    col = {"pm": "gold", "cu": "copper", "cm": "violet"}
+    lo = (dt.date.fromisoformat(d["today"]) - dt.timedelta(days=14)).isoformat()
+
+    def mattered(x):
+        if x["ty"] != "rel" or x["d"] < lo:
+            return False
+        if x.get("n", "").startswith("Material"):
+            return True
+        return bool(x.get("p") and x["p"].get("top") in ("green", "red", "mid", "watch"))
+
+    sel, seen = [], set()
+    for x in sorted((x for x in d["items"] if mattered(x)), key=lambda x: x["d"], reverse=True):
+        if x["s"] in seen:
+            continue
+        seen.add(x["s"]); sel.append(x)
+        if len(sel) == 4:
+            break
     q = lambda s: json.dumps(s, ensure_ascii=False)
-    lines = ["# Written by _tools/sync_equities.py from the News page — do not edit.", f"latest: {q(dt.date.fromisoformat(d['today']).strftime('%-d %b %Y'))}", "items:"]
-    for x in items:
+    lines = ["# Written by _tools/sync_equities.py from the News page — do not edit.",
+             f"latest: {q(dt.date.fromisoformat(d['today']).strftime('%-d %b %Y'))}", "items:" if sel else "items: []"]
+    for x in sel:
         c = d["co"][x["s"]]
-        note = x.get("n", "")
-        note = note if len(note) <= 220 else note[:217].rsplit(" ", 1)[0] + "…"
-        lines += [f"  - d: {q(dt.date.fromisoformat(x['d']).strftime('%-d %b'))}", f"    co: {q(c['n'])}", f"    c: {col[c['g']]}",
-                  f"    t: {q(x['t'])}", f"    u: {q(x['u'])}", f"    n: {q(note)}", f"    out: {'true' if x['ty'] == 'out' else 'false'}"]
-        if x.get("p"):   # the release touches a point in the company's entry plan: badge text and verdict colour
+        note = keep_ranges(cut_sentences(re.sub(r"^Material\.\s*", "", x.get("n", "")), 240))
+        lines += [f"  - d: {q(dt.date.fromisoformat(x['d']).strftime('%-d %b'))}", f"    co: {q(c['n'])}", f"    c: {GROUP_COL[c['g']]}",
+                  f"    t: {q(x['t'])}", f"    u: {q(x['u'])}", f"    n: {q(note)}", "    out: false"]
+        if x.get("p"):   # the release tested a point in the company's entry plan: badge text and verdict colour
             lines += [f"    plan: {q(x['p']['lab'])}", f"    pv: {q(x['p']['top'])}"]
+        elif x.get("n", "").startswith("Material"):
+            lines += ["    mat: true"]
     (ROOT / "_data").mkdir(exist_ok=True)
     (ROOT / "_data" / "news.yml").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def write_moves_data(news_html: str) -> None:
+    """_data/moves.yml, "Since the last close": every odds change on the newest snapshot date, biggest first (the
+    homepage shows three and links to the rest), with the first sentence(s) of the reason recorded that day, plus the
+    number of company releases dated that day."""
+    import json
+    d = news_data(news_html)
+    if not d:
+        print("WARNING: news data not found in news.html; homepage moves not updated")
+        return
+    calls = [x for x in d["items"] if x["ty"] == "call"]
+    if not calls:
+        return
+    last = max(x["d"] for x in calls)
+    mv = sorted((x for x in calls if x["d"] == last), key=lambda x: -abs(int(x["o1"]) - int(x["o0"])))
+    q = lambda s: json.dumps(s, ensure_ascii=False)
+    lines = ["# Written by _tools/sync_equities.py from the News page — do not edit.",
+             f"close: {q(dt.date.fromisoformat(last).strftime('%-d %b %Y'))}", f"n: {len(mv)}",
+             f"releases: {sum(1 for x in d['items'] if x['ty'] in ('rel', 'out') and x['d'] == last)}", "items:"]
+    for x in mv[:3]:
+        c = d["co"][x["s"]]
+        lines += [f"  - co: {q(c['n'])}", f"    c: {GROUP_COL[c['g']]}", f"    list: {q(LIST_NAME.get(x.get('tab'), ''))}",
+                  f"    o0: {int(x['o0'])}", f"    o1: {int(x['o1'])}", f"    why: {q(keep_ranges(cut_sentences(x.get('n', ''), 170)))}"]
+    (ROOT / "_data").mkdir(exist_ok=True)
+    (ROOT / "_data" / "moves.yml").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def main() -> int:
@@ -591,6 +672,7 @@ def main() -> int:
     news = rewrite_links((a.trackers_dir / "news.html").read_text(encoding="utf-8"))
     build_news_page(news, a.synced)
     write_news_data(news)
+    write_moves_data(news)
 
     global LATEST
     LATEST = latest_update((a.rankings_dir / p).read_text(encoding="utf-8") for p in ["pmd.html", "pmp.html", "cu.html", "cm.html"])
