@@ -1,31 +1,31 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-latest: "8 Nov 2026"
+latest: "10 Nov 2026"
 items:
-  - d: "7 Nov"
-    co: "Rua"
-    c: gold
-    t: "NZ 2026 General Election preliminary results"
-    u: "https://elections.nz/media-and-news/2026/2026-general-election-preliminary-results"
-    n: "Preliminary count (indicative only; special votes still to come, official result Friday 27 Nov): National 42, ACT 13 and NZ First 12 seats (67 of 131) against Labour 36, Greens 16, Opportunity 7 and Te Pāti Māori 5…"
-    out: true
-  - d: "6 Nov"
-    co: "Coeur"
-    c: gold
-    t: "Coeur to Participate in RBC Capital Markets London Precious Metals Conference"
-    u: "https://www.coeur.com/investors/news/news-details/2026/Coeur-to-Participate-in-RBC-Capital-Markets-London-Precious-Metals-Conference/default.aspx"
-    n: "Conference notice (CFO in London on 10 Nov). No new operating or financial information; does not change the card."
-    out: false
-  - d: "6 Nov"
-    co: "Surge"
-    c: copper
-    t: "Surge Copper Completes 2026 Drilling Program at Berg Copper Project"
-    u: "https://surgecopper.com/news-releases/surge-copper-completes-2026-drilling-program-at-berg-copper-project/"
-    n: "The 2026 Berg season is finished: 31 holes (6,334.5 m), mostly geotechnical and waste-rock holes for engineering and permits, plus 2 exploration holes at Sylvia. Remaining assays come later, undated. Routine; does…"
-    out: false
-  - d: "6 Nov"
+  - d: "10 Nov"
     co: "Prospect"
     c: copper
-    t: "Application for quotation of securities - PSC"
-    u: "https://www.aspecthuntley.com.au/asxdata/20261106/pdf/03159169.pdf"
-    n: "240,946 shares issued on 5 Nov from a cashless exercise of 1,140,000 A$0.20 incentive options; 837,631,879 shares quoted afterwards. Routine; no change to the card."
+    t: "New High-Grade Step-Out Success at Nyungu Central"
+    u: "https://www.aspecthuntley.com.au/asxdata/20261110/pdf/03159870.pdf"
+    n: "Released 10 Nov (Sydney time). Extensional hole NCDD052 on the eastern flank of Nyungu Central, outside the current resource: 24 m at 0.78% Cu from 276 m and 20 m at 0.91% Cu from 375 m, plus 33 m at 0.54% Cu from 28…"
+    out: false
+  - d: "9 Nov"
+    co: "AbraSilver"
+    c: gold
+    t: "AbraSilver Intersects 75 Metres of 2.44 g/t Gold and 106 g/t Silver at Oculto; 253 Metres of 0.54 g/t Gold at Oculto East"
+    u: "https://abrasilver.com/news/abrasilver-intersects-75-metres-of-244-gt-gold-and-106-gt-silver-at-oculto-253-metres-of-054-gt-gold-at-oculto-east"
+    n: "Two Phase VI holes at Diablillos: 75.0 m at 2.44 g/t gold and 106 g/t silver in the Oculto pit (infill, confirms continuity where the mine plan needs it) and 253.0 m at 0.54 g/t gold at Oculto East. The company…"
+    out: false
+  - d: "9 Nov"
+    co: "Equinox"
+    c: gold
+    t: "Equinox Gold Reports Q3 Results; Transformational Combination Begins to Deliver"
+    u: "https://www.globenewswire.com/news-release/2026/11/09/3399077/0/en/equinox-gold-reports-q3-results-transformational-combination-begins-to-deliver.html"
+    n: "First quarter with two months of Musselwhite and Camino Rojo: 237 koz produced, AISC US$2,091/oz (Q2 US$2,175), revenue US$1.05B, adjusted EBITDA US$533M, cash US$528M, net cash US$16M (US$164M before the converts,…"
+    out: false
+  - d: "9 Nov"
+    co: "Walhalla"
+    c: gold
+    t: "Walhalla Gold Establishes District-Scale Geological Framework, Identifies Gold, Antimony and Copper-Nickel-PGE Exploration Opportunities"
+    u: "https://www.newsfilecorp.com/release/323027/Walhalla-Gold-Establishes-DistrictScale-Geological-Framework-Identifies-Gold-Antimony-and-CopperNickelPGE-Exploration-Opportunities"
+    n: "A target-generation update from about 500 GB of historical data over the 1,230 km2 project: named targets (Cohens Reef, Big River antimony, Coopers Creek Cu-Ni-PGE), no new assays and no resource. Field work is to…"
     out: false
