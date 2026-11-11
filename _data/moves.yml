@@ -1,23 +1,17 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-close: "9 Nov 2026"
-n: 10
-releases: 19
+close: "10 Nov 2026"
+n: 2
+releases: 12
 items:
-  - co: "Andina"
+  - co: "Vizsla"
     c: copper
     list: "Copper"
-    o0: 17
-    o1: 11
-    why: "Shares +17% (C$0.92 → C$1.08, 9 Nov) with no company release: the same outcome at a higher price, so 'if it works' narrows to ~1.7⁠–⁠3.4× and the odds fall 17% → 11%."
-  - co: "Aftermath"
-    c: gold
-    list: "Gold & silver developers"
-    o0: 10
-    o1: 5
-    why: "Shares +23% to C$0.53 with no release and no outside news found: the same outcome at a higher price…"
-  - co: "Coppernico"
+    o0: 20
+    o1: 22
+    why: "Shares −10.5% (C$0.86 → C$0.77, 10 Nov; two price sources agree) with no news, reversing the 9 Nov rise: 'if it works' back to ~2.8⁠–⁠5.2×, odds 20% → 22%."
+  - co: "MUX / Los Azules"
     c: copper
     list: "Copper"
-    o0: 12
-    o1: 9
-    why: "Shares +21% (C$0.31 → C$0.375, 9 Nov) with no company release: 'if it works' ~1.6⁠–⁠3.7×, odds 12% → 9%. Works chance unchanged at 13%; Phase 2 assays still ~Q1 2027."
+    o0: 15
+    o1: 16
+    why: "McEwen shares −16% on 10 Nov (US$16.23 → US$13.59) after Q3 results: a US$36.7M loss at the gold mines."

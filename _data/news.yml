@@ -1,6 +1,14 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
 latest: "10 Nov 2026"
 items:
+  - d: "10 Nov"
+    co: "Coppernico"
+    c: copper
+    t: "Coppernico Receives Final Drill Permit and Outlines Multi-Target Drill Program at Sombrero"
+    u: "https://globenewswire.com/news-release/2026/11/10/3399722/0/en/coppernico-receives-final-drill-permit-and-outlines-multi-target-drill-program-at-sombrero.html"
+    n: "Material for the schedule: the last government approval (MINEM start-of-activities authorisation) is in."
+    out: false
+    mat: true
   - d: "9 Nov"
     co: "Solaris"
     c: copper
@@ -9,28 +17,20 @@ items:
     n: "Material for funding: the third and last US$50M of the US$200M Royal Gold stream and royalty package arrived on the completion of the security filings."
     out: false
     mat: true
+  - d: "9 Nov"
+    co: "NexGen"
+    c: violet
+    t: "Q3 2026 Financial Statements and Management Discussion & Analysis"
+    u: "https://cdn.prod.website-files.com/6658585b1a19aa95f8ba1eb8/6af252f46a63675678dc228f_6af252f112db5cd5ff0d6d0f_q3-2026-management-discussion-and-analysis.pdf"
+    n: "Material for the funding figures, not for the odds. Cash and short-term investments C$821.6M at 30 Sep (C$970.3M at 30 Jun) after C$110.7M of Rook I construction and C$11.3M of exploration in the quarter; net loss C$22.3M."
+    out: false
+    plan: "Step 2 · Not decided yet"
+    pv: "info"
   - d: "5 Nov"
     co: "AngloGold"
     c: gold
     t: "AngloGold Ashanti Q3 30 September 2026 Earnings Release and Dividend Declaration"
     u: "https://www.sec.gov/Archives/edgar/data/0001973832/000197383226000171/agaq3sep2026earningsrelease.htm"
     n: "Material, now on the card. Q3: 696 koz (−9% y/y), AISC US$2,170/oz (Q3 2025: US$1,720), FCF US$722M, net cash US$1,256M (company basis), dividend 71c. Guidance 'reaffirmed' although 9M AISC and cash cost are above their ranges."
-    out: false
-    mat: true
-  - d: "5 Nov"
-    co: "Western"
-    c: copper
-    t: "Management's Discussion and Analysis, quarter ended 30 September 2026 (Form 6-K)"
-    u: "https://www.sec.gov/Archives/edgar/data/0001364125/000106299326005782/exhibit99-2.htm"
-    n: "Cash C$26.6M plus short-term investments: C$120.7M in total at 30 Sep 2026."
-    out: false
-    plan: "Step 2 · Green"
-    pv: "green"
-  - d: "5 Nov"
-    co: "Viridis"
-    c: violet
-    t: "Viridis Secures Binding Offtake Agreement with Solvay"
-    u: "https://www.asx.com.au/asx/v2/statistics/displayAnnouncement.do?display=pdf&idsId=03158119"
-    n: "A binding take-or-pay offtake with Solvay (Rhodia) for about 70% of forecast refined carbonate output to end-2034, market-linked with price floors for Nd, Pr, Dy and Tb; the company puts minimum revenue at about US$915M."
     out: false
     mat: true
