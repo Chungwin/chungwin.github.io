@@ -142,7 +142,7 @@ a:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radiu
 .notes.wire .plan{ grid-column:2; justify-self:start; display:inline-block; font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; border:1px solid currentColor; border-radius:3px; padding:0 5px; color:#E3C27A; }
 .notes.wire .plan.pv-red{ color:#E08A7A; } .notes.wire .plan.pv-green{ color:#8FD3C5; } .notes.wire .plan.pv-mid{ color:#E0A060; } .notes.wire .plan.pv-info{ color:var(--mute); }
 @media (max-width:640px){ .notes.wire .plan{ grid-column:1; } }
-.wire-all{ display:inline-block; margin-top:14px; font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); text-decoration:none; border-bottom:1px solid var(--line2); padding-bottom:2px; }
+.wire-all{ display:inline-block; margin:2px 0 14px; font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); text-decoration:none; border-bottom:1px solid var(--line2); padding-bottom:2px; }
 .wire-all:hover{ color:var(--gold); border-bottom-color:var(--gold); }
 
 /* ── about (collapsed by default) ─────────────────────── */

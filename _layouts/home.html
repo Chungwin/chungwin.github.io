@@ -100,12 +100,12 @@ layout: default
 {% if wire.items %}
 <section id="newswire" class="wire">
   <div class="sec"><h3>Releases that mattered</h3><span class="k">Material news and entry-plan tests · one per company</span></div>
+  <a class="wire-all" href="{{ '/equities/news/' | relative_url }}" data-goatcounter-click="home/news" data-goatcounter-title="Home: all news">Every release and odds change →</a>
   <ul class="notes wire">
     {% for it in wire.items %}
     <li><a href="{{ it.u }}" target="_blank" rel="noopener" data-goatcounter-click="home/news-item" data-goatcounter-title="Home: newswire item"><span class="d">{{ it.d | replace: " ", "&nbsp;" }}</span><span class="t"><span class="co"><i style="background:var(--{{ it.c }})"></i>{{ it.co }}</span>{% if it.out %}<span class="out">Report</span>{% endif %}{{ it.t }}</span>{% if it.plan %}<span class="plan pv-{{ it.pv }}">Entry plan · {{ it.plan }}</span>{% elsif it.mat %}<span class="plan pv-mat">Material</span>{% endif %}{% if it.n %}<p class="b">{{ it.n }}</p>{% endif %}</a></li>
     {% endfor %}
   </ul>
-  <a class="wire-all" href="{{ '/equities/news/' | relative_url }}" data-goatcounter-click="home/news" data-goatcounter-title="Home: all news">Every release and odds change →</a>
 </section>
 {% endif %}
 
