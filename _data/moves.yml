@@ -1,17 +1,23 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-close: "10 Nov 2026"
-n: 2
-releases: 12
+close: "11 Nov 2026"
+n: 7
+releases: 7
 items:
-  - co: "Vizsla"
+  - co: "Surge"
     c: copper
     list: "Copper"
-    o0: 20
-    o1: 22
-    why: "Shares −10.5% (C$0.86 → C$0.77, 10 Nov; two price sources agree) with no news, reversing the 9 Nov rise: 'if it works' back to ~2.8⁠–⁠5.2×, odds 20% → 22%."
-  - co: "MUX / Los Azules"
+    o0: 18
+    o1: 20
+    why: "Shares −13% in two sessions (C$0.465 → C$0.405; 2.3M shares traded on 11 Nov…"
+  - co: "Highland"
     c: copper
     list: "Copper"
-    o0: 15
-    o1: 16
-    why: "McEwen shares −16% on 10 Nov (US$16.23 → US$13.59) after Q3 results: a US$36.7M loss at the gold mines."
+    o0: 18
+    o1: 20
+    why: "Shares −10% since the 6 Nov assessment (C$0.145 → C$0.13, 11 Nov) with no news: the same outcome at a lower price, so odds 18% → 20%."
+  - co: "Walhalla"
+    c: gold
+    list: "Gold & silver developers"
+    o0: 11
+    o1: 12
+    why: "Shares −15% since 9 Nov (C$0.10 → C$0.085) with no release, back to the 6 Nov price: the same outcome at a lower price, so odds 11% → 12%…"

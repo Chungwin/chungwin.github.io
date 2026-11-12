@@ -1,6 +1,14 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-latest: "10 Nov 2026"
+latest: "12 Nov 2026"
 items:
+  - d: "12 Nov"
+    co: "Paladin"
+    c: violet
+    t: "A$525M Fully Underwritten Equity Raising – Presentation"
+    u: "https://www.paladinenergy.com/wp-content/uploads/2026/11/61354752.pdf"
+    n: "Material: the investor deck lodged with the raise holds the numbers the release leaves out."
+    out: false
+    mat: true
   - d: "10 Nov"
     co: "Coppernico"
     c: copper
@@ -26,11 +34,3 @@ items:
     out: false
     plan: "Step 2 · Not decided yet"
     pv: "info"
-  - d: "5 Nov"
-    co: "AngloGold"
-    c: gold
-    t: "AngloGold Ashanti Q3 30 September 2026 Earnings Release and Dividend Declaration"
-    u: "https://www.sec.gov/Archives/edgar/data/0001973832/000197383226000171/agaq3sep2026earningsrelease.htm"
-    n: "Material, now on the card. Q3: 696 koz (−9% y/y), AISC US$2,170/oz (Q3 2025: US$1,720), FCF US$722M, net cash US$1,256M (company basis), dividend 71c. Guidance 'reaffirmed' although 9M AISC and cash cost are above their ranges."
-    out: false
-    mat: true
