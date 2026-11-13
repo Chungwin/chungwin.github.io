@@ -1,23 +1,23 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-close: "11 Nov 2026"
+close: "12 Nov 2026"
 n: 7
-releases: 7
+releases: 19
 items:
-  - co: "Surge"
+  - co: "Andina"
     c: copper
     list: "Copper"
-    o0: 18
-    o1: 20
-    why: "Shares −13% in two sessions (C$0.465 → C$0.405; 2.3M shares traded on 11 Nov…"
-  - co: "Highland"
-    c: copper
-    list: "Copper"
-    o0: 18
-    o1: 20
-    why: "Shares −10% since the 6 Nov assessment (C$0.145 → C$0.13, 11 Nov) with no news: the same outcome at a lower price, so odds 18% → 20%."
-  - co: "Walhalla"
-    c: gold
-    list: "Gold & silver developers"
     o0: 11
-    o1: 12
-    why: "Shares −15% since 9 Nov (C$0.10 → C$0.085) with no release, back to the 6 Nov price: the same outcome at a lower price, so odds 11% → 12%…"
+    o1: 15
+    why: "Shares −11% since 9 Nov to C$0.96 (about €0.61) with no news, giving back most of the 9 Nov jump: gain if it works ~1.9⁠–⁠3.8×, odds of a 3× 11% → 15%."
+  - co: "MUX / Los Azules"
+    c: copper
+    list: "Copper"
+    o0: 16
+    o1: 19
+    why: "Risk raised 2 → 3."
+  - co: "American Eagle"
+    c: copper
+    list: "Copper"
+    o0: 21
+    o1: 24
+    why: "Shares −13% since 6 Nov to C$0.79 (about €0.50), mostly in the three sessions after the 10 Nov drill results (nine low-grade infill holes away from the South Zone core)."

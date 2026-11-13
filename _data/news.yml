@@ -1,6 +1,15 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-latest: "12 Nov 2026"
+latest: "13 Nov 2026"
 items:
+  - d: "12 Nov"
+    co: "Aya"
+    c: gold
+    t: "Aya Gold & Silver Reports Strong Q3-2026 Results on Record Production and Lower Cash Costs"
+    u: "https://www.ayagoldsilver.com/news/news-releases/aya-gold--silver-reports-strong-q3-2026-results-on-record-production-and-lower-cash-costs"
+    n: "Q3 2026: 2.03 Moz silver-equivalent (+51% y/y; Zgounder 1.50 Moz silver, Boumadine 0.54 Moz AgEq), revenue US$103.3M, net income US$35.0M."
+    out: false
+    plan: "Step 2, 4 · 1 red · 3 green"
+    pv: "red"
   - d: "12 Nov"
     co: "Paladin"
     c: violet
@@ -25,12 +34,3 @@ items:
     n: "Material for funding: the third and last US$50M of the US$200M Royal Gold stream and royalty package arrived on the completion of the security filings."
     out: false
     mat: true
-  - d: "9 Nov"
-    co: "NexGen"
-    c: violet
-    t: "Q3 2026 Financial Statements and Management Discussion & Analysis"
-    u: "https://cdn.prod.website-files.com/6658585b1a19aa95f8ba1eb8/6af252f46a63675678dc228f_6af252f112db5cd5ff0d6d0f_q3-2026-management-discussion-and-analysis.pdf"
-    n: "Material for the funding figures, not for the odds. Cash and short-term investments C$821.6M at 30 Sep (C$970.3M at 30 Jun) after C$110.7M of Rook I construction and C$11.3M of exploration in the quarter; net loss C$22.3M."
-    out: false
-    plan: "Step 2 · Not decided yet"
-    pv: "info"
