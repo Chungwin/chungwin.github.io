@@ -180,7 +180,25 @@ table.ct{ width:100%; border-collapse:collapse; font-size:13.5px; font-variant-n
   .pc4{ display:flex; flex-wrap:wrap; column-gap:12px; row-gap:2px; font-size:13px; }
   .pcline{ font-size:13px; color:var(--mute); border-top:1px dashed var(--line2); padding-top:8px; }
   .pcall{ min-height:48px; border-radius:10px; border:1px solid var(--line2); background:transparent; color:var(--ink); font:inherit; font-size:15px; cursor:pointer; }
+  /* the upside card also carries the table's price columns (Chung, 14 Nov 2026): three values per row; a card with a
+     long value lists them one per row instead, so nothing is cut off */
+  .pcl details.x{ border:0; padding:0 2px; }
+  .pcl details.x > summary{ min-height:40px; }
+  .pcl details.x .xb{ padding-bottom:0; }
+  .pc5{ border-top:1px solid var(--line); margin-top:2px; padding-top:9px; }
+  .pc5 .pch{ font-size:12px; color:var(--mute); margin-bottom:7px; }
+  .pc5 .pch b{ color:var(--ink2); font-weight:600; }
+  .pc5 .pcg{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:8px 10px; align-items:end; }
+  .pc5 .pcg > div{ min-width:0; }
+  .pc5 .sk{ display:block; font-size:11.5px; line-height:1.35; color:var(--mute); }
+  .pc5 .sv{ font-family:var(--mono); font-size:13px; color:var(--ink); overflow-wrap:anywhere; }
+  .pc5 .sv.est{ color:var(--ink2); }
+  .pc5 .sv.x{ font-style:italic; }
+  .pc5 .pcg.rows{ grid-template-columns:minmax(0, 1fr); gap:5px; }
+  .pc5 .pcg.rows > div{ display:flex; align-items:baseline; gap:10px; }
+  .pc5 .pcg.rows .sk{ flex:0 0 96px; }
 }
+@media (max-width:340px){ .pc5 .pcg{ grid-template-columns:repeat(2, minmax(0, 1fr)); } }
 .pill{ display:inline-grid; place-items:center; min-width:26px; height:22px; padding:0 6px; border-radius:6px; font-family:var(--mono); font-size:12.5px; font-weight:500; }
 .pill.a{ background:var(--a-soft); color:var(--a); } .pill.b{ background:var(--b-soft); color:var(--b); }
 .pill.lo{ background:transparent; color:var(--mute); box-shadow:inset 0 0 0 1px var(--line2); }
@@ -3433,6 +3451,11 @@ var HISTURL = "hist.html#pmp";
     if(key === "b") h += "<div class='pc3'><span class='oc'>" + ob(d.p3) + "<span class='v" + (d.p3 < BASE ? " lo" : "") + "'>~" + d.p3 + "%</span></span><span>odds of a 3×</span><span class='m'>plan works ~" + d.pw + "% · gain if it works " + esc(mwShort(d)) + "</span></div>";
     h += "<div class='pc3'>" + (d.px ? "<span class='pxl'>" + esc(d.px.t) + " · " + eurSpan(d) + "</span>" : "") + "<span class='m'>cap " + esc(d.cap) + "</span></div>";
     h += "<div class='pc4'>" + (d.mg ? "<span>Team " + esc(d.mg.g) + "</span>" : "") + "<span>Risk " + d.rs + "/5</span><span>" + (other === "a" ? "Safety list #" : "Upside list #") + d[other] + "</span><span>" + esc(String(d.tick || "").split(" · ")[0]) + "</span></div>";
+    if(key === "b" && d.sc && d.sc.length){
+      /* the table's price columns, so a phone reader sees them too (Chung, 14 Nov 2026) */
+      var rowsLay = d.sc.some(function(v){ return v.length > 12; }), unit = SCUL.replace(/^scenarios /, "");
+      h += "<div class='pc5'><div class='pch'><b>Price scenarios</b>" + (unit ? " · " + esc(unit) : "") + "</div><div class='pcg" + (rowsLay ? " rows" : "") + "'>" + d.sc.map(function(v, i){ return "<div><span class='sk'>" + esc(SC[i]) + (i === SCX_I ? " · " + esc(SCX.sub) : "") + "</span><span class='sv" + (v.charAt(0) === "~" ? " est" : "") + (i === SCX_I ? " x" : "") + "'>" + esc(v) + "</span></div>"; }).join("") + "</div></div>";
+    }
     if(window.RATING_LINE) h += RATING_LINE(d);
     return h + "</a>";
   }
@@ -3442,6 +3465,7 @@ var HISTURL = "hist.html#pmp";
       var rows = D.slice().sort(function(x,y){ return x[key] - y[key]; });
       if(window.RATING_FILTER) rows = rows.filter(RATING_FILTER);
       var all = el.getAttribute("data-all") === "1", h = "", lined = false;
+      if(key === "b") h += "<details class='x'><summary>How to read the price scenarios</summary><div class='xb'><p>Each value is the multiple of today's market value if the metal settles at that price" + (SCUL ? " (" + esc(SCUL) + ")" : "") + ". <b>Progress</b> = the company reaches its next stage at its own study's metal price.</p><p>They are counted on today's shares, before the new shares a build needs, so they run higher than “gain if it works”. Arithmetic, not a forecast.</p></div></details>";
       rows.forEach(function(d, i){
         if(!all && i >= PC_FIRST) return;
         if(!lined && d[key] >= LOW_FROM[key] && (lined = true)) h += "<div class='pcline'><b>▼ Below this line:</b> " + esc(DIV[key]) + "</div>";
