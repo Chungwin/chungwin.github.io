@@ -1,23 +1,23 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-close: "12 Nov 2026"
-n: 7
-releases: 19
+close: "13 Nov 2026"
+n: 8
+releases: 13
 items:
-  - co: "Andina"
-    c: copper
-    list: "Copper"
-    o0: 11
+  - co: "Alamos"
+    c: gold
+    list: "Gold & silver producers"
+    o0: 6
+    o1: 8
+    why: "Shares −10% since 6 Nov (US$31.83 → US$28.61) with no release; gold fell 4.6% over the same days, which explains about 6 points."
+  - co: "Emperor"
+    c: gold
+    list: "Gold & silver developers"
+    o0: 6
+    o1: 7
+    why: "Shares −11% since 9 Nov (C$0.45 → C$0.40) with no release, back near the 6 Nov price; the lower gold price explains most of it (about 9% off the top of the range)."
+  - co: "Maple Gold"
+    c: gold
+    list: "Gold & silver developers"
+    o0: 14
     o1: 15
-    why: "Shares −11% since 9 Nov to C$0.96 (about €0.61) with no news, giving back most of the 9 Nov jump: gain if it works ~1.9⁠–⁠3.8×, odds of a 3× 11% → 15%."
-  - co: "MUX / Los Azules"
-    c: copper
-    list: "Copper"
-    o0: 16
-    o1: 19
-    why: "Risk raised 2 → 3."
-  - co: "American Eagle"
-    c: copper
-    list: "Copper"
-    o0: 21
-    o1: 24
-    why: "Shares −13% since 6 Nov to C$0.79 (about €0.50), mostly in the three sessions after the 10 Nov drill results (nine low-grade infill holes away from the South Zone core)."
+    why: "Shares −10% since 6 Nov (C$2.55 → C$2.29) with no release; gold fell 4.6% over the same days, which on the row's own figures takes about 9% off the top of the range…"
