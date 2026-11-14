@@ -6,8 +6,8 @@ layout: default
   1. the headline says what the site is ("Independent equity research for a decade of scarce inputs", not only miners); the sub headline
      "Human judgement on what matters. Machine effort on everything else." sits outside the <h1>, so search engines and
      link previews no longer read the animation's ⇥ tab ▍ as part of the headline
-  2. the side box beside the headline lists releases that mattered (material news, entry-plan tests), one per company (_data/news.yml)
-  3. "Since the last close" (odds changes, _data/moves.yml) sits below the doors and tools; swapped at Chung's request, 14 Nov 2026
+  2. "Since the last close" shows what the desk concluded (_data/moves.yml), instead of a ledger that repeated the intro
+  3. the Newswire lists releases that mattered (material news, entry-plan tests), one per company, cut at a sentence end
   4. "How the desk keeps itself honest": the rules, the Scorecard and the audit
   5. Writing counts only the essays on markets and technology; the poker app becomes a small "also built" line
   6. About is open, not folded shut at the bottom
@@ -35,19 +35,27 @@ layout: default
     </div>
   </div>
 
-  {% assign wire = site.data.news %}
-  {% if wire.items %}
-  <aside class="since wirebox" aria-label="Releases that mattered">
+  {% if mv.close %}
+  <aside class="since" aria-label="Since the last close">
     <div class="since-h">
-      <span class="k">Releases that mattered</span>
-      <span class="k tally">Material news and entry-plan tests · one per company</span>
+      <span class="k">Since the <b>{{ mv.close | replace: " 2026", "" | replace: " ", "&nbsp;" }}</b> close</span>
+      <span class="k tally">{% if mv.checked %}<span class="nb">{{ mv.checked }} companies checked</span> · {% endif %}{% if mv.releases %}<span class="nb">{{ mv.releases }} {% if mv.releases == 1 %}release{% else %}releases{% endif %} read</span> · {% endif %}<span class="nb">{{ mv.n }} odds {% if mv.n == 1 %}change{% else %}changes{% endif %}</span></span>
     </div>
-    <ul class="notes wire">
-      {% for it in wire.items %}
-      <li><a href="{{ it.u }}" target="_blank" rel="noopener" data-goatcounter-click="home/news-item" data-goatcounter-title="Home: newswire item"><span class="d">{{ it.d | replace: " ", "&nbsp;" }}</span><span class="t"><span class="co"><i style="background:var(--{{ it.c }})"></i>{{ it.co }}</span>{% if it.out %}<span class="out">Report</span>{% endif %}{{ it.t }}</span>{% if it.plan %}<span class="plan pv-{{ it.pv }}">Entry plan · {{ it.plan }}</span>{% elsif it.mat %}<span class="plan pv-mat">Material</span>{% endif %}{% if it.n %}<p class="b">{{ it.n }}</p>{% endif %}</a></li>
+    {% if mv.items and mv.n > 0 %}
+    <ul class="moves">
+      {% for it in mv.items %}
+      <li>
+        <div class="mv-top"><span class="co"><i style="background:var(--{{ it.c }})"></i>{{ it.co }}</span><span class="grp">{{ it.list }}</span><span class="odds {% if it.o1 > it.o0 %}up{% else %}down{% endif %}">{{ it.o0 }}%<span class="ar">→</span>{{ it.o1 }}%</span></div>
+        <p class="why">{{ it.why }}</p>
+      </li>
       {% endfor %}
     </ul>
-    <a class="since-all" href="{{ '/equities/news/' | relative_url }}" data-goatcounter-click="home/news" data-goatcounter-title="Home: all news">Every release and odds change <span aria-hidden="true">→</span></a>
+    {% if mv.n > 3 %}<p class="more k">+ {{ mv.n | minus: 3 }} more on the news page</p>{% endif %}
+    {% else %}
+    <p class="quiet-day">No odds changed. Every release was read; none moved a score.</p>
+    {% endif %}
+    <p class="gloss"><b>Odds</b> = the desk's estimated chance that the share price at least triples within 3–5 years.</p>
+    <a class="since-all" href="{{ '/equities/news/' | relative_url }}" data-goatcounter-click="home/since-all" data-goatcounter-title="Home: since the last close, all">All odds changes and releases <span aria-hidden="true">→</span></a>
   </aside>
   {% endif %}
 </section>
@@ -88,24 +96,16 @@ layout: default
   </a>
 </nav>
 
-{% if mv.close %}
-<section id="since" class="wire since-sec" aria-label="Since the last close">
-  <div class="sec"><h3>Since the {{ mv.close | replace: " 2026", "" }} close</h3><span class="k tally">{% if mv.checked %}<span class="nb">{{ mv.checked }} companies checked</span> · {% endif %}{% if mv.releases %}<span class="nb">{{ mv.releases }} {% if mv.releases == 1 %}release{% else %}releases{% endif %} read</span> · {% endif %}<span class="nb">{{ mv.n }} odds {% if mv.n == 1 %}change{% else %}changes{% endif %}</span></span></div>
-  <a class="wire-all" href="{{ '/equities/news/' | relative_url }}" data-goatcounter-click="home/since-all" data-goatcounter-title="Home: since the last close, all">All odds changes and releases →</a>
-  {% if mv.items and mv.n > 0 %}
-  <ul class="moves">
-    {% for it in mv.items %}
-    <li>
-      <div class="mv-top"><span class="co"><i style="background:var(--{{ it.c }})"></i>{{ it.co }}</span><span class="grp">{{ it.list }}</span><span class="odds {% if it.o1 > it.o0 %}up{% else %}down{% endif %}">{{ it.o0 }}%<span class="ar">→</span>{{ it.o1 }}%</span></div>
-      <p class="why">{{ it.why }}</p>
-    </li>
+{% assign wire = site.data.news %}
+{% if wire.items %}
+<section id="newswire" class="wire">
+  <div class="sec"><h3>Releases that mattered</h3><span class="k">Material news and entry-plan tests · one per company</span></div>
+  <a class="wire-all" href="{{ '/equities/news/' | relative_url }}" data-goatcounter-click="home/news" data-goatcounter-title="Home: all news">Every release and odds change →</a>
+  <ul class="notes wire">
+    {% for it in wire.items %}
+    <li><a href="{{ it.u }}" target="_blank" rel="noopener" data-goatcounter-click="home/news-item" data-goatcounter-title="Home: newswire item"><span class="d">{{ it.d | replace: " ", "&nbsp;" }}</span><span class="t"><span class="co"><i style="background:var(--{{ it.c }})"></i>{{ it.co }}</span>{% if it.out %}<span class="out">Report</span>{% endif %}{{ it.t }}</span>{% if it.plan %}<span class="plan pv-{{ it.pv }}">Entry plan · {{ it.plan }}</span>{% elsif it.mat %}<span class="plan pv-mat">Material</span>{% endif %}{% if it.n %}<p class="b">{{ it.n }}</p>{% endif %}</a></li>
     {% endfor %}
   </ul>
-  {% if mv.n > 3 %}<p class="more k">+ {{ mv.n | minus: 3 }} more on the news page</p>{% endif %}
-  {% else %}
-  <p class="quiet-day">No odds changed. Every release was read; none moved a score.</p>
-  {% endif %}
-  <p class="gloss"><b>Odds</b> = the desk's estimated chance that the share price at least triples within 3–5 years.</p>
 </section>
 {% endif %}
 
