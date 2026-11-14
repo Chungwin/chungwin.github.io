@@ -322,3 +322,11 @@ a.pillar:hover .lnk{ color:var(--gold); }
   .hero2 h1{ font-size:34px; }
 }
 @media (max-width:520px){ .voice .taphint{ display:none; } }
+
+/* 14 Nov 2026: releases in the hero's side box, odds changes in their own section (Chung's request) */
+.wirebox .notes{ border-top:0; }
+.wirebox .notes a{ grid-template-columns:62px minmax(0,1fr); gap:4px 14px; padding:12px 0; }
+.wirebox .notes .t{ font-size:15px; line-height:1.35; }
+.wirebox .notes .b{ font-size:13px; }
+.since-sec .moves{ border-top:1px solid var(--rule); }
+.since-sec .more{ margin:10px 0 0; }
