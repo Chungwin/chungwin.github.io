@@ -1,23 +1,23 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-close: "13 Nov 2026"
-n: 8
-releases: 13
+close: "14 Nov 2026"
+n: 12
+releases: 0
 items:
-  - co: "Alamos"
-    c: gold
-    list: "Gold & silver producers"
-    o0: 6
-    o1: 8
-    why: "Shares −10% since 6 Nov (US$31.83 → US$28.61) with no release; gold fell 4.6% over the same days, which explains about 6 points."
-  - co: "Emperor"
+  - co: "XXIX"
+    c: copper
+    list: "Copper"
+    o0: 32
+    o1: 19
+    why: "Weekly review, no company news: the definition of 'the plan works' now names the end state (by 2030 a feasibility study, or a sale or partner deal at study stage…"
+  - co: "Walhalla"
     c: gold
     list: "Gold & silver developers"
-    o0: 6
+    o0: 12
     o1: 7
-    why: "Shares −11% since 9 Nov (C$0.45 → C$0.40) with no release, back near the 6 Nov price; the lower gold price explains most of it (about 9% off the top of the range)."
-  - co: "Maple Gold"
-    c: gold
-    list: "Gold & silver developers"
-    o0: 14
-    o1: 15
-    why: "Shares −10% since 6 Nov (C$2.55 → C$2.29) with no release; gold fell 4.6% over the same days, which on the row's own figures takes about 9% off the top of the range…"
+    why: "Works line re-written: it now needs a first high-grade resource with a partner or study step by end-2029 (before: one headline drill hole and a raise)."
+  - co: "Copper Giant"
+    c: copper
+    list: "Copper"
+    o0: 25
+    o1: 21
+    why: "Weekly review, no company news: 'the plan works' now means the Mocoa licence fight ends favourably and a pre-feasibility study holds the PEA economics with a partner or…"
