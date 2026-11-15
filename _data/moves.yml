@@ -1,23 +1,23 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-close: "14 Nov 2026"
-n: 12
+close: "15 Nov 2026"
+n: 3
 releases: 0
 items:
+  - co: "Ucore"
+    c: violet
+    list: "Critical minerals"
+    o0: 13
+    o1: 5
+    why: "Correction by the analyst: the gain if it works was not counted per share after the money still to raise; with the new shares it is ~0.25⁠–⁠2.7× (was ~0.9⁠–⁠3.8×)…"
   - co: "XXIX"
     c: copper
     list: "Copper"
-    o0: 32
-    o1: 19
-    why: "Weekly review, no company news: the definition of 'the plan works' now names the end state (by 2030 a feasibility study, or a sale or partner deal at study stage…"
-  - co: "Walhalla"
-    c: gold
-    list: "Gold & silver developers"
-    o0: 12
-    o1: 7
-    why: "Works line re-written: it now needs a first high-grade resource with a partner or study step by end-2029 (before: one headline drill hole and a raise)."
-  - co: "Copper Giant"
-    c: copper
-    list: "Copper"
-    o0: 25
-    o1: 21
-    why: "Weekly review, no company news: 'the plan works' now means the Mocoa licence fight ends favourably and a pre-feasibility study holds the PEA economics with a partner or…"
+    o0: 19
+    o1: 22
+    why: "Analyst's Sunday review of Saturday's big odds changes: the new definition of success and the cut in the chance it works (30% → 22%) stand…"
+  - co: "NexGen"
+    c: violet
+    list: "Critical minerals"
+    o0: 6
+    o1: 5
+    why: "Correction by the analyst: the risk reason called 2.7 Mlb of purchased inventory the deposit; the reserve is 239.6 Mlb at 2.37%."
