@@ -33,7 +33,10 @@ PRICES_DIR   holds page.html (the metal prices dashboard's files/index.html "tex
              days) that the dashboard on Claude loads live; the page lays them over the stored series
 (as downloaded from the artifacts' published files; src/ is never copied).
 Every .html under /equities is regenerated on each run, so pages that no longer
-exist in the artifacts disappear from the site too.
+exist in the artifacts disappear from the site too. The one exception is /equities/ratings/
+(the value ratings: deep-dive pages, the list and "How we rate", live since 17 Nov 2026):
+those pages are built by the Chief of Staff from the analyst's rating functions and
+committed directly, so this script leaves them alone.
 """
 import argparse
 import datetime as dt
@@ -656,6 +659,8 @@ def main() -> int:
 
     # without the two tool downloads the market context pages stay as they are
     for old in OUT.rglob("*.html"):
+        if (OUT / "ratings") in old.parents:
+            continue   # the value ratings (D-066, 17 Nov 2026) are built by the Chief of Staff, not mirrored from an artifact: keep them
         if context or (OUT / "context") not in old.parents:
             old.unlink()
     for d in ("rankings", "trackers"):
