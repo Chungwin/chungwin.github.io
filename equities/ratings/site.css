@@ -433,3 +433,14 @@ body.tb-on .sl-stick{top:var(--tbh,52px)}
 /* go-live 17 Nov 2026 (D-066): author line under the title; the latest close in the price-levels box */
 .byline{margin:4px 0 14px;font-size:13px;color:var(--muted)}
 .lvl-now{margin:8px 0 0}
+
+/* site navigation on the public rating pages (17 Nov 2026) */
+.sitenav{display:flex;align-items:center;gap:6px 18px;flex-wrap:wrap;max-width:780px;margin:0 auto;padding:12px 16px 10px;border-bottom:1px solid var(--line);font-family:var(--sans);font-size:14px}
+.sitenav a{color:var(--muted);text-decoration:none;padding:4px 0}
+.sitenav a:hover,.sitenav a:focus-visible{color:var(--ink)}
+.sitenav .sn-home{color:var(--ink);font-weight:600;margin-right:auto}
+.sitenav .sn-short{display:none}
+.sitenav .sn-links{display:flex;gap:6px 16px;flex-wrap:wrap}
+.sitenav a[aria-current="page"]{color:var(--gold)}
+@media (min-width:700px){.sitenav{padding:14px 24px 12px}}
+@media (max-width:520px){.sitenav{font-size:13.5px;gap:4px 12px}.sitenav .sn-links{gap:4px 14px}.sitenav .sn-full{display:none}.sitenav .sn-short{display:inline}}
