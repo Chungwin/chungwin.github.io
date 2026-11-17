@@ -477,6 +477,7 @@ details.changed > summary{ font-size:14px; padding:11px 14px; }
 .s-econ .stat .deck{ font-size:11.5px; font-weight:400; color:var(--mute); }
 .s-econ .stat .sv{ min-width:0; }
 .s-econ.nostudy{ display:block; margin-top:8px; font-size:13px; color:var(--mute); }
+.s-econ:not(:has(.stat)){ display:block; } /* a sentence, not figure pairs: no grid (fix 17 Nov 2026) */
 .s-cc{ margin-top:9px; }
 .s-take{ margin:11px 0 0; font-size:15.5px; line-height:1.5; color:var(--ink); font-weight:500; max-width:70ch; }
 .s-gate{ margin:6px 0 0; font-size:13.5px; line-height:1.5; color:var(--ink2); -webkit-line-clamp:2; max-width:76ch; }
