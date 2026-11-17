@@ -1,14 +1,14 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-latest: "15 Nov 2026"
+latest: "17 Nov 2026"
 items:
-  - d: "12 Nov"
+  - d: "16 Nov"
     co: "Aya"
     c: gold
-    t: "Aya Gold & Silver Reports Strong Q3-2026 Results on Record Production and Lower Cash Costs"
-    u: "https://www.ayagoldsilver.com/news/news-releases/aya-gold--silver-reports-strong-q3-2026-results-on-record-production-and-lower-cash-costs"
-    n: "Q3 2026: 2.03 Moz silver-equivalent (+51% y/y; Zgounder 1.50 Moz silver, Boumadine 0.54 Moz AgEq), revenue US$103.3M, net income US$35.0M."
+    t: "Aya Gold & Silver Files Amended Q3-2026 MD&A; Q3-2026 Consolidated Cash Costs Corrected to $14.28 per Silver Equivalent Ounce Sold"
+    u: "https://www.ayagoldsilver.com/news/news-releases/aya-gold--silver-files-amended-q3-2026-mda-q3-2026-consolidated-cash-costs-corrected-to-1428-per-silver-equivalent-ounce-sold"
+    n: "Amended Q3 MD&A: silver in transit was deducted twice from ounces sold."
     out: false
-    plan: "Step 2, 4 · 1 red · 3 green"
+    plan: "Step 2 · 1 red · 1 green"
     pv: "red"
   - d: "12 Nov"
     co: "Paladin"

@@ -1,23 +1,23 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-close: "15 Nov 2026"
-n: 3
-releases: 0
+close: "16 Nov 2026"
+n: 20
+releases: 14
 items:
-  - co: "Ucore"
-    c: violet
-    list: "Critical minerals"
-    o0: 13
-    o1: 5
-    why: "Correction by the analyst: the gain if it works was not counted per share after the money still to raise; with the new shares it is ~0.25⁠–⁠2.7× (was ~0.9⁠–⁠3.8×)…"
-  - co: "XXIX"
+  - co: "Hot Chili"
     c: copper
     list: "Copper"
-    o0: 19
-    o1: 22
-    why: "Analyst's Sunday review of Saturday's big odds changes: the new definition of success and the cut in the chance it works (30% → 22%) stand…"
-  - co: "NexGen"
-    c: violet
-    list: "Critical minerals"
-    o0: 6
-    o1: 5
-    why: "Correction by the analyst: the risk reason called 2.7 Mlb of purchased inventory the deposit; the reserve is 239.6 Mlb at 2.37%."
+    o0: 28
+    o1: 8
+    why: "Set for re-rating by the analyst: the 17 Nov release moves the maiden La Verde resource from late 2026 to the New Year (assays for the last 21 holes are due by late…"
+  - co: "New Found"
+    c: gold
+    list: "Gold & silver developers"
+    o0: 12
+    o1: 17
+    why: "Shares −11% since 12 Nov (C$2.13 → C$1.90) and −21% since 6 Nov…"
+  - co: "Western"
+    c: copper
+    list: "Copper"
+    o0: 24
+    o1: 20
+    why: "Chung's decision of 16 Nov: rows with a value rating take their works line and chance it works from the analyst's latest deep dive…"
