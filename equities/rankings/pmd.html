@@ -129,6 +129,12 @@ table.ct{ width:100%; border-collapse:collapse; font-size:13.5px; font-variant-n
 .ct td.sc.est{ color:var(--ink2); }
 .ct td.sc.wide{ white-space:normal; min-width:120px; text-align:left; font-family:var(--sans); }
 .ct td.sc.x, .scg .sv.x{ font-style:italic; }
+/* the date the price columns were set, and the night check's note (18 Nov 2026; METHOD.md section 4) */
+.ct td.scd{ font-family:var(--mono); font-size:11.5px; color:var(--mute); white-space:nowrap; }
+.ct td.scd .scm{ display:inline-block; margin-left:4px; font-size:10px; letter-spacing:.04em; text-transform:uppercase; border:1px solid var(--line2); border-radius:3px; padding:0 3px; color:var(--ink2); }
+.ct td.scd .scw{ display:block; margin-top:2px; color:var(--warn); font-size:11px; cursor:help; }
+.scl{ font-size:12px; color:var(--mute); margin-top:6px; line-height:1.4; }
+div.scw{ font-size:12px; color:var(--warn); margin-top:3px; line-height:1.4; }
 /* Phones (9 Nov 2026): the sticky company column was ~320px of a ~356px table and covered the price columns when scrolled.
    It is now a fixed ~126px: the rank number on the left, the name wrapping beside it, the rank move or NEW tag under the
    rank number, and only the first listing of the ticker. 'table.ct' outranks the desktop rules further down. */
@@ -1112,6 +1118,22 @@ var D = [
    "s": 3
   },
   "p3m": 0,
+  "sc_basis": {
+   "pw": 15,
+   "mw": "~0.51–1.75×",
+   "wi": "c7d69e28d4",
+   "sh": null,
+   "st": null,
+   "sc": "ee86905206",
+   "d": "2026-11-17"
+  },
+  "sc_check": {
+   "since": "2026-11-17",
+   "why": [
+    "'Progress' column ~1.3–2.7× is outside 'gain if it works' ~0.51–1.75×"
+   ],
+   "show": false
+  },
   "px": {
    "t": "C$0.90",
    "d": "2026-11-17"
@@ -1175,6 +1197,22 @@ var D = [
   },
   "p3m": 6,
   "sc_note": "US$3,500 / 45 column: this row's own US$3,500 / 54 (~0.97–1.32×) and US$4,500 / 69 (~1.41–1.94×) columns extended down to US$45 silver with gold held at US$3,500, so only silver's share of the value moves: v45 = v54 − 0.6 × s × (v69 − v54), where 0.6 = (54 − 45) ÷ (69 − 54) and s = 0.60; 0.97 − 0.36 × 0.44 = 0.81 and 1.32 − 0.36 × 0.62 = 1.10 (my estimate, 8 Nov 2026). s is silver's share of Diablillos life-of-mine revenue at US$3,500 / 54, from the DFS reserves and recoveries on the card (183.5 Moz Ag × 80%, 1.76 Moz Au × 87%; DFS 22 Jun 2026; my arithmetic); on the front-loaded years 1–5 split (0.71) the column would be ~0.78–1.06×. The row's own formula (0.5–0.7× P/NAV × NAV at that price ÷ market cap) cannot be re-run because the row does not state the NAV at each price. Before the financing package's dilution, on today's share count, like the other columns.",
+  "sc_basis": {
+   "pw": 55,
+   "mw": "~1.06–2.2×",
+   "wi": "6cc0aa7eb7",
+   "sh": 164.84,
+   "st": "31e1801df9",
+   "sc": "4c2afa9d99",
+   "d": "2026-11-17"
+  },
+  "sc_check": {
+   "since": "2026-11-17",
+   "why": [
+    "'Progress' column ~0.88–1.23× is outside 'gain if it works' ~1.06–2.2×"
+   ],
+   "show": false
+  },
   "px": {
    "t": "C$10.13",
    "d": "2026-11-17"
@@ -1237,11 +1275,28 @@ var D = [
    "s": 2
   },
   "p3m": 3,
-  "sc_note": "Price columns re-derived 17 Nov 2026 by the analyst from the deep dive: Equity Research/cia-ratings-v041-2026-11-16.md, function `vizsla`, with the v0.4.2 inputs of Equity Research/cia-ratings-v042-2026-11-16.md (deep dive of 16 Nov 2026). Basis: this row's own target for a producing mine, 0.8–1.0× Panuco's study value (after-tax NPV5, re-worked at each column's gold and silver on the study's own line), plus the US$198M build money, US$92M of cash left and US$36.1M of option money, less the US$300M notes (turned into 51.37M shares where a share is worth more than US$5.84, as the deep dive counts them), on 382.16M shares at US$3.07 (13 Nov close); no new shares are needed, so these columns and 'gain if it works' use the same shares. Delivery value at the study's own US$3,100 gold / US$35.50 silver (NPV US$1,802M): ~1.25–1.56×. Columns: 3,500 / 45 ~1.63–2.02×; 4,500 / 69 ~2.52–3.08×; 5,500 / 85 ~3.15–3.88×; 6,500 / 100 ~3.77–4.65×; 7,000 / 108 ~4.09–5.05×. Estimates, not forecasts; on today's shares, like every row's columns (D-064).",
+  "sc_note": "Price columns computed from the deep dive's model of 16 Nov 2026 (Equity Research/cia-ratings-v041-2026-11-16.md, function `vizsla`, with the v0.4.2 inputs of Equity Research/cia-ratings-v042-2026-11-16.md (D-063, D-064)) by the build, with the analyst's column method of 17 Nov 2026 (Equity Research/cia-price-columns-2026-11-17.md). Basis: this row's own target, 0.8–1.0× Panuco's study value for a producing mine (after-tax NPV5 re-worked at each column's metal on the study's own line), plus the build money, cash left and option money, less the US$300M notes (turned into 51.37M shares where a share is worth more than US$5.84), at each column's metal price; on 382.2M shares; no new shares are needed; at the US$3.07 close of 13 Nov 2026 (the close 'gain if it works' was set at). Delivery value: the study's own US$3,100 gold / US$35.50 silver. Columns: 3,500 / 45 ~1.63–2.02×; 4,500 / 69 ~2.52–3.08×; 5,500 / 85 ~3.15–3.88×; 6,500 / 100 ~3.77–4.65×; 7,000 / 108 ~4.09–5.05×. Estimates, not forecasts; like every row's columns, on today's shares (METHOD.md section 4).",
   "dd": {
    "d": "2026-11-16",
    "src": "analyst deep dive"
   },
+  "sc_from": {
+   "model": "vizsla",
+   "model_d": "2026-11-16",
+   "close": 3.07,
+   "close_d": "2026-11-13",
+   "prog": "model"
+  },
+  "sc_basis": {
+   "pw": 35,
+   "mw": "~1.6–2.3×",
+   "wi": "9e20de5d10",
+   "sh": null,
+   "st": "09e8c5e52c",
+   "sc": "d36b619b44",
+   "d": "2026-11-17"
+  },
+  "sc_date": "2026-11-17",
   "px": {
    "t": "US$2.97",
    "d": "2026-11-17"
@@ -1304,11 +1359,28 @@ var D = [
    "s": 2
   },
   "p3m": 0,
-  "sc_note": "Price columns re-derived 17 Nov 2026 by the analyst from the deep dive: Equity Research/cia-ratings-v041-2026-11-16.md, function `argenta`, with the v0.4.2 inputs of Equity Research/cia-ratings-v042-2026-11-16.md (deep dive of 16 Nov 2026). Basis: this row's 'gain if it works', ~1.7–3.85× (low end at US$45, high end at US$46.86 (16 Nov)), is the rankings' target on the deep dive's works case (the deep dive kept it); each column moves it with the function's value if it works (about 90 Moz at what the market pays per ounce for permitted silver projects; the function moves that value 1.5% for each 1% move in silver): low end × the function's value at that price ÷ its value at US$45, high end ÷ its value at US$46.86 (16 Nov); then less the money (C$49.9M, C$40.9M, C$40.9M, C$40.9M, C$40.9M at the columns in order) that the function's new shares bring in, on today's shares (308.5M, 319.6M, 319.6M, 319.6M, 319.6M) (incl. the options and warrants the function counts as exercised) at C$0.28 (16 Nov close), before those new shares. Delivery value = today's silver (no study yet): ~2.54–6.05×. Columns: 3,500 / 45 ~2.35–5.65×; 4,500 / 69 ~4.74–10.6×; 5,500 / 85 ~6.32–13.9×; 6,500 / 100 ~7.8–17.1×; 7,000 / 108 ~8.59–18.8×. Estimates, not forecasts; on today's shares, like every row's columns (D-064).",
+  "sc_note": "Price columns computed from the deep dive's model of 16 Nov 2026 (Equity Research/cia-ratings-v041-2026-11-16.md, function `argenta` (v0.4.1 inputs unchanged in v0.4.2)) by the build, with the analyst's column method of 17 Nov 2026 (Equity Research/cia-price-columns-2026-11-17.md). Basis: this row's 'gain if it works', ~1.7–3.85× (low end at US$3,500 / US$45, high end at US$3,853 / US$46.859 of 16 Nov 2026), moved with the model's value if it works (about 90 Moz at what the market pays per ounce for permitted silver projects, moving 1.5% for each 1% move in silver): low end × the model's value at the column's price ÷ its value at the low-end price, high end ÷ its value at the high-end price; on today's 308.5M shares, before the new shares a build needs (they bring in C$49.9M at today's metal); at the C$0.28 close of 16 Nov 2026 (the close 'gain if it works' was set at). Delivery value: today's silver (16 Nov 2026; no study yet). Columns: 3,500 / 45 ~2.35–5.65×; 4,500 / 69 ~4.74–10.6×; 5,500 / 85 ~6.32–13.9×; 6,500 / 100 ~7.8–17.1×; 7,000 / 108 ~8.59–18.8×. Estimates, not forecasts; like every row's columns, on today's shares (METHOD.md section 4).",
   "dd": {
    "d": "2026-11-16",
    "src": "analyst deep dive"
   },
+  "sc_from": {
+   "model": "argenta",
+   "model_d": "2026-11-16",
+   "close": 0.28,
+   "close_d": "2026-11-16",
+   "prog": "model"
+  },
+  "sc_basis": {
+   "pw": 20,
+   "mw": "~1.7–3.85×",
+   "wi": "7ff7153be2",
+   "sh": null,
+   "st": null,
+   "sc": "b65b6a33ed",
+   "d": "2026-11-17"
+  },
+  "sc_date": "2026-11-17",
   "px": {
    "t": "C$0.27",
    "d": "2026-11-17"
@@ -1376,6 +1448,22 @@ var D = [
   },
   "p3m": 0,
   "p3m_na": "manganese sulphate",
+  "sc_basis": {
+   "pw": 25,
+   "mw": "~1.58–3.16×",
+   "wi": "27a349c4c9",
+   "sh": 350.01,
+   "st": null,
+   "sc": "0fe6b60164",
+   "d": "2026-11-17"
+  },
+  "sc_check": {
+   "since": "2026-11-17",
+   "why": [
+    "'Progress' column ~1.4–2.3× is outside 'gain if it works' ~1.58–3.16×"
+   ],
+   "show": false
+  },
   "px": {
    "t": "C$0.49",
    "d": "2026-11-17"
@@ -1442,6 +1530,15 @@ var D = [
    "tip": "Already earns money: Zancudo ore is sold directly to Trafigura (Q3 2026: 6,727 t mined and delivered, about 73 t/day, revenue US$8.0M; Q2 US$4.9M at ~43 t/day) — about 7% of the 1,000 t/day plant design. There is no plant throughput yet: the plant is still being commissioned (first concentrate due by Q1 2027). Mine-level gross profit is positive (Q3 US$2.9M on US$8.0M revenue) and Q3 income from operations was US$1.0M, the first positive quarter; the Q3 cash-flow statement has not been read yet (in H1 2026 the company used US$1.1M of cash in operations) and the Q2 MD&A carries going-concern wording. Kept on the developer list; moves to the producer list once the plant runs near design capacity and covers its own operating costs for two quarters in a row (checked every Saturday)."
   },
   "p3m": 6,
+  "sc_basis": {
+   "pw": 50,
+   "mw": "~0.85–2.05×",
+   "wi": "4ba3e6c768",
+   "sh": 504.08,
+   "st": "650520ba1c",
+   "sc": "bc456421c3",
+   "d": "2026-11-17"
+  },
   "px": {
    "t": "C$0.50",
    "d": "2026-11-13"
@@ -1513,7 +1610,24 @@ var D = [
    "d": "2026-11-16",
    "src": "analyst deep dive"
   },
-  "sc_note": "Price columns re-derived 17 Nov 2026 by the analyst from the deep dive: Equity Research/cia-ratings-v041-2026-11-16.md, function `nexgold`, with the v0.4.2 inputs of Equity Research/cia-ratings-v042-2026-11-16.md (deep dive of 16 Nov 2026). Basis: this row's 'gain if it works', ~1.62–3.5× (low end at US$3,500, high end at US$3,853 (16 Nov)), is the rankings' target on the deep dive's works case (the deep dive kept it); each column moves it with the function's value if it works (a financed and built Goldboro (study value with its costs brought to today) plus Goliath): low end × the function's value at that price ÷ its value at US$3,500, high end ÷ its value at US$3,853 (16 Nov); then less the C$154.2M that the function's new shares bring in, on today's shares (369.1M, 369.2M, 369.2M, 369.2M, 369.2M) (incl. the options and warrants the function counts as exercised) at C$1.03 (16 Nov close), before those new shares. Delivery value (first column) not re-derived: the study's gold price is not in the function, so it keeps its earlier figure. Columns: 3,500 / 45 ~2.04–4.27×; 4,500 / 69 ~2.91–5.96×; 5,500 / 85 ~3.79–7.64×; 6,500 / 100 ~4.67–9.32×; 7,000 / 108 ~5.1–10.2×. Estimates, not forecasts; on today's shares, like every row's columns (D-064).",
+  "sc_note": "Price columns computed from the deep dive's model of 16 Nov 2026 (Equity Research/cia-ratings-v041-2026-11-16.md, function `nexgold`, with the v0.4.2 inputs of Equity Research/cia-ratings-v042-2026-11-16.md (D-063, D-064)) by the build, with the analyst's column method of 17 Nov 2026 (Equity Research/cia-price-columns-2026-11-17.md). Basis: this row's 'gain if it works', ~1.62–3.5× (low end at US$3,500 / US$45, high end at US$3,853 / US$46.859 of 16 Nov 2026), moved with the model's value if it works (a financed and built Goldboro (study value with its costs brought to today) plus Goliath): low end × the model's value at the column's price ÷ its value at the low-end price, high end ÷ its value at the high-end price; on today's 369.1M shares, before the new shares a build needs (they bring in C$154.2M at today's metal); at the C$1.03 close of 16 Nov 2026 (the close 'gain if it works' was set at). Delivery value (first column): not re-derived: the study's gold price is not in the model, so the delivery value keeps its earlier figure. Columns: 3,500 / 45 ~2.04–4.27×; 4,500 / 69 ~2.91–5.96×; 5,500 / 85 ~3.79–7.64×; 6,500 / 100 ~4.67–9.32×; 7,000 / 108 ~5.1–10.2×. Estimates, not forecasts; like every row's columns, on today's shares (METHOD.md section 4).",
+  "sc_from": {
+   "model": "nexgold",
+   "model_d": "2026-11-16",
+   "close": 1.03,
+   "close_d": "2026-11-16",
+   "prog": "kept"
+  },
+  "sc_basis": {
+   "pw": 40,
+   "mw": "~1.62–3.5×",
+   "wi": "384ce87046",
+   "sh": 255.037666,
+   "st": "2faf7dc901",
+   "sc": "8114a85261",
+   "d": "2026-11-17"
+  },
+  "sc_date": "2026-11-17",
   "px": {
    "t": "C$1.02",
    "d": "2026-11-17"
@@ -1577,6 +1691,22 @@ var D = [
   },
   "p3m": 7,
   "sc_note": "US$3,500 / 45 column: this row's own US$3,500 / 54 (~0.8–1×) and US$4,500 / 69 (~1.2–1.4×) columns extended down to US$45 silver with gold held at US$3,500, so only silver's share of the value moves: v45 = v54 − 0.6 × s × (v69 − v54), where 0.6 = (54 − 45) ÷ (69 − 54) and s = 0.60; 0.8 − 0.36 × 0.4 = 0.66 and 1.0 − 0.36 × 0.4 = 0.86 (my estimate, 8 Nov 2026). s is silver's share of Los Ricos South life-of-mine revenue: ~52% Ag / 46% Au at the FS deck (US$26.80 Ag / US$2,330 Au; FS 16 Jan 2025; card), re-priced to US$3,500 / 54 (my arithmetic). The row's own formula (0.8–1.0× P/NAV for a funded builder × NAV at that price ÷ market cap) cannot be re-run because the row does not state the NAV at each price. On today's share count, like the other columns.",
+  "sc_basis": {
+   "pw": 75,
+   "mw": "~1.2–2.03×",
+   "wi": "3302b26e86",
+   "sh": null,
+   "st": "e98fa3e2ba",
+   "sc": "ed77d5e32f",
+   "d": "2026-11-17"
+  },
+  "sc_check": {
+   "since": "2026-11-17",
+   "why": [
+    "'Progress' column ~0.4–0.5× (stale deck) is outside 'gain if it works' ~1.2–2.03×"
+   ],
+   "show": false
+  },
   "px": {
    "t": "C$3.04",
    "d": "2026-11-17"
@@ -1643,6 +1773,15 @@ var D = [
    "s": 2
   },
   "p3m": 4,
+  "sc_basis": {
+   "pw": 35,
+   "mw": "~2.1–3.4×",
+   "wi": "1339ac1c86",
+   "sh": null,
+   "st": "7cb5ffd542",
+   "sc": "bf48b2d353",
+   "d": "2026-11-17"
+  },
   "px": {
    "t": "C$1.43",
    "d": "2026-11-17"
@@ -1705,6 +1844,15 @@ var D = [
    "s": 2
   },
   "p3m": 5,
+  "sc_basis": {
+   "pw": 30,
+   "mw": "~0.83–3.05×",
+   "wi": "5a769cb597",
+   "sh": 473.06,
+   "st": null,
+   "sc": "f1779e6020",
+   "d": "2026-11-17"
+  },
   "px": {
    "t": "C$1.43",
    "d": "2026-11-17"
@@ -1772,6 +1920,15 @@ var D = [
   },
   "p3m": 0,
   "sc_note": "17 Nov 2026: these columns showed the value of the Auld Creek study at each gold price, divided by the market cap; they never included Glamorgan. The April 2026 PEA behind them is replaced by the standalone PFS of 17 Nov 2026, whose after-tax NPV (5%) is −US$30.5M at US$3,700 gold and US$26,000/t antimony. So the study’s value is below zero at US$3,500 gold and at today’s gold (US$3,864, 17 Nov): that is the delivery value and the first price column. The release gives no NPV at any other gold price, so the columns from US$4,500 up are ‘not available’ until the PFS technical report (due on SEDAR+ within 45 days) shows the sensitivities; none is estimated here. Before, on the PEA: ~0.3× · ~0.3–0.4× · ~0.5–0.7× · ~0.7–1× · ~0.9–1.3× · ~1–1.45×. The gain if the plan works (~1.42–4.5×) is a Glamorgan discovery and does not come from these columns.",
+  "sc_basis": {
+   "pw": 13,
+   "mw": "~1.42–4.5×",
+   "wi": "fc5542d5ed",
+   "sh": null,
+   "st": "9375446c3f",
+   "sc": "23e25e0698",
+   "d": "2026-11-17"
+  },
   "px": {
    "t": "C$1.09",
    "d": "2026-11-17"
@@ -1838,7 +1995,24 @@ var D = [
    "d": "2026-11-16",
    "src": "analyst deep dive"
   },
-  "sc_note": "Price columns re-derived 17 Nov 2026 by the analyst from the deep dive: Equity Research/cia-ratings-v041-2026-11-16.md, function `emperor`, with the v0.4.2 inputs of Equity Research/cia-ratings-v042-2026-11-16.md (deep dive of 16 Nov 2026). Basis: this row's 'gain if it works', ~0.69–2.44× (low end at US$3,500, high end at US$3,853 (16 Nov)), is the rankings' target on the deep dive's works case (the deep dive kept it); each column moves it with the function's value if it works (1.46 Moz at what the market pays per ounce at the PEA stage; the function moves that value 1.92% for each 1% move in gold): low end × the function's value at that price ÷ its value at US$3,500, high end ÷ its value at US$3,853 (16 Nov); then less the C$8.6M that the function's new shares bring in, on about 249.8M shares today (incl. the options and warrants the function counts as exercised) at C$0.36 (16 Nov close), before those new shares. Delivery value = today's gold (no study yet): ~0.84–2.64×. Columns: 3,500 / 45 ~0.68–2.15×; 4,500 / 69 ~1.15–3.52×; 5,500 / 85 ~1.62–4.89×; 6,500 / 100 ~2.09–6.27×; 7,000 / 108 ~2.33–6.95×. Estimates, not forecasts; on today's shares, like every row's columns (D-064).",
+  "sc_note": "Price columns computed from the deep dive's model of 16 Nov 2026 (Equity Research/cia-ratings-v041-2026-11-16.md, function `emperor` (v0.4.1 inputs unchanged in v0.4.2)) by the build, with the analyst's column method of 17 Nov 2026 (Equity Research/cia-price-columns-2026-11-17.md). Basis: this row's 'gain if it works', ~0.69–2.44× (low end at US$3,500 / US$45, high end at US$3,853 / US$46.859 of 16 Nov 2026), moved with the model's value if it works (1.46 Moz at what the market pays per ounce at the PEA stage, moving 1.92% for each 1% move in gold): low end × the model's value at the column's price ÷ its value at the low-end price, high end ÷ its value at the high-end price; on today's 249.8M shares, before the new shares a build needs (they bring in C$8.6M at today's metal); at the C$0.36 close of 16 Nov 2026 (the close 'gain if it works' was set at). Delivery value: today's gold (16 Nov 2026; no study yet). Columns: 3,500 / 45 ~0.68–2.15×; 4,500 / 69 ~1.15–3.52×; 5,500 / 85 ~1.62–4.89×; 6,500 / 100 ~2.09–6.27×; 7,000 / 108 ~2.33–6.95×. Estimates, not forecasts; like every row's columns, on today's shares (METHOD.md section 4).",
+  "sc_from": {
+   "model": "emperor",
+   "model_d": "2026-11-16",
+   "close": 0.36,
+   "close_d": "2026-11-16",
+   "prog": "model"
+  },
+  "sc_basis": {
+   "pw": 33,
+   "mw": "~0.69–2.44×",
+   "wi": "8dcd3a9ee6",
+   "sh": null,
+   "st": null,
+   "sc": "531ba2c853",
+   "d": "2026-11-17"
+  },
+  "sc_date": "2026-11-17",
   "px": {
    "t": "C$0.36",
    "d": "2026-11-17"
@@ -1905,6 +2079,15 @@ var D = [
    "s": 3
   },
   "p3m": 3,
+  "sc_basis": {
+   "pw": 25,
+   "mw": "~1.09–3.41×",
+   "wi": "3749e90ead",
+   "sh": 251.2,
+   "st": null,
+   "sc": "e9612dbbbc",
+   "d": "2026-11-17"
+  },
   "px": {
    "t": "C$0.15",
    "d": "2026-11-17"
@@ -1971,6 +2154,22 @@ var D = [
    "s": 1
   },
   "p3m": 0,
+  "sc_basis": {
+   "pw": 2,
+   "mw": "~3.72–10.1×",
+   "wi": "1efcce80b3",
+   "sh": null,
+   "st": null,
+   "sc": "0d6e435a38",
+   "d": "2026-11-17"
+  },
+  "sc_check": {
+   "since": "2026-11-17",
+   "why": [
+    "'Progress' column no NAV · ~0.36–2.1× is outside 'gain if it works' ~3.72–10.1×"
+   ],
+   "show": false
+  },
   "px": {
    "t": "C$0.07",
    "d": "2026-11-17"
@@ -2038,6 +2237,15 @@ var D = [
   },
   "p3m": 2,
   "sc_note": "US$3,500 / 45 column: this row's own US$3,500 / 54 (~0.91–1.81×) and US$4,500 / 69 (~1.54–2.4×) columns extended down to US$45 silver with gold held at US$3,500, so only silver's share of the value moves: v45 = v54 − 0.6 × s × (v69 − v54), where 0.6 = (54 − 45) ÷ (69 − 54) and s = 0.76; 0.91 − 0.456 × 0.63 = 0.62 and 1.81 − 0.456 × 0.59 = 1.54 (my estimate, 8 Nov 2026). There is no study, so no revenue split exists: s is silver's share of the recoverable in-situ value of the Indicated + Inferred resource at US$3,500 / 54 (41.8 Moz Ag at 96.3% and 202 koz Au at 98.5% recovery; APEX MRE eff. 10 Sep 2026; card; my estimate). The columns re-scale value per ounce to a peer band, and the band at each silver price is not stated, so the model cannot be re-run. Before dilution, on today's share count, like the other columns.",
+  "sc_basis": {
+   "pw": 17,
+   "mw": "~1.3–3.26×",
+   "wi": "0c4a318cf9",
+   "sh": null,
+   "st": null,
+   "sc": "b7f4eba6d4",
+   "d": "2026-11-17"
+  },
   "px": {
    "t": "C$0.215",
    "d": "2026-11-16"
@@ -2104,6 +2312,22 @@ var D = [
    "s": 2
   },
   "p3m": 0,
+  "sc_basis": {
+   "pw": 25,
+   "mw": "~1.14–2.43×",
+   "wi": "c2bdb0bcaa",
+   "sh": 319.178675,
+   "st": null,
+   "sc": "d979375376",
+   "d": "2026-11-17"
+  },
+  "sc_check": {
+   "since": "2026-11-17",
+   "why": [
+    "'Progress' column ~0.82–1.63× (no NAV) is outside 'gain if it works' ~1.14–2.43×"
+   ],
+   "show": false
+  },
   "px": {
    "t": "C$0.49",
    "d": "2026-11-17"
@@ -2166,6 +2390,15 @@ var D = [
    "s": 2
   },
   "p3m": 3,
+  "sc_basis": {
+   "pw": 30,
+   "mw": "~1.55–3.77×",
+   "wi": "faac5d7bc7",
+   "sh": null,
+   "st": null,
+   "sc": "3d7b6cd852",
+   "d": "2026-11-17"
+  },
   "px": {
    "t": "C$2.15",
    "d": "2026-11-17"
@@ -2232,6 +2465,22 @@ var D = [
    "s": 3
   },
   "p3m": 3,
+  "sc_basis": {
+   "pw": 30,
+   "mw": "~0.87–3.9×",
+   "wi": "6969b54db2",
+   "sh": 167.26,
+   "st": "329d58a2f3",
+   "sc": "ce0b34288f",
+   "d": "2026-11-17"
+  },
+  "sc_check": {
+   "since": "2026-11-17",
+   "why": [
+    "'Progress' column ~0.4–0.63× (stale 2022 deck: 0.3–0.5× P/NAV × C$240M ÷ C$187M) is outside 'gain if it works' ~0.87–3.9×"
+   ],
+   "show": false
+  },
   "px": {
    "t": "C$1.02",
    "d": "2026-11-17"
@@ -2294,6 +2543,15 @@ var D = [
    "s": 4
   },
   "p3m": 0,
+  "sc_basis": {
+   "pw": 15,
+   "mw": "~1.49–5.1×",
+   "wi": "396c4ec67c",
+   "sh": 279.41,
+   "st": null,
+   "sc": "bf05185d11",
+   "d": "2026-11-17"
+  },
   "px": {
    "t": "C$0.09",
    "d": "2026-11-17"
@@ -2356,6 +2614,22 @@ var D = [
    "s": 2
   },
   "p3m": 5,
+  "sc_basis": {
+   "pw": 38,
+   "mw": "~1.42–3.36×",
+   "wi": "9b30add698",
+   "sh": null,
+   "st": "b8aba4038c",
+   "sc": "4a71df0206",
+   "d": "2026-11-17"
+  },
+  "sc_check": {
+   "since": "2026-11-17",
+   "why": [
+    "'Progress' column ~0.6–0.85× is outside 'gain if it works' ~1.42–3.36×"
+   ],
+   "show": false
+  },
   "px": {
    "t": "C$1.90",
    "d": "2026-11-17"
@@ -2422,6 +2696,22 @@ var D = [
    "s": 2
   },
   "p3m": 2,
+  "sc_basis": {
+   "pw": 25,
+   "mw": "~1.2–3.77×",
+   "wi": "cc6d74a1ba",
+   "sh": 136.32,
+   "st": null,
+   "sc": "594e5e7789",
+   "d": "2026-11-17"
+  },
+  "sc_check": {
+   "since": "2026-11-17",
+   "why": [
+    "'Progress' column no NAV · ~0.88–1.76× is outside 'gain if it works' ~1.2–3.77×"
+   ],
+   "show": false
+  },
   "px": {
    "t": "C$1.45",
    "d": "2026-11-17"
@@ -2484,6 +2774,15 @@ var D = [
    "s": 3
   },
   "p3m": 1,
+  "sc_basis": {
+   "pw": 30,
+   "mw": "~0.89–3.1×",
+   "wi": "529a245ae3",
+   "sh": null,
+   "st": null,
+   "sc": "fe75fe3c9d",
+   "d": "2026-11-17"
+  },
   "px": {
    "t": "C$0.62",
    "d": "2026-11-17"
@@ -2547,6 +2846,15 @@ var D = [
   },
   "p3m": 7,
   "sc_note": "US$3,500 gold / US$45 silver (the cautious case since 8 Nov 2026; it replaces US$3,500 / US$54): ~1.03–1.58× (my estimate). It is built from this row's own columns by moving only silver's part of the value, so gold stays at US$3,500: the former US$3,500 / 54 column (~1.1–1.7×) less 0.6 × s × the step up to the US$4,500 / 69 column (~1.6–2.5×), where 0.6 = (54 − 45) ÷ (69 − 54) and s = 0.24 is silver's share of the open pit's revenue change between those two columns on the Stockwork Zone PFS's life-of-mine payable metal (8.57 Moz silver, 408 koz gold; PFS update, 20 Jan 2026): (8.57 × US$15) ÷ (8.57 × US$15 + 0.408 × US$1,000) = US$128.6M ÷ US$536.6M = 0.24. So 1.1 − 0.6 × 0.24 × 0.5 = 1.03× and 1.7 − 0.6 × 0.24 × 0.8 = 1.58×. The row and card do not state the P/NAV band or how the NAV was taken to each price, so the column could not be re-run directly. The underground PEA (mostly silver) is not in s, because the valuation is the open pit's NAV and the underground is carried at roughly nothing. The other columns are unchanged.",
+  "sc_basis": {
+   "pw": 40,
+   "mw": "~1.26–3.08×",
+   "wi": "8f98b9cd5a",
+   "sh": 658.65,
+   "st": "696aa09043",
+   "sc": "6d942a66f6",
+   "d": "2026-11-17"
+  },
   "px": {
    "t": "C$0.62",
    "d": "2026-11-17"
@@ -2613,6 +2921,22 @@ var D = [
    "s": 2
   },
   "p3m": 3,
+  "sc_basis": {
+   "pw": 25,
+   "mw": "~1.26–3.26×",
+   "wi": "479fcc7eb2",
+   "sh": 348.161694,
+   "st": null,
+   "sc": "50d9c05d06",
+   "d": "2026-11-17"
+  },
+  "sc_check": {
+   "since": "2026-11-17",
+   "why": [
+    "'Progress' column no NAV ~1–2.5× is outside 'gain if it works' ~1.26–3.26×"
+   ],
+   "show": false
+  },
   "px": {
    "t": "C$0.21",
    "d": "2026-11-17"
@@ -2676,6 +3000,15 @@ var D = [
    "conf": "medium",
    "odds": "works 75% → 80%; odds of a 3× stay ~2% (no part of the range reaches 3×)",
    "s": 3
+  },
+  "sc_basis": {
+   "pw": 80,
+   "mw": "~0.7–1.2×",
+   "wi": "1ca337a5bf",
+   "sh": 404.251,
+   "st": "235280c546",
+   "sc": "fc2fcb5b64",
+   "d": "2026-11-17"
   },
   "px": {
    "t": "C$14.81",
@@ -2741,6 +3074,15 @@ var D = [
    "s": 3
   },
   "p3m": 1,
+  "sc_basis": {
+   "pw": 70,
+   "mw": "~0.84–1.47×",
+   "wi": "4d0b1934ab",
+   "sh": 125.463,
+   "st": "e6c29dfd73",
+   "sc": "20e9a85ec6",
+   "d": "2026-11-17"
+  },
   "px": {
    "t": "US$28.40",
    "d": "2026-11-17"
@@ -3058,6 +3400,16 @@ document.addEventListener("click", function(e){ var v = e.target.closest && e.ta
   Array.prototype.forEach.call(document.querySelectorAll(".wseg button"), function(b){ b.addEventListener("click", function(){ applyWindow(b.getAttribute("data-w")); }); });
 
   /* ---------- the two tables ---------- */
+  function scWhen(d){ var b = d.sc_basis || {}; if(d.sc_date) return {t: shortD(d.sc_date), l: "set " + longD(d.sc_date)}; if(b.d) return {t: "≤ " + shortD(b.d), l: "set on or before " + longD(b.d) + " (date not recorded before 18 Nov 2026)"}; return null; }
+  function shortD(s){ var p = s.split("-"); return +p[2] + " " + ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+p[1] - 1]; }
+  function longD(s){ return shortD(s) + " " + s.slice(0, 4); }
+  function scFromTxt(d){ var f = d.sc_from; return f ? "computed from the deep dive's model of " + longD(f.model_d) + " at the close of " + longD(f.close_d) + (f.prog === "kept" ? " (delivery value kept: the study's price is not in the model)" : "") : ""; }
+  function scTip(d){ var w = scWhen(d), f = scFromTxt(d); return "Price columns " + (f ? f + "; last changed " + (w ? w.l.replace(/^set /, "") : "") : (w ? w.l : "date not recorded")) + "."; }
+  function scChk(d){ var c = d.sc_check; return c && c.show ? c : null; }
+  function scChkTip(c){ return "Price columns need a check (since " + longD(c.since) + "): " + c.why.join("; ") + ". The night build flags this; the columns are shown as stored until they are re-derived."; }
+  function scDateCell(d){ var w = scWhen(d), c = scChk(d); return "<td class='scd' data-tip='" + esc(scTip(d)) + "'>" + (w ? esc(w.t) : "–") + (d.sc_from ? "<span class='scm'>model</span>" : "") + (c ? "<span class='scw' data-tip='" + esc(scChkTip(c)) + "'>⚠ check since " + esc(shortD(c.since)) + "</span>" : "") + "</td>"; }
+  function scLine(d){ var w = scWhen(d), c = scChk(d), f = scFromTxt(d); return "<div class='scl'>" + esc(f ? "Columns " + f + "." : (w ? "Columns " + w.l + "." : "")) + "</div>" + (c ? "<div class='scw' title='" + esc(scChkTip(c)) + "'>⚠ Price columns need a check (since " + esc(longD(c.since)) + "): " + esc(c.why[0]) + (c.why.length > 1 ? " (+" + (c.why.length - 1) + " more)" : "") + "</div>" : ""); }
+  var SCD_TIP = "When the price columns were last set. MODEL = computed from the company's deep-dive model on every build (rows with a value rating); ≤ = set on or before that date (dates are recorded from 18 Nov 2026); ⚠ = the night check found something to re-check (hover for the reason).";
   function rankCell(d, key){ return "<td class='c-n'><span class='rkn " + key + (low(d,key) ? " lo" : "") + "'>" + d[key] + "</span>" + mv(d, key) + "<span class='nmw'><b>" + esc(d.short) + "</b>" + mb(d) + dvb(d) + pk(d) + late(d) + tgx(d) + (window.RATING_TAG ? RATING_TAG(d, "t") : "") + "<span class='tk'>" + tickHtml(d.tick) + "</span></span></td>"; }
   /* share price and its euro figure (D-050, 13 Nov 2026): the ECB reference rate of the close's own date */
   function eurSpan(d){ return d.eur ? "<span class='eu' data-eur='" + d.eur.p + "|" + esc(d.eur.ccy) + "|" + d.eur.d + "'>" + esc(d.eur.v) + "</span>" : "<span class='eu na' data-tip='No ECB reference rate of " + esc(d.px ? fd(d.px.d) + " " + d.px.d.slice(0, 4) : "this date") + " for this currency is on file yet, so no euro figure is shown.'>no €</span>"; }
@@ -3089,7 +3441,7 @@ document.addEventListener("click", function(e){ var v = e.target.closest && e.ta
       };
       var head = key === "a"
         ? [th("Company", "", TIP.coA, "c-n"), th("Price", "close · €", TIP.px, "r"), th("Key point", "", TIP.key)].concat(hasCC ? [th("Cost curve", "percentile", TIP.cc)] : []).concat([th("Mkt cap", "", TIP.cap, "r"), th("Team", "A–D", TIP.mg), th("Risk", "1–5", TIP.risk, "r"), th("Upside #", "", TIP.inB, "r")]).concat(window.RATING_HEAD ? [RATING_HEAD(th)] : [])
-        : [th("Company", "", TIP.coB, "c-n"), th("3×+ odds", "line ~" + BASE + "%", TIP.odds, "r"), th("Plan works", "", TIP.works, "r"), th("Gain if it works", "", TIP.ifw, "r"), th("Second triple?", "room after the first", TIP.rw), th("Team", "A–D", TIP.mg)].concat(SC.map(function(s, i){ var pr = s.split(" / "); return "<th class='r scg-h' data-tip='" + esc(i === SCX_I ? SCX.tip : i === 0 && pr.length !== 2 ? TIP.sc0 : TIP.sc) + "'>" + scHead(s, i) + "</th>"; })).concat([th("Risk", "1–5", TIP.risk, "r"), th("Safety #", "", TIP.inA, "r")]);
+        : [th("Company", "", TIP.coB, "c-n"), th("3×+ odds", "line ~" + BASE + "%", TIP.odds, "r"), th("Plan works", "", TIP.works, "r"), th("Gain if it works", "", TIP.ifw, "r"), th("Second triple?", "room after the first", TIP.rw), th("Team", "A–D", TIP.mg)].concat(SC.map(function(s, i){ var pr = s.split(" / "); return "<th class='r scg-h' data-tip='" + esc(i === SCX_I ? SCX.tip : i === 0 && pr.length !== 2 ? TIP.sc0 : TIP.sc) + "'>" + scHead(s, i) + "</th>"; })).concat([th("Columns", "set", SCD_TIP), th("Risk", "1–5", TIP.risk, "r"), th("Safety #", "", TIP.inA, "r")]);
       var n = head.length;
       var h = "<thead><tr>" + head.join("") + "</tr></thead><tbody>", lined = false;
       if(window.RATING_FILTER) rows = rows.filter(RATING_FILTER);
@@ -3108,6 +3460,7 @@ document.addEventListener("click", function(e){ var v = e.target.closest && e.ta
           cells.push("<td>" + rwb(d) + "</td>");
           cells.push("<td>" + mgb(d) + "</td>");
           d.sc.forEach(function(v, i){ var wide = v.length > 16; cells.push("<td class='sc" + (v.charAt(0) === "~" ? " est" : "") + (wide ? " wide" : "") + (i === SCX_I ? " x" : "") + "'>" + esc(v) + "</td>"); });
+          cells.push(scDateCell(d));
         }
         if(key === "a") cells.push("<td>" + mgb(d) + "</td>");
         cells.push("<td class='r'><span class='rsb r" + d.rs + "' title='Risk " + d.rs + " of 5'>" + d.rs + "</span></td>");
@@ -3143,7 +3496,7 @@ document.addEventListener("click", function(e){ var v = e.target.closest && e.ta
     if(key === "b" && d.sc && d.sc.length){
       /* the table's price columns, so a phone reader sees them too (Chung, 14 Nov 2026) */
       var rowsLay = d.sc.some(function(v){ return v.length > 12; }), unit = SCUL.replace(/^scenarios /, "");
-      h += "<div class='pc5'><div class='pch'><b>Price scenarios</b>" + (unit ? " · " + esc(unit) : "") + "</div><div class='pcg" + (rowsLay ? " rows" : "") + "'>" + d.sc.map(function(v, i){ return "<div><span class='sk'>" + esc(SC[i]) + (i === SCX_I ? " · " + esc(SCX.sub) : "") + "</span><span class='sv" + (v.charAt(0) === "~" ? " est" : "") + (i === SCX_I ? " x" : "") + "'>" + esc(v) + "</span></div>"; }).join("") + "</div></div>";
+      h += "<div class='pc5'><div class='pch'><b>Price scenarios</b>" + (unit ? " · " + esc(unit) : "") + "</div><div class='pcg" + (rowsLay ? " rows" : "") + "'>" + d.sc.map(function(v, i){ return "<div><span class='sk'>" + esc(SC[i]) + (i === SCX_I ? " · " + esc(SCX.sub) : "") + "</span><span class='sv" + (v.charAt(0) === "~" ? " est" : "") + (i === SCX_I ? " x" : "") + "'>" + esc(v) + "</span></div>"; }).join("") + "</div>" + scLine(d) + "</div>";
     }
     if(window.RATING_LINE) h += RATING_LINE(d);
     return h + "</a>";
@@ -3203,7 +3556,7 @@ document.addEventListener("click", function(e){ var v = e.target.closest && e.ta
           (d[key + "Risk"] ? "<div class='k'>Main risk</div><div class='v'>" + esc(d[key + "Risk"]) + "</div>" : "") +
           "<div class='k'>Exploration</div><div class='v'><span class='ntag n-" + d.exC + "'>" + esc(d.exN) + "</span>" + esc(d.ex) + "</div>" +
         "</div>" +
-        (key === "b" ? "<p class='drv'><b>Price scenarios</b>" + (SCUL ? " (" + esc(SCUL) + ")" : "") + " · driver: " + esc(d.pm || "") + "</p><div class='scg'>" + d.sc.map(function(v, i){ return "<div" + (i === SCX_I ? " title='" + esc(SCX.tip) + "'" : "") + "><span class='sk'>" + esc(SC[i]) + (i === SCX_I ? " · " + esc(SCX.sub) : "") + "</span><span class='sv" + (v.charAt(0) === "~" ? " est" : "") + (i === SCX_I ? " x" : "") + "'>" + esc(v) + "</span></div>"; }).join("") + "</div>" : "") +
+        (key === "b" ? "<p class='drv'><b>Price scenarios</b>" + (SCUL ? " (" + esc(SCUL) + ")" : "") + " · driver: " + esc(d.pm || "") + "</p><div class='scg'>" + d.sc.map(function(v, i){ return "<div" + (i === SCX_I ? " title='" + esc(SCX.tip) + "'" : "") + "><span class='sk'>" + esc(SC[i]) + (i === SCX_I ? " · " + esc(SCX.sub) : "") + "</span><span class='sv" + (v.charAt(0) === "~" ? " est" : "") + (i === SCX_I ? " x" : "") + "'>" + esc(v) + "</span></div>"; }).join("") + "</div>" + scLine(d) : "") +
         "<a class='trk' href='" + CFG.T + d.slug + "' target='_blank' rel='noopener'>Open " + esc(d.short) + " in the tracker ↗</a></div>";
       h += "<details class='row" + (lo ? " low" : "") + "' id='" + key + "-" + d.k + "' data-k='" + d.k + "'>" + sum + more + "</details>";
     });

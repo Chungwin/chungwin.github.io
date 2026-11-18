@@ -129,6 +129,12 @@ table.ct{ width:100%; border-collapse:collapse; font-size:13.5px; font-variant-n
 .ct td.sc.est{ color:var(--ink2); }
 .ct td.sc.wide{ white-space:normal; min-width:120px; text-align:left; font-family:var(--sans); }
 .ct td.sc.x, .scg .sv.x{ font-style:italic; }
+/* the date the price columns were set, and the night check's note (18 Nov 2026; METHOD.md section 4) */
+.ct td.scd{ font-family:var(--mono); font-size:11.5px; color:var(--mute); white-space:nowrap; }
+.ct td.scd .scm{ display:inline-block; margin-left:4px; font-size:10px; letter-spacing:.04em; text-transform:uppercase; border:1px solid var(--line2); border-radius:3px; padding:0 3px; color:var(--ink2); }
+.ct td.scd .scw{ display:block; margin-top:2px; color:var(--warn); font-size:11px; cursor:help; }
+.scl{ font-size:12px; color:var(--mute); margin-top:6px; line-height:1.4; }
+div.scw{ font-size:12px; color:var(--warn); margin-top:3px; line-height:1.4; }
 /* Phones (9 Nov 2026): the sticky company column was ~320px of a ~356px table and covered the price columns when scrolled.
    It is now a fixed ~126px: the rank number on the left, the name wrapping beside it, the rank move or NEW tag under the
    rank number, and only the first listing of the ticker. 'table.ct' outranks the desktop rules further down. */
@@ -914,7 +920,24 @@ var D = [
    "d": "2026-11-16",
    "src": "analyst deep dive"
   },
-  "sc_note": "Price columns re-derived 17 Nov 2026 by the analyst from the deep dive: Equity Research/cia-ratings-v041-2026-11-16.md, function `centaurus`, with the v0.4.2 inputs of Equity Research/cia-ratings-v042-2026-11-16.md (deep dive of 16 Nov 2026). Basis: this row's own target, 0.4–0.7× Jaguar's study value (after-tax NPV8 on the deep dive's nickel line: US$186M at US$14,000/t, US$404M at 16,000, US$819M at 19,800 (the study's price), US$1,277M at 24,000), with the build money, reserve, debt and costs of the function, less the US$192.5M that the new shares bring in (market raise plus tranche 2), on today's 671.2M shares (incl. nil-price options) at A$0.36 (13 Nov close), before those new shares. Delivery value = the study's US$19,800/t: ~1.86–3.35×. Per share after the new shares, at today's US$16,025/t: ~0.83–1.14× (gain if it works uses 0.7×: ~0.75–1.14×). Columns: Downside (US$14,000/t) ~0.31–0.65×; Base (US$16,000/t) ~0.85–1.59×; Upside (US$19,800/t) ~1.86–3.35×; Super (US$24,000/t) ~2.98–5.31×. Estimates, not forecasts; on today's shares, like every row's columns (D-064).",
+  "sc_note": "Price columns computed from the deep dive's model of 16 Nov 2026 (Equity Research/cia-ratings-v041-2026-11-16.md, function `centaurus`, with the v0.4.2 inputs of Equity Research/cia-ratings-v042-2026-11-16.md (D-063, D-064)) by the build, with the analyst's column method of 17 Nov 2026 (Equity Research/cia-price-columns-2026-11-17.md). Basis: this row's own target, 0.4–0.7× Jaguar's study value (after-tax NPV8 on the deep dive's nickel line) with the build money, reserve, debt and costs of the model, less the money the new shares bring in (market raise plus tranche 2); 'gain if it works' uses 0.7× at both ends, at each column's metal price; 'gain if it works' uses 0.7× at both ends; on today's 671.2M shares, before the new shares a build needs (they bring in A$283.7M at today's metal); at the A$0.36 close of 13 Nov 2026 (the close 'gain if it works' was set at). Delivery value: the study's US$19,800/t nickel. Columns: Downside ~0.31–0.65×; Base ~0.85–1.59×; Upside ~1.86–3.35×; Super ~2.98–5.31×. Estimates, not forecasts; like every row's columns, on today's shares (METHOD.md section 4).",
+  "sc_from": {
+   "model": "centaurus",
+   "model_d": "2026-11-16",
+   "close": 0.36,
+   "close_d": "2026-11-13",
+   "prog": "model"
+  },
+  "sc_basis": {
+   "pw": 30,
+   "mw": "~0.75–1.14×",
+   "wi": "448572027c",
+   "sh": 658.2,
+   "st": "91f3683b21",
+   "sc": "736c15924d",
+   "d": "2026-11-17"
+  },
+  "sc_date": "2026-11-17",
   "px": {
    "t": "A$0.36",
    "d": "2026-11-17"
@@ -975,6 +998,15 @@ var D = [
    "s": 1
   },
   "p3m": 3,
+  "sc_basis": {
+   "pw": 25,
+   "mw": "~1.0–3.2×",
+   "wi": "b7acb6dbc6",
+   "sh": null,
+   "st": null,
+   "sc": "5e48f7a4d7",
+   "d": "2026-11-17"
+  },
   "px": {
    "t": "C$0.75",
    "d": "2026-11-17"
@@ -1040,6 +1072,22 @@ var D = [
    "src": "analyst deep dive"
   },
   "sc_note": "Price columns not re-derived (17 Nov 2026, analyst): the deep dive of 16 Nov 2026 (Equity Research/cia-ratings-v041-2026-11-16.md, function `ucore`, with the v0.4.2 inputs) values a working Machine A at Lynas's value per tonne of capacity, moving in proportion to NdPr, while these columns come from this row's own plant cash-flow model (6–8× an illustrative run-rate EBITDA of the full 3,600 t a year build; first figure merchant NdPr feed, second Machine A on heavy-rich feed plus Line 1) and the first column is the strategic re-rate. 'Gain if it works' (~0.25–2.7×) is a range between plant cash flow and the strategic ending, not between two NdPr prices, so the function gives no basis to re-derive the columns: they are kept as set before the deep dive (estimates) (D-064).",
+  "sc_basis": {
+   "pw": 25,
+   "mw": "~0.28–3.05×",
+   "wi": "d99d710e04",
+   "sh": 151.51,
+   "st": null,
+   "sc": "4af9cd366c",
+   "d": "2026-11-17"
+  },
+  "sc_check": {
+   "since": "2026-11-17",
+   "why": [
+    "not computed from its deep dive: its 'gain if it works' is not a range between two metal prices, so its deep dive's model gives no basis (analyst, 17 Nov 2026); the columns stay typed until its next re-rating"
+   ],
+   "show": true
+  },
   "px": {
    "t": "C$1.89",
    "d": "2026-11-17"
@@ -1101,6 +1149,15 @@ var D = [
   },
   "p3m": 2,
   "p3m_rough": true,
+  "sc_basis": {
+   "pw": 20,
+   "mw": "~1.0–3.7×",
+   "wi": "2477cadb1b",
+   "sh": 142.48,
+   "st": null,
+   "sc": "db8a1e3e42",
+   "d": "2026-11-17"
+  },
   "px": {
    "t": "C$0.25",
    "d": "2026-11-17"
@@ -1165,6 +1222,15 @@ var D = [
    "s": 1
   },
   "p3m": 0,
+  "sc_basis": {
+   "pw": 2,
+   "mw": "~1.7–8×",
+   "wi": "e72fea4513",
+   "sh": null,
+   "st": null,
+   "sc": "c82ebb793e",
+   "d": "2026-11-17"
+  },
   "px": {
    "t": "C$0.12",
    "d": "2026-11-17"
@@ -1227,6 +1293,22 @@ var D = [
   },
   "p3m": 5,
   "p3m_rough": true,
+  "sc_basis": {
+   "pw": 45,
+   "mw": "~0.3–1.1×",
+   "wi": "0bf0bee3dd",
+   "sh": null,
+   "st": "6f51f046ad",
+   "sc": "4712868546",
+   "d": "2026-11-17"
+  },
+  "sc_check": {
+   "since": "2026-11-17",
+   "why": [
+    "'Progress' column ~1.35–1.95× is outside 'gain if it works' ~0.3–1.1×"
+   ],
+   "show": false
+  },
   "px": {
    "t": "A$0.14",
    "d": "2026-11-17"
@@ -1289,6 +1371,15 @@ var D = [
   },
   "p3m": 6,
   "p3m_rough": true,
+  "sc_basis": {
+   "pw": 38,
+   "mw": "~0.8–2.9×",
+   "wi": "533d6fbb1f",
+   "sh": 163.183,
+   "st": "72709fee8f",
+   "sc": "29feaa23d6",
+   "d": "2026-11-17"
+  },
   "px": {
    "t": "A$2.57",
    "d": "2026-11-17"
@@ -1355,6 +1446,22 @@ var D = [
   },
   "p3m_na": "manganese",
   "p3m": 0,
+  "sc_basis": {
+   "pw": 26,
+   "mw": "~0.2–1.5×",
+   "wi": "52d256c627",
+   "sh": null,
+   "st": "0aeeea2a6c",
+   "sc": "4365d66fe1",
+   "d": "2026-11-17"
+  },
+  "sc_check": {
+   "since": "2026-11-17",
+   "why": [
+    "'Progress' column ~2.2–3.7× (no tax, no dilution) is outside 'gain if it works' ~0.2–1.5×"
+   ],
+   "show": false
+  },
   "px": {
    "t": "A$0.19",
    "d": "2026-11-17"
@@ -1417,6 +1524,22 @@ var D = [
   },
   "p3m_na": "rutile and graphite",
   "p3m": 0,
+  "sc_basis": {
+   "pw": 22,
+   "mw": "~0.6–2.0×",
+   "wi": "4a03177095",
+   "sh": null,
+   "st": "e4554ddd13",
+   "sc": "2d79dd9f38",
+   "d": "2026-11-17"
+  },
+  "sc_check": {
+   "since": "2026-11-17",
+   "why": [
+    "'Progress' column ~1.8–4.0× is outside 'gain if it works' ~0.6–2.0×"
+   ],
+   "show": false
+  },
   "px": {
    "t": "A$0.40",
    "d": "2026-11-17"
@@ -1482,7 +1605,24 @@ var D = [
    "d": "2026-11-16",
    "src": "analyst deep dive"
   },
-  "sc_note": "Price columns re-derived 17 Nov 2026 by the analyst from the deep dive: Equity Research/cia-ratings-v041-2026-11-16.md, function `nexgen`, with the v0.4.2 inputs of Equity Research/cia-ratings-v042-2026-11-16.md (deep dive of 16 Nov 2026). Basis: this row's own target for a licensed project in construction, 1.0–1.2× Rook I's study value (after-tax NPV8 on the study's points at each uranium price), plus the C$2,234M still to spend, less C$1,679M of new debt and the C$608M that the new shares bring in, with the in-the-money options and the 2.46M coupon shares, on today's 713.5M shares at C$11.05 (13 Nov close; 736.8M where the debentures turn into shares above C$15.30), before those new shares. Delivery value at the 2024 study's US$95/lb, on the study's line re-based to today's exchange rate: ~0.84–1.01×. Per share after the new shares: 1.0× at US$60 to 1.2× at US$94.78 = ~0.45–0.99×. Columns: Downside (US$60/lb) ~0.41–0.5×; Base (US$80/lb) ~0.66–0.79×; Upside (US$110/lb) ~1.03–1.23×; Super (US$150/lb) ~1.52–1.81×. Estimates, not forecasts; on today's shares, like every row's columns (D-064).",
+  "sc_note": "Price columns computed from the deep dive's model of 16 Nov 2026 (Equity Research/cia-ratings-v041-2026-11-16.md, function `nexgen`, with the v0.4.2 inputs of Equity Research/cia-ratings-v042-2026-11-16.md (D-063, D-064)) by the build, with the analyst's column method of 17 Nov 2026 (Equity Research/cia-price-columns-2026-11-17.md). Basis: this row's own target, 1.0–1.2× Rook I's study value for a licensed project in construction (after-tax NPV8 on the study's points), plus the capex still to spend, less the new debt and the money the new shares bring in, with the in-the-money options and the coupon shares (the debentures turn into 23.3M shares where a share is worth more than C$15.30), at each column's metal price; on today's 713.5M shares, before the new shares a build needs (they bring in C$608.2M at today's metal); at the C$11.05 close of 13 Nov 2026 (the close 'gain if it works' was set at). Delivery value: the 2024 study's US$95/lb uranium. Columns: Downside ~0.41–0.5×; Base ~0.66–0.79×; Upside ~1.03–1.23×; Super ~1.52–1.81×. Estimates, not forecasts; like every row's columns, on today's shares (METHOD.md section 4).",
+  "sc_from": {
+   "model": "nexgen",
+   "model_d": "2026-11-16",
+   "close": 11.05,
+   "close_d": "2026-11-13",
+   "prog": "model"
+  },
+  "sc_basis": {
+   "pw": 40,
+   "mw": "~0.45–0.99×",
+   "wi": "888b542f11",
+   "sh": 688.035,
+   "st": "ee35bcda17",
+   "sc": "4f305542b6",
+   "d": "2026-11-17"
+  },
+  "sc_date": "2026-11-17",
   "px": {
    "t": "C$10.44",
    "d": "2026-11-17"
@@ -1549,6 +1689,15 @@ var D = [
    "s": 1
   },
   "p3m": 1,
+  "sc_basis": {
+   "pw": 45,
+   "mw": "~0.5–1.05×",
+   "wi": "fa46ec0aaa",
+   "sh": null,
+   "st": "e27a13288d",
+   "sc": "f776efaab3",
+   "d": "2026-11-17"
+  },
   "px": {
    "t": "A$6.75",
    "d": "2026-11-17"
@@ -1866,6 +2015,16 @@ document.addEventListener("click", function(e){ var v = e.target.closest && e.ta
   Array.prototype.forEach.call(document.querySelectorAll(".wseg button"), function(b){ b.addEventListener("click", function(){ applyWindow(b.getAttribute("data-w")); }); });
 
   /* ---------- the two tables ---------- */
+  function scWhen(d){ var b = d.sc_basis || {}; if(d.sc_date) return {t: shortD(d.sc_date), l: "set " + longD(d.sc_date)}; if(b.d) return {t: "≤ " + shortD(b.d), l: "set on or before " + longD(b.d) + " (date not recorded before 18 Nov 2026)"}; return null; }
+  function shortD(s){ var p = s.split("-"); return +p[2] + " " + ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+p[1] - 1]; }
+  function longD(s){ return shortD(s) + " " + s.slice(0, 4); }
+  function scFromTxt(d){ var f = d.sc_from; return f ? "computed from the deep dive's model of " + longD(f.model_d) + " at the close of " + longD(f.close_d) + (f.prog === "kept" ? " (delivery value kept: the study's price is not in the model)" : "") : ""; }
+  function scTip(d){ var w = scWhen(d), f = scFromTxt(d); return "Price columns " + (f ? f + "; last changed " + (w ? w.l.replace(/^set /, "") : "") : (w ? w.l : "date not recorded")) + "."; }
+  function scChk(d){ var c = d.sc_check; return c && c.show ? c : null; }
+  function scChkTip(c){ return "Price columns need a check (since " + longD(c.since) + "): " + c.why.join("; ") + ". The night build flags this; the columns are shown as stored until they are re-derived."; }
+  function scDateCell(d){ var w = scWhen(d), c = scChk(d); return "<td class='scd' data-tip='" + esc(scTip(d)) + "'>" + (w ? esc(w.t) : "–") + (d.sc_from ? "<span class='scm'>model</span>" : "") + (c ? "<span class='scw' data-tip='" + esc(scChkTip(c)) + "'>⚠ check since " + esc(shortD(c.since)) + "</span>" : "") + "</td>"; }
+  function scLine(d){ var w = scWhen(d), c = scChk(d), f = scFromTxt(d); return "<div class='scl'>" + esc(f ? "Columns " + f + "." : (w ? "Columns " + w.l + "." : "")) + "</div>" + (c ? "<div class='scw' title='" + esc(scChkTip(c)) + "'>⚠ Price columns need a check (since " + esc(longD(c.since)) + "): " + esc(c.why[0]) + (c.why.length > 1 ? " (+" + (c.why.length - 1) + " more)" : "") + "</div>" : ""); }
+  var SCD_TIP = "When the price columns were last set. MODEL = computed from the company's deep-dive model on every build (rows with a value rating); ≤ = set on or before that date (dates are recorded from 18 Nov 2026); ⚠ = the night check found something to re-check (hover for the reason).";
   function rankCell(d, key){ return "<td class='c-n'><span class='rkn " + key + (low(d,key) ? " lo" : "") + "'>" + d[key] + "</span>" + mv(d, key) + "<span class='nmw'><b>" + esc(d.short) + "</b>" + mb(d) + dvb(d) + pk(d) + late(d) + tgx(d) + (window.RATING_TAG ? RATING_TAG(d, "t") : "") + "<span class='tk'>" + tickHtml(d.tick) + "</span></span></td>"; }
   /* share price and its euro figure (D-050, 13 Nov 2026): the ECB reference rate of the close's own date */
   function eurSpan(d){ return d.eur ? "<span class='eu' data-eur='" + d.eur.p + "|" + esc(d.eur.ccy) + "|" + d.eur.d + "'>" + esc(d.eur.v) + "</span>" : "<span class='eu na' data-tip='No ECB reference rate of " + esc(d.px ? fd(d.px.d) + " " + d.px.d.slice(0, 4) : "this date") + " for this currency is on file yet, so no euro figure is shown.'>no €</span>"; }
@@ -1897,7 +2056,7 @@ document.addEventListener("click", function(e){ var v = e.target.closest && e.ta
       };
       var head = key === "a"
         ? [th("Company", "", TIP.coA, "c-n"), th("Price", "close · €", TIP.px, "r"), th("Key point", "", TIP.key)].concat(hasCC ? [th("Cost curve", "percentile", TIP.cc)] : []).concat([th("Mkt cap", "", TIP.cap, "r"), th("Team", "A–D", TIP.mg), th("Risk", "1–5", TIP.risk, "r"), th("Upside #", "", TIP.inB, "r")]).concat(window.RATING_HEAD ? [RATING_HEAD(th)] : [])
-        : [th("Company", "", TIP.coB, "c-n"), th("3×+ odds", "line ~" + BASE + "%", TIP.odds, "r"), th("Plan works", "", TIP.works, "r"), th("Gain if it works", "", TIP.ifw, "r"), th("Second triple?", "room after the first", TIP.rw), th("Team", "A–D", TIP.mg)].concat(SC.map(function(s, i){ var pr = s.split(" / "); return "<th class='r scg-h' data-tip='" + esc(i === SCX_I ? SCX.tip : i === 0 && pr.length !== 2 ? TIP.sc0 : TIP.sc) + "'>" + scHead(s, i) + "</th>"; })).concat([th("Risk", "1–5", TIP.risk, "r"), th("Safety #", "", TIP.inA, "r")]);
+        : [th("Company", "", TIP.coB, "c-n"), th("3×+ odds", "line ~" + BASE + "%", TIP.odds, "r"), th("Plan works", "", TIP.works, "r"), th("Gain if it works", "", TIP.ifw, "r"), th("Second triple?", "room after the first", TIP.rw), th("Team", "A–D", TIP.mg)].concat(SC.map(function(s, i){ var pr = s.split(" / "); return "<th class='r scg-h' data-tip='" + esc(i === SCX_I ? SCX.tip : i === 0 && pr.length !== 2 ? TIP.sc0 : TIP.sc) + "'>" + scHead(s, i) + "</th>"; })).concat([th("Columns", "set", SCD_TIP), th("Risk", "1–5", TIP.risk, "r"), th("Safety #", "", TIP.inA, "r")]);
       var n = head.length;
       var h = "<thead><tr>" + head.join("") + "</tr></thead><tbody>", lined = false;
       if(window.RATING_FILTER) rows = rows.filter(RATING_FILTER);
@@ -1916,6 +2075,7 @@ document.addEventListener("click", function(e){ var v = e.target.closest && e.ta
           cells.push("<td>" + rwb(d) + "</td>");
           cells.push("<td>" + mgb(d) + "</td>");
           d.sc.forEach(function(v, i){ var wide = v.length > 16; cells.push("<td class='sc" + (v.charAt(0) === "~" ? " est" : "") + (wide ? " wide" : "") + (i === SCX_I ? " x" : "") + "'>" + esc(v) + "</td>"); });
+          cells.push(scDateCell(d));
         }
         if(key === "a") cells.push("<td>" + mgb(d) + "</td>");
         cells.push("<td class='r'><span class='rsb r" + d.rs + "' title='Risk " + d.rs + " of 5'>" + d.rs + "</span></td>");
@@ -1951,7 +2111,7 @@ document.addEventListener("click", function(e){ var v = e.target.closest && e.ta
     if(key === "b" && d.sc && d.sc.length){
       /* the table's price columns, so a phone reader sees them too (Chung, 14 Nov 2026) */
       var rowsLay = d.sc.some(function(v){ return v.length > 12; }), unit = SCUL.replace(/^scenarios /, "");
-      h += "<div class='pc5'><div class='pch'><b>Price scenarios</b>" + (unit ? " · " + esc(unit) : "") + "</div><div class='pcg" + (rowsLay ? " rows" : "") + "'>" + d.sc.map(function(v, i){ return "<div><span class='sk'>" + esc(SC[i]) + (i === SCX_I ? " · " + esc(SCX.sub) : "") + "</span><span class='sv" + (v.charAt(0) === "~" ? " est" : "") + (i === SCX_I ? " x" : "") + "'>" + esc(v) + "</span></div>"; }).join("") + "</div></div>";
+      h += "<div class='pc5'><div class='pch'><b>Price scenarios</b>" + (unit ? " · " + esc(unit) : "") + "</div><div class='pcg" + (rowsLay ? " rows" : "") + "'>" + d.sc.map(function(v, i){ return "<div><span class='sk'>" + esc(SC[i]) + (i === SCX_I ? " · " + esc(SCX.sub) : "") + "</span><span class='sv" + (v.charAt(0) === "~" ? " est" : "") + (i === SCX_I ? " x" : "") + "'>" + esc(v) + "</span></div>"; }).join("") + "</div>" + scLine(d) + "</div>";
     }
     if(window.RATING_LINE) h += RATING_LINE(d);
     return h + "</a>";
@@ -2011,7 +2171,7 @@ document.addEventListener("click", function(e){ var v = e.target.closest && e.ta
           (d[key + "Risk"] ? "<div class='k'>Main risk</div><div class='v'>" + esc(d[key + "Risk"]) + "</div>" : "") +
           "<div class='k'>Exploration</div><div class='v'><span class='ntag n-" + d.exC + "'>" + esc(d.exN) + "</span>" + esc(d.ex) + "</div>" +
         "</div>" +
-        (key === "b" ? "<p class='drv'><b>Price scenarios</b>" + (SCUL ? " (" + esc(SCUL) + ")" : "") + " · driver: " + esc(d.pm || "") + "</p><div class='scg'>" + d.sc.map(function(v, i){ return "<div" + (i === SCX_I ? " title='" + esc(SCX.tip) + "'" : "") + "><span class='sk'>" + esc(SC[i]) + (i === SCX_I ? " · " + esc(SCX.sub) : "") + "</span><span class='sv" + (v.charAt(0) === "~" ? " est" : "") + (i === SCX_I ? " x" : "") + "'>" + esc(v) + "</span></div>"; }).join("") + "</div>" : "") +
+        (key === "b" ? "<p class='drv'><b>Price scenarios</b>" + (SCUL ? " (" + esc(SCUL) + ")" : "") + " · driver: " + esc(d.pm || "") + "</p><div class='scg'>" + d.sc.map(function(v, i){ return "<div" + (i === SCX_I ? " title='" + esc(SCX.tip) + "'" : "") + "><span class='sk'>" + esc(SC[i]) + (i === SCX_I ? " · " + esc(SCX.sub) : "") + "</span><span class='sv" + (v.charAt(0) === "~" ? " est" : "") + (i === SCX_I ? " x" : "") + "'>" + esc(v) + "</span></div>"; }).join("") + "</div>" + scLine(d) : "") +
         "<a class='trk' href='" + CFG.T + d.slug + "' target='_blank' rel='noopener'>Open " + esc(d.short) + " in the tracker ↗</a></div>";
       h += "<details class='row" + (lo ? " low" : "") + "' id='" + key + "-" + d.k + "' data-k='" + d.k + "'>" + sum + more + "</details>";
     });
