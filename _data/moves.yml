@@ -1,23 +1,23 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-close: "16 Nov 2026"
-n: 20
-releases: 14
+close: "17 Nov 2026"
+n: 11
+releases: 19
 items:
-  - co: "Hot Chili"
+  - co: "Pecoy"
     c: copper
     list: "Copper"
-    o0: 28
-    o1: 8
-    why: "Set for re-rating by the analyst: the 17 Nov release moves the maiden La Verde resource from late 2026 to the New Year (assays for the last 21 holes are due by late…"
-  - co: "New Found"
-    c: gold
-    list: "Gold & silver developers"
     o0: 12
     o1: 17
-    why: "Shares −11% since 12 Nov (C$2.13 → C$1.90) and −21% since 6 Nov…"
-  - co: "Western"
+    why: "Shares −11% since the 6 Nov assessment (C$1.83 → C$1.62) in a broad fall of copper shares; the 16 Nov drill results were routine."
+  - co: "Andina"
     c: copper
     list: "Copper"
-    o0: 24
+    o0: 15
     o1: 20
-    why: "Chung's decision of 16 Nov: rows with a value rating take their works line and chance it works from the analyst's latest deep dive…"
+    why: "Shares −12.5% since the 12 Nov assessment (C$0.96 → C$0.84) with no release since 5 Nov: gain if it works ~1.9⁠–⁠3.8× → ~2.2⁠–⁠4.4×, odds of a 3× 15% → 20%…"
+  - co: "Kodiak"
+    c: copper
+    list: "Copper"
+    o0: 16
+    o1: 19
+    why: "Shares −13% since the 6 Nov assessment (C$0.67 → C$0.58), in line with the group, with no release since 22 Oct: gain if it works ~1.3⁠–⁠4.4× → ~1.5⁠–⁠5.1×…"
