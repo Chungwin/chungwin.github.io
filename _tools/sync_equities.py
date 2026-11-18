@@ -518,6 +518,39 @@ def write_site_data(trackers_index: pathlib.Path) -> None:
     (ROOT / "_data" / "equities.yml").write_text("# Written by _tools/sync_equities.py — do not edit.\n" + "\n".join(lines) + "\n", encoding="utf-8")
 
 
+# Site bar (18 Nov 2026, Chung: "a sticky header ... my name as a link back to my landing page ... for all of my pages"):
+# the same sticky top bar as the research hubs, the name on the left, the page's own links beside it. The News page's
+# own sticky filter bar (.bar) and date labels (.dh) move down by the bar's height so nothing hides under it.
+SITE_BAR_CSS = (
+    '<style id="cw-bar-css">:root{--cwbar:46px}'
+    '.cw-bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;height:var(--cwbar);background:var(--panel,#181D20);border-bottom:1px solid var(--line,#262E32)}'
+    '.cw-bar-in{max-width:980px;height:100%;margin:0 auto;display:flex;align-items:center;gap:18px;'
+    'padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}'
+    '.cw-bar .cw-name{flex:none;margin-right:auto;font:400 18px/1 "Source Serif 4","Iowan Old Style",Georgia,serif;letter-spacing:-.005em;color:var(--ink,#E8EBEC);text-decoration:none;white-space:nowrap}'
+    '.cw-bar a{color:var(--mute,#8D999E);text-decoration:none;font:500 13.5px/1 var(--sans,"IBM Plex Sans",sans-serif);white-space:nowrap;padding:8px 0}'
+    '.cw-bar .cw-name:hover,.cw-bar a:hover,.cw-bar a:focus-visible{color:#CFA451}'
+    '.bar{top:calc(env(safe-area-inset-top,0px) + var(--cwbar))}'
+    '.dh{top:calc(64px + var(--cwbar))}'
+    'html{scroll-padding-top:calc(var(--cwbar) + 60px)}'
+    '@media (max-width:420px){.cw-bar-in{gap:14px}.cw-bar .cw-name{font-size:17px}.cw-bar a{font-size:13px}}'
+    '</style>')
+SITE_BAR = ('<nav class="cw-bar" aria-label="Site"><div class="cw-bar-in">'
+            '<a class="cw-name" href="/" data-goatcounter-click="equities/home" data-goatcounter-title="News: back home">Chung Huynh</a>'
+            '<a href="/equities/rankings/">Rankings</a><a href="/equities/trackers/">Company cards</a>'
+            '</div></nav>')
+
+
+def add_site_bar(html: str) -> str:
+    """Put the sticky site bar at the top of a stand-alone research page (today: the News page)."""
+    html, n = re.subn(r"</head>", lambda m: SITE_BAR_CSS + "\n</head>", html, count=1)
+    if not n:
+        raise SystemExit("news.html: </head> not found; the site bar could not be added")
+    html, n = re.subn(r"(<body[^>]*>)", lambda m: m.group(1) + "\n" + SITE_BAR, html, count=1)
+    if not n:
+        raise SystemExit("news.html: <body> not found; the site bar could not be added")
+    return html
+
+
 def build_news_page(news_html: str, synced: str) -> None:
     """/equities/news/: the trackers' News tab (already link-rewritten) as a page of its own, with the site's
     favicon, a way home, the disclaimer and GoatCounter. Inside the trackers hub the same file runs as a tab."""
@@ -529,12 +562,7 @@ def build_news_page(news_html: str, synced: str) -> None:
                       '<meta name="description" content="Every news release from the small mining companies in Chung Huynh\'s metals research, newest first, with a one-line read on each and every change to the odds of a 3×. Not investment advice.">', html, count=1, flags=re.S)
     if not n:
         raise SystemExit("news.html: <title> not found")
-    back = ('<p class="cw-back" style="margin:0 0 10px;font:13px/1.4 var(--sans,sans-serif)"><a href="/" style="color:var(--mute,#8D999E);text-decoration:none">← Chung Huynh</a>'
-            '<span style="color:var(--faint,#5F6B70)"> · </span><a href="/equities/rankings/" style="color:var(--mute,#8D999E);text-decoration:none">Rankings</a>'
-            '<span style="color:var(--faint,#5F6B70)"> · </span><a href="/equities/trackers/" style="color:var(--mute,#8D999E);text-decoration:none">Company cards</a></p>')
-    html, n = re.subn(r'(<header class="hd wrap">\s*)', lambda m: m.group(1) + back, html, count=1)
-    if not n:
-        raise SystemExit("news.html: page header not found; the way home could not be added")
+    html = add_site_bar(html)
     i = html.rindex("</body>")
     html = html[:i] + DISCLAIMER.replace("{synced}", synced).strip() + "\n" + GOATCOUNTER + "\n" + html[i:]
     (OUT / "news").mkdir(parents=True, exist_ok=True)

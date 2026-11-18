@@ -37,15 +37,31 @@ a:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radiu
 .k a{ text-decoration:none; } .k a:hover{ color:var(--ink); }
 
 /* ── masthead ─────────────────────────────────────────── */
-.mast{ display:flex; align-items:baseline; justify-content:space-between; gap:10px 24px; padding:18px 0 14px; border-bottom:1px solid var(--line); position:relative; }
+/* sticky (18 Nov 2026): the name on the left stays in reach while reading, as on the research pages;
+   the shadow paints the bar's ground edge to edge, the clip keeps it from spilling above or below */
+.mast{ display:flex; align-items:baseline; justify-content:space-between; gap:10px 24px; padding:16px 0 13px; border-bottom:1px solid var(--line);
+  position:sticky; top:0; z-index:50; background:var(--bg); box-shadow:0 0 0 100vmax var(--bg); clip-path:inset(0 -100vmax); }
+html{ scroll-padding-top:72px; }
 .mast::after{ content:""; position:absolute; left:0; bottom:-1px; width:72px; height:1px; background:var(--gold); }
 .brand{ font-family:var(--display); font-size:22px; letter-spacing:-.005em; text-decoration:none; white-space:nowrap; }
 .brand .wm{ font-weight:500; color:var(--ink); }
 .nav{ display:flex; gap:22px; font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; }
 .nav a{ color:var(--mute); text-decoration:none; transition:color .15s; }
 .nav a:hover, .nav a.on{ color:var(--ink); }
-@media (max-width:720px){ .mast{ flex-wrap:wrap; } .nav{ gap:16px; width:100%; } }
-@media (max-width:360px){ .brand{ font-size:19px; } }
+.nav .ns{ display:none; }
+/* phones: one slim line; the links scroll sideways if a very narrow screen cannot fit them */
+@media (max-width:720px){
+  .mast{ flex-wrap:nowrap; align-items:center; gap:14px; padding:10px 0 9px; }
+  .brand{ font-size:19px; flex:none; }
+  .nav{ flex:1 1 auto; min-width:0; gap:12px; font-size:11px; letter-spacing:.03em; white-space:nowrap; overflow-x:auto; scrollbar-width:none; }
+  .nav::-webkit-scrollbar{ display:none; }
+  .nav a{ padding:6px 0; }
+  .nav a:first-child{ margin-left:auto; }
+  .nav .nl{ display:none; } .nav .ns{ display:inline; }
+  html{ scroll-padding-top:58px; }
+}
+@media (max-width:400px){ .mast{ gap:10px; } .brand{ font-size:18px; } .nav{ gap:10px; font-size:10.5px; letter-spacing:.02em; } }
+@media (max-width:360px){ .brand{ font-size:17px; } .nav{ gap:9px; } }
 
 /* ── hero ─────────────────────────────────────────────── */
 .hero{ display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:40px 64px; padding:52px 0 40px; align-items:end; }
