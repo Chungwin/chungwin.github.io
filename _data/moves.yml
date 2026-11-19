@@ -1,23 +1,23 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-close: "17 Nov 2026"
-n: 11
-releases: 19
+close: "18 Nov 2026"
+n: 24
+releases: 13
 items:
-  - co: "Pecoy"
+  - co: "K2 Gold"
+    c: gold
+    list: "Gold & silver developers"
+    o0: 7
+    o1: 11
+    why: "Shares −13% since 6 Nov (C$0.67 → C$0.58) with no release; gold’s 8% fall explains about 6 points of it, the rest is the same outcome at a lower price."
+  - co: "Scorpio"
+    c: gold
+    list: "Gold & silver developers"
+    o0: 11
+    o1: 14
+    why: "Shares −12% since 16 Nov (C$0.205 → C$0.18) with no release."
+  - co: "American Eagle"
     c: copper
     list: "Copper"
-    o0: 12
-    o1: 17
-    why: "Shares −11% since the 6 Nov assessment (C$1.83 → C$1.62) in a broad fall of copper shares; the 16 Nov drill results were routine."
-  - co: "Andina"
-    c: copper
-    list: "Copper"
-    o0: 15
-    o1: 20
-    why: "Shares −12.5% since the 12 Nov assessment (C$0.96 → C$0.84) with no release since 5 Nov: gain if it works ~1.9⁠–⁠3.8× → ~2.2⁠–⁠4.4×, odds of a 3× 15% → 20%…"
-  - co: "Kodiak"
-    c: copper
-    list: "Copper"
-    o0: 16
-    o1: 19
-    why: "Shares −13% since the 6 Nov assessment (C$0.67 → C$0.58), in line with the group, with no release since 22 Oct: gain if it works ~1.3⁠–⁠4.4× → ~1.5⁠–⁠5.1×…"
+    o0: 24
+    o1: 27
+    why: "Shares −14% since 12 Nov (C$0.79 → C$0.68) with no release and no date missed, in a broad fall of copper shares: gain if it works ~2.4⁠–⁠5.6× → ~2.8⁠–⁠6.5×…"
