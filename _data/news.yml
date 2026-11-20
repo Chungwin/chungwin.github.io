@@ -1,6 +1,15 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-latest: "18 Nov 2026"
+latest: "19 Nov 2026"
 items:
+  - d: "19 Nov"
+    co: "Vizsla"
+    c: gold
+    t: "VIZSLA SILVER PROVIDES UPDATE ON PANUCO PROJECT DEVELOPMENT"
+    u: "https://vizslasilvercorp.com/vizsla-silver-provides-update-on-panuco-project-development/"
+    n: "First silver production at Panuco is now expected in the second half of 2028, a year later than the H2 2027 stated before; the release cites permitting, site readiness and construction timing…"
+    out: false
+    plan: "Step 1, 2, 4, 5, 6 · Watch"
+    pv: "watch"
   - d: "16 Nov"
     co: "Aya"
     c: gold
@@ -24,13 +33,5 @@ items:
     t: "Coppernico Receives Final Drill Permit and Outlines Multi-Target Drill Program at Sombrero"
     u: "https://globenewswire.com/news-release/2026/11/10/3399722/0/en/coppernico-receives-final-drill-permit-and-outlines-multi-target-drill-program-at-sombrero.html"
     n: "Material for the schedule: the last government approval (MINEM start-of-activities authorisation) is in."
-    out: false
-    mat: true
-  - d: "9 Nov"
-    co: "Solaris"
-    c: copper
-    t: "Solaris Receives Final US$50 Million Tranche Under Royal Gold Funding Package"
-    u: "https://www.solarisresources.com/news/blog/solaris-receives-final-us-50-million-tranche-under-royal-gold-funding-package"
-    n: "Material for funding: the third and last US$50M of the US$200M Royal Gold stream and royalty package arrived on the completion of the security filings."
     out: false
     mat: true
