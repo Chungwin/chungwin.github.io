@@ -1,23 +1,23 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-close: "19 Nov 2026"
-n: 21
-releases: 17
+close: "20 Nov 2026"
+n: 15
+releases: 5
 items:
-  - co: "Big Ridge"
+  - co: "ATHA"
+    c: violet
+    list: "Critical minerals"
+    o0: 10
+    o1: 16
+    why: "Shares −20% on 20 Nov to C$0.57 (−25% since the 16 Nov assessment), on about four times the volume of the days before…"
+  - co: "Aftermath"
     c: gold
     list: "Gold & silver developers"
-    o0: 6
-    o1: 12
-    why: "Shares −20% on the day and −41% since 13 Nov (C$0.59 → C$0.35) with no release found; the July placement shares at C$0.30 became free to trade on 8 Nov…"
-  - co: "Silver Tiger"
-    c: gold
-    list: "Gold & silver developers"
-    o0: 13
-    o1: 18
-    why: "Shares −16% since 16 Nov (C$0.64 → C$0.54) with no release; about half of the fall is the lower gold and silver price…"
-  - co: "Andina"
+    o0: 7
+    o1: 10
+    why: "Shares −12% since 12 Nov (C$0.47 → C$0.415) with no release behind the fall; silver, a by-product here, takes about 6% off the range (gain if it works ~1.68⁠–⁠3.38×)."
+  - co: "Coppernico"
     c: copper
     list: "Copper"
-    o0: 20
-    o1: 25
-    why: "Shares −15.5% since 17 Nov (C$0.84 → C$0.71; −27% in four sessions) with no company news: gain if it works ~2.2⁠–⁠4.4× → ~2.6⁠–⁠5.2×, odds of a 3× 20% → 25%…"
+    o0: 12
+    o1: 15
+    why: "Shares −23% since 17 Nov (C$0.31 → C$0.24; −15.8% on 20 Nov alone) with no release, no financing announced and no news found…"
