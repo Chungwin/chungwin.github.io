@@ -1,23 +1,23 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-close: "20 Nov 2026"
-n: 15
-releases: 5
+close: "21 Nov 2026"
+n: 4
+releases: 0
 items:
-  - co: "ATHA"
-    c: violet
-    list: "Critical minerals"
-    o0: 10
-    o1: 16
-    why: "Shares −20% on 20 Nov to C$0.57 (−25% since the 16 Nov assessment), on about four times the volume of the days before…"
-  - co: "Aftermath"
+  - co: "Argenta"
     c: gold
     list: "Gold & silver developers"
-    o0: 7
-    o1: 10
-    why: "Shares −12% since 12 Nov (C$0.47 → C$0.415) with no release behind the fall; silver, a by-product here, takes about 6% off the range (gain if it works ~1.68⁠–⁠3.38×)."
-  - co: "Coppernico"
-    c: copper
-    list: "Copper"
+    o0: 13
+    o1: 11
+    why: "Silver is 12% below the 16 Nov level this row’s range was set at…"
+  - co: "GoGold"
+    c: gold
+    list: "Gold & silver developers"
     o0: 12
-    o1: 15
-    why: "Shares −23% since 17 Nov (C$0.31 → C$0.24; −15.8% on 20 Nov alone) with no release, no financing announced and no news found…"
+    o1: 10
+    why: "Silver is 12% below the 16 Nov level this row’s range was set at and below the cautious US$45…"
+  - co: "IMPACT"
+    c: gold
+    list: "Gold & silver producers"
+    o0: 10
+    o1: 8
+    why: "Silver closed at US$41.07 on 20 Nov, 13% below the US$47.36 this row’s range was set at on 17 Nov, while the shares stayed at C$0.19."
