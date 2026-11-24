@@ -1,23 +1,23 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-close: "21 Nov 2026"
+close: "23 Nov 2026"
 n: 4
-releases: 0
+releases: 19
 items:
-  - co: "Argenta"
-    c: gold
-    list: "Gold & silver developers"
+  - co: "Gladiator"
+    c: copper
+    list: "Copper"
     o0: 13
-    o1: 11
-    why: "Silver is 12% below the 16 Nov level this row’s range was set at…"
-  - co: "GoGold"
-    c: gold
-    list: "Gold & silver developers"
-    o0: 12
-    o1: 10
-    why: "Silver is 12% below the 16 Nov level this row’s range was set at and below the cautious US$45…"
-  - co: "IMPACT"
-    c: gold
-    list: "Gold & silver producers"
-    o0: 10
-    o1: 8
-    why: "Silver closed at US$41.07 on 20 Nov, 13% below the US$47.36 this row’s range was set at on 17 Nov, while the shares stayed at C$0.19."
+    o1: 22
+    why: "Shares −27% since the 6 Nov assessment (C$1.52 → C$1.11), now in line with the weaker copper juniors that had no news…"
+  - co: "Pecoy"
+    c: copper
+    list: "Copper"
+    o0: 19
+    o1: 14
+    why: "Shares +11% since 19 Nov (C$1.40 → C$1.56) with no news, and copper lower (US$5.52/lb): the same outcome pays less, gain if it works ~1.7⁠–⁠4.05× → ~1.53⁠–⁠3.4×…"
+  - co: "Prospect"
+    c: copper
+    list: "Copper"
+    o0: 17
+    o1: 19
+    why: "Shares −12% since 6 Nov (A$0.25 → A$0.22) with no news that changes the resource…"
