@@ -1,23 +1,23 @@
 # Written by _tools/sync_equities.py from the News page — do not edit.
-close: "23 Nov 2026"
+close: "24 Nov 2026"
 n: 4
-releases: 19
+releases: 10
 items:
-  - co: "Gladiator"
+  - co: "Viridis"
+    c: violet
+    list: "Critical minerals"
+    o0: 14
+    o1: 11
+    why: "Shares +13% since 20 Nov to A$2.63 (24 Nov close), most of it on 23 Nov with the EU Commissioner's statement of support, which names no amount…"
+  - co: "Antimony Res."
+    c: violet
+    list: "Critical minerals"
+    o0: 12
+    o1: 10
+    why: "Sell trigger (insider selling): the 6 Nov share sale by former CEO Jim Atkinson is now listed by a second filings site (Simply Wall St) with the same size as the first…"
+  - co: "Marimaca"
     c: copper
     list: "Copper"
-    o0: 13
-    o1: 22
-    why: "Shares −27% since the 6 Nov assessment (C$1.52 → C$1.11), now in line with the weaker copper juniors that had no news…"
-  - co: "Pecoy"
-    c: copper
-    list: "Copper"
-    o0: 19
-    o1: 14
-    why: "Shares +11% since 19 Nov (C$1.40 → C$1.56) with no news, and copper lower (US$5.52/lb): the same outcome pays less, gain if it works ~1.7⁠–⁠4.05× → ~1.53⁠–⁠3.4×…"
-  - co: "Prospect"
-    c: copper
-    list: "Copper"
-    o0: 17
-    o1: 19
-    why: "Shares −12% since 6 Nov (A$0.25 → A$0.22) with no news that changes the resource…"
+    o0: 16
+    o1: 15
+    why: "Sprott’s investment committee approved up to US$425M of project debt and US$25M of equity for the MOD build (24 Nov; the term sheet is not yet binding)."
