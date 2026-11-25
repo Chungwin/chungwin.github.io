@@ -1,3 +1,44 @@
----
-layout: home
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chung Huynh · Being improved</title>
+<meta name="description" content="This site is being improved. A new version is on its way.">
+<link rel="icon" href="/favicon.ico">
+<style>
+  :root { --bg: #f7f5f0; --fg: #1d1c1a; --muted: #6b675f; --line: #dcd7cc; --accent: #a8823a; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #151412; --fg: #ece8df; --muted: #9b968b; --line: #34312c; --accent: #c9a25a; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    display: flex; align-items: center; justify-content: center;
+    padding: 2rem 1.5rem; line-height: 1.6;
+  }
+  main { max-width: 34rem; width: 100%; }
+  .name {
+    font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted); padding-bottom: 1.25rem; border-bottom: 1px solid var(--line); margin-bottom: 2rem;
+  }
+  .name span { display: inline-block; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--accent); margin-right: 0.6rem; vertical-align: 0.05rem; }
+  h1 {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-weight: 500; font-size: clamp(1.9rem, 6vw, 2.6rem); line-height: 1.2; margin-bottom: 1rem;
+  }
+  p.lead { font-size: 1.1rem; color: var(--fg); }
+  p.small { margin-top: 3rem; font-size: 0.78rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <div class="name"><span aria-hidden="true"></span>Chung Huynh</div>
+  <h1>We're improving this site.</h1>
+  <p class="lead">A new version is on its way. Thanks for your patience.</p>
+  <p class="small">Educational research, never personal financial advice.</p>
+</main>
+</body>
+</html>
